@@ -1,0 +1,76 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="_template.xhtml">
+
+	<ui:define name="conteudo">
+
+		<h:form id="formCadastroCidade">
+			<p:messages id="messages">
+				<p:autoUpdate />
+			</p:messages>
+
+			<p:fieldset legend="Dados da Cidade">
+				<p:panelGrid columns="2">
+
+					<p:outputLabel value="Nome:" for="nome" />
+					<p:inputText id="nome" value="#{cidadeBean.cidade.nome}"
+						placeholder="Digite o nome..." />
+
+					<p:outputLabel for="comboEstados" value="Estado:" />
+					<h:selectOneMenu id="comboEstados" value="#{cidadeBean.estadoId}"
+						panelStyle="width:180px" effect="fade" var="estado"
+						style="width:160px" converter="generic">
+						<f:selectItems value="#{cidadeBean.estadosCombo}" />
+					</h:selectOneMenu>
+
+					<p:commandButton value="Cadastrar" process="@form, tabelaCidades"
+						update="@form, tabelaCidades" action="#{cidadeBean.cadastrar}" />
+
+
+				</p:panelGrid>
+			</p:fieldset>
+		</h:form>
+
+		<p:dataTable var="cidade" value="#{cidadeBean.cidades}"
+			id="tabelaCidades" rows="5" paginator="true"
+			paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+			rowsPerPageTemplate="5,10,15">
+
+			<f:facet name="header" style="min-height: 35px; max-height: 35px">
+				<div style="margin-top: 5px">Cidades</div>
+
+				<p:commandButton id="toggler" type="button" value="Colunas"
+					style="float: right; margin-top: -30px;" icon="pi pi-align-justify" />
+				<p:columnToggler datasource="tabelaCidades" trigger="toggler" />
+			</f:facet>
+
+			<p:column headerText="Nome">
+
+				<h:outputText value="#{cidade.nome}" />
+			</p:column>
+
+			<p:column headerText="Estado">
+				<h:outputText value="#{cidade.estado.nome}" />
+			</p:column>
+
+			<p:column headerText="Alterar">
+				<p:commandLink value="Alterar"
+					action="#{cidadeBean.carregar(cidade)}"
+					update=":formCadastroCidade" process="@this" />
+			</p:column>
+
+			<p:column headerText="Inativar">
+				<p:commandLink value="Inativar"
+					action="#{cidadeBean.inativar(cidade)}" update="tabelaCidades"
+					process="@this" />
+			</p:column>
+		</p:dataTable>
+
+	</ui:define>
+</ui:composition>
+</html>
