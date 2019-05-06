@@ -10,12 +10,17 @@
 		<jta-data-source>java:/WebBakery-ds</jta-data-source>
 
 		<class>br.com.WebBakery.model.Usuario</class>
+
 		<class>br.com.WebBakery.model.Funcionario</class>
+
 		<class>br.com.WebBakery.model.Endereco</class>
 		<class>br.com.WebBakery.model.Pais</class>
 		<class>br.com.WebBakery.model.Estado</class>
 		<class>br.com.WebBakery.model.Cidade</class>
 		<class>br.com.WebBakery.model.Logradouro</class>
+
+		<class>br.com.WebBakery.model.Produto</class>
+		<class>br.com.WebBakery.model.Receita</class>
 
 		<properties>
 			<property name="hibernate.hbm2ddl.auto" value="update" />

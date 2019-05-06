@@ -6,13 +6,17 @@
 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui">
 
-<h:head>
-	<h:body>
-		<div id="cabecalho"></div>
+<h:head />
 
-		<div id="conteudo">
-			<ui:insert name="conteudo" />
-		</div>
-	</h:body>
-</h:head>
+<h:body>
+	<div id="cabecalho">
+		<p:growl id="messages" life="10000">
+			<p:autoUpdate />
+		</p:growl>
+	</div>
+
+	<div id="conteudo">
+		<ui:insert name="conteudo" />
+	</div>
+</h:body>
 </html>

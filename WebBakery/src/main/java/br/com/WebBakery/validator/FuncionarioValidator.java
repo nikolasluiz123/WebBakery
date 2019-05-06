@@ -2,7 +2,6 @@ package br.com.WebBakery.validator;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.faces.application.FacesMessage;
