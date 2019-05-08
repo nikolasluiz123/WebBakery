@@ -73,20 +73,14 @@ public class ProdutoBean implements Serializable {
         if (this.validator.isValid() && !this.validator.existe(todosOsProdutos)) {
             this.produto.setAtivo(true);
             this.produtoDao.cadastrar(this.produto);
-            context.addMessage(null,
-                               new FacesMessage(FacesMessage.SEVERITY_INFO,
-                                                "Produto cadastrado com sucesso!",
-                                                "Produto cadastrado com sucesso!"));
+            context.addMessage(null, new FacesMessage("Produto cadastrado com sucesso!"));
         }
     }
 
     private void efetuarAtualizacao() {
         if (this.validator.isValid()) {
             this.produtoDao.atualizar(this.produto);
-            context.addMessage(null,
-                               new FacesMessage(FacesMessage.SEVERITY_INFO,
-                                                "Produto atualizado com sucesso!",
-                                                "Produto atualizado com sucesso!"));
+            context.addMessage(null, new FacesMessage("Produto atualizado com sucesso!"));
         }
     }
 
@@ -115,6 +109,10 @@ public class ProdutoBean implements Serializable {
 
     private void initReceitas() {
         this.receitas = this.receitaDao.listarTodos(true);
+    }
+
+    public void setarReceita() {
+        this.produto.setReceita(this.receitaSelecionada);
     }
 
     public Produto getProduto() {
