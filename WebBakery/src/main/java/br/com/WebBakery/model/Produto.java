@@ -15,7 +15,7 @@ public class Produto {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Integer id;
     private String descricao;
-    private Date tempoValido;
+    private Integer tempoValido;
     private BigDecimal preco;
     private boolean ativo;
     @OneToOne
@@ -53,11 +53,11 @@ public class Produto {
         this.ativo = ativo;
     }
 
-    public Date getTempoValido() {
+    public Integer getTempoValido() {
         return tempoValido;
     }
 
-    public void setTempoValido(Date tempoValido) {
+    public void setTempoValido(Integer tempoValido) {
         this.tempoValido = tempoValido;
     }
 

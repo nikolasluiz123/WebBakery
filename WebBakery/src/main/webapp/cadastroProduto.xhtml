@@ -20,12 +20,17 @@
 						placeholder="Digite a descrição..." />
 
 					<p:outputLabel for="tempoValido" value="Tempo Válido" />
-					<p:datePicker id="tempoValido" selectionMode="range"
-						value="#{produtoBean.produto.tempoValido}" readonlyInput="true" />
+					<h:panelGrid columns="1" style="margin-bottom: 10px">
+						<p:inputNumber id="tempoValido"
+							value="#{produtoBean.produto.tempoValido}" decimalPlaces="0"
+							maxValue="30" />
+						<p:slider for="tempoValido" maxValue="30" />
+					</h:panelGrid>
 
 					<p:outputLabel value="Preço:" for="preco" />
 					<p:inputNumber id="preco" value="#{produtoBean.produto.preco}"
-						symbol="R$" decimalSeparator="," thousandSeparator="." />
+						symbol="R$" decimalSeparator="," thousandSeparator="."
+						placeholder="Digite o preço..." />
 
 					<p:outputLabel for="receita" value="Receita:" />
 					<p:inputTextarea id="receita"
@@ -33,8 +38,8 @@
 						value="#{produtoBean.produto.receita.descricao}" readonly="true"
 						placeholder="Selecione a receita..." style="cursor: pointer;" />
 
-					<p:commandButton value="Cadastrar" process="@form" update="@form"
-						action="#{produtoBean.cadastrar}" />
+					<p:commandButton value="Cadastrar" process="@form"
+						update="@form, tabelaProdutos" action="#{produtoBean.cadastrar}" />
 
 				</p:panelGrid>
 			</p:fieldset>
@@ -63,6 +68,49 @@
 					oncomplete="PF('ReceitasDialog').hide();" />
 			</p:dialog>
 		</h:form>
+
+		<p:dataTable var="produto" value="#{produtoBean.produtos}"
+			id="tabelaProdutos" rows="5" paginator="true"
+			paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+			rowsPerPageTemplate="5,10,15">
+
+			<f:facet name="header" style="min-height: 35px; max-height: 35px">
+				<div style="margin-top: 5px">Produtos</div>
+
+				<p:commandButton id="toggler" type="button" value="Colunas"
+					style="float: right; margin-top: -30px;" icon="pi pi-align-justify" />
+				<p:columnToggler datasource="tabelaProdutos" trigger="toggler" />
+			</f:facet>
+
+			<p:column headerText="Descrição">
+
+				<h:outputText value="#{produto.descricao}" />
+			</p:column>
+
+			<p:column headerText="Tempo Válido">
+				<h:outputText value="#{produto.tempoValido}" />
+			</p:column>
+
+			<p:column headerText="Preço">
+				<h:outputText value="#{produto.preco}" />
+			</p:column>
+
+			<p:column headerText="Receita">
+				<h:outputText value="#{produto.receita.descricao}" />
+			</p:column>
+
+			<p:column headerText="Alterar">
+				<p:commandLink value="Alterar"
+					action="#{produtoBean.carregar(produto)}"
+					update="formCadastroReceita" process="@this" />
+			</p:column>
+
+			<p:column headerText="Inativar">
+				<p:commandLink value="Inativar"
+					action="#{produtoBean.inativar(produto)}" update="tabelaProdutos"
+					process="@this" />
+			</p:column>
+		</p:dataTable>
 	</ui:define>
 </ui:composition>
 </html>

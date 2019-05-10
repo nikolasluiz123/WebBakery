@@ -36,7 +36,7 @@ public class ProdutoValidator extends AbstractValidator {
 
     private void validaTempoValidade() {
         if (this.produto.getTempoValido() == null) {
-            messages.add("Data de validade é obrigatória!");
+            messages.add("Tempo de validade é obrigatório!");
         }
     }
 
@@ -51,8 +51,8 @@ public class ProdutoValidator extends AbstractValidator {
             String descricaoSendoCadastradaMaiscula = this.produto.getDescricao().toUpperCase();
             String descricaoSendoPercorridaMaiscula = produto.getDescricao().toUpperCase();
 
-            Long dataValidadeSendoCadastrada = this.produto.getTempoValido().getTime();
-            Long dataValidadeSendoPercorrida = produto.getTempoValido().getTime();
+            Integer dataValidadeSendoCadastrada = this.produto.getTempoValido();
+            Integer dataValidadeSendoPercorrida = produto.getTempoValido();
 
             BigDecimal precoSendoCadastrado = this.produto.getPreco();
             BigDecimal precoSendoPercorrido = produto.getPreco();
@@ -66,10 +66,7 @@ public class ProdutoValidator extends AbstractValidator {
                     && receitaSendoCadastrada.equals(receitaSendoPercorrida)) {
                 produto.setAtivo(true);
                 FacesContext.getCurrentInstance()
-                        .addMessage(null,
-                                    new FacesMessage(FacesMessage.SEVERITY_INFO,
-                                                     "Produto já cadastrado!",
-                                                     "Produto já cadastrado!"));
+                        .addMessage(null, new FacesMessage("Produto já cadastrado!"));
                 return true;
             }
         }

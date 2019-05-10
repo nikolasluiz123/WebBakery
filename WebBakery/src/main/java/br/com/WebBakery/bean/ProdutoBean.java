@@ -1,7 +1,9 @@
 package br.com.WebBakery.bean;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -34,6 +36,7 @@ public class ProdutoBean implements Serializable {
     private Produto produto;
     private List<Produto> produtos;
     private ProdutoDao produtoDao;
+    private List<Date> datas;
 
     private Receita receitaSelecionada;
     private List<Receita> receitas;
@@ -69,6 +72,7 @@ public class ProdutoBean implements Serializable {
     }
 
     private void efetuarCadastro() {
+
         List<Produto> todosOsProdutos = this.produtoDao.listarTodos();
         if (this.validator.isValid() && !this.validator.existe(todosOsProdutos)) {
             this.produto.setAtivo(true);
@@ -93,6 +97,8 @@ public class ProdutoBean implements Serializable {
 
     public void carregar(Produto produto) {
         this.validator = new ProdutoValidator(produto);
+        Integer diasValido = produto.getTempoValido();
+
         this.produto = produto;
     }
 
@@ -169,6 +175,14 @@ public class ProdutoBean implements Serializable {
 
     public void setReceitas(List<Receita> receitas) {
         this.receitas = receitas;
+    }
+
+    public List<Date> getDatas() {
+        return datas;
+    }
+
+    public void setDatas(List<Date> datas) {
+        this.datas = datas;
     }
 
 }
