@@ -21,6 +21,9 @@ import br.com.WebBakery.validator.ReceitaValidator;
 @ViewScoped
 public class ReceitaBean implements Serializable {
 
+    private static final String UPDATED_SUCCESSFULLY = "Receita atualizada com sucesso!";
+    private static final String REGISTERED_SUCCESSFULLY = "Receita cadastrada com sucesso!";
+
     private static final long serialVersionUID = 1L;
 
     @Inject
@@ -61,10 +64,7 @@ public class ReceitaBean implements Serializable {
         if (this.validator.isValid() && !this.validator.existe(todasAsReceitas)) {
             this.receita.setAtivo(true);
             this.receitaDao.cadastrar(this.receita);
-            context.addMessage(null,
-                               new FacesMessage(FacesMessage.SEVERITY_INFO,
-                                                "Receita cadastrada com sucesso!",
-                                                "Receita cadastrada com sucesso!"));
+            context.addMessage(null, new FacesMessage(REGISTERED_SUCCESSFULLY));
         }
     }
 
@@ -72,10 +72,7 @@ public class ReceitaBean implements Serializable {
     private void efetuarAtualizacao() {
         if (this.validator.isValid()) {
             this.receitaDao.atualizar(this.receita);
-            context.addMessage(null,
-                               new FacesMessage(FacesMessage.SEVERITY_INFO,
-                                                "Receita atualizada com sucesso!",
-                                                "Receita atualizada com sucesso!"));
+            context.addMessage(null, new FacesMessage(UPDATED_SUCCESSFULLY));
         }
     }
 

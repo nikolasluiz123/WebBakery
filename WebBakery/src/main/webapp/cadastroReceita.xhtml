@@ -21,7 +21,8 @@
 					<p:outputLabel value="Quantidade:" for="quantidade" />
 					<p:inputNumber id="quantidade"
 						value="#{receitaBean.receita.quantidade}"
-						placeholder="Digite a quantidade..." thousandSeparator="." />
+						placeholder="Digite a quantidade..." thousandSeparator="."
+						decimalPlaces="0" />
 
 					<p:commandButton value="Cadastrar" process="@form, tabelaReceitas"
 						update="@form, tabelaReceitas" action="#{receitaBean.cadastrar}" />

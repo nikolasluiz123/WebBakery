@@ -1,8 +1,5 @@
 package br.com.WebBakery.model;
 
-import java.math.BigDecimal;
-import java.util.Date;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -16,7 +13,7 @@ public class Produto {
     private Integer id;
     private String descricao;
     private Integer tempoValido;
-    private BigDecimal preco;
+    private Double preco;
     private boolean ativo;
     @OneToOne
     private Receita receita;
@@ -37,11 +34,11 @@ public class Produto {
         this.descricao = descricao;
     }
 
-    public BigDecimal getPreco() {
+    public Double getPreco() {
         return preco;
     }
 
-    public void setPreco(BigDecimal preco) {
+    public void setPreco(Double preco) {
         this.preco = preco;
     }
 

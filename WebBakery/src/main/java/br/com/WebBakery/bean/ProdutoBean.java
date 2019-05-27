@@ -1,9 +1,7 @@
 package br.com.WebBakery.bean;
 
 import java.io.Serializable;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -26,6 +24,10 @@ import br.com.WebBakery.validator.ProdutoValidator;
 @ViewScoped
 public class ProdutoBean implements Serializable {
 
+    private static final String UPDATED_SUCCESSFULLY = "Produto atualizado com sucesso!";
+
+    private static final String REGISTERED_SUCCESSFULLY = "Produto cadastrado com sucesso!";
+
     private static final long serialVersionUID = 1L;
 
     @PersistenceContext
@@ -36,7 +38,6 @@ public class ProdutoBean implements Serializable {
     private Produto produto;
     private List<Produto> produtos;
     private ProdutoDao produtoDao;
-    private List<Date> datas;
 
     private Receita receitaSelecionada;
     private List<Receita> receitas;
@@ -77,14 +78,14 @@ public class ProdutoBean implements Serializable {
         if (this.validator.isValid() && !this.validator.existe(todosOsProdutos)) {
             this.produto.setAtivo(true);
             this.produtoDao.cadastrar(this.produto);
-            context.addMessage(null, new FacesMessage("Produto cadastrado com sucesso!"));
+            context.addMessage(null, new FacesMessage(REGISTERED_SUCCESSFULLY));
         }
     }
 
     private void efetuarAtualizacao() {
         if (this.validator.isValid()) {
             this.produtoDao.atualizar(this.produto);
-            context.addMessage(null, new FacesMessage("Produto atualizado com sucesso!"));
+            context.addMessage(null, new FacesMessage(UPDATED_SUCCESSFULLY));
         }
     }
 
@@ -97,8 +98,6 @@ public class ProdutoBean implements Serializable {
 
     public void carregar(Produto produto) {
         this.validator = new ProdutoValidator(produto);
-        Integer diasValido = produto.getTempoValido();
-
         this.produto = produto;
     }
 
@@ -175,14 +174,6 @@ public class ProdutoBean implements Serializable {
 
     public void setReceitas(List<Receita> receitas) {
         this.receitas = receitas;
-    }
-
-    public List<Date> getDatas() {
-        return datas;
-    }
-
-    public void setDatas(List<Date> datas) {
-        this.datas = datas;
     }
 
 }

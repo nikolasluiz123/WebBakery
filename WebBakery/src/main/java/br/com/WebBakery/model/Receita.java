@@ -46,5 +46,4 @@ public class Receita {
     public void setAtivo(boolean ativo) {
         this.ativo = ativo;
     }
-
 }

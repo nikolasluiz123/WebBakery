@@ -10,6 +10,10 @@ import br.com.WebBakery.model.Receita;
 
 public class ReceitaValidator extends AbstractValidator {
 
+    private static final String ALREADY_REGISTERED = "Receita já cadastrada!";
+    private static final String FIELD_QUANTIDADE_NOT_VALID = "Quantidade inválida!";
+    private static final String FIELD_DESCRICAO_LIMIT_EXCEEDED = "Descrição com excedência de caractéres!";
+    private static final String FIELD_DESCRICAO_REQUIRES = "Descrição é obrigatória!";
     private Receita receita;
 
     public ReceitaValidator(Receita receita) {
@@ -23,20 +27,22 @@ public class ReceitaValidator extends AbstractValidator {
     }
 
     private void validaDescricao() {
-        String descricao = this.receita.getDescricao().trim();
+        String descricao = this.receita.getDescricao().trim().replace("\r\n", ", ");
 
         if (descricao == null || descricao.isEmpty()) {
-            getMessages().add("Descrição é obrigatória!");
+            getMessages().add(FIELD_DESCRICAO_REQUIRES);
         } else if (descricao.length() > 255) {
-            getMessages().add("Descrição com excedência de caractéres!");
+            getMessages().add(FIELD_DESCRICAO_LIMIT_EXCEEDED);
         }
+
+        this.receita.setDescricao(descricao);
     }
 
     private void validaQuantidade() {
         Integer quantidade = this.receita.getQuantidade();
 
         if (quantidade == null || quantidade <= 0) {
-            getMessages().add("Quantidade inválida!");
+            getMessages().add(FIELD_QUANTIDADE_NOT_VALID);
         }
     }
 
@@ -53,10 +59,7 @@ public class ReceitaValidator extends AbstractValidator {
                     && quantidadeCadastradaMaisculo.equals(quantidadePercorridoMaisculo)) {
                 receita.setAtivo(true);
                 FacesContext.getCurrentInstance()
-                        .addMessage(null,
-                                    new FacesMessage(FacesMessage.SEVERITY_INFO,
-                                                     "Receita já cadastrada!",
-                                                     "Receita já cadastrada!"));
+                        .addMessage(null, new FacesMessage(ALREADY_REGISTERED));
                 return true;
             }
         }

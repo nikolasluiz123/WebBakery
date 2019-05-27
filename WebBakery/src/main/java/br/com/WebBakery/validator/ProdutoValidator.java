@@ -1,6 +1,5 @@
 package br.com.WebBakery.validator;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 import javax.faces.application.FacesMessage;
@@ -11,6 +10,15 @@ import br.com.WebBakery.model.Produto;
 import br.com.WebBakery.model.Receita;
 
 public class ProdutoValidator extends AbstractValidator {
+
+    private static final String ALREADY_REGISTERED = "Produto já cadastrado!";
+    private static final String FIELD_PRECO_NOT_VALID = "Preço inválido!";
+    private static final String FIELD_TEMPO_VALIDO_NOT_VALID = "Tempo de validade inválido!";
+    private static final String FIELD_TEMPO_VALIDO_REQUIRED = "Tempo de validade é obrigatório!";
+    private static final String FIELD_DESCRICAO_LIMIT_EXCEEDED = "Descrição com excedência de caractéres!";
+    private static final String FIELD_DESCRICAO_REQUIRED = "Descrição é obrigatória!";
+    private static final String FIELD_PRECO_REQUIRED = "Preço é obrigatório!";
+    private static final String FIELD_RECEITA_REQUIRED = "Receita é obrigatória!";
 
     private Produto produto;
 
@@ -23,26 +31,46 @@ public class ProdutoValidator extends AbstractValidator {
         validaDescricao();
         validaTempoValidade();
         validaPreco();
+        validaReceita();
     }
 
     private void validaDescricao() {
-        if (this.produto.getDescricao().isEmpty() || this.produto.getDescricao() == null) {
-            messages.add("Descrição é obrigatória!");
+        String descricao = this.produto.getDescricao().trim();
+
+        if (descricao == null || descricao.isEmpty()) {
+            messages.add(FIELD_DESCRICAO_REQUIRED);
+        } else if (descricao.length() > 50) {
+            messages.add(FIELD_DESCRICAO_LIMIT_EXCEEDED);
         }
-        if (this.produto.getDescricao().length() > 50) {
-            messages.add("Descrição com excedência de caractéres!");
-        }
+        this.produto.setDescricao(descricao);
     }
 
     private void validaTempoValidade() {
-        if (this.produto.getTempoValido() == null) {
-            messages.add("Tempo de validade é obrigatório!");
+        Integer tempoValido = this.produto.getTempoValido();
+
+        if (tempoValido == null) {
+            messages.add(FIELD_TEMPO_VALIDO_REQUIRED);
+        } else if (tempoValido == 0) {
+            messages.add(FIELD_TEMPO_VALIDO_NOT_VALID);
         }
     }
 
     private void validaPreco() {
-        if (this.produto.getPreco() == null || this.produto.getPreco() == BigDecimal.ZERO) {
-            messages.add("Preço inválido!");
+        Double preco = this.produto.getPreco();
+
+        if (preco == null) {
+            messages.add(FIELD_PRECO_REQUIRED);
+        } else if (preco <= 0) {
+            messages.add(FIELD_PRECO_NOT_VALID);
+        }
+
+    }
+
+    private void validaReceita() {
+        Receita receita = this.produto.getReceita();
+
+        if (receita == null) {
+            messages.add(FIELD_RECEITA_REQUIRED);
         }
     }
 
@@ -51,22 +79,22 @@ public class ProdutoValidator extends AbstractValidator {
             String descricaoSendoCadastradaMaiscula = this.produto.getDescricao().toUpperCase();
             String descricaoSendoPercorridaMaiscula = produto.getDescricao().toUpperCase();
 
-            Integer dataValidadeSendoCadastrada = this.produto.getTempoValido();
-            Integer dataValidadeSendoPercorrida = produto.getTempoValido();
+            Integer tempoValidoSendoCadastrada = this.produto.getTempoValido();
+            Integer tempoValidoSendoPercorrida = produto.getTempoValido();
 
-            BigDecimal precoSendoCadastrado = this.produto.getPreco();
-            BigDecimal precoSendoPercorrido = produto.getPreco();
+            Double precoSendoCadastrado = this.produto.getPreco();
+            Double precoSendoPercorrido = produto.getPreco();
 
-            Receita receitaSendoCadastrada = this.produto.getReceita();
-            Receita receitaSendoPercorrida = produto.getReceita();
+            Integer receitaSendoCadastrada = this.produto.getReceita().getId();
+            Integer receitaSendoPercorrida = produto.getReceita().getId();
 
             if (descricaoSendoCadastradaMaiscula.equals(descricaoSendoPercorridaMaiscula)
-                    && dataValidadeSendoCadastrada.equals(dataValidadeSendoPercorrida)
+                    && tempoValidoSendoCadastrada.equals(tempoValidoSendoPercorrida)
                     && precoSendoCadastrado.equals(precoSendoPercorrido)
                     && receitaSendoCadastrada.equals(receitaSendoPercorrida)) {
                 produto.setAtivo(true);
-                FacesContext.getCurrentInstance()
-                        .addMessage(null, new FacesMessage("Produto já cadastrado!"));
+                FacesContext.getCurrentInstance().addMessage(null,
+                                                             new FacesMessage(ALREADY_REGISTERED));
                 return true;
             }
         }
