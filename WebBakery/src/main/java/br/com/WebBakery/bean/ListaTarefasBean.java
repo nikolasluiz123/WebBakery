@@ -1,6 +1,5 @@
 package br.com.WebBakery.bean;
 
-import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +12,7 @@ import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.servlet.http.HttpSession;
+import javax.transaction.Transactional;
 
 import br.com.WebBakery.dao.TarefaDao;
 import br.com.WebBakery.model.Tarefa;
@@ -48,6 +48,14 @@ public class ListaTarefasBean implements Serializable {
         HttpSession session = FacesUtil.getHTTPSession();
         session.setAttribute("TarefaID", tarefaID);
         context.getExternalContext().redirect("cadastroTarefa.xhtml");
+    }
+
+    @Transactional
+    public void concluir(Tarefa tarefa) {
+        tarefa.setPendente(false);
+        this.tarefaDao.atualizar(tarefa);
+        this.tarefasPendentes.remove(tarefa);
+        this.tarefasConcluidas.add(tarefa);
     }
 
     private void initTarefasPendentes() {

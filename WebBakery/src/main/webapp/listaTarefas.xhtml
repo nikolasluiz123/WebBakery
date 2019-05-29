@@ -53,12 +53,14 @@
 				<p:column headerText="Concuir">
 					<p:commandLink value="Concuir"
 						action="#{listaTarefasBean.concluir(tarefa)}" process="@this"
+						update="formDataTableTarefasPendentes, formDataTableTarefasConcluidas"
 						oncomplete="PF('TabelaTarefasPendentes').filter();" />
 				</p:column>
 			</p:dataTable>
 		</h:form>
 		<br />
 		<br />
+		
 		<h:form id="formDataTableTarefasConcluidas">
 			<p:dataTable var="tarefa"
 				value="#{listaTarefasBean.tarefasConcluidas}"

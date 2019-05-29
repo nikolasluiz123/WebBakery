@@ -72,6 +72,7 @@ public class TarefaBean implements Serializable {
 
     @Transactional
     public void cadastrar() {
+        this.validator = new TarefaValidator(this.tarefa);
         if (this.tarefa.getId() == null) {
             efetuarCadastro();
         } else {
