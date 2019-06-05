@@ -66,4 +66,9 @@ public class Produto {
         this.receita = receita;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        Produto p = (Produto) obj;
+        return p.descricao.equals(this.descricao) && p.id.equals(this.id);
+    }
 }

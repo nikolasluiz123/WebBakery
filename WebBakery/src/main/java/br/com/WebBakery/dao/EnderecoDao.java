@@ -4,11 +4,13 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import br.com.WebBakery.model.Endereco;
 
+@Stateless
 public class EnderecoDao implements Serializable {
 
     private static final long serialVersionUID = 1L;
