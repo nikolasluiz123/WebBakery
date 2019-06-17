@@ -10,13 +10,17 @@
 
 <h:body>
 	<div id="cabecalho">
-		<h:form id="formMenu">
+		<h:form id="formMessages">
 			<p:growl id="messages" life="10000" />
+		</h:form>
+		<h:form id="formMenu" rendered="#{usuarioLogado != null}">
+			<p:menu model="#{menuBean.model}" />
 		</h:form>
 	</div>
 
 	<div id="conteudo">
-		<ui:insert name="conteudo" />
+		<ui:insert name="conteudo">
+		</ui:insert>
 	</div>
 </h:body>
 </html>

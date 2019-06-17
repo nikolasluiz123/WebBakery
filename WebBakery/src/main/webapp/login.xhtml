@@ -15,7 +15,7 @@
 				<p:panelGrid columns="2">
 
 					<p:outputLabel value="E-mail:" for="email" />
-					<p:inputText id="email" value="#{usuarioBean.usuario.email}"
+					<p:inputText id="email" value="#{loginBean.usuario.email}"
 						placeholder="Digite seu e-mail...">
 
 						<f:passThroughAttribute name="type" value="email" />
@@ -23,23 +23,11 @@
 					</p:inputText>
 
 					<p:outputLabel value="Senha:" for="senha" />
-					<p:password id="senha" value="#{usuarioBean.usuario.senha}"
-						feedback="true" placeholder="Digite sua senha..." />
+					<p:password id="senha" value="#{loginBean.usuario.senha}"
+						placeholder="Digite sua senha..." />
 
-					<p:outputLabel value="Tipo de Usuário:" for="tipoUsuario" />
-					<p:selectOneMenu value="#{usuarioBean.tipoUsuario}"
-						id="tipoUsuario">
-						<f:selectItems value="#{usuarioBean.tiposUsuarios}" var="tipo"
-							itemLabel="#{tipo.nome}" itemValue="#{tipo}" />
-					</p:selectOneMenu>
-
-					<p:commandButton value="Cadastrar"
-						action="#{usuarioBean.cadastrar}" process="@form"
-						update="formMessages:messages" />
-
-					<p:commandButton value="Popular Banco"
-						action="#{usuarioBean.popularBanco}" />
-
+					<p:commandButton value="Login" action="#{loginBean.logar}"
+						process="@form" update="formMessages:messages" />
 				</p:panelGrid>
 			</p:fieldset>
 		</h:form>

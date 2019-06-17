@@ -1,4 +1,4 @@
-package br.com.WebBakery.bean.consulta;
+package br.com.WebBakery.bean.manutencao;
 
 import java.io.Serializable;
 

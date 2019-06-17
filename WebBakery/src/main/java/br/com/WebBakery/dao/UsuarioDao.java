@@ -7,6 +7,7 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 
 import br.com.WebBaker.interfaces.IBaseDao;
 import br.com.WebBakery.model.Usuario;
@@ -59,6 +60,20 @@ public class UsuarioDao implements IBaseDao<Usuario> {
                     .setParameter("pEmail", email).getSingleResult();
 
         } catch (NoResultException e) {
+            return false;
+        }
+        return true;
+    }
+
+    public boolean usuarioExiste(Usuario usuario) {
+        TypedQuery<Usuario> query = em.createQuery(" SELECT u FROM Usuario u "
+                + " WHERE u.email = :pEmail ", Usuario.class);
+
+        query.setParameter("pEmail", usuario.getEmail());
+        try {
+            @SuppressWarnings("unused")
+            Usuario resultado = query.getSingleResult();
+        } catch (NoResultException ex) {
             return false;
         }
         return true;

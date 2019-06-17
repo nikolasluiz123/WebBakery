@@ -76,7 +76,7 @@
 					<p:column headerText="Inativar">
 						<p:commandLink value="Inativar"
 							action="#{listaFuncionarioBean.inativar(funcionario)}"
-							update="tabelaFuncionarios, formMenu:messages" process="@this" />
+							update="tabelaFuncionarios, formMessages:messages" process="@this" />
 					</p:column>
 				</p:dataTable>
 			</div>

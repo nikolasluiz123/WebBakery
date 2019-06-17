@@ -41,7 +41,7 @@
 					<p:column headerText="Inativar">
 						<p:commandLink value="Inativar"
 							action="#{listaEstadoBean.inativar(estado)}"
-							update="tabelaEstados, formMenu:messages" process="@this"
+							update="tabelaEstados, formMessages:messages" process="@this"
 							oncomplete="PF('TabelaEstados').filter();" />
 					</p:column>
 				</p:dataTable>

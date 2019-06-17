@@ -1,4 +1,4 @@
-package br.com.WebBakery.bean.manutencao;
+package br.com.WebBakery.bean.consulta;
 
 import java.io.IOException;
 import java.io.Serializable;

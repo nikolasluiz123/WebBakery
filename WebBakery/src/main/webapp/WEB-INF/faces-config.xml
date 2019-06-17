@@ -7,7 +7,8 @@
 
 
 	<lifecycle>
-		<phase-listener></phase-listener>
+		<phase-listener>br.com.WebBakery.util.LogPhaseListener</phase-listener>
+		<phase-listener>br.com.WebBakery.util.Autorizador</phase-listener>
 	</lifecycle>
 
 </faces-config>

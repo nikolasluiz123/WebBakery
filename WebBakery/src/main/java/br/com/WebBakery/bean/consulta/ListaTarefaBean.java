@@ -1,4 +1,4 @@
-package br.com.WebBakery.bean.manutencao;
+package br.com.WebBakery.bean.consulta;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -15,7 +15,7 @@ import javax.persistence.PersistenceContext;
 import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 
-import br.com.WebBakery.bean.consulta.EstoqueProdutoBean;
+import br.com.WebBakery.bean.manutencao.EstoqueProdutoBean;
 import br.com.WebBakery.dao.EstoqueProdutoDao;
 import br.com.WebBakery.dao.TarefaDao;
 import br.com.WebBakery.model.EstoqueProduto;
