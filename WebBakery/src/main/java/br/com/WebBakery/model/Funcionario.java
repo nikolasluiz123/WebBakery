@@ -3,6 +3,7 @@ package br.com.WebBakery.model;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -15,17 +16,31 @@ public class Funcionario {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Integer id;
+
+    @Column(length = 40)
     private String nome;
+
+    @Column(length = 40)
     private String sobrenome;
+
     private BigDecimal salario;
     @OneToOne
     private Endereco endereco;
+
     @OneToOne
     private Usuario usuario;
+
     private Date dataNascimento;
+
+    @Column(length = 20)
     private String cpf;
+
+    @Column(length = 20)
     private String rg;
+
+    @Column(length = 20)
     private String telefone;
+
     private boolean ativo;
 
     public Integer getId() {

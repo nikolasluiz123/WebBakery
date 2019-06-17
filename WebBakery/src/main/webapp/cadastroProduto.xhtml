@@ -39,7 +39,7 @@
 						placeholder="Selecione a receita..." style="cursor: pointer;" />
 
 					<p:commandButton value="Cadastrar" process="@form"
-						update="@form, tabelaProdutos" action="#{produtoBean.cadastrar}" />
+						update="formMenu:messages" action="#{produtoBean.cadastrar}" />
 
 				</p:panelGrid>
 			</p:fieldset>
@@ -47,70 +47,33 @@
 			<p:dialog header="Receitas" widgetVar="ReceitasDialog"
 				resizable="false" width="800">
 
-				<p:dataTable id="tabelaReceitas" value="#{produtoBean.receitas}"
+				<p:dataTable var="receita" value="#{produtoBean.receitas}"
 					selectionMode="single"
-					selection="#{produtoBean.receitaSelecionada}" var="receita"
+					selection="#{produtoBean.receitaSelecionada}" id="tabelaReceitas"
 					rowKey="#{receita.id}" rows="5" paginator="true"
-					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-					emptyMessage="Nenhuma receita encontrada">
+					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PageLinks} {PreviousPageLink} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					rowsPerPageTemplate="5,10,15"
+					emptyMessage="Nenhuma receita encontrada."
+					widgetVar="TabelaReceitas"
+					filteredValue="#{produtoBean.receitasFiltradas}">
 
-					<p:column headerText="Descrição">
+					<p:column headerText="Descrição" filterBy="#{receita.descricao}"
+						sortBy="#{receita.descricao}">
 						<h:outputText value="#{receita.descricao}" />
 					</p:column>
 
-					<p:column headerText="Quantidade">
+					<p:column headerText="Quantidade" filterBy="#{receita.quantidade}"
+						sortBy="#{receita.quantidade}">
 						<h:outputText value="#{receita.quantidade}" />
 					</p:column>
 
 				</p:dataTable>
-				<p:commandButton value="Selecionar" process="@form" update="@form"
+				<p:commandButton value="Selecionar" process="@form"
+					update="formCadastroReceita:receita"
 					action="#{produtoBean.setarReceita}"
 					oncomplete="PF('ReceitasDialog').hide();" />
 			</p:dialog>
 		</h:form>
-
-		<p:dataTable var="produto" value="#{produtoBean.produtos}"
-			id="tabelaProdutos" rows="5" paginator="true"
-			paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-			rowsPerPageTemplate="5,10,15">
-
-			<f:facet name="header" style="min-height: 35px; max-height: 35px">
-				<div style="margin-top: 5px">Produtos</div>
-
-				<p:commandButton id="toggler" type="button" value="Colunas"
-					style="float: right; margin-top: -30px;" />
-				<p:columnToggler datasource="tabelaProdutos" trigger="toggler" />
-			</f:facet>
-
-			<p:column headerText="Descrição">
-
-				<h:outputText value="#{produto.descricao}" />
-			</p:column>
-
-			<p:column headerText="Tempo Válido">
-				<h:outputText value="#{produto.tempoValido}" />
-			</p:column>
-
-			<p:column headerText="Preço">
-				<h:outputText value="#{produto.preco}" />
-			</p:column>
-
-			<p:column headerText="Receita">
-				<h:outputText value="#{produto.receita.descricao}" />
-			</p:column>
-
-			<p:column headerText="Alterar">
-				<p:commandLink value="Alterar"
-					action="#{produtoBean.carregar(produto)}"
-					update="formCadastroReceita" process="@this" />
-			</p:column>
-
-			<p:column headerText="Inativar">
-				<p:commandLink value="Inativar"
-					action="#{produtoBean.inativar(produto)}" update="tabelaProdutos"
-					process="@this" />
-			</p:column>
-		</p:dataTable>
 	</ui:define>
 </ui:composition>
 </html>

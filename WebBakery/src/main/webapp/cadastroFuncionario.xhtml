@@ -10,9 +10,6 @@
 	<ui:define name="conteudo">
 
 		<h:form id="formCadastroFuncionario">
-			<p:messages id="messages">
-				<p:autoUpdate />
-			</p:messages>
 
 			<p:fieldset legend="Dados do Funcionario">
 				<p:panelGrid columns="2">
@@ -28,28 +25,16 @@
 
 					<p:outputLabel value="CPF:" for="cpf" />
 					<p:inputMask id="cpf" value="#{funcionarioBean.funcionario.cpf}"
-						placeholder="Digite o cpf..." mask="999.999.999-99">
-
-						<f:ajax event="blur" render="messages" />
-
-					</p:inputMask>
+						placeholder="Digite o cpf..." mask="999.999.999-99" />
 
 					<p:outputLabel value="RG:" for="rg" />
 					<p:inputMask id="rg" value="#{funcionarioBean.funcionario.rg}"
-						placeholder="Digite o rg..." mask="9.999.999">
-
-						<f:ajax event="blur" render="messages" />
-
-					</p:inputMask>
+						placeholder="Digite o rg..." mask="9.999.999" />
 
 					<p:outputLabel value="Telefone:" for="telefone" />
 					<p:inputMask id="telefone"
 						value="#{funcionarioBean.funcionario.telefone}"
-						placeholder="Digite o telefone..." mask="(99) 99999-9999">
-
-						<f:ajax event="blur" render="messages" />
-
-					</p:inputMask>
+						placeholder="Digite o telefone..." mask="(99) 99999-9999" />
 
 					<p:outputLabel value="Data de Nascimento:" for="dataNascimento" />
 					<p:calendar id="dataNascimento"
@@ -108,23 +93,29 @@
 						placeholder="Digite o complemento..." />
 
 					<p:commandButton value="Cadastrar" process="@form"
-						update="tabelaFuncionarios" action="#{funcionarioBean.cadastrar}" />
+						update="formMenu:messages, @form"
+						action="#{funcionarioBean.cadastrar}" />
 				</p:panelGrid>
 			</p:fieldset>
 
 			<p:dialog header="Países" widgetVar="PaisesDialog" resizable="false"
 				width="700">
 
-				<p:dataTable id="tabelaPaises" value="#{funcionarioBean.paises}"
+				<p:dataTable var="pais" value="#{funcionarioBean.paises}"
 					selectionMode="single"
-					selection="#{funcionarioBean.paisSelecionado}" var="pais"
+					selection="#{funcionarioBean.paisSelecionado}" id="tabelaPaises"
 					rowKey="#{pais.id}" rows="5" paginator="true"
-					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PageLinks} {PreviousPageLink} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					rowsPerPageTemplate="5,10,15"
+					emptyMessage="Nenhum país encontrado." widgetVar="TabelaPaises"
+					filteredValue="#{funcionarioBean.paisesFiltrados}">
 
-					<p:column headerText="Nome">
+					<p:column headerText="Nome" filterBy="#{pais.nome}"
+						sortBy="#{pais.nome}">
 						<h:outputText value="#{pais.nome}" />
 					</p:column>
-					<p:column headerText="Sigla">
+					<p:column headerText="Sigla" filterBy="#{pais.sigla}"
+						sortBy="#{pais.sigla}">
 						<h:outputText value="#{pais.sigla}" />
 					</p:column>
 				</p:dataTable>
@@ -140,15 +131,20 @@
 					selectionMode="single"
 					selection="#{funcionarioBean.estadoSelecionado}" var="estado"
 					rowKey="#{estado.id}" rows="5" paginator="true"
-					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PageLinks} {PreviousPageLink} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					emptyMessage="Nenhum estado encontrado." widgetVar="TabelaEstados"
+					filteredValue="#{funcionarioBean.estadosFiltrados}">
 
-					<p:column headerText="Nome">
+					<p:column headerText="Nome" sortBy="#{estado.nome}"
+						filterBy="#{estado.nome}">
 						<h:outputText value="#{estado.nome}" />
 					</p:column>
-					<p:column headerText="Sigla">
+					<p:column headerText="Sigla" filterBy="#{estado.sigla}"
+						sortBy="#{estado.sigla}">
 						<h:outputText value="#{estado.sigla}" />
 					</p:column>
-					<p:column headerText="País">
+					<p:column headerText="País" filterBy="#{estado.pais.nome}"
+						sortBy="#{estado.pais.nome}">
 						<h:outputText value="#{estado.pais.nome}" />
 					</p:column>
 				</p:dataTable>
@@ -164,12 +160,16 @@
 					selectionMode="single"
 					selection="#{funcionarioBean.cidadeSelecionada}" var="cidade"
 					rowKey="#{cidade.id}" rows="5" paginator="true"
-					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PageLinks} {PreviousPageLink} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					emptyMessage="Nenhuma cidade encontrada." widgetVar="TabelaCidades"
+					filteredValue="#{listaCidadeBean.cidadesFiltradas}">
 
-					<p:column headerText="Nome">
+					<p:column headerText="Nome" filterBy="#{cidade.nome}"
+						sortBy="#{cidade.nome}">
 						<h:outputText value="#{cidade.nome}" />
 					</p:column>
-					<p:column headerText="Estado">
+					<p:column headerText="Estado" filterBy="#{cidade.estado.nome}"
+						sortBy="#{cidade.estado.nome}">
 						<h:outputText value="#{cidade.estado.nome}" />
 					</p:column>
 				</p:dataTable>
@@ -181,16 +181,23 @@
 			<p:dialog header="Usuários" widgetVar="UsuariosDialog"
 				resizable="false" width="800">
 
-				<p:dataTable id="tabelaUsuarios" value="#{funcionarioBean.usuarios}"
+				<p:dataTable var="usuario" value="#{funcionarioBean.usuarios}"
 					selectionMode="single"
-					selection="#{funcionarioBean.usuarioSelecionado}" var="usuario"
-					rowKey="#{usuario.id}" rows="5" paginator="true"
-					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+					selection="#{funcionarioBean.usuarioSelecionado}"
+					id="tabelaUsuarios" rows="5" rowKey="#{usuario.id}"
+					paginator="true"
+					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PageLinks} {PreviousPageLink} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					rowsPerPageTemplate="5,10,15"
+					emptyMessage="Nenhum usuário encontrado."
+					widgetVar="TabelaUsuarios"
+					filteredValue="#{listaUsuariosBean.usuariosFiltrados}">
 
-					<p:column headerText="E-mail">
+					<p:column headerText="E-mail" filterBy="#{usuario.email}"
+						sortBy="#{usuario.email}">
 						<h:outputText value="#{usuario.email}" />
 					</p:column>
-					<p:column headerText="Função">
+					<p:column headerText="Função" filterBy="#{usuario.tipo.nome}"
+						sortBy="#{usuario.tipo.nome}">
 						<h:outputText value="#{usuario.tipo.nome}" />
 					</p:column>
 				</p:dataTable>
@@ -199,66 +206,6 @@
 					oncomplete="PF('UsuariosDialog').hide();" />
 			</p:dialog>
 		</h:form>
-
-		<p:dataTable var="funcionario" value="#{funcionarioBean.funcionarios}"
-			id="tabelaFuncionarios" rows="5" paginator="true"
-			paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-			rowsPerPageTemplate="5,10,15" resizableColumns="true">
-
-			<f:facet name="header" style="min-height: 35px; max-height: 35px">
-				<div style="margin-top: 5px">Funcionários</div>
-
-				<p:commandButton id="toggler" type="button" value="Colunas"
-					style="float: right; margin-top: -30px;" icon="pi pi-align-justify" />
-				<p:columnToggler datasource="tabelaFuncionarios" trigger="toggler" />
-			</f:facet>
-
-			<p:column headerText="Nome">
-				<h:outputText value="#{funcionario.nome}" />
-			</p:column>
-
-			<p:column headerText="Sobrenome">
-				<h:outputText value="#{funcionario.sobrenome}" />
-			</p:column>
-
-			<p:column headerText="CPF">
-				<h:outputText value="#{funcionario.cpf}" />
-			</p:column>
-
-			<p:column headerText="RG">
-				<h:outputText value="#{funcionario.rg}" />
-			</p:column>
-
-			<p:column headerText="Telefone">
-				<h:outputText value="#{funcionario.telefone}" />
-			</p:column>
-
-			<p:column headerText="Data de Nascimento">
-				<h:outputText
-					value="#{funcionarioBean.getDataNascimentoFormatada(funcionario.dataNascimento)}" />
-			</p:column>
-
-			<p:column headerText="Salário">
-				<h:outputText value="#{funcionario.salario}" />
-			</p:column>
-
-			<p:column headerText="Usuário">
-				<h:outputText value="#{funcionario.usuario.email}" />
-			</p:column>
-
-			<p:column headerText="Alterar">
-				<p:commandLink value="Alterar"
-					action="#{funcionarioBean.carregar(funcionario)}"
-					update=":formCadastroFuncionario" process="@this" />
-			</p:column>
-
-			<p:column headerText="Inativar">
-				<p:commandLink value="Inativar"
-					action="#{funcionarioBean.inativar(funcionario)}"
-					update="tabelaFuncionarios" process="@this" />
-			</p:column>
-		</p:dataTable>
-
 	</ui:define>
 </ui:composition>
 </html>

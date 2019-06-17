@@ -10,9 +10,6 @@
 	<ui:define name="conteudo">
 
 		<h:form id="formCadastroCliente">
-			<p:messages id="messages">
-				<p:autoUpdate />
-			</p:messages>
 
 			<p:fieldset legend="Dados do Cliente">
 				<p:panelGrid columns="2">
@@ -37,17 +34,17 @@
 					<p:outputLabel value="Data de Nascimento:" for="dataNascimento" />
 					<p:calendar id="dataNascimento"
 						value="#{clienteBean.cliente.dataNascimento}" pattern="dd/MM/yyyy"
-						mask="true" placeholder="Digite data de nascimento..." />
+						mask="true" placeholder="Digite data de nascimento..."
+						converter="SimpleDateConverter" />
 
 					<p:outputLabel for="email" value="E-mail:" />
 					<p:inputText id="email"
-						value="#{clienteBean.cliente.usuario.email}" readonly="true"
-						placeholder="Digite o e-mail..." style="cursor: pointer;" />
+						value="#{clienteBean.cliente.usuario.email}"
+						placeholder="Digite o e-mail..." />
 
 					<p:outputLabel for="senha" value="Senha:" />
-					<p:inputText id="senha"
-						value="#{clienteBean.cliente.usuario.senha}" readonly="true"
-						placeholder="Digite a senha..." style="cursor: pointer;" />
+					<p:password id="senha" value="#{clienteBean.cliente.usuario.senha}"
+						placeholder="Digite a senha..." />
 
 					<p:outputLabel for="pais" value="País:" />
 					<p:inputText id="pais" onclick="PF('PaisesDialog').show();"
@@ -86,7 +83,7 @@
 						value="#{clienteBean.cliente.endereco.logradouro.complemento}"
 						placeholder="Digite o complemento..." />
 
-					<p:commandButton value="Cadastrar" process="@form"
+					<p:commandButton value="Cadastrar" process="@form" update="@form"
 						action="#{clienteBean.cadastrar}" />
 				</p:panelGrid>
 			</p:fieldset>
@@ -94,68 +91,83 @@
 			<p:dialog header="Países" widgetVar="PaisesDialog" resizable="false"
 				width="700">
 
-				<p:dataTable id="tabelaPaises" value="#{funcionarioBean.paises}"
-					selectionMode="single"
-					selection="#{funcionarioBean.paisSelecionado}" var="pais"
-					rowKey="#{pais.id}" rows="5" paginator="true"
-					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+				<p:dataTable var="pais" value="#{clienteBean.paises}"
+					selectionMode="single" selection="#{clienteBean.paisSelecionado}"
+					id="tabelaPaises" rowKey="#{pais.id}" rows="5" paginator="true"
+					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PageLinks} {PreviousPageLink} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					rowsPerPageTemplate="5,10,15"
+					emptyMessage="Nenhum país encontrado." widgetVar="TabelaPaises"
+					filteredValue="#{clienteBean.paisesFiltrados}">
 
-					<p:column headerText="Nome">
+					<p:column headerText="Nome" filterBy="#{pais.nome}"
+						sortBy="#{pais.nome}">
 						<h:outputText value="#{pais.nome}" />
 					</p:column>
-					<p:column headerText="Sigla">
+					<p:column headerText="Sigla" filterBy="#{pais.sigla}"
+						sortBy="#{pais.sigla}">
 						<h:outputText value="#{pais.sigla}" />
 					</p:column>
 				</p:dataTable>
-				<p:commandButton value="Selecionar" process="@form" update="@form"
-					action="#{funcionarioBean.setarPais}"
+				<p:commandButton value="Selecionar" process="@form"
+					update="formCadastroCliente:pais, formCadastroCliente:tabelaEstados"
+					action="#{clienteBean.setarPais}"
 					oncomplete="PF('PaisesDialog').hide();" />
 			</p:dialog>
 
 			<p:dialog header="Estados" widgetVar="EstadosDialog"
 				resizable="false" width="700">
 
-				<p:dataTable id="tabelaEstados" value="#{funcionarioBean.estados}"
-					selectionMode="single"
-					selection="#{funcionarioBean.estadoSelecionado}" var="estado"
-					rowKey="#{estado.id}" rows="5" paginator="true"
-					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+				<p:dataTable id="tabelaEstados" value="#{clienteBean.estados}"
+					selectionMode="single" selection="#{clienteBean.estadoSelecionado}"
+					var="estado" rowKey="#{estado.id}" rows="5" paginator="true"
+					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PageLinks} {PreviousPageLink} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					emptyMessage="Nenhum estado encontrado." widgetVar="TabelaEstados"
+					filteredValue="#{clienteBean.estadosFiltrados}">
 
-					<p:column headerText="Nome">
+					<p:column headerText="Nome" sortBy="#{estado.nome}"
+						filterBy="#{estado.nome}">
 						<h:outputText value="#{estado.nome}" />
 					</p:column>
-					<p:column headerText="Sigla">
+					<p:column headerText="Sigla" filterBy="#{estado.sigla}"
+						sortBy="#{estado.sigla}">
 						<h:outputText value="#{estado.sigla}" />
 					</p:column>
-					<p:column headerText="País">
+					<p:column headerText="País" filterBy="#{estado.pais.nome}"
+						sortBy="#{estado.pais.nome}">
 						<h:outputText value="#{estado.pais.nome}" />
 					</p:column>
 				</p:dataTable>
-				<p:commandButton value="Selecionar" process="@form" update="@form"
-					action="#{funcionarioBean.setarEstado}"
+				<p:commandButton value="Selecionar" process="@form"
+					update="formCadastroCliente:estado, formCadastroCliente:tabelaCidades"
+					action="#{clienteBean.setarEstado}"
 					oncomplete="PF('EstadosDialog').hide();" />
 			</p:dialog>
 
 			<p:dialog header="Cidades" widgetVar="CidadesDialog"
 				resizable="false" width="700">
 
-				<p:dataTable id="tabelaCidades" value="#{funcionarioBean.cidades}"
-					selectionMode="single"
-					selection="#{funcionarioBean.cidadeSelecionada}" var="cidade"
-					rowKey="#{cidade.id}" rows="5" paginator="true"
-					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+				<p:dataTable id="tabelaCidades" value="#{clienteBean.cidades}"
+					selectionMode="single" selection="#{clienteBean.cidadeSelecionada}"
+					var="cidade" rowKey="#{cidade.id}" rows="5" paginator="true"
+					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PageLinks} {PreviousPageLink} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					emptyMessage="Nenhuma cidade encontrada." widgetVar="TabelaCidades"
+					filteredValue="#{listaCidadeBean.cidadesFiltradas}">
 
-					<p:column headerText="Nome">
+					<p:column headerText="Nome" filterBy="#{cidade.nome}"
+						sortBy="#{cidade.nome}">
 						<h:outputText value="#{cidade.nome}" />
 					</p:column>
-					<p:column headerText="Estado">
+					<p:column headerText="Estado" filterBy="#{cidade.estado.nome}"
+						sortBy="#{cidade.estado.nome}">
 						<h:outputText value="#{cidade.estado.nome}" />
 					</p:column>
 				</p:dataTable>
-				<p:commandButton value="Selecionar" process="@form" update="@form"
-					action="#{funcionarioBean.setarCidade}"
+				<p:commandButton value="Selecionar" process="@form"
+					update="formCadastroCliente:cidade"
+					action="#{clienteBean.setarCidade}"
 					oncomplete="PF('CidadesDialog').hide();" />
 			</p:dialog>
+
 
 		</h:form>
 

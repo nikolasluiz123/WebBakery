@@ -68,5 +68,4 @@ public class Tarefa {
     public void setPendente(boolean pendente) {
         this.pendente = pendente;
     }
-
 }

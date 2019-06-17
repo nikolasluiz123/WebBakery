@@ -1,6 +1,7 @@
-package br.com.WebBakery.bean;
+package br.com.WebBakery.bean.consulta;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -17,6 +18,7 @@ import br.com.WebBakery.dao.ProdutoDao;
 import br.com.WebBakery.dao.TarefaDao;
 import br.com.WebBakery.model.Produto;
 import br.com.WebBakery.model.Tarefa;
+import br.com.WebBakery.util.Date_Util;
 import br.com.WebBakery.util.FacesUtil;
 import br.com.WebBakery.validator.TarefaValidator;
 
@@ -24,11 +26,11 @@ import br.com.WebBakery.validator.TarefaValidator;
 @ViewScoped
 public class TarefaBean implements Serializable {
 
+    private static final long serialVersionUID = 2625499918546247472L;
+
     private static final String UPDATED_SUCCESSFULLY = "Tarefa atualizada com sucesso!";
 
     private static final String REGISTERED_SUCCESSFULLY = "Tarefa cadastrada com sucesso!";
-
-    private static final long serialVersionUID = 1L;
 
     @PersistenceContext
     private EntityManager em;
@@ -40,6 +42,7 @@ public class TarefaBean implements Serializable {
 
     private ProdutoDao produtoDao;
     private List<Produto> produtos;
+    private List<Produto> produtosFiltrados;
     private Produto produtoSelecionado;
 
     private TarefaValidator validator;
@@ -49,25 +52,9 @@ public class TarefaBean implements Serializable {
         this.tarefa = new Tarefa();
         this.tarefaDao = new TarefaDao(this.em);
         this.produtoDao = new ProdutoDao(this.em);
-        this.validator = new TarefaValidator(this.tarefa);
         initQuantidadeProdutoTarefa();
         initProdutos();
         verificaTarefaSessao();
-    }
-
-    private void verificaTarefaSessao() {
-        Integer tarefaId = (Integer) FacesUtil.getHTTPSession().getAttribute("TarefaID");
-        if (tarefaId != null) {
-            this.tarefa = tarefaDao.buscarPelaId(tarefaId);
-        }
-    }
-
-    private void initProdutos() {
-        this.produtos = this.produtoDao.listarTodos(true);
-    }
-
-    private void initQuantidadeProdutoTarefa() {
-        this.tarefa.setQuantidade(1);
     }
 
     @Transactional
@@ -77,9 +64,6 @@ public class TarefaBean implements Serializable {
             efetuarCadastro();
         } else {
             efetuarAtualizacao();
-        }
-        if (this.validator.getMessages().isEmpty()) {
-            this.tarefa = new Tarefa();
         }
         atualizarTela();
     }
@@ -100,14 +84,34 @@ public class TarefaBean implements Serializable {
     }
 
     private void atualizarTela() {
+        this.tarefa = new Tarefa();
         this.validator.showMessages();
         this.validator.clearMessages();
-        this.validator = new TarefaValidator(this.getTarefa());
         initQuantidadeProdutoTarefa();
+    }
+
+    private void verificaTarefaSessao() {
+        Integer tarefaId = (Integer) FacesUtil.getHTTPSession().getAttribute("TarefaID");
+        if (tarefaId != null) {
+            this.tarefa = tarefaDao.buscarPorId(tarefaId);
+            FacesUtil.getHTTPSession().removeAttribute("TarefaID");
+        }
+    }
+
+    private void initProdutos() {
+        this.produtos = this.produtoDao.listarTodos(true);
+    }
+
+    private void initQuantidadeProdutoTarefa() {
+        this.tarefa.setQuantidade(1);
     }
 
     public void setarProduto() {
         this.tarefa.setProduto(this.produtoSelecionado);
+    }
+
+    public String dataFormatada(Date data) {
+        return Date_Util.formatar("dd/MM/yyyy", data);
     }
 
     public Tarefa getTarefa() {
@@ -132,6 +136,14 @@ public class TarefaBean implements Serializable {
 
     public void setProdutoSelecionado(Produto produtoSelecionado) {
         this.produtoSelecionado = produtoSelecionado;
+    }
+
+    public List<Produto> getProdutosFiltrados() {
+        return produtosFiltrados;
+    }
+
+    public void setProdutosFiltrados(List<Produto> produtosFiltrados) {
+        this.produtosFiltrados = produtosFiltrados;
     }
 
 }

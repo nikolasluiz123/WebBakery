@@ -10,9 +10,6 @@
 	<ui:define name="conteudo">
 
 		<h:form id="formCadastroUsuario">
-			<p:messages id="messages">
-				<p:autoUpdate />
-			</p:messages>
 
 			<p:fieldset legend="Dados do Usuário">
 				<p:panelGrid columns="2">
@@ -38,47 +35,14 @@
 
 					<p:commandButton value="Cadastrar"
 						action="#{usuarioBean.cadastrar}" process="@form"
-						update="@form, tabelaUsuarios" />
+						update="formMenu:messages" />
 
 					<p:commandButton value="Popular Banco"
-						action="#{usuarioBean.popularBanco}" update="tabelaUsuarios" />
+						action="#{usuarioBean.popularBanco}" />
 
 				</p:panelGrid>
 			</p:fieldset>
 		</h:form>
-		<p:dataTable var="usuario" value="#{usuarioBean.usuarios}"
-			id="tabelaUsuarios" rows="5" paginator="true"
-			paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-			rowsPerPageTemplate="5,10,15">
-
-			<f:facet name="header" style="min-height: 35px; max-height: 35px">
-				<div style="margin-top: 5px">Usuários</div>
-
-				<p:commandButton id="toggler" type="button" value="Colunas"
-					style="float: right; margin-top: -30px;" icon="pi pi-align-justify" />
-				<p:columnToggler datasource="tabelaUsuarios" trigger="toggler" />
-			</f:facet>
-
-			<p:column headerText="E-mail">
-				<h:outputText value="#{usuario.email}" />
-			</p:column>
-
-			<p:column headerText="Tipo de Usuário">
-				<h:outputText value="#{usuario.tipo.nome}" />
-			</p:column>
-
-			<p:column headerText="Alterar">
-				<p:commandLink value="Alterar"
-					action="#{usuarioBean.carregar(usuario)}"
-					update=":formCadastroUsuario" process="@this" />
-			</p:column>
-
-			<p:column headerText="Inativar">
-				<p:commandLink value="Inativar"
-					action="#{usuarioBean.inativar(usuario)}" update="tabelaUsuarios"
-					process="@this" />
-			</p:column>
-		</p:dataTable>
 	</ui:define>
 </ui:composition>
 </html>

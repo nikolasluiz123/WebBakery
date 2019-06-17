@@ -1,19 +1,20 @@
 package br.com.WebBakery.dao;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 
+import br.com.WebBaker.interfaces.IBaseDao;
 import br.com.WebBakery.model.Cliente;
 
 @Stateless
-public class ClienteDao implements Serializable {
+public class ClienteDao implements IBaseDao<Cliente> {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 3335677484935538227L;
 
     @PersistenceContext
     private EntityManager em;
@@ -25,10 +26,12 @@ public class ClienteDao implements Serializable {
     public ClienteDao() {
     }
 
-    public void cadastrar(Cliente cliente) {
-        em.persist(cliente);
+    @Override
+    public void cadastrar(Cliente model) {
+        em.persist(model);
     }
 
+    @Override
     public List<Cliente> listarTodos(Boolean ativo) {
 
         List<Cliente> clientes = new ArrayList<>();
@@ -41,21 +44,25 @@ public class ClienteDao implements Serializable {
         return clientes;
     }
 
-    public List<Cliente> listarTodos() {
-        List<Cliente> clientes = new ArrayList<>();
-
-        clientes = em.createQuery("SELECT c FROM Cliente e WHERE 1=1 ORDER BY c.nome, c.sobrenome",
-                                  Cliente.class)
-                .getResultList();
-
-        return clientes;
-    }
-
-    public Cliente buscarPelaId(Integer id) {
+    @Override
+    public Cliente buscarPorId(Integer id) {
         return em.find(Cliente.class, id);
     }
 
-    public void atualizar(Cliente cliente) {
-        em.merge(cliente);
+    @Override
+    public void atualizar(Cliente model) {
+        em.merge(model);
+    }
+
+    public boolean cpfExiste(String cpf, Boolean ativo) {
+        try {
+            em.createQuery("SELECT c FROM Cliente c WHERE c.ativo = :pAtivo AND c.cpf = :pCpf",
+                           Cliente.class)
+                    .setParameter("pCpf", cpf).setParameter("pAtivo", ativo).getSingleResult();
+
+        } catch (NoResultException e) {
+            return false;
+        }
+        return true;
     }
 }

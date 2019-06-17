@@ -1,21 +1,23 @@
 package br.com.WebBakery.dao;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 
+import br.com.WebBaker.interfaces.IBaseDao;
 import br.com.WebBakery.model.Usuario;
 
 @Stateless
-public class UsuarioDao implements Serializable {
+public class UsuarioDao implements IBaseDao<Usuario> {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = -2545830489067942125L;
+
     @PersistenceContext
-    transient private EntityManager em;
+    private EntityManager em;
 
     public UsuarioDao(EntityManager em) {
         this.em = em;
@@ -24,12 +26,23 @@ public class UsuarioDao implements Serializable {
     public UsuarioDao() {
     }
 
-    public void cadastrar(Usuario usuario) {
-        em.persist(usuario);
+    @Override
+    public void cadastrar(Usuario model) {
+        em.persist(model);
     }
 
-    public List<Usuario> listarTodos(Boolean ativo) {
+    @Override
+    public Usuario buscarPorId(Integer id) {
+        return em.find(Usuario.class, id);
+    }
 
+    @Override
+    public void atualizar(Usuario model) {
+        em.merge(model);
+    }
+
+    @Override
+    public List<Usuario> listarTodos(Boolean ativo) {
         List<Usuario> usuarios = new ArrayList<>();
 
         usuarios = em
@@ -40,21 +53,14 @@ public class UsuarioDao implements Serializable {
         return usuarios;
     }
 
-    public List<Usuario> listarTodos() {
-        List<Usuario> usuarios = new ArrayList<>();
+    public boolean emailExiste(String email) {
+        try {
+            em.createQuery("SELECT u FROM Usuario u WHERE u.email = :pEmail", Usuario.class)
+                    .setParameter("pEmail", email).getSingleResult();
 
-        usuarios = em
-                .createQuery("SELECT u FROM Usuario u WHERE 1=1 ORDER BY u.email", Usuario.class)
-                .getResultList();
-
-        return usuarios;
-    }
-
-    public Usuario buscarPelaId(Integer id) {
-        return em.find(Usuario.class, id);
-    }
-
-    public void atualizar(Usuario usuario) {
-        em.merge(usuario);
+        } catch (NoResultException e) {
+            return false;
+        }
+        return true;
     }
 }

@@ -1,6 +1,5 @@
 package br.com.WebBakery.dao;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,12 +7,13 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import br.com.WebBaker.interfaces.IBaseDao;
 import br.com.WebBakery.model.Estado;
 
 @Stateless
-public class EstadoDao implements Serializable {
+public class EstadoDao implements IBaseDao<Estado> {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = -783763888391855583L;
 
     @PersistenceContext
     private EntityManager em;
@@ -25,46 +25,40 @@ public class EstadoDao implements Serializable {
     public EstadoDao() {
     }
 
-    public void cadastrar(Estado estado) {
-        em.persist(estado);
+    @Override
+    public void cadastrar(Estado model) {
+        em.persist(model);
     }
 
+    @Override
     public List<Estado> listarTodos(Boolean ativo) {
-
         List<Estado> estados = new ArrayList<>();
 
-        estados = em.createQuery("SELECT e FROM Estado e WHERE e.ativo = :pAtivo ORDER BY e.nome",
-                                 Estado.class)
+        estados = em.createQuery("SELECT e FROM Estado e WHERE e.ativo = :pAtivo", Estado.class)
                 .setParameter("pAtivo", ativo).getResultList();
 
         return estados;
-    }
-
-    public List<Estado> listarTodos() {
-        List<Estado> estados = new ArrayList<>();
-
-        estados = em.createQuery("SELECT e FROM Estado e WHERE 1=1 ORDER BY e.nome", Estado.class)
-                .getResultList();
-
-        return estados;
-    }
-
-    public Estado buscarPelaId(Integer id) {
-        return em.find(Estado.class, id);
-    }
-
-    public void atualizar(Estado estado) {
-        em.merge(estado);
     }
 
     public List<Estado> listarTodos(boolean ativo, Integer paisId) {
         List<Estado> estados = new ArrayList<>();
 
         estados = em
-                .createQuery("SELECT e FROM Estado e WHERE e.pais.id = :pPaisId AND e.ativo = :pAtivo ORDER BY e.nome",
+                .createQuery("SELECT e FROM Estado e WHERE e.ativo = :pAtivo AND e.pais.id = :pPaisID",
                              Estado.class)
-                .setParameter("pPaisId", paisId).setParameter("pAtivo", ativo).getResultList();
+                .setParameter("pAtivo", ativo).setParameter("pPaisID", paisId).getResultList();
 
         return estados;
     }
+
+    @Override
+    public Estado buscarPorId(Integer id) {
+        return em.find(Estado.class, id);
+    }
+
+    @Override
+    public void atualizar(Estado model) {
+        em.merge(model);
+    }
+
 }

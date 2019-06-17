@@ -1,6 +1,5 @@
 package br.com.WebBakery.dao;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,12 +7,13 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import br.com.WebBaker.interfaces.IBaseDao;
 import br.com.WebBakery.model.Pais;
 
 @Stateless
-public class PaisDao implements Serializable {
+public class PaisDao implements IBaseDao<Pais> {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1904464340270603917L;
 
     @PersistenceContext
     private EntityManager em;
@@ -25,35 +25,29 @@ public class PaisDao implements Serializable {
     public PaisDao() {
     }
 
-    public void cadastrar(Pais pais) {
-        em.persist(pais);
+    @Override
+    public void cadastrar(Pais model) {
+        em.persist(model);
     }
 
+    @Override
     public List<Pais> listarTodos(Boolean ativo) {
-
         List<Pais> paises = new ArrayList<>();
 
-        paises = em.createQuery("SELECT p FROM Pais p WHERE p.ativo = :pAtivo ORDER BY p.nome",
-                                Pais.class)
+        paises = em.createQuery("SELECT p FROM Pais p WHERE p.ativo = :pAtivo", Pais.class)
                 .setParameter("pAtivo", ativo).getResultList();
 
         return paises;
     }
 
-    public List<Pais> listarTodos() {
-        List<Pais> paises = new ArrayList<>();
-
-        paises = em.createQuery("SELECT p FROM Pais p WHERE 1=1 ORDER BY p.nome", Pais.class)
-                .getResultList();
-
-        return paises;
-    }
-
-    public Pais buscarPelaId(Integer id) {
+    @Override
+    public Pais buscarPorId(Integer id) {
         return em.find(Pais.class, id);
     }
 
-    public void atualizar(Pais pais) {
-        em.merge(pais);
+    @Override
+    public void atualizar(Pais model) {
+        em.merge(model);
     }
+
 }

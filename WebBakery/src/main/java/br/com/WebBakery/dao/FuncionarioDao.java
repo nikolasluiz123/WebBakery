@@ -1,6 +1,5 @@
 package br.com.WebBakery.dao;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,12 +7,13 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import br.com.WebBaker.interfaces.IBaseDao;
 import br.com.WebBakery.model.Funcionario;
 
 @Stateless
-public class FuncionarioDao implements Serializable {
+public class FuncionarioDao implements IBaseDao<Funcionario> {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = -4485066218691416726L;
 
     @PersistenceContext
     transient private EntityManager em;
@@ -25,37 +25,30 @@ public class FuncionarioDao implements Serializable {
     public FuncionarioDao() {
     }
 
-    public void cadastrar(Funcionario funcionario) {
-        em.persist(funcionario);
+    @Override
+    public void cadastrar(Funcionario model) {
+        em.persist(model);
     }
 
+    @Override
     public List<Funcionario> listarTodos(Boolean ativo) {
-
         List<Funcionario> funcionarios = new ArrayList<>();
 
-        funcionarios = em
-                .createQuery("SELECT f FROM Funcionario f WHERE f.ativo = :pAtivo ORDER BY f.nome",
-                             Funcionario.class)
+        funcionarios = em.createQuery("SELECT f FROM Funcionario f WHERE f.ativo = :pAtivo",
+                                      Funcionario.class)
                 .setParameter("pAtivo", ativo).getResultList();
 
         return funcionarios;
     }
 
-    public List<Funcionario> listarTodos() {
-        List<Funcionario> funcionarios = new ArrayList<>();
-
-        funcionarios = em.createQuery("SELECT f FROM Funcionario f WHERE 1=1 ORDER BY f.nome",
-                                      Funcionario.class)
-                .getResultList();
-
-        return funcionarios;
-    }
-
-    public Funcionario buscarPelaId(Integer id) {
+    @Override
+    public Funcionario buscarPorId(Integer id) {
         return em.find(Funcionario.class, id);
     }
 
-    public void atualizar(Funcionario funcionario) {
-        em.merge(funcionario);
+    @Override
+    public void atualizar(Funcionario model) {
+        em.merge(model);
     }
+
 }

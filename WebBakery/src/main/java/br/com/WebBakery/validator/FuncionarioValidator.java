@@ -1,27 +1,34 @@
 package br.com.WebBakery.validator;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
 
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
-
+import br.com.WebBakery.abstractClass.AbstractValidator;
 import br.com.WebBakery.model.Funcionario;
-import br.com.WebBakery.model.Usuario;
 import br.com.WebBakery.util.Cpf_Util;
 
-public class FuncionarioValidator {
+public class FuncionarioValidator extends AbstractValidator {
+
+    private static final String FIELD_USUARIO_REQUIRED = "Usuário é obrigatório!";
+    private static final String FIELD_SALARIO_NOT_VALID = "Salário inválido!";
+    private static final String FIELD_DATA_NASCIMNETO_REQUIRED = "Data de Nascimento é obrigatória!";
+    private static final String FIELD_TELEFONE_NOT_VALID = "Telefone inválido!";
+    private static final String FIELD_TELEFONE_REQUIRED = "Telefone é obrigatório!";
+    private static final String FIELD_RG_NOT_VALID = "RG inválido!";
+    private static final String FIELD_RG_REQUIRED = "RG é obrigatório!";
+    private static final String FIELD_CPF_NOT_VALID = "CPF inválido!";
+    private static final String FIELD_CPF_REQUIRED = "CPF é obrigatório!";
+    private static final String FIELD_SOBRENOME_LIMIT_EXCEDDED = "Sobrenome com excedência de caractéres!";
+    private static final String FIELD_SOBRENOME_REQUIRED = "Sobrenome é obrigatório!";
+    private static final String FIELD_NOME_LIMIT_EXCEDDED = "Nome com excedência de caractéres!";
+    private static final String FIELD_NOME_REQUIRED = "Nome é obrigatório!";
 
     private Funcionario funcionario;
-
-    private List<String> messages = new ArrayList<>();
 
     public FuncionarioValidator(Funcionario funcionario) {
         this.funcionario = funcionario;
     }
 
-    public boolean ehValido() {
+    public void chamarValidacoes() {
         validaNome();
         validaSobrenome();
         validaCpf();
@@ -30,134 +37,79 @@ public class FuncionarioValidator {
         validaDataNascimento();
         validaSalario();
         validaUsuario();
-
-        if (!messages.isEmpty()) {
-            return false;
-        }
-        return true;
-    }
-
-    public void mostrarMensagens() {
-        messages.forEach(message -> {
-            FacesContext.getCurrentInstance()
-                    .addMessage("formCadastroFuncionario:messages",
-                                new FacesMessage(FacesMessage.SEVERITY_ERROR, message, message));
-        });
-
     }
 
     private void validaNome() {
-        if (this.funcionario.getNome().isEmpty() || this.funcionario.getNome() == null) {
-            this.messages.add("Nome obrigatório!");
+        String nome = this.funcionario.getNome().trim();
+
+        if (nome.isEmpty() || nome == null) {
+            this.messages.add(FIELD_NOME_REQUIRED);
         }
-        if (this.funcionario.getNome().length() > 50) {
-            this.messages.add("Nome inválido!");
+        if (nome.length() > 40) {
+            this.messages.add(FIELD_NOME_LIMIT_EXCEDDED);
         }
     }
 
     private void validaSobrenome() {
-        if (this.funcionario.getSobrenome().isEmpty() || this.funcionario.getSobrenome() == null) {
-            this.messages.add("Sobrenome obrigatório!");
+        String sobrenome = this.funcionario.getSobrenome().trim();
+
+        if (sobrenome.isEmpty() || sobrenome == null) {
+            this.messages.add(FIELD_SOBRENOME_REQUIRED);
         }
-        if (this.funcionario.getSobrenome().length() > 50) {
-            this.messages.add("Sobrenome inválido!");
+        if (sobrenome.length() > 40) {
+            this.messages.add(FIELD_SOBRENOME_LIMIT_EXCEDDED);
         }
     }
 
     private void validaCpf() {
-        String cpf = this.funcionario.getCpf().replace(".", "").replace("-", "");
+        String cpf = this.funcionario.getCpf().trim();
+
         if (cpf.isEmpty() || cpf == null) {
-            this.messages.add("CPF obrigatório!");
+            this.messages.add(FIELD_CPF_REQUIRED);
         }
         if (!Cpf_Util.isValid(cpf)) {
-            this.messages.add("CPF inválido!");
+            this.messages.add(FIELD_CPF_NOT_VALID);
         }
     }
 
     private void validaRg() {
-        String rg = this.funcionario.getRg().replace(".", "");
+        String rg = this.funcionario.getRg().trim().replace(".", "");
+
         if (rg.isEmpty() || rg == null) {
-            this.messages.add("RG obrigatório!");
+            this.messages.add(FIELD_RG_REQUIRED);
         }
         if (rg.length() != 7) {
-            this.messages.add("RG inválido!");
+            this.messages.add(FIELD_RG_NOT_VALID);
         }
     }
 
     private void validaTelefone() {
         String telefone = this.funcionario.getTelefone().replace("(", "").replace(")", "")
-                .replace("-", "").replace(" ", "");
+                .replace("-", "").replace(" ", "").trim();
+
         if (telefone.isEmpty() || telefone == null) {
-            this.messages.add("Telefone obrigatório!");
+            this.messages.add(FIELD_TELEFONE_REQUIRED);
         }
-        if (telefone.length() > 11) {
-            this.messages.add("Telefone inválido!");
+        if (telefone.length() > 13) {
+            this.messages.add(FIELD_TELEFONE_NOT_VALID);
         }
     }
 
     private void validaDataNascimento() {
         if (this.funcionario.getDataNascimento() == null) {
-            this.messages.add("Data de Nascimento obrigatória!");
+            this.messages.add(FIELD_DATA_NASCIMNETO_REQUIRED);
         }
     }
 
     private void validaSalario() {
         if (this.funcionario.getSalario().equals(BigDecimal.ZERO)) {
-            this.messages.add("Salário inválido!");
+            this.messages.add(FIELD_SALARIO_NOT_VALID);
         }
     }
 
     private void validaUsuario() {
         if (this.funcionario.getUsuario() == null) {
-            this.messages.add("Usuário obrigatório!");
+            this.messages.add(FIELD_USUARIO_REQUIRED);
         }
-    }
-
-    public boolean existe(List<Funcionario> funcionarios) {
-        for (Funcionario funcionario : funcionarios) {
-
-            String nomeSendoCadastradoMaiusculo = this.funcionario.getNome().toUpperCase();
-            String nomeSendoPercorridoMaiusculo = funcionario.getNome().toUpperCase();
-
-            String sobrenomeSendoCadastradoMaiusculo = this.funcionario.getSobrenome()
-                    .toUpperCase();
-            String sobrenomeSendoPercorridoMaiusculo = funcionario.getSobrenome().toUpperCase();
-
-            String cpfSendoCadastrado = this.funcionario.getCpf();
-            String cpfSendoPercorrido = funcionario.getCpf();
-
-            String rgSendoCadastrado = this.funcionario.getRg();
-            String rgSendoPercorrido = funcionario.getRg();
-
-            String telefoneSendoCadastrado = this.funcionario.getTelefone();
-            String telefoneSendoPercorrido = funcionario.getTelefone();
-
-            Long dataNascimentoSendoCadastrada = this.funcionario.getDataNascimento().getTime();
-            Long dataNascimentoSendoPercorrida = funcionario.getDataNascimento().getTime();
-
-            BigDecimal salarioSendoCadastrado = this.funcionario.getSalario();
-            BigDecimal salarioSendoPercorrido = funcionario.getSalario();
-
-            Usuario usuarioSendoCadastrado = this.funcionario.getUsuario();
-            Usuario usuarioSendoPercorrido = funcionario.getUsuario();
-
-            if (nomeSendoCadastradoMaiusculo.equals(nomeSendoPercorridoMaiusculo)
-                    && sobrenomeSendoCadastradoMaiusculo.equals(sobrenomeSendoPercorridoMaiusculo)
-                    && cpfSendoCadastrado.equals(cpfSendoPercorrido)
-                    && rgSendoCadastrado.equals(rgSendoPercorrido)
-                    && telefoneSendoCadastrado.equals(telefoneSendoPercorrido)
-                    && dataNascimentoSendoCadastrada.equals(dataNascimentoSendoPercorrida)
-                    && salarioSendoCadastrado.equals(salarioSendoPercorrido)
-                    && usuarioSendoCadastrado.equals(usuarioSendoPercorrido)) {
-                funcionario.setAtivo(true);
-                messages.add("Funcionário já cadastrado!");
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public void clearMessages() {
-        this.messages.clear();
     }
 }

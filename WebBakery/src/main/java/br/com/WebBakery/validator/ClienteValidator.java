@@ -1,21 +1,38 @@
 package br.com.WebBakery.validator;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
-import br.com.WebBaker.abstractClass.AbstractValidator;
+import javax.persistence.EntityManager;
+
+import br.com.WebBakery.abstractClass.AbstractValidator;
+import br.com.WebBakery.dao.ClienteDao;
 import br.com.WebBakery.model.Cliente;
 import br.com.WebBakery.util.Cpf_Util;
+import br.com.WebBakery.util.Email_Util;
 
 public class ClienteValidator extends AbstractValidator {
 
+    private static final String FIELD_NOME_NOT_VALID = "Nome inválido!";
+    private static final String FIELD_NOME_REQUIRED = "Nome obrigatório!";
+    private static final String FIELD_SOBRENOME_NOT_VALID = "Sobrenome inválido!";
+    private static final String FIELD_SOBRENOME_REQUIRED = "Sobrenome obrigatório!";
+    private static final String FIELD_DATA_NASCIMENTO_NOT_VALID = "Data de nascimento inválida!";
+    private static final String FIELD_DATA_NASCIMENTO_REQUIRED = "Data de nascimento obrigatória!";
+    private static final String FIELD_CPF_NOT_VALID = "Cpf inválido!";
+    private static final String FIELD_CPF_REQUIRED = "Cpf é obrigatório!";
+    private static final String FIELD_TELEFONE_REQUIRED = "Telefone é obrigatório!";
+    private static final String FIELD_SENHA_NOT_VALID = "Senha inválida!";
+    private static final String FIELD_SENHA_REQUIRED = "Senha é obrigatória!";
+    private static final String FIELD_EMAIL_NOT_VALID = "E-mail inválido!";
+    private static final String FIELD_EMAIL_REQUIRED = "E-mail é obrigatório!";
+    private static final String FIELD_CPF_EXIST = "Cpf já cadastrado!";
+
     private Cliente cliente;
+    private ClienteDao clienteDao;
 
-    private List<String> messages = new ArrayList<>();
-
-    public ClienteValidator(Cliente cliente) {
+    public ClienteValidator(Cliente cliente, EntityManager em) {
         this.cliente = cliente;
+        this.clienteDao = new ClienteDao(em);
     }
 
     @Override
@@ -29,148 +46,75 @@ public class ClienteValidator extends AbstractValidator {
     }
 
     private void validaUsuario() {
-        if (this.cliente.getUsuario() == null) {
-            messages.add("Usuário é obrigatório!");
+        String email = this.cliente.getUsuario().getEmail().trim();
+        String senha = this.cliente.getUsuario().getSenha().trim();
+
+        if (email == null || email.isEmpty()) {
+            messages.add(FIELD_EMAIL_REQUIRED);
         }
-        if (this.cliente.getUsuario().getEmail() == null
-                || this.cliente.getUsuario().getEmail().isEmpty()) {
-            messages.add("E-mail é obrigatório!");
+        if (!Email_Util.isValid(email)) {
+            messages.add(FIELD_EMAIL_NOT_VALID);
         }
-        if (this.cliente.getUsuario().getSenha() == null
-                || this.cliente.getUsuario().getSenha().isEmpty()) {
-            messages.add("Senha é obrigatória!");
+        if (senha == null || senha.isEmpty()) {
+            messages.add(FIELD_SENHA_REQUIRED);
+        }
+        if (senha.length() > 255 || senha.length() < 5) {
+            messages.add(FIELD_SENHA_NOT_VALID);
         }
     }
 
     private void validaTelefone() {
-        if (this.cliente.getTelefone().isEmpty() || this.cliente.getTelefone() == null) {
-            messages.add("Telefone é obrigatório!");
+        String telefone = this.cliente.getTelefone().trim();
+
+        if (telefone.isEmpty() || telefone == null) {
+            messages.add(FIELD_TELEFONE_REQUIRED);
         }
     }
 
     private void validaCpf() {
-        if (this.cliente.getCpf().isEmpty() || this.cliente.getCpf() == null) {
-            messages.add("Cpf é obrigatório!");
+        String cpf = this.cliente.getCpf().trim();
+
+        if (cpf.isEmpty() || cpf == null) {
+            messages.add(FIELD_CPF_REQUIRED);
         }
-        if (!Cpf_Util.isValid(this.cliente.getCpf())) {
-            messages.add("Cpf inválido!");
+        if (!Cpf_Util.isValid(cpf)) {
+            messages.add(FIELD_CPF_NOT_VALID);
+        }
+        boolean existe = this.clienteDao.cpfExiste(cpf, true);
+        if (existe) {
+            messages.add(FIELD_CPF_EXIST);
         }
     }
 
     private void validaDataNascimento() {
-        if (this.cliente.getDataNascimento() == null) {
-            messages.add("Data de nascimento obrigatória!");
-        }
-        if (this.cliente.getDataNascimento().after(new Date())) {
-            messages.add("Data de nascimento inválida!");
+        Date dataNascimento = this.cliente.getDataNascimento();
+
+        if (dataNascimento == null) {
+            messages.add(FIELD_DATA_NASCIMENTO_REQUIRED);
+        } else if (dataNascimento.after(new Date())) {
+            messages.add(FIELD_DATA_NASCIMENTO_NOT_VALID);
         }
     }
 
     private void validaSobrenome() {
-        if (this.cliente.getSobrenome().isEmpty() || this.cliente.getSobrenome() == null) {
-            messages.add("Sobrenome obrigatório!");
+        String sobrenome = this.cliente.getSobrenome().trim();
+
+        if (sobrenome.isEmpty() || sobrenome == null) {
+            messages.add(FIELD_SOBRENOME_REQUIRED);
         }
-        if (this.cliente.getSobrenome().length() > 50) {
-            messages.add("Sobrenome inválido!");
+        if (sobrenome.length() > 50) {
+            messages.add(FIELD_SOBRENOME_NOT_VALID);
         }
     }
 
     private void validaNome() {
-        if (this.cliente.getNome().isEmpty() || this.cliente.getNome() == null) {
-            messages.add("Nome obrigatório!");
+        String nome = this.cliente.getNome().trim();
+
+        if (nome.isEmpty() || nome == null) {
+            messages.add(FIELD_NOME_REQUIRED);
         }
-        if (this.cliente.getNome().length() > 50) {
-            messages.add("Nome inválido!");
+        if (nome.length() > 50) {
+            messages.add(FIELD_NOME_NOT_VALID);
         }
-    }
-
-    public boolean existe(List<Cliente> clientes) {
-        for (Cliente cliente : clientes) {
-
-            String nomeClienteSendoCadastradoMaisculo = this.cliente.getNome().toUpperCase();
-            String nomeClienteSendoPercorridoMaisculo = cliente.getNome().toUpperCase();
-
-            String sobrenomeClienteSendoCadastradoMaisculo = this.cliente.getSobrenome()
-                    .toUpperCase();
-            String sobrenomeClienteSendoPercorridoMaisculo = cliente.getSobrenome().toUpperCase();
-
-            Long dataNascimentoClienteSendoCadastrado = this.cliente.getDataNascimento().getTime();
-            Long dataNascimentoClienteSendoPercorrido = cliente.getDataNascimento().getTime();
-
-            String telefoneClienteSendoCadastrado = this.cliente.getTelefone();
-            String telefoneClienteSendoPercorrido = cliente.getTelefone();
-
-            String emailClienteSendoCadastradoMaisculo = this.cliente.getUsuario().getEmail()
-                    .toUpperCase();
-            String emailClienteSendoPercorridoMaisculo = cliente.getUsuario().getEmail()
-                    .toUpperCase();
-
-            String senhaClienteSendoCadastradoMaisculo = this.cliente.getUsuario().getSenha()
-                    .toUpperCase();
-            String senhaClienteSendoPercorridoMaisculo = cliente.getUsuario().getSenha()
-                    .toUpperCase();
-
-            Integer paisEnderecoClienteSendoCadastrado = this.cliente.getEndereco().getPais()
-                    .getId();
-            Integer paisEnderecoClienteSendoPercorrido = cliente.getEndereco().getPais().getId();
-
-            Integer estadoEnderecoClienteSendoCadastrado = this.cliente.getEndereco().getEstado()
-                    .getId();
-            Integer estadoEnderecoClienteSendoPercorrido = cliente.getEndereco().getEstado()
-                    .getId();
-
-            Integer cidadeEnderecoClienteSendoCadastrado = this.cliente.getEndereco().getCidade()
-                    .getId();
-            Integer cidadeEnderecoClienteSendoPercorrido = cliente.getEndereco().getCidade()
-                    .getId();
-
-            String bairroLogradouroEnderecoClienteSendoCadastradoMaiusculo = this.cliente
-                    .getEndereco().getLogradouro().getBairro().toUpperCase();
-            String bairroLogradouroEnderecoClienteSendoPercorridoMaiusculo = cliente.getEndereco()
-                    .getLogradouro().getBairro().toUpperCase();
-
-            String cepLogradouroEnderecoClienteSendoCadastradoMaiusculo = this.cliente.getEndereco()
-                    .getLogradouro().getCep().toUpperCase();
-            String cepLogradouroEnderecoClienteSendoPercorridoMaiusculo = cliente.getEndereco()
-                    .getLogradouro().getCep().toUpperCase();
-
-            String ruaLogradouroEnderecoClienteSendoCadastradoMaiusculo = this.cliente.getEndereco()
-                    .getLogradouro().getRua().toUpperCase();
-            String ruaLogradouroEnderecoClienteSendoPercorridoMaiusculo = cliente.getEndereco()
-                    .getLogradouro().getRua().toUpperCase();
-
-            String complementoLogradouroEnderecoClienteSendoCadastradoMaiusculo = this.cliente
-                    .getEndereco().getLogradouro().getComplemento().toUpperCase();
-            String complementoLogradouroEnderecoClienteSendoPercorridoMaiusculo = cliente
-                    .getEndereco().getLogradouro().getComplemento().toUpperCase();
-
-            if (nomeClienteSendoCadastradoMaisculo.equals(nomeClienteSendoPercorridoMaisculo)
-                    && sobrenomeClienteSendoCadastradoMaisculo
-                            .equals(sobrenomeClienteSendoPercorridoMaisculo)
-                    && dataNascimentoClienteSendoCadastrado
-                            .equals(dataNascimentoClienteSendoPercorrido)
-                    && telefoneClienteSendoCadastrado.equals(telefoneClienteSendoPercorrido)
-                    && emailClienteSendoCadastradoMaisculo
-                            .equals(emailClienteSendoPercorridoMaisculo)
-                    && senhaClienteSendoCadastradoMaisculo
-                            .equals(senhaClienteSendoPercorridoMaisculo)
-                    && paisEnderecoClienteSendoCadastrado.equals(paisEnderecoClienteSendoPercorrido)
-                    && estadoEnderecoClienteSendoCadastrado
-                            .equals(estadoEnderecoClienteSendoPercorrido)
-                    && cidadeEnderecoClienteSendoCadastrado
-                            .equals(cidadeEnderecoClienteSendoPercorrido)
-                    && bairroLogradouroEnderecoClienteSendoCadastradoMaiusculo
-                            .equals(bairroLogradouroEnderecoClienteSendoPercorridoMaiusculo)
-                    && cepLogradouroEnderecoClienteSendoCadastradoMaiusculo
-                            .equals(cepLogradouroEnderecoClienteSendoPercorridoMaiusculo)
-                    && ruaLogradouroEnderecoClienteSendoCadastradoMaiusculo
-                            .equals(ruaLogradouroEnderecoClienteSendoPercorridoMaiusculo)
-                    && complementoLogradouroEnderecoClienteSendoCadastradoMaiusculo
-                            .equals(complementoLogradouroEnderecoClienteSendoPercorridoMaiusculo)) {
-                cliente.setAtivo(true);
-                return true;
-            }
-        }
-        return false;
     }
 }

@@ -1,79 +1,47 @@
 package br.com.WebBakery.validator;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
-
+import br.com.WebBakery.abstractClass.AbstractValidator;
 import br.com.WebBakery.model.Pais;
 
-public class PaisValidator {
+public class PaisValidator extends AbstractValidator {
 
+    private static final String FIELD_SIGLA_LIMIT_EXCEDDED = "Sigla com excedência de caractéres!";
+    private static final String FIELD_SIGLA_REQUIRED = "Sigla é obrigatória!";
+    private static final String FIELD_NOME_LIMIT_EXCEDDED = "Nome com excedência de caracteres!";
+    private static final String FIELD_NOME_REQUIRED = "Nome é obrigatório!";
+   
     private Pais pais;
-    private List<String> messages = new ArrayList<>();
 
     public PaisValidator(Pais pais) {
         this.pais = pais;
     }
 
-    public boolean ehValido() {
+    @Override
+    public void chamarValidacoes() {
         validaNome();
         validaSigla();
-
-        if (!messages.isEmpty()) {
-            return false;
-        }
-        return true;
-    }
-
-    public void mostrarMensagens() {
-        messages.forEach(message -> {
-            FacesContext.getCurrentInstance()
-                    .addMessage("formCadastroPais:messages",
-                                new FacesMessage(FacesMessage.SEVERITY_ERROR, message, message));
-        });
     }
 
     private void validaNome() {
-        if (this.pais.getNome().isEmpty() || this.pais.getNome() == null) {
-            messages.add("Nome obrigatório!");
+        String nome = this.pais.getNome().trim();
+
+        if (nome.isEmpty() || nome == null) {
+            messages.add(FIELD_NOME_REQUIRED);
         }
-        if (this.pais.getNome().length() > 50) {
-            messages.add("Nome inválido!");
+        if (nome.length() > 30) {
+            messages.add(FIELD_NOME_LIMIT_EXCEDDED);
         }
     }
 
     private void validaSigla() {
-        if (this.pais.getSigla().isEmpty() || this.pais.getSigla() == null) {
-            messages.add("Sigla obrigatória!");
+        String sigla = this.pais.getSigla().trim();
+
+        if (sigla.isEmpty() || sigla == null) {
+            messages.add(FIELD_SIGLA_REQUIRED);
         }
-        if (this.pais.getSigla().length() > 2) {
-            messages.add("Sigla inválida!");
+        if (sigla.length() > 4) {
+            messages.add(FIELD_SIGLA_LIMIT_EXCEDDED);
         }
-        String nomePaisMaiusculo = this.pais.getSigla().toUpperCase();
-        this.pais.setSigla(nomePaisMaiusculo);
-    }
-
-    public boolean existe(List<Pais> paises) {
-        for (Pais pais : paises) {
-            String nomePaisSendoCadastradoMaisculo = this.pais.getNome().toUpperCase();
-            String siglaPaisSendoCadastradoMaisculo = this.pais.getNome().toUpperCase();
-
-            String nomePaisPercorridoMaisculo = pais.getNome().toUpperCase();
-            String siglaPaisPercorridoMaisculo = pais.getNome().toUpperCase();
-
-            if (nomePaisSendoCadastradoMaisculo.equals(nomePaisPercorridoMaisculo)
-                    && siglaPaisSendoCadastradoMaisculo.equals(siglaPaisPercorridoMaisculo)) {
-                pais.setAtivo(true);
-                messages.add("Pais já cadastrado!");
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public void clearMessages() {
-        this.messages.clear();
+        this.pais.setSigla(sigla.toUpperCase());
     }
 }

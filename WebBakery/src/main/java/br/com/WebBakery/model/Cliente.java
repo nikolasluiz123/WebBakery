@@ -2,6 +2,7 @@ package br.com.WebBakery.model;
 
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -14,14 +15,26 @@ public class Cliente {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Integer id;
+
+    @Column(length = 40)
     private String nome;
+
+    @Column(length = 40)
     private String sobrenome;
+
+    @Column(length = 20)
     private String cpf;
+
+    @Column(length = 20)
     private String telefone;
+
     private Date dataNascimento;
+
     private boolean ativo;
+
     @OneToOne
     private Endereco endereco;
+
     @OneToOne
     private Usuario usuario;
 
@@ -96,5 +109,4 @@ public class Cliente {
     public void setEndereco(Endereco endereco) {
         this.endereco = endereco;
     }
-
 }

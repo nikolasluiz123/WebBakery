@@ -1,4 +1,4 @@
-package br.com.WebBakery.bean;
+package br.com.WebBakery.bean.consulta;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -18,17 +18,18 @@ import br.com.WebBakery.dao.ProdutoDao;
 import br.com.WebBakery.dao.ReceitaDao;
 import br.com.WebBakery.model.Produto;
 import br.com.WebBakery.model.Receita;
+import br.com.WebBakery.util.FacesUtil;
 import br.com.WebBakery.validator.ProdutoValidator;
 
 @Named
 @ViewScoped
 public class ProdutoBean implements Serializable {
 
+    private static final long serialVersionUID = 8861448133925257777L;
+
     private static final String UPDATED_SUCCESSFULLY = "Produto atualizado com sucesso!";
 
     private static final String REGISTERED_SUCCESSFULLY = "Produto cadastrado com sucesso!";
-
-    private static final long serialVersionUID = 1L;
 
     @PersistenceContext
     private EntityManager em;
@@ -36,11 +37,11 @@ public class ProdutoBean implements Serializable {
     transient private FacesContext context;
 
     private Produto produto;
-    private List<Produto> produtos;
     private ProdutoDao produtoDao;
 
     private Receita receitaSelecionada;
     private List<Receita> receitas;
+    private List<Receita> receitasFiltradas;
     private ReceitaDao receitaDao;
 
     private ProdutoValidator validator;
@@ -48,34 +49,28 @@ public class ProdutoBean implements Serializable {
     @PostConstruct
     private void init() {
         this.produto = new Produto();
-        this.produtos = new ArrayList<>();
-        this.validator = new ProdutoValidator(this.produto);
         this.produtoDao = new ProdutoDao(this.em);
 
         this.receitaDao = new ReceitaDao(this.em);
         this.receitaSelecionada = new Receita();
         this.receitas = new ArrayList<>();
-        initProdutos();
         initReceitas();
+        verificaProdutoSessao();
     }
 
     @Transactional
     public void cadastrar() {
+        this.validator = new ProdutoValidator(this.produto);
         if (this.produto.getId() == null) {
             efetuarCadastro();
         } else {
             efetuarAtualizacao();
         }
-        if (this.validator.getMessages().isEmpty()) {
-            this.produto = new Produto();
-        }
         atualizarTela();
     }
 
     private void efetuarCadastro() {
-
-        List<Produto> todosOsProdutos = this.produtoDao.listarTodos();
-        if (this.validator.isValid() && !this.validator.existe(todosOsProdutos)) {
+        if (this.validator.isValid()) {
             this.produto.setAtivo(true);
             this.produtoDao.cadastrar(this.produto);
             context.addMessage(null, new FacesMessage(REGISTERED_SUCCESSFULLY));
@@ -89,27 +84,18 @@ public class ProdutoBean implements Serializable {
         }
     }
 
-    @Transactional
-    public void inativar(Produto produto) {
-        produto.setAtivo(false);
-        this.produtoDao.atualizar(produto);
-        initProdutos();
-    }
-
-    public void carregar(Produto produto) {
-        this.validator = new ProdutoValidator(produto);
-        this.produto = produto;
-    }
-
     private void atualizarTela() {
+        this.produto = new Produto();
         this.validator.showMessages();
         this.validator.clearMessages();
-        this.validator = new ProdutoValidator(this.produto);
-        initProdutos();
     }
 
-    private void initProdutos() {
-        this.produtos = this.produtoDao.listarTodos(true);
+    private void verificaProdutoSessao() {
+        Integer produtoId = (Integer) FacesUtil.getHTTPSession().getAttribute("ProdutoID");
+        if (produtoId != null) {
+            this.produto = produtoDao.buscarPorId(produtoId);
+            FacesUtil.getHTTPSession().removeAttribute("ProdutoID");
+        }
     }
 
     private void initReceitas() {
@@ -134,14 +120,6 @@ public class ProdutoBean implements Serializable {
 
     public void setContext(FacesContext context) {
         this.context = context;
-    }
-
-    public List<Produto> getProdutos() {
-        return produtos;
-    }
-
-    public void setProdutos(List<Produto> produtos) {
-        this.produtos = produtos;
     }
 
     public ProdutoValidator getValidator() {
@@ -174,6 +152,14 @@ public class ProdutoBean implements Serializable {
 
     public void setReceitas(List<Receita> receitas) {
         this.receitas = receitas;
+    }
+
+    public List<Receita> getReceitasFiltradas() {
+        return receitasFiltradas;
+    }
+
+    public void setReceitasFiltradas(List<Receita> receitasFiltradas) {
+        this.receitasFiltradas = receitasFiltradas;
     }
 
 }

@@ -1,0 +1,86 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="_template.xhtml">
+
+	<ui:define name="conteudo">
+
+		<h:form id="formDataTableFuncionarios">
+			<div style="padding-top: 15px;">
+				<p:dataTable var="funcionario"
+					value="#{listaFuncionarioBean.funcionarios}"
+					id="tabelaFuncionarios" rows="5" paginator="true"
+					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PageLinks} {PreviousPageLink} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					rowsPerPageTemplate="5,10,15"
+					emptyMessage="Nenhum funcionário encontrado."
+					widgetVar="TabelaFuncionarios"
+					filteredValue="#{listaFuncionarioBean.funcionariosFiltrados}">
+
+					<f:facet name="header" style="min-height: 35px; max-height: 35px">
+						<div style="margin-top: 5px">Funcionários</div>
+					</f:facet>
+
+					<p:column headerText="Nome" filterBy="#{funcionario.nome}"
+						sortBy="#{funcionario.nome}">
+						<h:outputText value="#{funcionario.nome}" />
+					</p:column>
+
+					<p:column headerText="Sobrenome"
+						filterBy="#{funcionario.sobrenome}"
+						sortBy="#{funcionario.sobrenome}">
+						<h:outputText value="#{funcionario.sobrenome}" />
+					</p:column>
+
+					<p:column headerText="CPF" filterBy="#{funcionario.cpf}"
+						sortBy="#{funcionario.cpf}">
+						<h:outputText value="#{funcionario.cpf}" />
+					</p:column>
+
+					<p:column headerText="RG" filterBy="#{funcionario.rg}"
+						sortBy="#{funcionario.rg}">
+						<h:outputText value="#{funcionario.rg}" />
+					</p:column>
+
+					<p:column headerText="Telefone" filterBy="#{funcionario.telefone}"
+						sortBy="#{funcionario.telefone}">
+						<h:outputText value="#{funcionario.telefone}" />
+					</p:column>
+
+					<p:column headerText="Data de Nascimento"
+						filterBy="#{funcionario.dataNascimento}"
+						sortBy="#{funcionario.dataNascimento}">
+						<h:outputText value="#{funcionario.dataNascimento}"
+							converter="SimpleDateConverter" />
+					</p:column>
+
+					<p:column headerText="Salário" filterBy="#{funcionario.salario}"
+						sortBy="#{funcionario.salario}">
+						<h:outputText value="#{funcionario.salario}" />
+					</p:column>
+
+					<p:column headerText="Usuário" filterBy="#{funcionario.email}"
+						sortBy="#{funcionario.email}">
+						<h:outputText value="#{funcionario.usuario.email}" />
+					</p:column>
+
+					<p:column headerText="Alterar">
+						<p:commandLink value="Alterar"
+							action="#{listaFuncionarioBean.carregar(funcionario.id)}"
+							process="@this" />
+					</p:column>
+
+					<p:column headerText="Inativar">
+						<p:commandLink value="Inativar"
+							action="#{listaFuncionarioBean.inativar(funcionario)}"
+							update="tabelaFuncionarios, formMenu:messages" process="@this" />
+					</p:column>
+				</p:dataTable>
+			</div>
+		</h:form>
+	</ui:define>
+</ui:composition>
+</html>

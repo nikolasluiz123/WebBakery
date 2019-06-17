@@ -1,8 +1,6 @@
-package br.com.WebBakery.bean;
+package br.com.WebBakery.bean.consulta;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
@@ -15,16 +13,17 @@ import javax.transaction.Transactional;
 
 import br.com.WebBakery.dao.ReceitaDao;
 import br.com.WebBakery.model.Receita;
+import br.com.WebBakery.util.FacesUtil;
 import br.com.WebBakery.validator.ReceitaValidator;
 
 @Named
 @ViewScoped
 public class ReceitaBean implements Serializable {
 
+    private static final long serialVersionUID = 4300601613343189689L;
+
     private static final String UPDATED_SUCCESSFULLY = "Receita atualizada com sucesso!";
     private static final String REGISTERED_SUCCESSFULLY = "Receita cadastrada com sucesso!";
-
-    private static final long serialVersionUID = 1L;
 
     @Inject
     transient private EntityManager em;
@@ -32,36 +31,30 @@ public class ReceitaBean implements Serializable {
     transient private FacesContext context;
 
     private Receita receita;
-    private List<Receita> receitas;
     private ReceitaDao receitaDao;
     private ReceitaValidator validator;
 
     @PostConstruct
     private void init() {
         this.receita = new Receita();
-        this.receitas = new ArrayList<>();
-        this.validator = new ReceitaValidator(this.receita);
         this.receitaDao = new ReceitaDao(this.em);
-        initReceitas();
+        verificaReceitaSessao();
     }
 
     @Transactional
     public void cadastrar() {
+        this.validator = new ReceitaValidator(this.receita);
         if (this.receita.getId() == null) {
             efetuarCadastro();
         } else {
             efetuarAtualizacao();
-        }
-        if (this.validator.getMessages().isEmpty()) {
-            this.receita = new Receita();
         }
         atualizarTela();
     }
 
     @Transactional
     private void efetuarCadastro() {
-        List<Receita> todasAsReceitas = this.receitaDao.listarTodos();
-        if (this.validator.isValid() && !this.validator.existe(todasAsReceitas)) {
+        if (this.validator.isValid()) {
             this.receita.setAtivo(true);
             this.receitaDao.cadastrar(this.receita);
             context.addMessage(null, new FacesMessage(REGISTERED_SUCCESSFULLY));
@@ -77,26 +70,17 @@ public class ReceitaBean implements Serializable {
     }
 
     private void atualizarTela() {
+        this.receita = new Receita();
         this.validator.showMessages();
         this.validator.clearMessages();
-        this.validator = new ReceitaValidator(this.receita);
-        initReceitas();
     }
 
-    public void carregar(Receita receita) {
-        this.validator = new ReceitaValidator(receita);
-        this.receita = receita;
-    }
-
-    @Transactional
-    public void inativar(Receita receita) {
-        receita.setAtivo(false);
-        this.receitaDao.atualizar(receita);
-        initReceitas();
-    }
-
-    private void initReceitas() {
-        this.receitas = this.receitaDao.listarTodos(true);
+    private void verificaReceitaSessao() {
+        Integer receitaId = (Integer) FacesUtil.getHTTPSession().getAttribute("ReceitaID");
+        if (receitaId != null) {
+            this.receita = receitaDao.buscarPorId(receitaId);
+            FacesUtil.getHTTPSession().removeAttribute("ReceitaID");
+        }
     }
 
     public Receita getReceita() {
@@ -106,13 +90,4 @@ public class ReceitaBean implements Serializable {
     public void setReceita(Receita receita) {
         this.receita = receita;
     }
-
-    public List<Receita> getReceitas() {
-        return receitas;
-    }
-
-    public void setReceitas(List<Receita> receitas) {
-        this.receitas = receitas;
-    }
-
 }

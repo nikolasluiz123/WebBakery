@@ -1,65 +1,44 @@
 package br.com.WebBakery.validator;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
-
+import br.com.WebBakery.abstractClass.AbstractValidator;
 import br.com.WebBakery.model.Cidade;
+import br.com.WebBakery.model.Estado;
 
-public class CidadeValidator {
+public class CidadeValidator extends AbstractValidator {
+
+    private static final String FIELD_ESTADO_REQUIRED = "Estado é obrigatório!";
+    private static final String FIELD_NOME_LIMIT_EXCEDDED = "Nome com excedência de caractéres!";
+    private static final String FIELD_NOME_REQUIRED = "Nome é obrigatório!";
 
     private Cidade cidade;
-
-    private List<String> messages = new ArrayList<>();
 
     public CidadeValidator(Cidade cidade) {
         this.cidade = cidade;
     }
 
-    public boolean ehValido() {
+    @Override
+    public void chamarValidacoes() {
         validaNome();
-
-        if (!messages.isEmpty()) {
-            return false;
-        }
-        return true;
-    }
-
-    public void mostrarMensagens() {
-        messages.forEach(message -> {
-            FacesContext.getCurrentInstance()
-                    .addMessage("formCadastroCidade:messages",
-                                new FacesMessage(FacesMessage.SEVERITY_ERROR, message, message));
-        });
-
+        validaEstado();
     }
 
     private void validaNome() {
-        if (this.cidade.getNome().isEmpty() || this.cidade.getNome() == null) {
-            messages.add("Nome obrigatório!");
+        String nome = this.cidade.getNome().trim();
+
+        if (nome.isEmpty() || nome == null) {
+            messages.add(FIELD_NOME_REQUIRED);
         }
-        if (this.cidade.getNome().length() > 50) {
-            messages.add("Nome inválido!");
+        if (nome.length() > 30) {
+            messages.add(FIELD_NOME_LIMIT_EXCEDDED);
         }
     }
 
-    public boolean existe(List<Cidade> cidades) {
-        for (Cidade cidade : cidades) {
-            String nomeCidadeSendoCadastradoMaisculo = this.cidade.getNome().toUpperCase();
-            String nomeCidadePercorridoMaisculo = cidade.getNome().toUpperCase();
+    private void validaEstado() {
+        Estado estado = this.cidade.getEstado();
 
-            if (nomeCidadeSendoCadastradoMaisculo.equals(nomeCidadePercorridoMaisculo)) {
-                cidade.setAtivo(true);
-                messages.add("Cidade já cadastrada!");
-                return true;
-            }
+        if (estado == null) {
+            messages.add(FIELD_ESTADO_REQUIRED);
         }
-        return false;
     }
 
-    public void clearMessages() {
-        this.messages.clear();
-    }
 }

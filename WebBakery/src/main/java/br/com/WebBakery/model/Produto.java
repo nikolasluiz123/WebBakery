@@ -1,5 +1,6 @@
 package br.com.WebBakery.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -11,9 +12,14 @@ public class Produto {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Integer id;
+
+    @Column(length = 50)
     private String descricao;
+
     private Integer tempoValido;
+
     private Double preco;
+
     private boolean ativo;
     @OneToOne
     private Receita receita;
@@ -69,6 +75,6 @@ public class Produto {
     @Override
     public boolean equals(Object obj) {
         Produto p = (Produto) obj;
-        return p.descricao.equals(this.descricao) && p.id.equals(this.id);
+        return p.getDescricao().equals(this.descricao);
     }
 }

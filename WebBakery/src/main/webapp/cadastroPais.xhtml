@@ -10,7 +10,6 @@
 	<ui:define name="conteudo">
 
 		<h:form id="formCadastroPais">
-			<p:messages id="messages" />
 
 			<p:fieldset legend="Dados do Pais">
 				<p:panelGrid columns="2">
@@ -23,46 +22,12 @@
 					<p:inputText id="sigla" value="#{paisBean.pais.sigla}"
 						placeholder="Digite a sigla..." />
 
-					<p:commandButton value="Cadastrar" process="@form, tabelaPaises"
-						update="@form, tabelaPaises" action="#{paisBean.cadastrar}" />
+					<p:commandButton value="Cadastrar" process="@form"
+						update="formMenu:messages" action="#{paisBean.cadastrar}" />
 
 				</p:panelGrid>
 			</p:fieldset>
 		</h:form>
-
-		<p:dataTable var="pais" value="#{paisBean.paises}" id="tabelaPaises"
-			rows="5" paginator="true"
-			paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-			rowsPerPageTemplate="5,10,15">
-
-			<f:facet name="header" style="min-height: 35px; max-height: 35px">
-				<div style="margin-top: 5px">Países</div>
-
-				<p:commandButton id="toggler" type="button" value="Colunas"
-					style="float: right; margin-top: -30px;" icon="pi pi-align-justify" />
-				<p:columnToggler datasource="tabelaPaises" trigger="toggler" />
-			</f:facet>
-
-			<p:column headerText="Nome">
-
-				<h:outputText value="#{pais.nome}" />
-			</p:column>
-
-			<p:column headerText="Sigla">
-				<h:outputText value="#{pais.sigla}" />
-			</p:column>
-
-			<p:column headerText="Alterar">
-				<p:commandLink value="Alterar" action="#{paisBean.carregar(pais)}"
-					update=":formCadastroPais" process="@this" />
-			</p:column>
-
-			<p:column headerText="Inativar">
-				<p:commandLink value="Inativar" action="#{paisBean.inativar(pais)}"
-					update="tabelaPaises" process="@this" />
-			</p:column>
-		</p:dataTable>
-
 	</ui:define>
 </ui:composition>
 </html>

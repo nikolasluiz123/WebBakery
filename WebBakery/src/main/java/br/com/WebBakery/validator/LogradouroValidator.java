@@ -1,111 +1,74 @@
 package br.com.WebBakery.validator;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
-
+import br.com.WebBakery.abstractClass.AbstractValidator;
 import br.com.WebBakery.model.Logradouro;
 import br.com.WebBakery.util.Cep_Util;
 
-public class LogradouroValidator {
+public class LogradouroValidator extends AbstractValidator {
+
+    private static final String FIELD_COMPLEMENTO_LIMIT_EXCEDDED = "Complemento com excedência de caractéres!";
+    private static final String FIELD_COMPLEMENTO_REQUIRED = "Complemento é obrigatório!";
+    private static final String FIELD_RUA_LIMIT_EXCEDDED = "Rua com excedência de caractéres!";
+    private static final String FIELD_RUA_REQUIRED = "Rua é obrigatória!";
+    private static final String FIELD_CEP_REQUIRED = "Cep é obrigatório!";
+    private static final String FIELD_BAIRRO_LIMIT_EXCEDDED = "Bairro com excedência de caractéres!";
+    private static final String FIELD_BAIRRO_REQUIRED = "Bairro é obrigatório!";
+    private static final String FIELD_CEP_NOT_VALID = "Cep inválido!";
 
     private Logradouro logradouro;
-
-    private List<String> messages = new ArrayList<>();
 
     public LogradouroValidator(Logradouro logradouro) {
         this.logradouro = logradouro;
     }
 
-    public boolean ehValido() {
+    public void chamarValidacoes() {
         validaBairro();
         validaCep();
         validaRua();
         validaComplemento();
-
-        if (!messages.isEmpty()) {
-            return false;
-        }
-        return true;
-    }
-
-    public void mostrarMensagens() {
-        messages.forEach(message -> {
-            FacesContext.getCurrentInstance()
-                    .addMessage("formCadastroCidade:messages",
-                                new FacesMessage(FacesMessage.SEVERITY_ERROR, message, message));
-        });
-
     }
 
     private void validaBairro() {
-        if (this.logradouro.getBairro().isEmpty() || this.logradouro.getBairro() == null) {
-            messages.add("Bairro obrigatório!");
+        String bairro = this.logradouro.getBairro().trim();
+
+        if (bairro.isEmpty() || bairro == null) {
+            messages.add(FIELD_BAIRRO_REQUIRED);
         }
-        if (this.logradouro.getBairro().length() > 50) {
-            messages.add("Bairro inválido!");
+        if (bairro.length() > 40) {
+            messages.add(FIELD_BAIRRO_LIMIT_EXCEDDED);
         }
     }
 
     private void validaCep() {
-        if (this.logradouro.getCep().isEmpty() || this.logradouro.getCep() == null) {
-            messages.add("Cep obrigatório!");
+        String cep = this.logradouro.getCep().trim();
+
+        if (cep.isEmpty() || cep == null) {
+            messages.add(FIELD_CEP_REQUIRED);
         }
-        if (this.logradouro.getCep().length() > 9 || !Cep_Util.EhValido(this.logradouro.getCep())) {
-            messages.add("Cep inválido!");
+        if (!Cep_Util.EhValido(cep)) {
+            messages.add(FIELD_CEP_NOT_VALID);
         }
     }
 
     private void validaRua() {
-        if (this.logradouro.getRua().isEmpty() || this.logradouro.getRua() == null) {
-            messages.add("Rua obrigatória!");
+        String rua = this.logradouro.getRua().trim();
+
+        if (rua.isEmpty() || rua == null) {
+            messages.add(FIELD_RUA_REQUIRED);
         }
-        if (this.logradouro.getRua().length() > 50) {
-            messages.add("Rua inválida!");
+        if (rua.length() > 30) {
+            messages.add(FIELD_RUA_LIMIT_EXCEDDED);
         }
     }
 
     private void validaComplemento() {
-        if (this.logradouro.getComplemento().isEmpty()
-                || this.logradouro.getComplemento() == null) {
-            messages.add("Complemento obrigatório!");
+        String complemento = this.logradouro.getComplemento().trim();
+
+        if (complemento.isEmpty() || complemento == null) {
+            messages.add(FIELD_COMPLEMENTO_REQUIRED);
         }
-        if (this.logradouro.getComplemento().length() > 50) {
-            messages.add("Complemento inválido!");
+        if (complemento.length() > 20) {
+            messages.add(FIELD_COMPLEMENTO_LIMIT_EXCEDDED);
         }
-    }
-
-    public boolean existe(List<Logradouro> logradouros) {
-        for (Logradouro logradouro : logradouros) {
-            String bairroSendoCadastradoMaiusculo = this.logradouro.getBairro().toUpperCase();
-            String bairroSendoPercorridoMaiusculo = logradouro.getBairro().toUpperCase();
-
-            String cepSendoCadastradoMaiusculo = this.logradouro.getCep().toUpperCase();
-            String cepSendoPercorridoMaiusculo = logradouro.getCep().toUpperCase();
-
-            String ruaSendoCadastradoMaiuscula = this.logradouro.getRua().toUpperCase();
-            String ruaSendoPercorridaMaiuscula = logradouro.getRua().toUpperCase();
-
-            String complementoSendoCadastradoMaiusculo = this.logradouro.getComplemento()
-                    .toUpperCase();
-            String complementoSendoPercorridoMaiusculo = logradouro.getComplemento().toUpperCase();
-
-            if (bairroSendoCadastradoMaiusculo.equals(bairroSendoPercorridoMaiusculo)
-                    && cepSendoCadastradoMaiusculo.equals(cepSendoPercorridoMaiusculo)
-                    && ruaSendoCadastradoMaiuscula.equals(ruaSendoPercorridaMaiuscula)
-                    && complementoSendoCadastradoMaiusculo
-                            .equals(complementoSendoPercorridoMaiusculo)) {
-                logradouro.setAtivo(true);
-                messages.add("Logradouro já cadastrado!");
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public void clearMessages() {
-        this.messages.clear();
     }
 }

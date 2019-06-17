@@ -1,4 +1,4 @@
-package br.com.WebBakery.bean;
+package br.com.WebBakery.bean.manutencao;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -15,6 +15,7 @@ import javax.persistence.PersistenceContext;
 import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 
+import br.com.WebBakery.bean.consulta.EstoqueProdutoBean;
 import br.com.WebBakery.dao.EstoqueProdutoDao;
 import br.com.WebBakery.dao.TarefaDao;
 import br.com.WebBakery.model.EstoqueProduto;
@@ -24,11 +25,11 @@ import br.com.WebBakery.validator.EstoqueProdutoValidator;
 
 @Named
 @ViewScoped
-public class ListaTarefasBean implements Serializable {
+public class ListaTarefaBean implements Serializable {
+
+    private static final long serialVersionUID = 1800431506410605175L;
 
     private static String COMPLETE_SUCCESSFULLY = "Tarefa concluída com sucessor!";
-    
-    private static final long serialVersionUID = 1L;
 
     @PersistenceContext
     private EntityManager em;

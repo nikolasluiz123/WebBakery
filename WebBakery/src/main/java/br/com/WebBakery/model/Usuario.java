@@ -1,5 +1,6 @@
 package br.com.WebBakery.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -13,9 +14,15 @@ public class Usuario {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Integer id;
+
+    @Column(length = 50)
     private String email;
+
+    @Column(length = 80)
     private String senha;
+
     private TipoUsuario tipo;
+
     private boolean ativo;
 
     public Integer getId() {

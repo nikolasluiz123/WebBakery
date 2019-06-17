@@ -1,5 +1,6 @@
 package br.com.WebBakery.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -11,7 +12,9 @@ public class Pais {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Integer id;
+    @Column(length = 30)
     private String nome;
+    @Column(length = 4)
     private String sigla;
     private boolean ativo;
 

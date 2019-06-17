@@ -22,50 +22,15 @@
 					<p:inputNumber id="quantidade"
 						value="#{receitaBean.receita.quantidade}"
 						placeholder="Digite a quantidade..." thousandSeparator="."
-						decimalPlaces="0" />
+						decimalPlaces="0" maxValue="100000" />
 
-					<p:commandButton value="Cadastrar" process="@form, tabelaReceitas"
-						update="@form, tabelaReceitas" action="#{receitaBean.cadastrar}" />
+
+					<p:commandButton value="Cadastrar" process="@form"
+						update="formMenu:messages" action="#{receitaBean.cadastrar}" />
 
 				</p:panelGrid>
 			</p:fieldset>
 		</h:form>
-
-		<p:dataTable var="receita" value="#{receitaBean.receitas}"
-			id="tabelaReceitas" rows="5" paginator="true"
-			paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-			rowsPerPageTemplate="5,10,15">
-
-			<f:facet name="header" style="min-height: 35px; max-height: 35px">
-				<div style="margin-top: 5px">Receitas</div>
-
-				<p:commandButton id="toggler" type="button" value="Colunas"
-					style="float: right; margin-top: -30px;" icon="pi pi-align-justify" />
-				<p:columnToggler datasource="tabelaReceitas" trigger="toggler" />
-			</f:facet>
-
-			<p:column headerText="Descrição">
-
-				<h:outputText value="#{receita.descricao}" />
-			</p:column>
-
-			<p:column headerText="Quantidade">
-				<h:outputText value="#{receita.quantidade}" />
-			</p:column>
-
-			<p:column headerText="Alterar">
-				<p:commandLink value="Alterar"
-					action="#{receitaBean.carregar(receita)}"
-					update=":formCadastroReceita" process="@this" />
-			</p:column>
-
-			<p:column headerText="Inativar">
-				<p:commandLink value="Inativar"
-					action="#{receitaBean.inativar(receita)}" update="tabelaReceitas"
-					process="@this" />
-			</p:column>
-		</p:dataTable>
-
 	</ui:define>
 </ui:composition>
 </html>

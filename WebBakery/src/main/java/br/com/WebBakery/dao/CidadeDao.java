@@ -1,6 +1,5 @@
 package br.com.WebBakery.dao;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,13 +7,13 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import br.com.WebBaker.interfaces.IBaseDao;
 import br.com.WebBakery.model.Cidade;
-import br.com.WebBakery.model.Estado;
 
 @Stateless
-public class CidadeDao implements Serializable {
+public class CidadeDao implements IBaseDao<Cidade> {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = -8347345341892955875L;
 
     @PersistenceContext
     private EntityManager em;
@@ -26,16 +25,16 @@ public class CidadeDao implements Serializable {
     public CidadeDao() {
     }
 
-    public void cadastrar(Cidade cidade) {
-        em.persist(cidade);
+    @Override
+    public void cadastrar(Cidade model) {
+        em.persist(model);
     }
 
+    @Override
     public List<Cidade> listarTodos(Boolean ativo) {
-
         List<Cidade> cidades = new ArrayList<>();
 
-        cidades = em.createQuery("SELECT c FROM Cidade c WHERE c.ativo = :pAtivo ORDER BY c.nome",
-                                 Cidade.class)
+        cidades = em.createQuery("SELECT c FROM Cidade c WHERE c.ativo = :pAtivo", Cidade.class)
                 .setParameter("pAtivo", ativo).getResultList();
 
         return cidades;
@@ -45,27 +44,21 @@ public class CidadeDao implements Serializable {
         List<Cidade> cidades = new ArrayList<>();
 
         cidades = em
-                .createQuery("SELECT c FROM Cidade c WHERE c.estado.id = :pEstadoId AND c.ativo = :pAtivo ORDER BY c.nome",
+                .createQuery("SELECT c FROM Cidade c WHERE c.ativo = :pAtivo AND c.estado.id = :pEstadoId",
                              Cidade.class)
-                .setParameter("pEstadoId", estadoId).setParameter("pAtivo", ativo).getResultList();
+                .setParameter("pAtivo", ativo).setParameter("pEstadoId", estadoId).getResultList();
 
         return cidades;
     }
 
-    public List<Cidade> listarTodos() {
-        List<Cidade> cidades = new ArrayList<>();
-
-        cidades = em.createQuery("SELECT c FROM Cidade c WHERE 1=1 ORDER BY c.nome", Cidade.class)
-                .getResultList();
-
-        return cidades;
-    }
-
-    public Cidade buscarPelaId(Integer id) {
+    @Override
+    public Cidade buscarPorId(Integer id) {
         return em.find(Cidade.class, id);
     }
 
-    public void atualizar(Cidade cidade) {
-        em.merge(cidade);
+    @Override
+    public void atualizar(Cidade model) {
+        em.merge(model);
     }
+
 }

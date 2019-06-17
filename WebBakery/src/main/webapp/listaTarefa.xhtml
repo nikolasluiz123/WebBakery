@@ -34,13 +34,13 @@
 				</p:column>
 
 				<p:column headerText="Data de Início" sortBy="#{tarefa.dataInicio}"
-					filterBy="#{tarefa.dataInicio}">
+					filterBy="#{tarefaBean.dataFormatada(tarefa.dataInicio)}">
 					<h:outputText value="#{tarefa.dataInicio}"
 						converter="SimpleDateConverter" />
 				</p:column>
 
 				<p:column headerText="Data de Fim" sortBy="#{tarefa.dataFim}"
-					filterBy="#{tarefa.dataFim}">
+					filterBy="#{tarefaBean.dataFormatada(tarefa.dataFim)}">
 					<h:outputText value="#{tarefa.dataFim}"
 						converter="SimpleDateConverter" />
 				</p:column>
@@ -60,7 +60,7 @@
 		</h:form>
 		<br />
 		<br />
-		
+
 		<h:form id="formDataTableTarefasConcluidas">
 			<p:dataTable var="tarefa"
 				value="#{listaTarefasBean.tarefasConcluidas}"
@@ -86,13 +86,13 @@
 				</p:column>
 
 				<p:column headerText="Data de Início" sortBy="#{tarefa.dataInicio}"
-					filterBy="#{tarefa.dataInicio}">
+					filterBy="#{tarefaBean.dataFormatada(tarefa.dataInicio)}">
 					<h:outputText value="#{tarefa.dataInicio}"
 						converter="SimpleDateConverter" />
 				</p:column>
 
 				<p:column headerText="Data de Fim" sortBy="#{tarefa.dataFim}"
-					filterBy="#{tarefa.dataFim}">
+					filterBy="#{tarefaBean.dataFormatada(tarefa.dataFim)}">
 					<h:outputText value="#{tarefa.dataFim}"
 						converter="SimpleDateConverter" />
 				</p:column>

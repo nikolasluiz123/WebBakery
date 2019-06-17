@@ -2,7 +2,7 @@ package br.com.WebBakery.validator;
 
 import java.util.List;
 
-import br.com.WebBaker.abstractClass.AbstractValidator;
+import br.com.WebBakery.abstractClass.AbstractValidator;
 import br.com.WebBakery.model.EstoqueProduto;
 import br.com.WebBakery.model.Produto;
 
@@ -20,7 +20,7 @@ public class EstoqueProdutoValidator extends AbstractValidator {
 
     public EstoqueProduto existe(List<EstoqueProduto> estoqueProdutos) {
         for (EstoqueProduto estoqueProduto : estoqueProdutos) {
-            
+
             Produto produtoSendoCadastradoNoEstoque = this.estoqueProduto.getProduto();
             Produto produtoSendoPercorridoNoEstoque = estoqueProduto.getProduto();
 
@@ -30,9 +30,4 @@ public class EstoqueProdutoValidator extends AbstractValidator {
         }
         return new EstoqueProduto();
     }
-
-    public void clearMessages() {
-        this.messages.clear();
-    }
-
 }

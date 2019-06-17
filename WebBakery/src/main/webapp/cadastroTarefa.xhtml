@@ -46,23 +46,24 @@
 				<p:dataTable id="tabelaProdutos" value="#{tarefaBean.produtos}"
 					selectionMode="single" selection="#{tarefaBean.produtoSelecionado}"
 					var="produto" rowKey="#{produto.id}" rows="5" paginator="true"
-					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-					emptyMessage="Nenhum produto encontrado">
+					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PageLinks} {PreviousPageLink} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					emptyMessage="Nenhum produto encontrado."
+					widgetVar="TabelaProdutos"
+					filteredValue="#{tarefaBean.produtosFiltrados}">
 
-					<p:column headerText="Descrição">
+					<p:column headerText="Descrição" filterBy="#{produto.descricao}"
+						sortBy="#{produto.descricao}">
 						<h:outputText value="#{produto.descricao}" />
 					</p:column>
 
-					<p:column headerText="Preço Unitário">
-						<h:outputText value="#{produto.preco}" />
-					</p:column>
-
-					<p:column headerText="Preço Unitário">
+					<p:column headerText="Preço Unitário" filterBy="#{produto.preco}"
+						sortBy="#{produto.preco}">
 						<h:outputText value="#{produto.preco}" />
 					</p:column>
 
 				</p:dataTable>
-				<p:commandButton value="Selecionar" process="@form" update="@form"
+				<p:commandButton value="Selecionar" process="@form"
+					update="formCadastroReceita:produto"
 					action="#{tarefaBean.setarProduto}"
 					oncomplete="PF('ProdutosDialog').hide();" />
 			</p:dialog>

@@ -1,81 +1,58 @@
 package br.com.WebBakery.validator;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
-
+import br.com.WebBakery.abstractClass.AbstractValidator;
 import br.com.WebBakery.model.Estado;
+import br.com.WebBakery.model.Pais;
 
-public class EstadoValidator {
+public class EstadoValidator extends AbstractValidator {
+
+    private static final String FIELD_PAIS_REQUIRED = "País é obrigatório!";
+    private static final String FIELD_SIGLA_LIMIT_EXCEDDED = "Sigla com excedência de caractéres!";
+    private static final String FIELD_SIGLA_REQUIRED = "Sigla é obrigatória!";
+    private static final String FIELD_NOME_LIMIT_EXCEDDED = "Nome com excedência de caractéres!";
+    private static final String FIELD_NOME_REQUIRED = "Nome é obrigatório!";
 
     private Estado estado;
-
-    private List<String> messages = new ArrayList<>();
 
     public EstadoValidator(Estado estado) {
         this.estado = estado;
     }
 
-    public boolean ehValido() {
+    @Override
+    public void chamarValidacoes() {
         validaNome();
         validaSigla();
-
-        if (!messages.isEmpty()) {
-            return false;
-        }
-        return true;
-    }
-
-    public void mostrarMensagens() {
-        messages.forEach(message -> {
-            FacesContext.getCurrentInstance()
-                    .addMessage("formCadastroEstado:messages",
-                                new FacesMessage(FacesMessage.SEVERITY_ERROR, message, message));
-        });
-
+        validaEstado();
     }
 
     private void validaNome() {
-        if (this.estado.getNome().isEmpty() || this.estado.getNome() == null) {
-            messages.add("Nome obrigatório!");
+        String nome = this.estado.getNome().trim();
+
+        if (nome.isEmpty() || nome == null) {
+            messages.add(FIELD_NOME_REQUIRED);
         }
-        if (this.estado.getNome().length() > 50) {
-            messages.add("Nome inválido!");
+        if (nome.length() > 30) {
+            messages.add(FIELD_NOME_LIMIT_EXCEDDED);
         }
     }
 
     private void validaSigla() {
-        if (this.estado.getSigla().isEmpty() || this.estado.getSigla() == null) {
-            messages.add("Sigla obrigatória!");
+        String sigla = this.estado.getSigla().trim();
+
+        if (sigla.isEmpty() || sigla == null) {
+            messages.add(FIELD_SIGLA_REQUIRED);
         }
-        if (this.estado.getSigla().length() > 2) {
-            messages.add("Sigla inválida!");
+        if (sigla.length() > 4) {
+            messages.add(FIELD_SIGLA_LIMIT_EXCEDDED);
         }
-        String nomeEstadoMaiusculo = this.estado.getSigla().toUpperCase();
-        this.estado.setSigla(nomeEstadoMaiusculo);
+        this.estado.setSigla(sigla.toUpperCase());
     }
 
-    public boolean existe(List<Estado> estados) {
-        for (Estado estado : estados) {
-            String nomeEstadoSendoCadastradoMaisculo = this.estado.getNome().toUpperCase();
-            String siglaEstadoSendoCadastradoMaisculo = this.estado.getNome().toUpperCase();
+    private void validaEstado() {
+        Pais pais = this.estado.getPais();
 
-            String nomeEstadoPercorridoMaisculo = estado.getNome().toUpperCase();
-            String siglaEstadoPercorridoMaisculo = estado.getNome().toUpperCase();
-
-            if (nomeEstadoSendoCadastradoMaisculo.equals(nomeEstadoPercorridoMaisculo)
-                    && siglaEstadoSendoCadastradoMaisculo.equals(siglaEstadoPercorridoMaisculo)) {
-                estado.setAtivo(true);
-                messages.add("Estado já cadastrado!");
-                return true;
-            }
+        if (pais == null) {
+            messages.add(FIELD_PAIS_REQUIRED);
         }
-        return false;
-    }
-
-    public void clearMessages() {
-        this.messages.clear();
     }
 }

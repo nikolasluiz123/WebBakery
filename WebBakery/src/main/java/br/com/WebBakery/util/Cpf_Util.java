@@ -22,7 +22,7 @@ public class Cpf_Util {
     }
 
     private static boolean isValidCPF(String cpf) {
-        cpf = cpf.trim();
+        cpf = cpf.trim().replace(".", "").replace("-", "");
         if (cpf.length() != 11)
             return false;
 

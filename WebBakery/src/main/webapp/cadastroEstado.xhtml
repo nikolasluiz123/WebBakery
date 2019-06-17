@@ -10,9 +10,6 @@
 	<ui:define name="conteudo">
 
 		<h:form id="formCadastroEstado">
-			<p:messages id="messages">
-				<p:autoUpdate />
-			</p:messages>
 
 			<p:fieldset legend="Dados do Estado">
 				<p:panelGrid columns="2">
@@ -25,59 +22,41 @@
 					<p:inputText id="sigla" value="#{estadoBean.estado.sigla}"
 						placeholder="Digite a sigla..." />
 
-					<p:outputLabel for="comboPaises" value="País:" />
-					<h:selectOneMenu id="comboPaises" value="#{estadoBean.paisId}"
-						panelStyle="width:180px" effect="fade" var="pais"
-						style="width:160px" converter="generic">
-						<f:selectItems value="#{estadoBean.paisesCombo}" />
-					</h:selectOneMenu>
+					<p:outputLabel for="pais" value="País:" />
+					<p:inputText id="pais" onclick="PF('PaisesDialog').show();"
+						value="#{estadoBean.estado.pais.nome}" readonly="true"
+						placeholder="Selecione o país..." style="cursor: pointer;" />
 
-					<p:commandButton value="Cadastrar" process="@form, tabelaEstados"
-						update="@form, tabelaEstados" action="#{estadoBean.cadastrar}" />
-
+					<p:commandButton value="Cadastrar" process="@form"
+						update="formMenu:messages" action="#{estadoBean.cadastrar}" />
 
 				</p:panelGrid>
 			</p:fieldset>
+
+			<p:dialog header="Países" widgetVar="PaisesDialog" resizable="false"
+				width="700">
+
+				<p:dataTable id="tabelaPaises" value="#{estadoBean.paises}"
+					selectionMode="single" selection="#{estadoBean.paisSelecionado}"
+					var="pais" rowKey="#{pais.id}" rows="5" paginator="true"
+					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PageLinks} {PreviousPageLink} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					emptyMessage="Nenhum país encontrado." widgetVar="TabelaPaises"
+					filteredValue="#{estadoBean.paisesFiltrados}">
+
+					<p:column headerText="Nome" sortBy="#{pais.nome}"
+						filterBy="#{pais.nome}">
+						<h:outputText value="#{pais.nome}" />
+					</p:column>
+					<p:column headerText="Sigla" sortBy="#{pais.sigla}"
+						filterBy="#{pais.sigla}">
+						<h:outputText value="#{pais.sigla}" />
+					</p:column>
+				</p:dataTable>
+				<p:commandButton value="Selecionar" process="@form" update="@form"
+					action="#{estadoBean.setarPais}"
+					oncomplete="PF('PaisesDialog').hide();" />
+			</p:dialog>
 		</h:form>
-
-		<p:dataTable var="estado" value="#{estadoBean.estados}"
-			id="tabelaEstados" rows="5" paginator="true"
-			paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-			rowsPerPageTemplate="5,10,15">
-
-			<f:facet name="header" style="min-height: 35px; max-height: 35px">
-				<div style="margin-top: 5px">Estados</div>
-
-				<p:commandButton id="toggler" type="button" value="Colunas"
-					style="float: right; margin-top: -30px;" icon="pi pi-align-justify" />
-				<p:columnToggler datasource="tabelaEstados" trigger="toggler" />
-			</f:facet>
-
-			<p:column headerText="Nome">
-
-				<h:outputText value="#{estado.nome}" />
-			</p:column>
-
-			<p:column headerText="Sigla">
-				<h:outputText value="#{estado.sigla}" />
-			</p:column>
-
-			<p:column headerText="País">
-				<h:outputText value="#{estado.pais.nome}" />
-			</p:column>
-
-			<p:column headerText="Alterar">
-				<p:commandLink value="Alterar"
-					action="#{estadoBean.carregar(estado)}"
-					update=":formCadastroEstado" process="@this" />
-			</p:column>
-
-			<p:column headerText="Inativar">
-				<p:commandLink value="Inativar"
-					action="#{estadoBean.inativar(estado)}" update="tabelaEstados"
-					process="@this" />
-			</p:column>
-		</p:dataTable>
 
 	</ui:define>
 </ui:composition>

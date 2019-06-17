@@ -1,4 +1,4 @@
-package br.com.WebBakery.bean;
+package br.com.WebBakery.bean.consulta;
 
 import java.io.Serializable;
 import java.util.List;
@@ -57,9 +57,6 @@ public class EstoqueProdutoBean implements Serializable {
         } else {
             efetuarAtualizacao();
         }
-        if (this.validator.getMessages().isEmpty()) {
-            this.estoqueProduto = new EstoqueProduto();
-        }
         atualizarTela();
     }
 
@@ -72,10 +69,8 @@ public class EstoqueProdutoBean implements Serializable {
 
     private void efetuarAtualizacao() {
         if (this.validator.isValid()) {
-            Integer qtd = 0;
-            if (this.epDoBanco.getId() != null)
-                qtd = this.epDoBanco.getQuantidade();
-            this.estoqueProdutoDao.atualizar(this.epDoBanco, qtd);
+            Integer quantidade = this.epDoBanco.getQuantidade();
+            this.estoqueProdutoDao.atualizar(this.epDoBanco, quantidade);
             context.addMessage(null, new FacesMessage(UPDATED_SUCCESSFULLY));
         }
     }
@@ -88,14 +83,6 @@ public class EstoqueProdutoBean implements Serializable {
 
     private void initListaEstoqueProdutos() {
         this.produtosEstoque = this.estoqueProdutoDao.listarTodos();
-    }
-
-    public EntityManager getEm() {
-        return em;
-    }
-
-    public void setEm(EntityManager em) {
-        this.em = em;
     }
 
     public EstoqueProduto getEstoqueProduto() {
@@ -122,20 +109,36 @@ public class EstoqueProdutoBean implements Serializable {
         this.produtosEstoque = produtosEstoque;
     }
 
-    public EstoqueProdutoValidator getValidator() {
-        return validator;
-    }
-
-    public void setValidator(EstoqueProdutoValidator validator) {
-        this.validator = validator;
-    }
-
     public List<EstoqueProduto> getProdutosEstoqueFiltrados() {
         return produtosEstoqueFiltrados;
     }
 
     public void setProdutosEstoqueFiltrados(List<EstoqueProduto> produtosEstoqueFiltrados) {
         this.produtosEstoqueFiltrados = produtosEstoqueFiltrados;
+    }
+
+    public EstoqueProduto getEpDoBanco() {
+        return epDoBanco;
+    }
+
+    public void setEpDoBanco(EstoqueProduto epDoBanco) {
+        this.epDoBanco = epDoBanco;
+    }
+
+    public EntityManager getEm() {
+        return em;
+    }
+
+    public void setEm(EntityManager em) {
+        this.em = em;
+    }
+
+    public EstoqueProdutoValidator getValidator() {
+        return validator;
+    }
+
+    public void setValidator(EstoqueProdutoValidator validator) {
+        this.validator = validator;
     }
 
     public FacesContext getContext() {
@@ -145,5 +148,4 @@ public class EstoqueProdutoBean implements Serializable {
     public void setContext(FacesContext context) {
         this.context = context;
     }
-
 }

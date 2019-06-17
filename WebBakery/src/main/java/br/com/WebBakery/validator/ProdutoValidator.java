@@ -1,17 +1,11 @@
 package br.com.WebBakery.validator;
 
-import java.util.List;
-
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
-
-import br.com.WebBaker.abstractClass.AbstractValidator;
+import br.com.WebBakery.abstractClass.AbstractValidator;
 import br.com.WebBakery.model.Produto;
 import br.com.WebBakery.model.Receita;
 
 public class ProdutoValidator extends AbstractValidator {
 
-    private static final String ALREADY_REGISTERED = "Produto já cadastrado!";
     private static final String FIELD_PRECO_NOT_VALID = "Preço inválido!";
     private static final String FIELD_TEMPO_VALIDO_NOT_VALID = "Tempo de validade inválido!";
     private static final String FIELD_TEMPO_VALIDO_REQUIRED = "Tempo de validade é obrigatório!";
@@ -72,32 +66,5 @@ public class ProdutoValidator extends AbstractValidator {
         if (receita == null) {
             messages.add(FIELD_RECEITA_REQUIRED);
         }
-    }
-
-    public boolean existe(List<Produto> produtos) {
-        for (Produto produto : produtos) {
-            String descricaoSendoCadastradaMaiscula = this.produto.getDescricao().toUpperCase();
-            String descricaoSendoPercorridaMaiscula = produto.getDescricao().toUpperCase();
-
-            Integer tempoValidoSendoCadastrada = this.produto.getTempoValido();
-            Integer tempoValidoSendoPercorrida = produto.getTempoValido();
-
-            Double precoSendoCadastrado = this.produto.getPreco();
-            Double precoSendoPercorrido = produto.getPreco();
-
-            Integer receitaSendoCadastrada = this.produto.getReceita().getId();
-            Integer receitaSendoPercorrida = produto.getReceita().getId();
-
-            if (descricaoSendoCadastradaMaiscula.equals(descricaoSendoPercorridaMaiscula)
-                    && tempoValidoSendoCadastrada.equals(tempoValidoSendoPercorrida)
-                    && precoSendoCadastrado.equals(precoSendoPercorrido)
-                    && receitaSendoCadastrada.equals(receitaSendoPercorrida)) {
-                produto.setAtivo(true);
-                FacesContext.getCurrentInstance().addMessage(null,
-                                                             new FacesMessage(ALREADY_REGISTERED));
-                return true;
-            }
-        }
-        return false;
     }
 }

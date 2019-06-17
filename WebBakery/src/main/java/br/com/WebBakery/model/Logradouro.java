@@ -1,5 +1,6 @@
 package br.com.WebBakery.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -12,14 +13,24 @@ public class Logradouro {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Integer id;
+
     @ManyToOne
     private Cidade cidade;
+
+    @Column(length = 40)
     private String bairro;
+
+    @Column(length = 12)
     private String cep;
+
+    @Column(length = 30)
     private String rua;
+
+    @Column(length = 20)
     private String complemento;
+
     private boolean ativo;
-    
+
     public Integer getId() {
         return id;
     }

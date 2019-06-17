@@ -1,6 +1,6 @@
 package br.com.WebBaker.interfaces;
 
-public interface IValidator {
+public interface IBaseValidator {
 
     boolean isValid();
 

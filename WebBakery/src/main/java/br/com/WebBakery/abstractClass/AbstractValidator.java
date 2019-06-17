@@ -1,4 +1,4 @@
-package br.com.WebBaker.abstractClass;
+package br.com.WebBakery.abstractClass;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,9 +6,9 @@ import java.util.List;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 
-import br.com.WebBaker.interfaces.IValidator;
+import br.com.WebBaker.interfaces.IBaseValidator;
 
-public abstract class AbstractValidator implements IValidator {
+public abstract class AbstractValidator implements IBaseValidator {
 
     protected List<String> messages = new ArrayList<>();
 

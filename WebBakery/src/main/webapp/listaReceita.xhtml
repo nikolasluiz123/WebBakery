@@ -1,0 +1,54 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="_template.xhtml">
+
+	<ui:define name="conteudo">
+
+		<h:form id="formDataTableReceitas">
+			<div style="padding-top: 15px;">
+
+				<p:dataTable id="tabelaReceitas"
+					value="#{listaReceitaBean.receitas}" var="receita"
+					rowKey="#{receita.id}" rows="5" paginator="true"
+					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PageLinks} {PreviousPageLink} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					emptyMessage="Nenhuma receita encontrada."
+					widgetVar="TabelaReceitas"
+					filteredValue="#{listaReceitaBean.receitasFiltradas}">
+
+					<f:facet name="header" style="min-height: 35px; max-height: 35px">
+						<div>Receitas</div>
+
+					</f:facet>
+
+					<p:column headerText="Descrição" filterBy="#{receita.descricao}"
+						sortBy="#{receita.descricao}">
+						<h:outputText value="#{receita.descricao}" />
+					</p:column>
+
+					<p:column headerText="Quantidade" filterBy="#{receita.quantidade}"
+						sortBy="#{receita.quantidade}">
+						<h:outputText value="#{receita.quantidade}" />
+					</p:column>
+
+					<p:column headerText="Alterar">
+						<p:commandLink value="Alterar"
+							action="#{listaReceitaBean.carregar(receita.id)}" process="@this" />
+					</p:column>
+
+					<p:column headerText="Inativar">
+						<p:commandLink value="Inativar"
+							action="#{listaReceitaBean.inativar(receita)}"
+							update="tabelaReceitas, formMenu:messages" process="@this"
+							oncomplete="PF('TabelaReceitas').filter();" />
+					</p:column>
+				</p:dataTable>
+			</div>
+		</h:form>
+	</ui:define>
+</ui:composition>
+</html>

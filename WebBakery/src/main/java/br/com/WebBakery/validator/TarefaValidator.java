@@ -2,7 +2,7 @@ package br.com.WebBakery.validator;
 
 import java.util.Date;
 
-import br.com.WebBaker.abstractClass.AbstractValidator;
+import br.com.WebBakery.abstractClass.AbstractValidator;
 import br.com.WebBakery.model.Produto;
 import br.com.WebBakery.model.Tarefa;
 
@@ -41,14 +41,12 @@ public class TarefaValidator extends AbstractValidator {
 
         if (dataInicio == null) {
             messages.add(FIELD_DATA_INICIO_REQUIRED);
+        } else if (dataFim.before(dataInicio)) {
+            messages.add(FIELD_DATA_FIM_NOT_VALID);
         }
         if (dataFim == null) {
             messages.add(FIELD_DATA_FIM_REQUIRED);
-        }
-        if (dataFim.before(dataInicio)) {
-            messages.add(FIELD_DATA_FIM_NOT_VALID);
-        }
-        if (dataInicio.before(hoje)) {
+        } else if (dataInicio.before(hoje)) {
             messages.add(FIELD_DATA_INICIO_NOT_VALID);
         }
     }

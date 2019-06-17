@@ -1,5 +1,6 @@
 package br.com.WebBakery.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -12,9 +13,13 @@ public class Cidade {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Integer id;
+
+    @Column(length = 30)
     private String nome;
+
     @ManyToOne
     private Estado estado;
+
     private boolean ativo;
 
     public Integer getId() {

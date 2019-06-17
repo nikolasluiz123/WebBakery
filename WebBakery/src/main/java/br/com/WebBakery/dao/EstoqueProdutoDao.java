@@ -1,6 +1,5 @@
 package br.com.WebBakery.dao;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,12 +7,13 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import br.com.WebBaker.interfaces.IBaseDao;
 import br.com.WebBakery.model.EstoqueProduto;
 
 @Stateless
-public class EstoqueProdutoDao implements Serializable {
+public class EstoqueProdutoDao implements IBaseDao<EstoqueProduto> {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = -2808765073810346192L;
 
     @PersistenceContext
     private EntityManager em;
@@ -25,8 +25,19 @@ public class EstoqueProdutoDao implements Serializable {
     public EstoqueProdutoDao() {
     }
 
-    public void cadastrar(EstoqueProduto estoqueProduto) {
-        em.persist(estoqueProduto);
+    @Override
+    public void cadastrar(EstoqueProduto model) {
+        em.persist(model);
+    }
+
+    @Override
+    public EstoqueProduto buscarPorId(Integer id) {
+        return em.find(EstoqueProduto.class, id);
+    }
+
+    public void atualizar(EstoqueProduto estoque, Integer qtd) {
+        estoque.setQuantidade(estoque.getQuantidade() + qtd);
+        em.merge(estoque);
     }
 
     public List<EstoqueProduto> listarTodos() {
@@ -40,13 +51,17 @@ public class EstoqueProdutoDao implements Serializable {
         return estoque;
     }
 
-    public EstoqueProduto buscarPelaId(Integer id) {
-        return em.find(EstoqueProduto.class, id);
+    @Deprecated
+    @Override
+    public void atualizar(EstoqueProduto model) {
+        // TODO Auto-generated method stub
     }
 
-    public void atualizar(EstoqueProduto estoque, Integer qtd) {
-        estoque.setQuantidade(estoque.getQuantidade() + qtd);
-        em.merge(estoque);
+    @Deprecated
+    @Override
+    public List<EstoqueProduto> listarTodos(Boolean ativo) {
+        // TODO Auto-generated method stub
+        return null;
     }
 
 }
