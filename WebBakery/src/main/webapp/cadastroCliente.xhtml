@@ -15,12 +15,12 @@
 				<p:panelGrid columns="2">
 
 					<p:outputLabel value="Nome:" for="nome" />
-					<p:inputText id="nome" value="#{clienteBean.cliente.nome}"
+					<p:inputText id="nome" value="#{clienteBean.cliente.usuario.nome}"
 						placeholder="Digite o nome..." />
 
 					<p:outputLabel value="Sobrenome:" for="sobrenome" />
 					<p:inputText id="sobrenome"
-						value="#{clienteBean.cliente.sobrenome}"
+						value="#{clienteBean.cliente.usuario.sobrenome}"
 						placeholder="Digite o sobrenome..." />
 
 					<p:outputLabel value="CPF:" for="cpf" />
@@ -83,8 +83,8 @@
 						value="#{clienteBean.cliente.endereco.logradouro.complemento}"
 						placeholder="Digite o complemento..." />
 
-					<p:commandButton value="Cadastrar" process="@form" update="@form"
-						action="#{clienteBean.cadastrar}" />
+					<p:commandButton value="Cadastrar" process="@form"
+						update="@form, formMessages:messages" action="#{clienteBean.cadastrar}" />
 				</p:panelGrid>
 			</p:fieldset>
 
@@ -167,10 +167,7 @@
 					action="#{clienteBean.setarCidade}"
 					oncomplete="PF('CidadesDialog').hide();" />
 			</p:dialog>
-
-
 		</h:form>
-
 	</ui:define>
 </ui:composition>
 </html>

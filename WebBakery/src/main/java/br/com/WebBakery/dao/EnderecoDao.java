@@ -1,32 +1,24 @@
 package br.com.WebBakery.dao;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 
+import br.com.WebBakery.abstractClass.AbstractBaseDao;
 import br.com.WebBakery.model.Endereco;
 
 @Stateless
-public class EnderecoDao implements Serializable {
+public class EnderecoDao extends AbstractBaseDao<Endereco> {
 
-    private static final long serialVersionUID = 1L;
-
-    @PersistenceContext
-    private EntityManager em;
+    private static final long serialVersionUID = -462049822493846497L;
 
     public EnderecoDao(EntityManager em) {
         this.em = em;
     }
 
     public EnderecoDao() {
-    }
-
-    public void cadastrar(Endereco endereco) {
-        em.persist(endereco);
     }
 
     public List<Endereco> listarTodos(Boolean ativo) {
@@ -51,11 +43,4 @@ public class EnderecoDao implements Serializable {
         return enderecos;
     }
 
-    public Endereco buscarPelaId(Integer id) {
-        return em.find(Endereco.class, id);
-    }
-
-    public void atualizar(Endereco endereco) {
-        em.merge(endereco);
-    }
 }

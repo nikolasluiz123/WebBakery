@@ -27,7 +27,7 @@ public class LoginBean implements Serializable {
     private EntityManager em;
 
     private Usuario usuario;
-    private UsuarioDao dao;
+    private UsuarioDao usuarioDao;
 
     public Usuario getUsuario() {
         return usuario;
@@ -36,14 +36,14 @@ public class LoginBean implements Serializable {
     @PostConstruct
     private void init() {
         this.usuario = new Usuario();
-        this.dao = new UsuarioDao(this.em);
+        this.usuarioDao = new UsuarioDao(this.em);
     }
 
     public void logar() throws IOException {
-        boolean existe = dao.usuarioExiste(this.usuario);
-        if (existe) {
+        this.usuario = usuarioDao.usuarioExiste(this.usuario);
+        if (this.usuario != null) {
             context.getExternalContext().getSessionMap().put("usuarioLogado", this.usuario);
-            context.getExternalContext().redirect("cadastroFuncionario.xhtml");
+            context.getExternalContext().redirect("graficoProdutosVenda.xhtml");
         } else {
             context.getExternalContext().getFlash().setKeepMessages(true);
             context.addMessage(null, new FacesMessage("Usuário não encontrado!"));

@@ -93,7 +93,7 @@ public class ProdutoBean implements Serializable {
     private void verificaProdutoSessao() {
         Integer produtoId = (Integer) FacesUtil.getHTTPSession().getAttribute("ProdutoID");
         if (produtoId != null) {
-            this.produto = produtoDao.buscarPorId(produtoId);
+            this.produto = produtoDao.buscarPorId(Produto.class, produtoId);
             FacesUtil.getHTTPSession().removeAttribute("ProdutoID");
         }
     }

@@ -21,7 +21,6 @@ import br.com.WebBakery.dao.TarefaDao;
 import br.com.WebBakery.model.EstoqueProduto;
 import br.com.WebBakery.model.Tarefa;
 import br.com.WebBakery.util.FacesUtil;
-import br.com.WebBakery.validator.EstoqueProdutoValidator;
 
 @Named
 @ViewScoped
@@ -76,12 +75,7 @@ public class ListaTarefaBean implements Serializable {
         EstoqueProduto estoqueProduto = new EstoqueProduto();
         estoqueProduto.setProduto(tarefa.getProduto());
         estoqueProduto.setQuantidade(tarefa.getQuantidade());
-        preparaCadastroEstoque(estoqueProduto);
-    }
-
-    private void preparaCadastroEstoque(EstoqueProduto estoqueProduto) {
         this.estoqueProdutoBean.setEstoqueProduto(estoqueProduto);
-        this.estoqueProdutoBean.setValidator(new EstoqueProdutoValidator(estoqueProduto));
         this.estoqueProdutoBean.setEstoqueProdutoDao(new EstoqueProdutoDao(this.em));
         this.estoqueProdutoBean.setContext(this.context);
         this.estoqueProdutoBean.cadastrar();

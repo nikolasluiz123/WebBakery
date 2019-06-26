@@ -93,7 +93,7 @@ public class CidadeBean implements Serializable {
     private void verificaCidadeSessao() {
         Integer cidadeId = (Integer) FacesUtil.getHTTPSession().getAttribute("CidadeID");
         if (cidadeId != null) {
-            this.cidade = cidadeDao.buscarPorId(cidadeId);
+            this.cidade = cidadeDao.buscarPorId(Cidade.class, cidadeId);
             FacesUtil.getHTTPSession().removeAttribute("CidadeID");
         }
     }

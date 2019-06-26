@@ -162,7 +162,7 @@ public class FuncionarioBean implements Serializable {
     private void verficarFuncionarioSessao() {
         Integer funcionarioId = (Integer) FacesUtil.getHTTPSession().getAttribute("FuncionarioID");
         if (funcionarioId != null) {
-            this.funcionario = funcionarioDao.buscarPorId(funcionarioId);
+            this.funcionario = funcionarioDao.buscarPorId(Funcionario.class, funcionarioId);
             FacesUtil.getHTTPSession().removeAttribute("FuncionarioID");
         }
     }

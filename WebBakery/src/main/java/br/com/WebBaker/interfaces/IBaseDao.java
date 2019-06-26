@@ -9,8 +9,8 @@ public interface IBaseDao<T> extends Serializable {
 
     List<T> listarTodos(Boolean ativo);
 
-    T buscarPorId(Integer id);
+    T buscarPorId(Class<?> clazz, Integer id);
 
     void atualizar(T model);
-
+    
 }

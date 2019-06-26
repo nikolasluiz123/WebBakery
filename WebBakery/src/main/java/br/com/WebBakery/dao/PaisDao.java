@@ -5,18 +5,14 @@ import java.util.List;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 
-import br.com.WebBaker.interfaces.IBaseDao;
+import br.com.WebBakery.abstractClass.AbstractBaseDao;
 import br.com.WebBakery.model.Pais;
 
 @Stateless
-public class PaisDao implements IBaseDao<Pais> {
+public class PaisDao extends AbstractBaseDao<Pais> {
 
     private static final long serialVersionUID = 1904464340270603917L;
-
-    @PersistenceContext
-    private EntityManager em;
 
     public PaisDao(EntityManager em) {
         this.em = em;
@@ -25,12 +21,6 @@ public class PaisDao implements IBaseDao<Pais> {
     public PaisDao() {
     }
 
-    @Override
-    public void cadastrar(Pais model) {
-        em.persist(model);
-    }
-
-    @Override
     public List<Pais> listarTodos(Boolean ativo) {
         List<Pais> paises = new ArrayList<>();
 
@@ -38,16 +28,6 @@ public class PaisDao implements IBaseDao<Pais> {
                 .setParameter("pAtivo", ativo).getResultList();
 
         return paises;
-    }
-
-    @Override
-    public Pais buscarPorId(Integer id) {
-        return em.find(Pais.class, id);
-    }
-
-    @Override
-    public void atualizar(Pais model) {
-        em.merge(model);
     }
 
 }

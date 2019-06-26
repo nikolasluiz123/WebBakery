@@ -165,7 +165,7 @@ public class ClienteBean implements Serializable {
     private void verficarClienteSessao() {
         Integer clienteId = (Integer) FacesUtil.getHTTPSession().getAttribute("ClienteID");
         if (clienteId != null) {
-            this.cliente = clienteDao.buscarPorId(clienteId);
+            this.cliente = clienteDao.buscarPorId(Cliente.class, clienteId);
             FacesUtil.getHTTPSession().removeAttribute("ClienteID");
         }
     }

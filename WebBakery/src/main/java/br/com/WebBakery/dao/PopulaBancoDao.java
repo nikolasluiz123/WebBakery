@@ -30,19 +30,13 @@ public class PopulaBancoDao implements Serializable {
 
     public void popularBanco() {
 
-        Usuario nikolas = gerarUsuario("nikolas@gmail.com", "12345", TipoUsuario.PADEIRO);
-
-        Usuario usuario1 = gerarUsuario("salete@gmail.com", "12345", TipoUsuario.GERENTE);
-
-        Usuario usuario2 = gerarUsuario("sergio@gmail.com",
-                                        "12345",
-                                        TipoUsuario.ADMINISTRADOR_ESTOQUE);
-
-        Usuario usuario3 = gerarUsuario("usuario1@gmail.com", "12345", TipoUsuario.CAIXA);
-
-        Usuario usuario4 = gerarUsuario("usuario2@gmail.com", "12345", TipoUsuario.GERENTE);
-
-        Usuario usuario5 = gerarUsuario("usuario3@gmail.com", "12345", TipoUsuario.CLIENTE);
+        Usuario gerente = gerarUsuario("gerente@webbakery.com", "1234578", TipoUsuario.GERENTE);
+        Usuario cliente = gerarUsuario("cliente@gmail.com", "1234578", TipoUsuario.CLIENTE);
+        Usuario admEstoque = gerarUsuario("admEstoque@webbakery.com",
+                                          "1234578",
+                                          TipoUsuario.ADMINISTRADOR_ESTOQUE);
+        Usuario caixa = gerarUsuario("caixa@webbakery.com", "1234578", TipoUsuario.CAIXA);
+        Usuario padeiro = gerarUsuario("padeiro@webbakery.com", "1234578", TipoUsuario.PADEIRO);
 
         Pais pais1 = gerarPais("Afeganistão", "AF");
         Pais pais2 = gerarPais("África Do Sul", "ZA");
@@ -728,12 +722,11 @@ public class PopulaBancoDao implements Serializable {
                                                   "casa",
                                                   cidade37);
 
-        em.persist(nikolas);
-        em.persist(usuario1);
-        em.persist(usuario2);
-        em.persist(usuario3);
-        em.persist(usuario4);
-        em.persist(usuario5);
+        em.persist(gerente);
+        em.persist(cliente);
+        em.persist(padeiro);
+        em.persist(admEstoque);
+        em.persist(caixa);
 
         em.persist(pais1);
         em.persist(pais2);

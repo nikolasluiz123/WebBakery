@@ -16,6 +16,10 @@ public class UsuarioValidator extends AbstractValidator {
     private static final String FIELD_EMAIL_EXIST = "E-mail já cadatrado!";
     private static final String FIELD_SENHA_LIMIT_EXCEDDED = "Senha com excedência de caractéres!";
     private static final String FIELD_SENHA_VERY_WEAK = "Senha muito fraca!";
+    private static final String FIELD_NOME_REQUIRED = "Nome é obrigatório!";
+    private static final String FIELD_NOME_LIMIT_EXCEDDED = "Nome com excedência de caractéres!";
+    private static final String FIELD_SOBRENOME_REQUIRED = "Sobrenome é obrigatório!";
+    private static final String FIELD_SOBRENOME_LIMIT_EXCEDDED = "Sobrenome com excedência de caractéres!";
 
     private Usuario usuario;
     private UsuarioDao usuarioDao;
@@ -28,8 +32,32 @@ public class UsuarioValidator extends AbstractValidator {
 
     @Override
     public void chamarValidacoes() {
+        validaNome();
+        validaSobrenome();
         validaEmail();
         validaSenha();
+    }
+
+    private void validaNome() {
+        String nome = this.usuario.getNome().trim();
+
+        if (nome.isEmpty() || nome == null) {
+            this.messages.add(FIELD_NOME_REQUIRED);
+        }
+        if (nome.length() > 40) {
+            this.messages.add(FIELD_NOME_LIMIT_EXCEDDED);
+        }
+    }
+
+    private void validaSobrenome() {
+        String sobrenome = this.usuario.getSobrenome().trim();
+
+        if (sobrenome.isEmpty() || sobrenome == null) {
+            this.messages.add(FIELD_SOBRENOME_REQUIRED);
+        }
+        if (sobrenome.length() > 40) {
+            this.messages.add(FIELD_SOBRENOME_LIMIT_EXCEDDED);
+        }
     }
 
     private void validaEmail() {

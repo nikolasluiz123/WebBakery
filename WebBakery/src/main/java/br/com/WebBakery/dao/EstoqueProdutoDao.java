@@ -5,34 +5,21 @@ import java.util.List;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+import javax.persistence.NoResultException;
 
-import br.com.WebBaker.interfaces.IBaseDao;
+import br.com.WebBakery.abstractClass.AbstractBaseDao;
 import br.com.WebBakery.model.EstoqueProduto;
 
 @Stateless
-public class EstoqueProdutoDao implements IBaseDao<EstoqueProduto> {
+public class EstoqueProdutoDao extends AbstractBaseDao<EstoqueProduto> {
 
     private static final long serialVersionUID = -2808765073810346192L;
-
-    @PersistenceContext
-    private EntityManager em;
 
     public EstoqueProdutoDao(EntityManager em) {
         this.em = em;
     }
 
     public EstoqueProdutoDao() {
-    }
-
-    @Override
-    public void cadastrar(EstoqueProduto model) {
-        em.persist(model);
-    }
-
-    @Override
-    public EstoqueProduto buscarPorId(Integer id) {
-        return em.find(EstoqueProduto.class, id);
     }
 
     public void atualizar(EstoqueProduto estoque, Integer qtd) {
@@ -44,20 +31,35 @@ public class EstoqueProdutoDao implements IBaseDao<EstoqueProduto> {
         List<EstoqueProduto> estoque = new ArrayList<>();
 
         estoque = em
-                .createQuery("SELECT ep FROM EstoqueProduto ep WHERE 1=1 ORDER BY ep.produto.descricao",
+                .createQuery("SELECT ep FROM EstoqueProduto ep WHERE ep.quantidade >= 1 ORDER BY ep.produto.descricao",
                              EstoqueProduto.class)
                 .getResultList();
 
         return estoque;
     }
 
-    @Deprecated
-    @Override
-    public void atualizar(EstoqueProduto model) {
-        // TODO Auto-generated method stub
+    public boolean existe(Integer id) {
+        try {
+            em.createQuery("SELECT ep FROM EstoqueProduto ep WHERE ep.produto.id = :pId ORDER BY ep.produto.descricao",
+                           EstoqueProduto.class)
+                    .setParameter("pId", id).getSingleResult();
+        } catch (NoResultException e) {
+            return false;
+        }
+        return true;
     }
 
-    @Deprecated
+    public EstoqueProduto buscarEstoqueProduto(Integer produtoId) {
+        EstoqueProduto estoque = new EstoqueProduto();
+
+        estoque = em
+                .createQuery("SELECT ep FROM EstoqueProduto ep WHERE ep.produto.id = :pProdutoId",
+                             EstoqueProduto.class)
+                .setParameter("pProdutoId", produtoId).getSingleResult();
+
+        return estoque;
+    }
+
     @Override
     public List<EstoqueProduto> listarTodos(Boolean ativo) {
         // TODO Auto-generated method stub

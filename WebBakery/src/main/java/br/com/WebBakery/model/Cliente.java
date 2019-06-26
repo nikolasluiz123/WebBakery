@@ -16,12 +16,6 @@ public class Cliente {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Integer id;
 
-    @Column(length = 40)
-    private String nome;
-
-    @Column(length = 40)
-    private String sobrenome;
-
     @Column(length = 20)
     private String cpf;
 
@@ -44,22 +38,6 @@ public class Cliente {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public String getSobrenome() {
-        return sobrenome;
-    }
-
-    public void setSobrenome(String sobrenome) {
-        this.sobrenome = sobrenome;
     }
 
     public String getCpf() {

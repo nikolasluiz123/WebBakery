@@ -34,7 +34,8 @@
 						pattern="dd/MM/yyyy HH:mm"
 						placeholder="Selecione a data do término..." />
 
-					<p:commandButton value="Cadastrar" process="@form" update="@form"
+					<p:commandButton value="Cadastrar" process="@form"
+						update="@form, formMessages:messages"
 						action="#{tarefaBean.cadastrar}" />
 
 				</p:panelGrid>

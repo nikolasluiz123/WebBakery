@@ -93,7 +93,7 @@ public class EstadoBean implements Serializable {
     private void verificaEstadoSessao() {
         Integer estadoId = (Integer) FacesUtil.getHTTPSession().getAttribute("EstadoID");
         if (estadoId != null) {
-            this.estado = estadoDao.buscarPorId(estadoId);
+            this.estado = estadoDao.buscarPorId(Estado.class, estadoId);
             FacesUtil.getHTTPSession().removeAttribute("EstadoID");
         }
     }

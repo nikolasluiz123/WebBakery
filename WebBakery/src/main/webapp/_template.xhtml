@@ -6,16 +6,49 @@
 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui">
 
-<h:head />
+<style>
+html, body {
+	margin: 0 !important;
+	height: 100% !important;
+}
+
+/* .ui-menu { */
+/* 	margin: 0 !important; */
+/* 	height: 1000px !important; */
+/* } */
+</style>
+
+<h:head>
+	<p:toolbar rendered="#{usuarioLogado != null}" style="padding: 10px;">
+		<f:facet name="left">
+			<p:outputLabel value="#{usuarioLogado.nome}"
+				style="vertical-align: middle;" />
+		</f:facet>
+
+		<f:facet name="right">
+			<h:form id="botaoConfig">
+				<p:menuButton value="Configurações" style="vertical-align: middle;">
+					<p:menuitem value="Save" />
+					<p:menuitem value="Update" />
+					<p:menuitem value="Delete" />
+					<p:menuitem value="Logout" action="#{loginBean.deslogar}" />
+				</p:menuButton>
+			</h:form>
+		</f:facet>
+	</p:toolbar>
+</h:head>
 
 <h:body>
 	<div id="cabecalho">
+
 		<h:form id="formMessages">
 			<p:growl id="messages" life="10000" />
 		</h:form>
-		<h:form id="formMenu" rendered="#{usuarioLogado != null}">
+
+		<h:form id="formMenuLateral" rendered="#{usuarioLogado != null}">
 			<p:menu model="#{menuBean.model}" />
 		</h:form>
+
 	</div>
 
 	<div id="conteudo">

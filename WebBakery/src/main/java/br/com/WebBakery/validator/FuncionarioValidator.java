@@ -17,10 +17,6 @@ public class FuncionarioValidator extends AbstractValidator {
     private static final String FIELD_RG_REQUIRED = "RG é obrigatório!";
     private static final String FIELD_CPF_NOT_VALID = "CPF inválido!";
     private static final String FIELD_CPF_REQUIRED = "CPF é obrigatório!";
-    private static final String FIELD_SOBRENOME_LIMIT_EXCEDDED = "Sobrenome com excedência de caractéres!";
-    private static final String FIELD_SOBRENOME_REQUIRED = "Sobrenome é obrigatório!";
-    private static final String FIELD_NOME_LIMIT_EXCEDDED = "Nome com excedência de caractéres!";
-    private static final String FIELD_NOME_REQUIRED = "Nome é obrigatório!";
 
     private Funcionario funcionario;
 
@@ -29,36 +25,12 @@ public class FuncionarioValidator extends AbstractValidator {
     }
 
     public void chamarValidacoes() {
-        validaNome();
-        validaSobrenome();
         validaCpf();
         validaRg();
         validaTelefone();
         validaDataNascimento();
         validaSalario();
         validaUsuario();
-    }
-
-    private void validaNome() {
-        String nome = this.funcionario.getNome().trim();
-
-        if (nome.isEmpty() || nome == null) {
-            this.messages.add(FIELD_NOME_REQUIRED);
-        }
-        if (nome.length() > 40) {
-            this.messages.add(FIELD_NOME_LIMIT_EXCEDDED);
-        }
-    }
-
-    private void validaSobrenome() {
-        String sobrenome = this.funcionario.getSobrenome().trim();
-
-        if (sobrenome.isEmpty() || sobrenome == null) {
-            this.messages.add(FIELD_SOBRENOME_REQUIRED);
-        }
-        if (sobrenome.length() > 40) {
-            this.messages.add(FIELD_SOBRENOME_LIMIT_EXCEDDED);
-        }
     }
 
     private void validaCpf() {

@@ -17,6 +17,8 @@ public class ProdutoVenda {
     @OneToOne
     private Venda venda;
 
+    private Integer quantidade;
+
     public Integer getId() {
         return id;
     }
@@ -39,6 +41,14 @@ public class ProdutoVenda {
 
     public void setVenda(Venda venda) {
         this.venda = venda;
+    }
+
+    public Integer getQuantidade() {
+        return quantidade;
+    }
+
+    public void setQuantidade(Integer quantidade) {
+        this.quantidade = quantidade;
     }
 
 }

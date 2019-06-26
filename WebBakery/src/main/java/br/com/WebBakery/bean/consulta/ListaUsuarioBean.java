@@ -41,7 +41,6 @@ public class ListaUsuarioBean implements Serializable {
     private void init() {
         this.usuarioDao = new UsuarioDao(this.em);
         this.usuarios = new ArrayList<>();
-        this.usuariosFiltrados = new ArrayList<>();
         initListUsuarios();
     }
 

@@ -93,7 +93,7 @@ public class TarefaBean implements Serializable {
     private void verificaTarefaSessao() {
         Integer tarefaId = (Integer) FacesUtil.getHTTPSession().getAttribute("TarefaID");
         if (tarefaId != null) {
-            this.tarefa = tarefaDao.buscarPorId(tarefaId);
+            this.tarefa = tarefaDao.buscarPorId(Tarefa.class, tarefaId);
             FacesUtil.getHTTPSession().removeAttribute("TarefaID");
         }
     }

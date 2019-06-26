@@ -12,10 +12,6 @@ import br.com.WebBakery.util.Email_Util;
 
 public class ClienteValidator extends AbstractValidator {
 
-    private static final String FIELD_NOME_NOT_VALID = "Nome inválido!";
-    private static final String FIELD_NOME_REQUIRED = "Nome obrigatório!";
-    private static final String FIELD_SOBRENOME_NOT_VALID = "Sobrenome inválido!";
-    private static final String FIELD_SOBRENOME_REQUIRED = "Sobrenome obrigatório!";
     private static final String FIELD_DATA_NASCIMENTO_NOT_VALID = "Data de nascimento inválida!";
     private static final String FIELD_DATA_NASCIMENTO_REQUIRED = "Data de nascimento obrigatória!";
     private static final String FIELD_CPF_NOT_VALID = "Cpf inválido!";
@@ -37,8 +33,6 @@ public class ClienteValidator extends AbstractValidator {
 
     @Override
     public void chamarValidacoes() {
-        validaNome();
-        validaSobrenome();
         validaDataNascimento();
         validaCpf();
         validaTelefone();
@@ -93,28 +87,6 @@ public class ClienteValidator extends AbstractValidator {
             messages.add(FIELD_DATA_NASCIMENTO_REQUIRED);
         } else if (dataNascimento.after(new Date())) {
             messages.add(FIELD_DATA_NASCIMENTO_NOT_VALID);
-        }
-    }
-
-    private void validaSobrenome() {
-        String sobrenome = this.cliente.getSobrenome().trim();
-
-        if (sobrenome.isEmpty() || sobrenome == null) {
-            messages.add(FIELD_SOBRENOME_REQUIRED);
-        }
-        if (sobrenome.length() > 50) {
-            messages.add(FIELD_SOBRENOME_NOT_VALID);
-        }
-    }
-
-    private void validaNome() {
-        String nome = this.cliente.getNome().trim();
-
-        if (nome.isEmpty() || nome == null) {
-            messages.add(FIELD_NOME_REQUIRED);
-        }
-        if (nome.length() > 50) {
-            messages.add(FIELD_NOME_NOT_VALID);
         }
     }
 }

@@ -89,7 +89,7 @@ public class UsuarioBean implements Serializable {
     private void verificaUsuarioSessao() {
         Integer usuarioId = (Integer) FacesUtil.getHTTPSession().getAttribute("UsuarioID");
         if (usuarioId != null) {
-            this.usuario = usuarioDao.buscarPorId(usuarioId);
+            this.usuario = usuarioDao.buscarPorId(Usuario.class, usuarioId);
             FacesUtil.getHTTPSession().removeAttribute("UsuarioID");
         }
     }

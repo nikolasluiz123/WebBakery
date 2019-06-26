@@ -15,6 +15,12 @@ public class Usuario {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Integer id;
 
+    @Column(length = 40)
+    private String nome;
+
+    @Column(length = 40)
+    private String sobrenome;
+
     @Column(length = 50)
     private String email;
 
@@ -64,4 +70,21 @@ public class Usuario {
     public boolean isAtivo() {
         return ativo;
     }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public String getSobrenome() {
+        return sobrenome;
+    }
+
+    public void setSobrenome(String sobrenome) {
+        this.sobrenome = sobrenome;
+    }
+
 }

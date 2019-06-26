@@ -14,15 +14,6 @@
 			<p:fieldset legend="Dados do Funcionario">
 				<p:panelGrid columns="2">
 
-					<p:outputLabel value="Nome:" for="nome" />
-					<p:inputText id="nome" value="#{funcionarioBean.funcionario.nome}"
-						placeholder="Digite o nome..." />
-
-					<p:outputLabel value="Sobrenome:" for="sobrenome" />
-					<p:inputText id="sobrenome"
-						value="#{funcionarioBean.funcionario.sobrenome}"
-						placeholder="Digite o sobrenome..." />
-
 					<p:outputLabel value="CPF:" for="cpf" />
 					<p:inputMask id="cpf" value="#{funcionarioBean.funcionario.cpf}"
 						placeholder="Digite o cpf..." mask="999.999.999-99" />

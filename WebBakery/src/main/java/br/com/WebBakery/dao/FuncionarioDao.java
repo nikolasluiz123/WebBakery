@@ -5,18 +5,16 @@ import java.util.List;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+import javax.persistence.NoResultException;
+import javax.persistence.TypedQuery;
 
-import br.com.WebBaker.interfaces.IBaseDao;
+import br.com.WebBakery.abstractClass.AbstractBaseDao;
 import br.com.WebBakery.model.Funcionario;
 
 @Stateless
-public class FuncionarioDao implements IBaseDao<Funcionario> {
+public class FuncionarioDao extends AbstractBaseDao<Funcionario> {
 
-    private static final long serialVersionUID = -4485066218691416726L;
-
-    @PersistenceContext
-    transient private EntityManager em;
+    private static final long serialVersionUID = -3829525203324472005L;
 
     public FuncionarioDao(EntityManager em) {
         this.em = em;
@@ -25,12 +23,6 @@ public class FuncionarioDao implements IBaseDao<Funcionario> {
     public FuncionarioDao() {
     }
 
-    @Override
-    public void cadastrar(Funcionario model) {
-        em.persist(model);
-    }
-
-    @Override
     public List<Funcionario> listarTodos(Boolean ativo) {
         List<Funcionario> funcionarios = new ArrayList<>();
 
@@ -41,14 +33,17 @@ public class FuncionarioDao implements IBaseDao<Funcionario> {
         return funcionarios;
     }
 
-    @Override
-    public Funcionario buscarPorId(Integer id) {
-        return em.find(Funcionario.class, id);
+    public Funcionario buscarPorIdUsuario(Integer idUsuario) {
+        TypedQuery<Funcionario> query = em
+                .createQuery("SELECT f FROM Funcionario f WHERE f.ativo = TRUE AND f.usuario.id = :pIdUsuario",
+                             Funcionario.class);
+        query.setParameter("pIdUsuario", idUsuario);
+        Funcionario f = null;
+        try {
+            f = query.getSingleResult();
+        } catch (NoResultException e) {
+            return f;
+        }
+        return f;
     }
-
-    @Override
-    public void atualizar(Funcionario model) {
-        em.merge(model);
-    }
-
 }

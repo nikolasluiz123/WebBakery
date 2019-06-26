@@ -11,18 +11,28 @@
 
 		<h:form id="formDataTableUsuarios">
 			<div style="padding-top: 15px;">
-				<p:dataTable var="usuario" value="#{listaUsuariosBean.usuarios}"
+				<p:dataTable var="usuario" value="#{listaUsuarioBean.usuarios}"
 					id="tabelaUsuarios" rows="5" paginator="true"
 					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PageLinks} {PreviousPageLink} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 					rowsPerPageTemplate="5,10,15"
 					emptyMessage="Nenhum usuário encontrado."
 					widgetVar="TabelaUsuarios"
-					filteredValue="#{listaUsuariosBean.usuariosFiltrados}">
+					filteredValue="#{listaUsuarioBean.usuariosFiltrados}">
 
 					<f:facet name="header" style="min-height: 35px; max-height: 35px">
 						<div>Usuarios</div>
 
 					</f:facet>
+
+					<p:column headerText="Nome" sortBy="#{usuario.nome}"
+						filterBy="#{usuario.nome}">
+						<h:outputText value="#{usuario.nome}" />
+					</p:column>
+
+					<p:column headerText="Sobrenome" sortBy="#{usuario.sobrenome}"
+						filterBy="#{usuario.sobrenome}">
+						<h:outputText value="#{usuario.sobrenome}" />
+					</p:column>
 
 					<p:column headerText="Email" sortBy="#{usuario.email}"
 						filterBy="#{usuario.email}">
@@ -36,12 +46,12 @@
 
 					<p:column headerText="Alterar">
 						<p:commandLink value="Alterar"
-							action="#{listaUsuariosBean.carregar(usuario)}" process="@this" />
+							action="#{listaUsuarioBean.carregar(usuario)}" process="@this" />
 					</p:column>
 
 					<p:column headerText="Inativar">
 						<p:commandLink value="Inativar"
-							action="#{listaUsuariosBean.inativar(usuario)}"
+							action="#{listaUsuarioBean.inativar(usuario)}"
 							update="tabelaUsuarios, formMessages:messages" process="@this"
 							oncomplete="PF('TabelaUsuarios').filter();" />
 					</p:column>

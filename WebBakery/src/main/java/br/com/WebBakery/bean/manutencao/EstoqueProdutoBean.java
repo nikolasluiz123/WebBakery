@@ -15,7 +15,6 @@ import javax.transaction.Transactional;
 
 import br.com.WebBakery.dao.EstoqueProdutoDao;
 import br.com.WebBakery.model.EstoqueProduto;
-import br.com.WebBakery.validator.EstoqueProdutoValidator;
 
 @Named
 @ViewScoped
@@ -39,46 +38,31 @@ public class EstoqueProdutoBean implements Serializable {
     private List<EstoqueProduto> produtosEstoque;
     private List<EstoqueProduto> produtosEstoqueFiltrados;
 
-    private EstoqueProdutoValidator validator;
-
     @PostConstruct
     private void init() {
         this.estoqueProduto = new EstoqueProduto();
         this.estoqueProdutoDao = new EstoqueProdutoDao(this.em);
-        this.validator = new EstoqueProdutoValidator(this.estoqueProduto);
         initListaEstoqueProdutos();
     }
 
     @Transactional
     public void cadastrar() {
-        epDoBanco = validator.existe(this.estoqueProdutoDao.listarTodos());
-        if (epDoBanco.getId() == null) {
+        if (!estoqueProdutoDao.existe(this.estoqueProduto.getProduto().getId())) {
             efetuarCadastro();
         } else {
             efetuarAtualizacao();
         }
-        atualizarTela();
     }
 
     private void efetuarCadastro() {
-        if (this.validator.isValid()) {
-            this.estoqueProdutoDao.cadastrar(this.estoqueProduto);
-            context.addMessage(null, new FacesMessage(REGISTERED_SUCCESSFULLY));
-        }
+        this.estoqueProdutoDao.cadastrar(this.estoqueProduto);
+        context.addMessage(null, new FacesMessage(REGISTERED_SUCCESSFULLY));
     }
 
     private void efetuarAtualizacao() {
-        if (this.validator.isValid()) {
-            Integer quantidade = this.epDoBanco.getQuantidade();
-            this.estoqueProdutoDao.atualizar(this.epDoBanco, quantidade);
-            context.addMessage(null, new FacesMessage(UPDATED_SUCCESSFULLY));
-        }
-    }
-
-    private void atualizarTela() {
-        this.validator.showMessages();
-        this.validator.clearMessages();
-        this.validator = new EstoqueProdutoValidator(this.estoqueProduto);
+        Integer quantidade = this.epDoBanco.getQuantidade();
+        this.estoqueProdutoDao.atualizar(this.epDoBanco, quantidade);
+        context.addMessage(null, new FacesMessage(UPDATED_SUCCESSFULLY));
     }
 
     private void initListaEstoqueProdutos() {
@@ -131,14 +115,6 @@ public class EstoqueProdutoBean implements Serializable {
 
     public void setEm(EntityManager em) {
         this.em = em;
-    }
-
-    public EstoqueProdutoValidator getValidator() {
-        return validator;
-    }
-
-    public void setValidator(EstoqueProdutoValidator validator) {
-        this.validator = validator;
     }
 
     public FacesContext getContext() {
