@@ -5,9 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
-import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
-import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -16,6 +14,7 @@ import br.com.WebBakery.dao.ProdutoVendaDao;
 import br.com.WebBakery.dao.VendaDao;
 import br.com.WebBakery.model.ProdutoVenda;
 import br.com.WebBakery.model.Venda;
+import br.com.WebBakery.util.String_Util;
 
 @Named
 @ViewScoped
@@ -25,33 +24,47 @@ public class ListaVendaBean implements Serializable {
 
     @PersistenceContext
     private EntityManager em;
-    @Inject
-    transient private FacesContext context;
 
     private VendaDao vendaDao;
     private List<Venda> vendas;
     private List<Venda> vendasFiltradas;
-    private Venda vendaSelecionada;
 
     private ProdutoVendaDao produtoVendaDao;
-    private List<ProdutoVenda> produtoVendas;
-    private List<ProdutoVenda> produtoVendasFiltradas;
+    private List<ProdutoVenda> produtosVenda;
+    private List<ProdutoVenda> produtosVendaFiltradas;
+
+    private Double valorTotalPago;
+    private String valorTotalPagoFormatado;
 
     @PostConstruct
     private void init() {
         this.vendaDao = new VendaDao(this.em);
         this.vendas = new ArrayList<>();
         this.produtoVendaDao = new ProdutoVendaDao(this.em);
-        this.produtoVendas = new ArrayList<>();
+        this.produtosVenda = new ArrayList<>();
+        this.valorTotalPago = 0.0;
         initListVendas();
+    }
+
+    private Double calculaValorTotalPago() {
+        Double valorTotalPago = 0.0;
+        for (ProdutoVenda produtoVenda : produtosVenda) {
+            Double preco = produtoVenda.getProduto().getPreco();
+            Integer quantidade = produtoVenda.getQuantidade();
+            valorTotalPago += preco * quantidade;
+        }
+        this.valorTotalPagoFormatado = String_Util
+                .formatarDoubleParaValorMonetario(valorTotalPago);
+        return valorTotalPago;
     }
 
     private void initListVendas() {
         this.vendas = this.vendaDao.listarTodos();
     }
 
-    private void initListProdutoVendas() {
-        this.produtoVendas = this.produtoVendaDao.listarTodos(true, vendaSelecionada.getId());
+    public void initListProdutoVendas(Integer id) {
+        this.produtosVenda = this.produtoVendaDao.buscarPorIdVenda(id);
+        calculaValorTotalPago();
     }
 
     public List<Venda> getVendas() {
@@ -70,20 +83,36 @@ public class ListaVendaBean implements Serializable {
         this.vendasFiltradas = vendasFiltradas;
     }
 
-    public List<ProdutoVenda> getProdutoVendas() {
-        return produtoVendas;
+    public List<ProdutoVenda> getProdutosVenda() {
+        return produtosVenda;
     }
 
-    public void setProdutoVendas(List<ProdutoVenda> produtoVendas) {
-        this.produtoVendas = produtoVendas;
+    public void setProdutosVenda(List<ProdutoVenda> produtosVenda) {
+        this.produtosVenda = produtosVenda;
     }
 
-    public List<ProdutoVenda> getProdutoVendasFiltradas() {
-        return produtoVendasFiltradas;
+    public List<ProdutoVenda> getProdutosVendaFiltradas() {
+        return produtosVendaFiltradas;
     }
 
-    public void setProdutoVendasFiltradas(List<ProdutoVenda> produtoVendasFiltradas) {
-        this.produtoVendasFiltradas = produtoVendasFiltradas;
+    public void setProdutosVendaFiltradas(List<ProdutoVenda> produtosVendaFiltradas) {
+        this.produtosVendaFiltradas = produtosVendaFiltradas;
+    }
+
+    public Double getValorTotalPago() {
+        return valorTotalPago;
+    }
+
+    public void setValorTotalPago(Double valorTotalPago) {
+        this.valorTotalPago = valorTotalPago;
+    }
+
+    public String getValorTotalPagoFormatado() {
+        return valorTotalPagoFormatado;
+    }
+
+    public void setValorTotalPagoFormatado(String valorTotalPagoFormatado) {
+        this.valorTotalPagoFormatado = valorTotalPagoFormatado;
     }
 
 }

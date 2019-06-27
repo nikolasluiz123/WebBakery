@@ -111,7 +111,7 @@ public class MenuBean {
         itensMenu.add(item20);
 
         DefaultMenuItem item21 = new DefaultMenuItem("Vendas");
-        item21.setUrl("listaVendas.xhtml");
+        item21.setUrl("listaVenda.xhtml");
         itensMenu.add(item21);
 
         ManipuladorPermissao manipulador = new ManipuladorPermissao(itensMenu);

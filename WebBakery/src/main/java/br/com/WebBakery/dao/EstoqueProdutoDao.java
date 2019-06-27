@@ -38,15 +38,15 @@ public class EstoqueProdutoDao extends AbstractBaseDao<EstoqueProduto> {
         return estoque;
     }
 
-    public boolean existe(Integer id) {
+    public EstoqueProduto existe(Integer produtoId) {
         try {
-            em.createQuery("SELECT ep FROM EstoqueProduto ep WHERE ep.produto.id = :pId ORDER BY ep.produto.descricao",
-                           EstoqueProduto.class)
-                    .setParameter("pId", id).getSingleResult();
+            return em
+                    .createQuery("SELECT ep FROM EstoqueProduto ep WHERE ep.produto.id = :pId ",
+                                 EstoqueProduto.class)
+                    .setParameter("pId", produtoId).getSingleResult();
         } catch (NoResultException e) {
-            return false;
+            return null;
         }
-        return true;
     }
 
     public EstoqueProduto buscarEstoqueProduto(Integer produtoId) {

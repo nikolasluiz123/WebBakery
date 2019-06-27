@@ -9,94 +9,74 @@
 
 	<ui:define name="conteudo">
 
-		<h:form id="formDataTableTarefasPendentes">
-			<p:dataTable var="tarefa"
-				value="#{listaTarefaBean.tarefasPendentes}"
-				id="tabelaTarefasPendentes" rows="10" paginator="true"
+		<h:form id="formDataTableVendas">
+			<p:dataTable var="venda" value="#{listaVendaBean.vendas}"
+				id="tabelaVendas" rows="10" paginator="true"
 				paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PageLinks} {PreviousPageLink} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-				rowsPerPageTemplate="10,15,20,25,30"
-				widgetVar="TabelaTarefasPendentes"
-				filteredValue="#{listaTarefaBean.tarefasPendentesFiltradas}"
-				emptyMessage="Nenhuma tarefa pendente encontrada">
+				rowsPerPageTemplate="10,15,20,25,30" widgetVar="TabelaVendas"
+				filteredValue="#{listaVendaBean.vendasFiltradas}"
+				emptyMessage="Nenhuma venda encontrada.">
 
 				<f:facet name="header" style="min-height: 35px">
-					<div>Tarefas Pendetes</div>
+					<div>Vendas</div>
 				</f:facet>
 
-				<p:column headerText="Produto" sortBy="#{tarefa.produto.descricao}"
-					filterBy="#{tarefa.produto.descricao}">
-					<h:outputText value="#{tarefa.produto.descricao}" />
+				<p:column headerText="Data" sortBy="#{venda.data}"
+					filterBy="#{venda.data}">
+					<h:outputText value="#{venda.data}" converter="SimpleDateConverter" />
 				</p:column>
 
-				<p:column headerText="Quantidade" sortBy="#{tarefa.quantidade}"
-					filterBy="#{tarefa.quantidade}">
-					<h:outputText value="#{tarefa.quantidade}" />
+				<p:column headerText="Cliente"
+					sortBy="#{venda.cliente.usuario.nome}"
+					filterBy="#{venda.cliente.usuario.nome}">
+					<h:outputText value="#{venda.cliente.usuario.nome}" />
 				</p:column>
 
-				<p:column headerText="Data de Início" sortBy="#{tarefa.dataInicio}"
-					filterBy="#{tarefaBean.dataFormatada(tarefa.dataInicio)}">
-					<h:outputText value="#{tarefa.dataInicio}"
-						converter="SimpleDateConverter" />
+				<p:column headerText="Funcionário"
+					sortBy="#{venda.funcionario.usuario.nome}"
+					filterBy="#{venda.funcionario.usuario.nome}">
+					<h:outputText value="#{venda.funcionario.usuario.nome}" />
 				</p:column>
 
-				<p:column headerText="Data de Fim" sortBy="#{tarefa.dataFim}"
-					filterBy="#{tarefaBean.dataFormatada(tarefa.dataFim)}">
-					<h:outputText value="#{tarefa.dataFim}"
-						converter="SimpleDateConverter" />
-				</p:column>
-
-				<p:column headerText="Alterar">
-					<p:commandLink value="Alterar"
-						action="#{listaTarefaBean.carregar(tarefa.id)}" process="@this" />
-				</p:column>
-
-				<p:column headerText="Concuir">
-					<p:commandLink value="Concuir"
-						action="#{listaTarefaBean.concluir(tarefa)}" process="@this"
-						update="formDataTableTarefasPendentes, formDataTableTarefasConcluidas"
-						oncomplete="PF('TabelaTarefasPendentes').filter();" />
+				<p:column headerText="Produtos">
+					<p:commandLink value="Produtos"
+						oncomplete="PF('ProdutosVendaDialog').show();"
+						action="#{listaVendaBean.initListProdutoVendas(venda.id)}"
+						update="formDataTableVendas:lovProdutosVenda" />
 				</p:column>
 			</p:dataTable>
-		</h:form>
-		<br />
-		<br />
 
-		<h:form id="formDataTableTarefasConcluidas">
-			<p:dataTable var="tarefa"
-				value="#{listaTarefaBean.tarefasConcluidas}"
-				id="tabelaTarefasConcluidas" rows="10" paginator="true"
-				paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PageLinks} {PreviousPageLink} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-				rowsPerPageTemplate="10,15,20,25,30"
-				widgetVar="TabelaTarefasConcluidas"
-				filteredValue="#{listaTarefaBean.tarefasConcuidasFiltradas}"
-				emptyMessage="Nenhuma tarefa concluída encontrada">
+			<p:dialog header="ProdutosVenda" widgetVar="ProdutosVendaDialog"
+				resizable="false" width="700" id="lovProdutosVenda">
 
-				<f:facet name="header" style="min-height: 35px">
-					<div>Tarefas Concluídas</div>
-				</f:facet>
+				<p:dataTable var="produtoVenda"
+					value="#{listaVendaBean.produtosVenda}" id="tabelaProdutosVenda"
+					rowKey="#{produtoVenda.id}" rows="5" paginator="true"
+					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PageLinks} {PreviousPageLink} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					rowsPerPageTemplate="5,10,15"
+					emptyMessage="Nenhum produto nesta venda foi encontrado."
+					widgetVar="TabelaProdutosVenda"
+					filteredValue="#{listaVendaBean.produtosVendaFiltradas}">
 
-				<p:column headerText="Produto" sortBy="#{tarefa.produto.descricao}"
-					filterBy="#{tarefa.produto.descricao}">
-					<h:outputText value="#{tarefa.produto.descricao}" />
-				</p:column>
+					<p:column headerText="Produto"
+						filterBy="#{produtoVenda.produto.descricao}"
+						sortBy="#{produtoVenda.produto.descricao}">
+						<h:outputText value="#{produtoVenda.produto.descricao}" />
+					</p:column>
 
-				<p:column headerText="Quantidade" sortBy="#{tarefa.quantidade}"
-					filterBy="#{tarefa.quantidade}">
-					<h:outputText value="#{tarefa.quantidade}" />
-				</p:column>
+					<p:column headerText="Quantidade"
+						filterBy="#{produtoVenda.quantidade}"
+						sortBy="#{produtoVenda.quantidade}">
+						<h:outputText value="#{produtoVenda.quantidade}" />
+					</p:column>
 
-				<p:column headerText="Data de Início" sortBy="#{tarefa.dataInicio}"
-					filterBy="#{tarefaBean.dataFormatada(tarefa.dataInicio)}">
-					<h:outputText value="#{tarefa.dataInicio}"
-						converter="SimpleDateConverter" />
-				</p:column>
-
-				<p:column headerText="Data de Fim" sortBy="#{tarefa.dataFim}"
-					filterBy="#{tarefaBean.dataFormatada(tarefa.dataFim)}">
-					<h:outputText value="#{tarefa.dataFim}"
-						converter="SimpleDateConverter" />
-				</p:column>
-			</p:dataTable>
+					<p:column headerText="Valor Total"
+						filterBy="#{listaVendaBean.valorTotalPago}"
+						sortBy="#{listaVendaBean.valorTotalPago}">
+						<h:outputText value="#{listaVendaBean.valorTotalPagoFormatado}" />
+					</p:column>
+				</p:dataTable>
+			</p:dialog>
 		</h:form>
 	</ui:define>
 </ui:composition>

@@ -5,7 +5,10 @@ import java.util.List;
 
 import org.primefaces.model.menu.DefaultMenuItem;
 
+import br.com.WebBakery.dao.FuncionarioDao;
 import br.com.WebBakery.enums.TipoUsuario;
+import br.com.WebBakery.model.Funcionario;
+import br.com.WebBakery.model.Usuario;
 
 public class ManipuladorPermissao {
 
@@ -40,8 +43,8 @@ public class ManipuladorPermissao {
         permissoesGerente.add("Cidades");
         permissoesGerente.add("Cliente");
         permissoesGerente.add("Clientes");
-        permissoesGerente.add("Funcionario");
-        permissoesGerente.add("Funcionarios");
+        permissoesGerente.add("Funcionário");
+        permissoesGerente.add("Funcionários");
         permissoesGerente.add("Usuário");
         permissoesGerente.add("Usuários");
         permissoesGerente.add("Produto");
@@ -95,7 +98,7 @@ public class ManipuladorPermissao {
             }
         }
     }
-
+    
     public List<String> getPermissoesPadeiro() {
         return permissoesPadeiro;
     }

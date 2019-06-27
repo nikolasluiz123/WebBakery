@@ -21,7 +21,7 @@ public class ProdutoVendaDao extends AbstractBaseDao<ProdutoVenda> {
     public ProdutoVendaDao() {
     }
 
-    public List<ProdutoVenda> listarTodos(Boolean ativo, Integer IdVenda) {
+    public List<ProdutoVenda> buscarPorIdVenda(Integer IdVenda) {
         List<ProdutoVenda> produtoVenda = new ArrayList<>();
 
         produtoVenda = em

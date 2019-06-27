@@ -219,6 +219,9 @@ public class VendaBean implements Serializable {
         for (EstoqueProduto ep : estoqueProdutosSelecionados) {
             this.produtoVenda.setProduto(ep.getProduto());
             this.produtoVenda.setVenda(this.venda);
+            for (ProdutoVenda pv : produtosVenda) {
+                this.produtoVenda.setQuantidade(pv.getQuantidade());
+            }
             this.produtoVendaDao.cadastrar(this.produtoVenda);
         }
     }

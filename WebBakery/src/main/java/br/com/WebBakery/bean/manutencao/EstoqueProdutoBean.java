@@ -47,7 +47,8 @@ public class EstoqueProdutoBean implements Serializable {
 
     @Transactional
     public void cadastrar() {
-        if (!estoqueProdutoDao.existe(this.estoqueProduto.getProduto().getId())) {
+        this.epDoBanco = estoqueProdutoDao.existe(this.estoqueProduto.getProduto().getId());
+        if (this.epDoBanco == null) {
             efetuarCadastro();
         } else {
             efetuarAtualizacao();
@@ -60,7 +61,7 @@ public class EstoqueProdutoBean implements Serializable {
     }
 
     private void efetuarAtualizacao() {
-        Integer quantidade = this.epDoBanco.getQuantidade();
+        Integer quantidade = this.estoqueProduto.getQuantidade();
         this.estoqueProdutoDao.atualizar(this.epDoBanco, quantidade);
         context.addMessage(null, new FacesMessage(UPDATED_SUCCESSFULLY));
     }
