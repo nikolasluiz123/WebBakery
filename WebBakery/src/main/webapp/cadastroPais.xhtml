@@ -11,21 +11,26 @@
 
 		<h:form id="formCadastroPais">
 
-			<p:fieldset legend="Dados do Pais">
-				<p:panelGrid columns="2">
+			<p:fieldset legend="Dados do País">
+				<div class="ui-g">
 
-					<p:outputLabel value="Nome:" for="nome" />
-					<p:inputText id="nome" value="#{paisBean.pais.nome}"
-						placeholder="Digite o nome..." />
+					<div class="ui-g-4">
+						<p:outputLabel value="Nome:" for="nome" />
+						<p:inputText id="nome" value="#{paisBean.pais.nome}"
+							placeholder="Digite o nome..." />
+					</div>
 
-					<p:outputLabel value="Sigla:" for="sigla" />
-					<p:inputText id="sigla" value="#{paisBean.pais.sigla}"
-						placeholder="Digite a sigla..." />
+					<div class="ui-g-4">
+						<p:outputLabel value="Sigla:" for="sigla" />
+						<p:inputText id="sigla" value="#{paisBean.pais.sigla}"
+							placeholder="Digite a sigla..." />
+					</div>
 
-					<p:commandButton value="Cadastrar" process="@form"
-						update="formMessages:messages" action="#{paisBean.cadastrar}" />
-
-				</p:panelGrid>
+					<div class="ui-g-4">
+						<p:commandButton value="Cadastrar" process="@form"
+							update="formMessages:messages" action="#{paisBean.cadastrar}" />
+					</div>
+				</div>
 			</p:fieldset>
 		</h:form>
 	</ui:define>

@@ -18,7 +18,7 @@ import javax.transaction.Transactional;
 
 import br.com.WebBakery.dao.PaisDao;
 import br.com.WebBakery.model.Pais;
-import br.com.WebBakery.util.FacesUtil;
+import br.com.WebBakery.util.Faces_Util;
 
 @Named
 @ViewScoped
@@ -57,7 +57,7 @@ public class ListaPaiseBean implements Serializable {
     }
 
     public void carregar(Integer paisID) throws IOException {
-        HttpSession session = FacesUtil.getHTTPSession();
+        HttpSession session = Faces_Util.getHTTPSession();
         session.setAttribute("PaisID", paisID);
         context.getExternalContext().redirect("cadastroPais.xhtml");
     }

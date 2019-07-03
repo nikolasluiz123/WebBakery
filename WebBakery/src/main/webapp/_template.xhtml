@@ -8,18 +8,48 @@
 
 <style>
 html, body {
-	margin: 0 !important;
-	height: 100% !important;
+	margin: 0px !important;
+	padding-top: 30px;
+	overflow-x: hidden;
 }
 
-/* .ui-menu { */
-/* 	margin: 0 !important; */
-/* 	height: 1000px !important; */
+.menuLateral {
+	padding: 0px !important;
+	overflow-y: auto;
+	position: absolute;
+	height: 100% ! important;
+	top: 0px;
+	left: 0px;
+	background: #c4c4c4
+		-webkit-gradient(linear, left top, left bottom, from(rgba(255, 255, 255,
+		0.8)), to(rgba(255, 255, 255, 0)));
+}
+
+.menuLateral .ui-menu {
+	border: none;
+}
+/* .toolBar { */
+/* 	padding: 10px; */
+/* 	position: fixed; */
+/* 	left: 0; */
+/* 	right: 0; */
+/* 	top: 0; */
+/* } */
+
+/* .footer { */
+/* 	position: fixed; */
+/* 	left: 0; */
+/* 	bottom: 0; */
+/* 	width: 100%; */
+/* 	background-color: #c4c4c4; */
+/* 	color: white; */
+/* 	text-align: center; */
 /* } */
 </style>
 
 <h:head>
-	<p:toolbar rendered="#{usuarioLogado != null}" style="padding: 10px;">
+	<p:toolbar rendered="#{usuarioLogado != null}"
+		style="padding: 10px; position: fixed; left: 0; right: 0; top: 0;">
 		<f:facet name="left">
 			<p:outputLabel value="#{usuarioLogado.nome}"
 				style="vertical-align: middle;" />
@@ -39,21 +69,31 @@ html, body {
 </h:head>
 
 <h:body>
-	<div id="cabecalho">
+	<div id="cabecalho"
+		style="position: fixed; left: 0; top: 55px; bottom: 0; z-index: 100; padding: 10px;">
 
 		<h:form id="formMessages">
 			<p:growl id="messages" life="10000" />
 		</h:form>
 
-		<h:form id="formMenuLateral" rendered="#{usuarioLogado != null}">
-			<p:menu model="#{menuBean.model}" />
+		<h:form id="formMenuLateral" rendered="#{usuarioLogado != null}"
+			styleClass="menuLateral">
+			<p:menu model="#{menuBean.model}"
+				style="height: 100%; box-sizing: border-box;" />
 		</h:form>
 
 	</div>
 
-	<div id="conteudo">
-		<ui:insert name="conteudo">
-		</ui:insert>
+	<div class="ui-g">
+		<div id="conteudo" class="ui-g-10"
+			style="margin-left: 220px; z-index: 99;">
+			<ui:insert name="conteudo">
+			</ui:insert>
+		</div>
 	</div>
+
+	<!-- 	<div class="footer" id="pageFooter"> -->
+	<!-- 		<p>Footer</p> -->
+	<!-- 	</div> -->
 </h:body>
 </html>

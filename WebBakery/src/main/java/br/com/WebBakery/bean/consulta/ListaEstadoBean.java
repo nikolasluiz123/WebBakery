@@ -18,7 +18,7 @@ import javax.transaction.Transactional;
 
 import br.com.WebBakery.dao.EstadoDao;
 import br.com.WebBakery.model.Estado;
-import br.com.WebBakery.util.FacesUtil;
+import br.com.WebBakery.util.Faces_Util;
 
 @Named
 @ViewScoped
@@ -46,7 +46,7 @@ public class ListaEstadoBean implements Serializable {
 
     @Transactional
     public void carregar(Integer estadoID) throws IOException {
-        HttpSession session = FacesUtil.getHTTPSession();
+        HttpSession session = Faces_Util.getHTTPSession();
         session.setAttribute("EstadoID", estadoID);
         context.getExternalContext().redirect("cadastroEstado.xhtml");
     }

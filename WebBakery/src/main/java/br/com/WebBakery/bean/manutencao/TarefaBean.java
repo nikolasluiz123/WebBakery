@@ -19,7 +19,7 @@ import br.com.WebBakery.dao.TarefaDao;
 import br.com.WebBakery.model.Produto;
 import br.com.WebBakery.model.Tarefa;
 import br.com.WebBakery.util.Date_Util;
-import br.com.WebBakery.util.FacesUtil;
+import br.com.WebBakery.util.Faces_Util;
 import br.com.WebBakery.validator.TarefaValidator;
 
 @Named
@@ -91,10 +91,10 @@ public class TarefaBean implements Serializable {
     }
 
     private void verificaTarefaSessao() {
-        Integer tarefaId = (Integer) FacesUtil.getHTTPSession().getAttribute("TarefaID");
+        Integer tarefaId = (Integer) Faces_Util.getHTTPSession().getAttribute("TarefaID");
         if (tarefaId != null) {
             this.tarefa = tarefaDao.buscarPorId(Tarefa.class, tarefaId);
-            FacesUtil.getHTTPSession().removeAttribute("TarefaID");
+            Faces_Util.getHTTPSession().removeAttribute("TarefaID");
         }
     }
 

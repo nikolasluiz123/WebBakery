@@ -20,7 +20,7 @@ import br.com.WebBakery.dao.EstoqueProdutoDao;
 import br.com.WebBakery.dao.TarefaDao;
 import br.com.WebBakery.model.EstoqueProduto;
 import br.com.WebBakery.model.Tarefa;
-import br.com.WebBakery.util.FacesUtil;
+import br.com.WebBakery.util.Faces_Util;
 
 @Named
 @ViewScoped
@@ -56,7 +56,7 @@ public class ListaTarefaBean implements Serializable {
     }
 
     public void carregar(Integer tarefaID) throws Exception {
-        HttpSession session = FacesUtil.getHTTPSession();
+        HttpSession session = Faces_Util.getHTTPSession();
         session.setAttribute("TarefaID", tarefaID);
         context.getExternalContext().redirect("cadastroTarefa.xhtml");
     }

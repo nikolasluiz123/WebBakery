@@ -13,7 +13,7 @@ import javax.transaction.Transactional;
 
 import br.com.WebBakery.dao.ReceitaDao;
 import br.com.WebBakery.model.Receita;
-import br.com.WebBakery.util.FacesUtil;
+import br.com.WebBakery.util.Faces_Util;
 import br.com.WebBakery.validator.ReceitaValidator;
 
 @Named
@@ -76,10 +76,10 @@ public class ReceitaBean implements Serializable {
     }
 
     private void verificaReceitaSessao() {
-        Integer receitaId = (Integer) FacesUtil.getHTTPSession().getAttribute("ReceitaID");
+        Integer receitaId = (Integer) Faces_Util.getHTTPSession().getAttribute("ReceitaID");
         if (receitaId != null) {
             this.receita = receitaDao.buscarPorId(Receita.class, receitaId);
-            FacesUtil.getHTTPSession().removeAttribute("ReceitaID");
+            Faces_Util.getHTTPSession().removeAttribute("ReceitaID");
         }
     }
 

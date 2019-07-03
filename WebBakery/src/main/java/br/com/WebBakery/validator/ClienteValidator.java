@@ -25,9 +25,11 @@ public class ClienteValidator extends AbstractValidator {
 
     private Cliente cliente;
     private ClienteDao clienteDao;
+    private String senha;
 
-    public ClienteValidator(Cliente cliente, EntityManager em) {
+    public ClienteValidator(Cliente cliente, EntityManager em, String senha) {
         this.cliente = cliente;
+        this.senha = senha;
         this.clienteDao = new ClienteDao(em);
     }
 
@@ -41,7 +43,6 @@ public class ClienteValidator extends AbstractValidator {
 
     private void validaUsuario() {
         String email = this.cliente.getUsuario().getEmail().trim();
-        String senha = this.cliente.getUsuario().getSenha().trim();
 
         if (email == null || email.isEmpty()) {
             messages.add(FIELD_EMAIL_REQUIRED);
@@ -49,10 +50,10 @@ public class ClienteValidator extends AbstractValidator {
         if (!Email_Util.isValid(email)) {
             messages.add(FIELD_EMAIL_NOT_VALID);
         }
-        if (senha == null || senha.isEmpty()) {
+        if (this.senha == null || this.senha.isEmpty()) {
             messages.add(FIELD_SENHA_REQUIRED);
         }
-        if (senha.length() > 255 || senha.length() < 5) {
+        if (this.senha.length() > 255 || this.senha.length() < 5) {
             messages.add(FIELD_SENHA_NOT_VALID);
         }
     }

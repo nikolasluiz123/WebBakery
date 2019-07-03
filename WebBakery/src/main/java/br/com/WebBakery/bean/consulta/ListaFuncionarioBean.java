@@ -19,7 +19,7 @@ import javax.transaction.Transactional;
 import br.com.WebBakery.dao.EnderecoDao;
 import br.com.WebBakery.dao.FuncionarioDao;
 import br.com.WebBakery.model.Funcionario;
-import br.com.WebBakery.util.FacesUtil;
+import br.com.WebBakery.util.Faces_Util;
 
 @Named
 @ViewScoped
@@ -61,7 +61,7 @@ public class ListaFuncionarioBean implements Serializable {
 
     @Transactional
     public void carregar(Integer funcionarioID) throws IOException {
-        HttpSession session = FacesUtil.getHTTPSession();
+        HttpSession session = Faces_Util.getHTTPSession();
         session.setAttribute("FuncionarioID", funcionarioID);
         context.getExternalContext().redirect("cadastroFuncionario.xhtml");
     }

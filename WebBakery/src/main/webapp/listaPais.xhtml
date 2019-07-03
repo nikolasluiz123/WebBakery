@@ -10,42 +10,40 @@
 	<ui:define name="conteudo">
 
 		<h:form id="formDataTablePaises">
-			<div style="padding-top: 15px;">
-				<p:dataTable var="pais" value="#{listaPaisesBean.paises}"
-					id="tabelaPaises" rows="5" paginator="true"
-					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PageLinks} {PreviousPageLink} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-					rowsPerPageTemplate="5,10,15"
-					emptyMessage="Nenhum país encontrado." widgetVar="TabelaPaises"
-					filteredValue="#{listaPaisesBean.paisesFiltrados}">
+			<p:dataTable var="pais" value="#{listaPaisesBean.paises}"
+				id="tabelaPaises" rows="5" paginator="true"
+				paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PageLinks} {PreviousPageLink} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rowsPerPageTemplate="5,10,15" emptyMessage="Nenhum país encontrado."
+				widgetVar="TabelaPaises"
+				filteredValue="#{listaPaisesBean.paisesFiltrados}">
 
-					<f:facet name="header" style="min-height: 35px; max-height: 35px">
-						<div>Países</div>
+				<f:facet name="header">
+					<div>Países</div>
 
-					</f:facet>
+				</f:facet>
 
-					<p:column headerText="Nome" sortBy="#{pais.nome}"
-						filterBy="#{pais.nome}">
-						<h:outputText value="#{pais.nome}" />
-					</p:column>
+				<p:column headerText="Nome" sortBy="#{pais.nome}"
+					filterBy="#{pais.nome}">
+					<h:outputText value="#{pais.nome}" />
+				</p:column>
 
-					<p:column headerText="Sigla" sortBy="#{pais.sigla}"
-						filterBy="#{pais.sigla}">
-						<h:outputText value="#{pais.sigla}" />
-					</p:column>
+				<p:column headerText="Sigla" sortBy="#{pais.sigla}"
+					filterBy="#{pais.sigla}">
+					<h:outputText value="#{pais.sigla}" />
+				</p:column>
 
-					<p:column headerText="Alterar">
-						<p:commandLink value="Alterar"
-							action="#{listaPaisesBean.carregar(pais.id)}" process="@this" />
-					</p:column>
+				<p:column headerText="Alterar">
+					<p:commandLink value="Alterar"
+						action="#{listaPaisesBean.carregar(pais.id)}" process="@this" />
+				</p:column>
 
-					<p:column headerText="Inativar">
-						<p:commandLink value="Inativar"
-							action="#{listaPaisesBean.inativar(pais)}"
-							update="tabelaPaises, formMessages:messages" process="@this"
-							oncomplete="PF('TabelaPaises').filter();" />
-					</p:column>
-				</p:dataTable>
-			</div>
+				<p:column headerText="Inativar">
+					<p:commandLink value="Inativar"
+						action="#{listaPaisesBean.inativar(pais)}"
+						update="tabelaPaises, formMessages:messages" process="@this"
+						oncomplete="PF('TabelaPaises').filter();" />
+				</p:column>
+			</p:dataTable>
 		</h:form>
 	</ui:define>
 </ui:composition>

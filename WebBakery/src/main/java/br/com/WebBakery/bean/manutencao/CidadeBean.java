@@ -18,7 +18,7 @@ import br.com.WebBakery.dao.CidadeDao;
 import br.com.WebBakery.dao.EstadoDao;
 import br.com.WebBakery.model.Cidade;
 import br.com.WebBakery.model.Estado;
-import br.com.WebBakery.util.FacesUtil;
+import br.com.WebBakery.util.Faces_Util;
 import br.com.WebBakery.validator.CidadeValidator;
 
 @Named
@@ -91,10 +91,10 @@ public class CidadeBean implements Serializable {
     }
 
     private void verificaCidadeSessao() {
-        Integer cidadeId = (Integer) FacesUtil.getHTTPSession().getAttribute("CidadeID");
+        Integer cidadeId = (Integer) Faces_Util.getHTTPSession().getAttribute("CidadeID");
         if (cidadeId != null) {
             this.cidade = cidadeDao.buscarPorId(Cidade.class, cidadeId);
-            FacesUtil.getHTTPSession().removeAttribute("CidadeID");
+            Faces_Util.getHTTPSession().removeAttribute("CidadeID");
         }
     }
 

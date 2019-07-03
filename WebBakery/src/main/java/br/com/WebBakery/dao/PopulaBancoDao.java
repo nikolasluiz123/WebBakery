@@ -1,14 +1,23 @@
 package br.com.WebBakery.dao;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.Date;
 
 import javax.ejb.Stateless;
+import javax.persistence.Column;
 import javax.persistence.EntityManager;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.PersistenceContext;
 
 import br.com.WebBakery.enums.TipoUsuario;
 import br.com.WebBakery.model.Cidade;
+import br.com.WebBakery.model.Endereco;
 import br.com.WebBakery.model.Estado;
+import br.com.WebBakery.model.Funcionario;
 import br.com.WebBakery.model.Logradouro;
 import br.com.WebBakery.model.Pais;
 import br.com.WebBakery.model.Usuario;
@@ -30,13 +39,21 @@ public class PopulaBancoDao implements Serializable {
 
     public void popularBanco() {
 
-        Usuario gerente = gerarUsuario("gerente@webbakery.com", "1234578", TipoUsuario.GERENTE);
-        Usuario cliente = gerarUsuario("cliente@gmail.com", "1234578", TipoUsuario.CLIENTE);
+        Usuario gerente = gerarUsuario("gerente@webbakery.com",
+                                       "1234578".hashCode(),
+                                       TipoUsuario.GERENTE);
+        Usuario cliente = gerarUsuario("cliente@gmail.com",
+                                       "123456789".hashCode(),
+                                       TipoUsuario.CLIENTE);
         Usuario admEstoque = gerarUsuario("admEstoque@webbakery.com",
-                                          "1234578",
+                                          "yyyyyyyyyyyy".hashCode(),
                                           TipoUsuario.ADMINISTRADOR_ESTOQUE);
-        Usuario caixa = gerarUsuario("caixa@webbakery.com", "1234578", TipoUsuario.CAIXA);
-        Usuario padeiro = gerarUsuario("padeiro@webbakery.com", "1234578", TipoUsuario.PADEIRO);
+        Usuario caixa = gerarUsuario("caixa@webbakery.com",
+                                     "12345678910".hashCode(),
+                                     TipoUsuario.CAIXA);
+        Usuario padeiro = gerarUsuario("padeiro@webbakery.com",
+                                       "1234567891011".hashCode(),
+                                       TipoUsuario.PADEIRO);
 
         Pais pais1 = gerarPais("Afeganistão", "AF");
         Pais pais2 = gerarPais("África Do Sul", "ZA");
@@ -1276,7 +1293,7 @@ public class PopulaBancoDao implements Serializable {
 
     }
 
-    private static Usuario gerarUsuario(String email, String senha, TipoUsuario tipo) {
+    private static Usuario gerarUsuario(String email, Integer senha, TipoUsuario tipo) {
         Usuario usuario = new Usuario();
         usuario.setEmail(email);
         usuario.setSenha(senha);
@@ -1323,5 +1340,26 @@ public class PopulaBancoDao implements Serializable {
         logradouro.setRua(rua);
         logradouro.setAtivo(true);
         return logradouro;
+    }
+
+    private static Funcionario gerarFuncionario(BigDecimal salario,
+                                                Endereco endereco,
+                                                Usuario usuario,
+                                                Date dataNascimento,
+                                                String cpf,
+                                                String rg,
+                                                String telefone) {
+
+        Funcionario f = new Funcionario();
+        f.setAtivo(true);
+        f.setCpf(cpf);
+        f.setDataNascimento(dataNascimento);
+        f.setEndereco(endereco);
+        f.setRg(rg);
+        f.setSalario(salario);
+        f.setTelefone(telefone);
+        f.setUsuario(usuario);
+
+        return f;
     }
 }

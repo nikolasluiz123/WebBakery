@@ -18,7 +18,7 @@ import br.com.WebBakery.dao.EstadoDao;
 import br.com.WebBakery.dao.PaisDao;
 import br.com.WebBakery.model.Estado;
 import br.com.WebBakery.model.Pais;
-import br.com.WebBakery.util.FacesUtil;
+import br.com.WebBakery.util.Faces_Util;
 import br.com.WebBakery.validator.EstadoValidator;
 
 @Named
@@ -91,10 +91,10 @@ public class EstadoBean implements Serializable {
     }
 
     private void verificaEstadoSessao() {
-        Integer estadoId = (Integer) FacesUtil.getHTTPSession().getAttribute("EstadoID");
+        Integer estadoId = (Integer) Faces_Util.getHTTPSession().getAttribute("EstadoID");
         if (estadoId != null) {
             this.estado = estadoDao.buscarPorId(Estado.class, estadoId);
-            FacesUtil.getHTTPSession().removeAttribute("EstadoID");
+            Faces_Util.getHTTPSession().removeAttribute("EstadoID");
         }
     }
 

@@ -6,6 +6,7 @@ import br.com.WebBakery.abstractClass.AbstractValidator;
 import br.com.WebBakery.dao.UsuarioDao;
 import br.com.WebBakery.model.Usuario;
 import br.com.WebBakery.util.Email_Util;
+import br.com.WebBakery.util.Hash_Util;
 
 public class UsuarioValidator extends AbstractValidator {
 
@@ -23,11 +24,12 @@ public class UsuarioValidator extends AbstractValidator {
 
     private Usuario usuario;
     private UsuarioDao usuarioDao;
+    private String senha;
 
-    public UsuarioValidator(Usuario usuario, EntityManager em) {
+    public UsuarioValidator(Usuario usuario, EntityManager em, String senha) {
         this.usuario = usuario;
         this.usuarioDao = new UsuarioDao(em);
-
+        this.senha = senha;
     }
 
     @Override
@@ -82,16 +84,16 @@ public class UsuarioValidator extends AbstractValidator {
     }
 
     private void validaSenha() {
-        String senha = this.usuario.getSenha().trim();
-
-        if (senha.isEmpty() || senha == null) {
+        if (this.senha.isEmpty() || this.senha == null) {
             messages.add(FIELD_SENHA_REQUIRED);
         }
-        if (senha.length() > 80) {
+        if (this.senha.length() > 80) {
             messages.add(FIELD_SENHA_LIMIT_EXCEDDED);
         }
-        if (senha.length() < 7) {
+        if (this.senha.length() < 7) {
             messages.add(FIELD_SENHA_VERY_WEAK);
         }
+        Integer senhaHash = Hash_Util.getHashCode(this.senha);
+        this.usuario.setSenha(senhaHash);
     }
 }

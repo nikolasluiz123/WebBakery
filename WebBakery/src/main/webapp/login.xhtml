@@ -5,16 +5,23 @@
 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui">
 
-<ui:composition template="_template.xhtml">
+<style>
+/* .formCenterAlign { */
+/* 	display: inline-block; */
+/* 	position: relative; */
+/* } */
+</style>
+
+<ui:composition template="_templateLogin.xhtml">
 
 	<ui:define name="conteudo">
 
-		<h:form id="formCadastroUsuario">
+		<h:form id="formCadastroUsuario" styleClass="formCenterAlign">
 
 			<p:fieldset legend="Dados do Usuário">
-				<p:panelGrid columns="2">
 
-					<p:outputLabel value="E-mail:" for="email" />
+				<div class="ui-g-5">
+					<p:outputLabel value="E-mail" for="email" />
 					<p:inputText id="email" value="#{loginBean.usuario.email}"
 						placeholder="Digite seu e-mail..." required="true"
 						requiredMessage="E-mail é obrigatório!">
@@ -23,14 +30,16 @@
 
 					</p:inputText>
 
-					<p:outputLabel value="Senha:" for="senha" />
-					<p:password id="senha" value="#{loginBean.usuario.senha}"
+					<p:outputLabel value="Senha" for="senha" />
+					<p:password id="senha" value="#{loginBean.senha}"
 						placeholder="Digite sua senha..." required="true"
 						requiredMessage="Senha é obrigatória!" />
 
 					<p:commandButton value="Login" action="#{loginBean.logar}"
-						process="@form" update="formMessages:messages" />
-				</p:panelGrid>
+						process="@form" update="formMessages:messages"
+						style="margin-top: 10px;" />
+				</div>
+
 			</p:fieldset>
 		</h:form>
 	</ui:define>

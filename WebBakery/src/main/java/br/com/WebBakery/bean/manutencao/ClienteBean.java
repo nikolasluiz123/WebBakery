@@ -28,7 +28,8 @@ import br.com.WebBakery.model.Estado;
 import br.com.WebBakery.model.Logradouro;
 import br.com.WebBakery.model.Pais;
 import br.com.WebBakery.model.Usuario;
-import br.com.WebBakery.util.FacesUtil;
+import br.com.WebBakery.util.Faces_Util;
+import br.com.WebBakery.util.Hash_Util;
 import br.com.WebBakery.validator.ClienteValidator;
 import br.com.WebBakery.validator.EnderecoValidator;
 
@@ -74,6 +75,8 @@ public class ClienteBean implements Serializable {
     private ClienteValidator clienteValidator;
     private EnderecoValidator enderecoValidator;
 
+    private String senha;
+
     @PostConstruct
     private void init() {
         this.clienteDao = new ClienteDao(this.em);
@@ -108,7 +111,7 @@ public class ClienteBean implements Serializable {
 
     @Transactional
     public void cadastrar() {
-        this.clienteValidator = new ClienteValidator(this.cliente, this.em);
+        this.clienteValidator = new ClienteValidator(this.cliente, this.em, this.senha);
         this.enderecoValidator = new EnderecoValidator(this.cliente.getEndereco());
         if (this.cliente.getId() == null) {
             efetuarCadastro();
@@ -132,6 +135,7 @@ public class ClienteBean implements Serializable {
     private void cadastrarUsuarioCliente() {
         this.cliente.getUsuario().setAtivo(true);
         this.cliente.getUsuario().setTipo(TipoUsuario.CLIENTE);
+        this.cliente.getUsuario().setSenha(Hash_Util.getHashCode(this.senha));
         this.usuarioDao.cadastrar(this.cliente.getUsuario());
     }
 
@@ -149,6 +153,7 @@ public class ClienteBean implements Serializable {
     private void efetuarAtualizacao() {
         if (clienteValidator.isValid() && enderecoValidator.ehValido()) {
             this.clienteDao.atualizar(this.cliente);
+            this.cliente.getUsuario().setSenha(Hash_Util.getHashCode(this.senha));
             this.usuarioDao.atualizar(this.cliente.getUsuario());
             this.enderecoDao.atualizar(this.cliente.getEndereco());
             this.logradouroDao.atualizar(this.cliente.getEndereco().getLogradouro());
@@ -163,10 +168,10 @@ public class ClienteBean implements Serializable {
     }
 
     private void verficarClienteSessao() {
-        Integer clienteId = (Integer) FacesUtil.getHTTPSession().getAttribute("ClienteID");
+        Integer clienteId = (Integer) Faces_Util.getHTTPSession().getAttribute("ClienteID");
         if (clienteId != null) {
             this.cliente = clienteDao.buscarPorId(Cliente.class, clienteId);
-            FacesUtil.getHTTPSession().removeAttribute("ClienteID");
+            Faces_Util.getHTTPSession().removeAttribute("ClienteID");
         }
     }
 
@@ -362,6 +367,14 @@ public class ClienteBean implements Serializable {
 
     public void setCidadesFiltradas(List<Cidade> cidadesFiltradas) {
         this.cidadesFiltradas = cidadesFiltradas;
+    }
+
+    public String getSenha() {
+        return senha;
+    }
+
+    public void setSenha(String senha) {
+        this.senha = senha;
     }
 
 }

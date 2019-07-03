@@ -17,7 +17,7 @@ import javax.transaction.Transactional;
 
 import br.com.WebBakery.dao.ClienteDao;
 import br.com.WebBakery.model.Cliente;
-import br.com.WebBakery.util.FacesUtil;
+import br.com.WebBakery.util.Faces_Util;
 
 @Named
 @ViewScoped
@@ -45,7 +45,7 @@ public class ListaClienteBean implements Serializable {
     }
 
     public void carregar(Integer clienteID) throws Exception {
-        HttpSession session = FacesUtil.getHTTPSession();
+        HttpSession session = Faces_Util.getHTTPSession();
         session.setAttribute("ClienteID", clienteID);
         context.getExternalContext().redirect("cadastroCliente.xhtml");
     }

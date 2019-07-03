@@ -24,8 +24,7 @@ public class Usuario {
     @Column(length = 50)
     private String email;
 
-    @Column(length = 80)
-    private String senha;
+    private Integer senha;
 
     private TipoUsuario tipo;
 
@@ -47,11 +46,11 @@ public class Usuario {
         this.email = email;
     }
 
-    public String getSenha() {
+    public Integer getSenha() {
         return senha;
     }
 
-    public void setSenha(String senha) {
+    public void setSenha(Integer senha) {
         this.senha = senha;
     }
 

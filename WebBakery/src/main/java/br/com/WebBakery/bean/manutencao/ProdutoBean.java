@@ -18,7 +18,7 @@ import br.com.WebBakery.dao.ProdutoDao;
 import br.com.WebBakery.dao.ReceitaDao;
 import br.com.WebBakery.model.Produto;
 import br.com.WebBakery.model.Receita;
-import br.com.WebBakery.util.FacesUtil;
+import br.com.WebBakery.util.Faces_Util;
 import br.com.WebBakery.validator.ProdutoValidator;
 
 @Named
@@ -91,10 +91,10 @@ public class ProdutoBean implements Serializable {
     }
 
     private void verificaProdutoSessao() {
-        Integer produtoId = (Integer) FacesUtil.getHTTPSession().getAttribute("ProdutoID");
+        Integer produtoId = (Integer) Faces_Util.getHTTPSession().getAttribute("ProdutoID");
         if (produtoId != null) {
             this.produto = produtoDao.buscarPorId(Produto.class, produtoId);
-            FacesUtil.getHTTPSession().removeAttribute("ProdutoID");
+            Faces_Util.getHTTPSession().removeAttribute("ProdutoID");
         }
     }
 

@@ -32,7 +32,7 @@
 					</p:inputText>
 
 					<p:outputLabel value="Senha:" for="senha" />
-					<p:password id="senha" value="#{usuarioBean.usuario.senha}"
+					<p:password id="senha" value="#{usuarioBean.senha}"
 						feedback="true" placeholder="Digite sua senha..." />
 
 					<p:outputLabel value="Tipo de Usuário:" for="tipoUsuario" />
@@ -45,9 +45,6 @@
 					<p:commandButton value="Cadastrar"
 						action="#{usuarioBean.cadastrar}" process="@form"
 						update="formMessages:messages" />
-
-					<p:commandButton value="Popular Banco"
-						action="#{usuarioBean.popularBanco}" />
 
 				</p:panelGrid>
 			</p:fieldset>

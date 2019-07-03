@@ -11,7 +11,7 @@ import org.primefaces.model.menu.DefaultSubMenu;
 import org.primefaces.model.menu.MenuModel;
 
 import br.com.WebBakery.model.Usuario;
-import br.com.WebBakery.util.FacesUtil;
+import br.com.WebBakery.util.Faces_Util;
 import br.com.WebBakery.util.ManipuladorPermissao;
 
 @Named
@@ -21,7 +21,7 @@ public class MenuBean {
 
     public MenuBean() {
         this.model = new DefaultMenuModel();
-        Usuario usuarioLogado = (Usuario) FacesUtil.getHTTPSession().getAttribute("usuarioLogado");
+        Usuario usuarioLogado = (Usuario) Faces_Util.getHTTPSession().getAttribute("usuarioLogado");
 
         DefaultSubMenu primeiroSubmenu = new DefaultSubMenu("Localidades");
         DefaultSubMenu segundoSubmenu = new DefaultSubMenu("Gestão de Pessoas");

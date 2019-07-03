@@ -18,7 +18,7 @@ import javax.transaction.Transactional;
 
 import br.com.WebBakery.dao.CidadeDao;
 import br.com.WebBakery.model.Cidade;
-import br.com.WebBakery.util.FacesUtil;
+import br.com.WebBakery.util.Faces_Util;
 
 @Named
 @ViewScoped
@@ -46,7 +46,7 @@ public class ListaCidadeBean implements Serializable {
 
     @Transactional
     public void carregar(Integer cidadeID) throws IOException {
-        HttpSession session = FacesUtil.getHTTPSession();
+        HttpSession session = Faces_Util.getHTTPSession();
         session.setAttribute("CidadeID", cidadeID);
         context.getExternalContext().redirect("cadastroCidade.xhtml");
     }

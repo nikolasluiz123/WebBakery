@@ -10,42 +10,39 @@
 	<ui:define name="conteudo">
 
 		<h:form id="formDataTableEstados">
-			<div style="padding-top: 15px;">
+			<p:dataTable id="tabelaEstados" value="#{listaEstadoBean.estados}"
+				var="estado" rowKey="#{estado.id}" rows="5" paginator="true"
+				paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PageLinks} {PreviousPageLink} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				emptyMessage="Nenhum estado encontrado." widgetVar="TabelaEstados"
+				filteredValue="#{listaEstadoBean.estadosFiltrados}">
 
-				<p:dataTable id="tabelaEstados" value="#{listaEstadoBean.estados}"
-					var="estado" rowKey="#{estado.id}" rows="5" paginator="true"
-					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PageLinks} {PreviousPageLink} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-					emptyMessage="Nenhum estado encontrado." widgetVar="TabelaEstados"
-					filteredValue="#{listaEstadoBean.estadosFiltrados}">
+				<f:facet name="header" style="min-height: 35px; max-height: 35px">
+					<div>Estados</div>
 
-					<f:facet name="header" style="min-height: 35px; max-height: 35px">
-						<div>Estados</div>
+				</f:facet>
 
-					</f:facet>
+				<p:column headerText="Nome" sortBy="#{estado.nome}"
+					filterBy="#{estado.nome}">
+					<h:outputText value="#{estado.nome}" />
+				</p:column>
 
-					<p:column headerText="Nome" sortBy="#{estado.nome}"
-						filterBy="#{estado.nome}">
-						<h:outputText value="#{estado.nome}" />
-					</p:column>
+				<p:column headerText="Sigla" sortBy="#{estado.sigla}"
+					filterBy="#{estado.sigla}">
+					<h:outputText value="#{estado.sigla}" />
+				</p:column>
 
-					<p:column headerText="Sigla" sortBy="#{estado.sigla}"
-						filterBy="#{estado.sigla}">
-						<h:outputText value="#{estado.sigla}" />
-					</p:column>
+				<p:column headerText="Alterar">
+					<p:commandLink value="Alterar"
+						action="#{listaEstadoBean.carregar(estado.id)}" process="@this" />
+				</p:column>
 
-					<p:column headerText="Alterar">
-						<p:commandLink value="Alterar"
-							action="#{listaEstadoBean.carregar(estado.id)}" process="@this" />
-					</p:column>
-
-					<p:column headerText="Inativar">
-						<p:commandLink value="Inativar"
-							action="#{listaEstadoBean.inativar(estado)}"
-							update="tabelaEstados, formMessages:messages" process="@this"
-							oncomplete="PF('TabelaEstados').filter();" />
-					</p:column>
-				</p:dataTable>
-			</div>
+				<p:column headerText="Inativar">
+					<p:commandLink value="Inativar"
+						action="#{listaEstadoBean.inativar(estado)}"
+						update="tabelaEstados, formMessages:messages" process="@this"
+						oncomplete="PF('TabelaEstados').filter();" />
+				</p:column>
+			</p:dataTable>
 		</h:form>
 	</ui:define>
 </ui:composition>

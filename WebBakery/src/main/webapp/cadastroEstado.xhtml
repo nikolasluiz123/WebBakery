@@ -12,8 +12,8 @@
 		<h:form id="formCadastroEstado">
 
 			<p:fieldset legend="Dados do Estado">
-				<p:panelGrid columns="2">
 
+				<div class="ui-g-12">
 					<p:outputLabel value="Nome:" for="nome" />
 					<p:inputText id="nome" value="#{estadoBean.estado.nome}"
 						placeholder="Digite o nome..." />
@@ -21,7 +21,9 @@
 					<p:outputLabel value="Sigla:" for="sigla" />
 					<p:inputText id="sigla" value="#{estadoBean.estado.sigla}"
 						placeholder="Digite a sigla..." />
+				</div>
 
+				<div class="ui-g-12">
 					<p:outputLabel for="pais" value="País:" />
 					<p:inputText id="pais" onclick="PF('PaisesDialog').show();"
 						value="#{estadoBean.estado.pais.nome}" readonly="true"
@@ -29,8 +31,9 @@
 
 					<p:commandButton value="Cadastrar" process="@form"
 						update="formMessages:messages" action="#{estadoBean.cadastrar}" />
+				</div>
 
-				</p:panelGrid>
+
 			</p:fieldset>
 
 			<p:dialog header="Países" widgetVar="PaisesDialog" resizable="false"

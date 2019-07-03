@@ -14,7 +14,7 @@ CREATE SEQUENCE IF NOT EXISTS usuario_seq INCREMENT BY 1;
 CREATE SEQUENCE IF NOT EXISTS venda_seq INCREMENT BY 1;
 
 INSERT INTO usuario
-VALUES(nextval('usuario_seq'), true, 'adm@adm.com', 'adm', '12345678', 'da silva', 3);
+VALUES(nextval('hibernate_sequence'), true, 'adm@adm.com', 'adm', '12345678', 'da silva', 3);
 
 INSERT INTO pais (id, nome, ativo) VALUES
 ('Brasil', 'BR', true, true),

@@ -12,11 +12,10 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 
-import br.com.WebBakery.dao.PopulaBancoDao;
 import br.com.WebBakery.dao.UsuarioDao;
 import br.com.WebBakery.enums.TipoUsuario;
 import br.com.WebBakery.model.Usuario;
-import br.com.WebBakery.util.FacesUtil;
+import br.com.WebBakery.util.Faces_Util;
 import br.com.WebBakery.validator.UsuarioValidator;
 
 @Named
@@ -32,24 +31,24 @@ public class UsuarioBean implements Serializable {
     @PersistenceContext
     transient private EntityManager em;
     private UsuarioDao usuarioDao;
-    private PopulaBancoDao populaBancoDao;
     private Usuario usuario;
     private TipoUsuario tipoUsuario;
     @Inject
     transient private FacesContext context;
     private UsuarioValidator validator;
 
+    private String senha;
+
     @PostConstruct
     private void init() {
         this.usuarioDao = new UsuarioDao(this.em);
-        this.populaBancoDao = new PopulaBancoDao(this.em);
         this.usuario = new Usuario();
         verificaUsuarioSessao();
     }
 
     @Transactional
     public void cadastrar() {
-        this.validator = new UsuarioValidator(this.usuario, this.em);
+        this.validator = new UsuarioValidator(this.usuario, this.em, this.senha);
         this.usuario.setTipo(tipoUsuario);
 
         if (this.usuario.getId() == null) {
@@ -81,16 +80,11 @@ public class UsuarioBean implements Serializable {
         this.validator.clearMessages();
     }
 
-    @Transactional
-    public void popularBanco() {
-        this.populaBancoDao.popularBanco();
-    }
-
     private void verificaUsuarioSessao() {
-        Integer usuarioId = (Integer) FacesUtil.getHTTPSession().getAttribute("UsuarioID");
+        Integer usuarioId = (Integer) Faces_Util.getHTTPSession().getAttribute("UsuarioID");
         if (usuarioId != null) {
             this.usuario = usuarioDao.buscarPorId(Usuario.class, usuarioId);
-            FacesUtil.getHTTPSession().removeAttribute("UsuarioID");
+            Faces_Util.getHTTPSession().removeAttribute("UsuarioID");
         }
     }
 
@@ -113,4 +107,13 @@ public class UsuarioBean implements Serializable {
     public TipoUsuario[] getTiposUsuarios() {
         return TipoUsuario.values();
     }
+
+    public String getSenha() {
+        return senha;
+    }
+
+    public void setSenha(String senha) {
+        this.senha = senha;
+    }
+
 }

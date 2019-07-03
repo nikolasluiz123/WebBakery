@@ -14,7 +14,7 @@ import javax.transaction.Transactional;
 
 import br.com.WebBakery.dao.PaisDao;
 import br.com.WebBakery.model.Pais;
-import br.com.WebBakery.util.FacesUtil;
+import br.com.WebBakery.util.Faces_Util;
 import br.com.WebBakery.validator.PaisValidator;
 
 @Named
@@ -75,10 +75,10 @@ public class PaisBean implements Serializable {
     }
 
     private void verificaPaisSessao() {
-        Integer paisId = (Integer) FacesUtil.getHTTPSession().getAttribute("PaisID");
+        Integer paisId = (Integer) Faces_Util.getHTTPSession().getAttribute("PaisID");
         if (paisId != null) {
             this.pais = paisDao.buscarPorId(Pais.class, paisId);
-            FacesUtil.getHTTPSession().removeAttribute("PaisID");
+            Faces_Util.getHTTPSession().removeAttribute("PaisID");
         }
     }
 

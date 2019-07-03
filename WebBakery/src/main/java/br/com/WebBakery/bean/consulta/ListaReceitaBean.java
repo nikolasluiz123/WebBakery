@@ -17,7 +17,7 @@ import javax.transaction.Transactional;
 
 import br.com.WebBakery.dao.ReceitaDao;
 import br.com.WebBakery.model.Receita;
-import br.com.WebBakery.util.FacesUtil;
+import br.com.WebBakery.util.Faces_Util;
 
 @Named
 @ViewScoped
@@ -44,7 +44,7 @@ public class ListaReceitaBean implements Serializable {
     }
 
     public void carregar(Integer receitaID) throws IOException {
-        HttpSession session = FacesUtil.getHTTPSession();
+        HttpSession session = Faces_Util.getHTTPSession();
         session.setAttribute("ReceitaID", receitaID);
         context.getExternalContext().redirect("cadastroReceita.xhtml");
     }

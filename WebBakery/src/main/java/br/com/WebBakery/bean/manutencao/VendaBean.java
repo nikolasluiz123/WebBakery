@@ -30,7 +30,7 @@ import br.com.WebBakery.model.Funcionario;
 import br.com.WebBakery.model.ProdutoVenda;
 import br.com.WebBakery.model.Usuario;
 import br.com.WebBakery.model.Venda;
-import br.com.WebBakery.util.FacesUtil;
+import br.com.WebBakery.util.Faces_Util;
 import br.com.WebBakery.validator.ProdutoVendaValidator;
 
 @Named
@@ -206,7 +206,7 @@ public class VendaBean implements Serializable {
     }
 
     private void setarFuncionarioVenda() {
-        Usuario u = (Usuario) FacesUtil.getHTTPSession().getAttribute("usuarioLogado");
+        Usuario u = (Usuario) Faces_Util.getHTTPSession().getAttribute("usuarioLogado");
         Funcionario f = funcionarioDao.buscarPorIdUsuario(u.getId());
         this.venda.setFuncionario(f);
     }

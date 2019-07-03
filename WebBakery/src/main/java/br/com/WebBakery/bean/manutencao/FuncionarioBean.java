@@ -27,7 +27,7 @@ import br.com.WebBakery.model.Funcionario;
 import br.com.WebBakery.model.Logradouro;
 import br.com.WebBakery.model.Pais;
 import br.com.WebBakery.model.Usuario;
-import br.com.WebBakery.util.FacesUtil;
+import br.com.WebBakery.util.Faces_Util;
 import br.com.WebBakery.validator.EnderecoValidator;
 import br.com.WebBakery.validator.FuncionarioValidator;
 
@@ -160,10 +160,10 @@ public class FuncionarioBean implements Serializable {
     }
 
     private void verficarFuncionarioSessao() {
-        Integer funcionarioId = (Integer) FacesUtil.getHTTPSession().getAttribute("FuncionarioID");
+        Integer funcionarioId = (Integer) Faces_Util.getHTTPSession().getAttribute("FuncionarioID");
         if (funcionarioId != null) {
             this.funcionario = funcionarioDao.buscarPorId(Funcionario.class, funcionarioId);
-            FacesUtil.getHTTPSession().removeAttribute("FuncionarioID");
+            Faces_Util.getHTTPSession().removeAttribute("FuncionarioID");
         }
     }
 

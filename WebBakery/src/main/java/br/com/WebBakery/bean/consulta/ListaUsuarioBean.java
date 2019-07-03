@@ -18,7 +18,7 @@ import javax.transaction.Transactional;
 
 import br.com.WebBakery.dao.UsuarioDao;
 import br.com.WebBakery.model.Usuario;
-import br.com.WebBakery.util.FacesUtil;
+import br.com.WebBakery.util.Faces_Util;
 
 @Named
 @ViewScoped
@@ -57,7 +57,7 @@ public class ListaUsuarioBean implements Serializable {
     }
 
     public void carregar(Integer usuarioID) throws IOException {
-        HttpSession session = FacesUtil.getHTTPSession();
+        HttpSession session = Faces_Util.getHTTPSession();
         session.setAttribute("UsuarioID", usuarioID);
         context.getExternalContext().redirect("cadastroUsuario.xhtml");
     }

@@ -13,9 +13,11 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.transaction.Transactional;
 
 import br.com.WebBakery.dao.ClienteDao;
 import br.com.WebBakery.dao.FuncionarioDao;
+import br.com.WebBakery.dao.PopulaBancoDao;
 import br.com.WebBakery.dao.UsuarioDao;
 import br.com.WebBakery.enums.TipoUsuario;
 import br.com.WebBakery.model.Cliente;
@@ -35,7 +37,10 @@ public class LoginBean implements Serializable {
 
     private Usuario usuario;
     private UsuarioDao usuarioDao;
+    private PopulaBancoDao populaBancoDao;
     private List<String> messages;
+
+    private String senha;
 
     public Usuario getUsuario() {
         return usuario;
@@ -45,10 +50,12 @@ public class LoginBean implements Serializable {
     private void init() {
         this.usuario = new Usuario();
         this.usuarioDao = new UsuarioDao(this.em);
+        this.populaBancoDao = new PopulaBancoDao(this.em);
         this.messages = new ArrayList<>();
     }
 
     public void logar() throws IOException {
+        this.usuario.setSenha(12345678);
         this.usuario = usuarioDao.usuarioExiste(this.usuario);
         if (loginIsValid()) {
             context.getExternalContext().getSessionMap().put("usuarioLogado", this.usuario);
@@ -61,9 +68,11 @@ public class LoginBean implements Serializable {
     private boolean loginIsValid() {
         if (this.usuario == null) {
             this.messages.add("Usuário não encontrado!");
-        } else if (!existeVinculoComUsuario()) {
-            this.messages.add("Funcionário não foi cadastrado!");
         }
+            
+        // else if (!existeVinculoComUsuario()) {
+        // this.messages.add("Funcionário não foi cadastrado!");
+        // }
 
         if (!this.messages.isEmpty()) {
             return false;
@@ -110,6 +119,23 @@ public class LoginBean implements Serializable {
 
     public void setMessages(List<String> messages) {
         this.messages = messages;
+    }
+
+    public String getSenha() {
+        return senha;
+    }
+
+    public void setSenha(String senha) {
+        this.senha = senha;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+
+    @Transactional
+    public void popularBanco() {
+        this.populaBancoDao.popularBanco();
     }
 
 }
