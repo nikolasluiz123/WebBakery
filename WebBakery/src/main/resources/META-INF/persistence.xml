@@ -24,6 +24,7 @@
 		<class>br.com.WebBakery.model.Tarefa</class>
 		<class>br.com.WebBakery.model.EstoqueProduto</class>
 		<class>br.com.WebBakery.model.Cliente</class>
+		<class>br.com.WebBakery.model.Foto</class>
 
 		<properties>
 			<property name="hibernate.hbm2ddl.auto" value="update" />

@@ -4,8 +4,9 @@ import java.util.List;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
+import javax.persistence.Query;
 
+import br.com.WebBakery.abstractClass.AbstractArquivo;
 import br.com.WebBakery.abstractClass.AbstractBaseDao;
 import br.com.WebBakery.model.Foto;
 
@@ -22,14 +23,15 @@ public class FotoPerfilUsuarioDao extends AbstractBaseDao<Foto> {
     }
 
     public Foto getFotoUsuario(Integer idUsuario) {
-        try {
-            return em
-                    .createQuery("SELECT f FROM Foto f WHERE f.usuario.id = :pidUsuario",
-                                 Foto.class)
-                    .setParameter("pidUsuario", idUsuario).getSingleResult();
-        } catch (NoResultException e) {
-            return null;
+        String sql = "SELECT f FROM Foto f WHERE f.usuario.id = :pidUsuario";
+        Query query = em.createQuery(sql, AbstractArquivo.class);
+        query.setParameter("pidUsuario", idUsuario);
+        @SuppressWarnings("unchecked")
+        List<Foto> fotos = query.getResultList();
+        if (fotos != null && !fotos.isEmpty()) {
+            return fotos.get(0);
         }
+        return null;
     }
 
     @Override

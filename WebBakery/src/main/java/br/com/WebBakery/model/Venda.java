@@ -3,30 +3,18 @@ package br.com.WebBakery.model;
 import java.util.Date;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.OneToOne;
 
-@Entity
-public class Venda {
+import br.com.WebBakery.abstractClass.AbstractBaseModel;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Integer id;
+@Entity
+public class Venda extends AbstractBaseModel {
+
     private Date data;
     @OneToOne
     private Cliente cliente;
     @OneToOne
     private Funcionario funcionario;
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     public Date getData() {
         return data;

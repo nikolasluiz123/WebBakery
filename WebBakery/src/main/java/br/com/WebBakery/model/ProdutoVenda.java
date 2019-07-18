@@ -1,31 +1,19 @@
 package br.com.WebBakery.model;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.OneToOne;
 
-@Entity
-public class ProdutoVenda {
+import br.com.WebBakery.abstractClass.AbstractBaseModel;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Integer id;
+@Entity
+public class ProdutoVenda extends AbstractBaseModel {
+
     @OneToOne
     private Produto produto;
     @OneToOne
     private Venda venda;
 
     private Integer quantidade;
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     public Produto getProduto() {
         return produto;

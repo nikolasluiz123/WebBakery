@@ -9,7 +9,7 @@
 <style>
 html, body {
 	margin: 0px !important;
-	padding-top: 30px;
+	padding-top: 45px;
 	overflow-x: hidden;
 }
 
@@ -49,18 +49,19 @@ html, body {
 
 <h:head>
 	<p:toolbar rendered="#{usuarioLogado != null}"
-		style="padding: 10px; position: fixed; left: 0; right: 0; top: 0;">
+		style="padding: 10px; position: fixed; left: 0; right: 0; top: 0;"
+		id="toolBar">
 		<f:facet name="left">
-			<p:outputLabel value="#{usuarioLogado.nome}"
+			<img src="#{fotoPerfilUploadBean.pathFoto}" width="50" height="50"
+				style="vertical-align: middle; margin-right: 10px;" id="fotoPerfil" />
+			<p:outputLabel value="#{usuarioLogado.nome}" id="nomeUsuarioLogado"
 				style="vertical-align: middle;" />
 		</f:facet>
 
 		<f:facet name="right">
 			<h:form id="botaoConfig">
 				<p:menuButton value="Configurações" style="vertical-align: middle;">
-					<p:menuitem value="Save" />
-					<p:menuitem value="Update" />
-					<p:menuitem value="Delete" />
+					<p:menuitem value="Perfil" url="cadastroFotoPerfilUsuario.xhtml" />
 					<p:menuitem value="Logout" action="#{loginBean.deslogar}" />
 				</p:menuButton>
 			</h:form>
@@ -70,7 +71,7 @@ html, body {
 
 <h:body>
 	<div id="cabecalho"
-		style="position: fixed; left: 0; top: 55px; bottom: 0; z-index: 100; padding: 10px;">
+		style="position: fixed; left: 0; top: 72px; bottom: 0; z-index: 100; padding: 20px;">
 
 		<h:form id="formMessages">
 			<p:growl id="messages" life="10000" />
@@ -86,7 +87,7 @@ html, body {
 
 	<div class="ui-g">
 		<div id="conteudo" class="ui-g-10"
-			style="margin-left: 220px; z-index: 99;">
+			style="margin-left: 240px; z-index: 99; margin-right: 6px;">
 			<ui:insert name="conteudo">
 			</ui:insert>
 		</div>

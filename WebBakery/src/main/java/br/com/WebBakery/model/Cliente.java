@@ -4,19 +4,14 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.OneToOne;
 
+import br.com.WebBakery.abstractClass.AbstractBaseModel;
+
 @Entity
-public class Cliente {
+public class Cliente extends AbstractBaseModel {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Integer id;
-
-    @Column(length = 20)
+       @Column(length = 20)
     private String cpf;
 
     @Column(length = 20)
@@ -31,14 +26,6 @@ public class Cliente {
 
     @OneToOne
     private Usuario usuario;
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     public String getCpf() {
         return cpf;

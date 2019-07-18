@@ -5,17 +5,12 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.OneToOne;
 
-@Entity
-public class Funcionario {
+import br.com.WebBakery.abstractClass.AbstractBaseModel;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Integer id;
+@Entity
+public class Funcionario extends AbstractBaseModel {
 
     private BigDecimal salario;
     @OneToOne
@@ -36,14 +31,6 @@ public class Funcionario {
     private String telefone;
 
     private boolean ativo;
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     public BigDecimal getSalario() {
         return salario;

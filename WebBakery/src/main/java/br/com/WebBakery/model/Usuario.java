@@ -2,18 +2,12 @@ package br.com.WebBakery.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 
+import br.com.WebBakery.abstractClass.AbstractBaseModel;
 import br.com.WebBakery.enums.TipoUsuario;
 
 @Entity
-public class Usuario {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Integer id;
+public class Usuario extends AbstractBaseModel {
 
     @Column(length = 40)
     private String nome;
@@ -29,14 +23,6 @@ public class Usuario {
     private TipoUsuario tipo;
 
     private boolean ativo;
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     public String getEmail() {
         return email;

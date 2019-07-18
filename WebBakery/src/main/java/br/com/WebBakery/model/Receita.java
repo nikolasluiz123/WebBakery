@@ -2,16 +2,11 @@ package br.com.WebBakery.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+
+import br.com.WebBakery.abstractClass.AbstractBaseModel;
 
 @Entity
-public class Receita {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Integer id;
+public class Receita extends AbstractBaseModel {
 
     @Column(length = 255)
     private String descricao;
@@ -19,14 +14,6 @@ public class Receita {
     private Integer quantidade;
 
     private boolean ativo;
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     public String getDescricao() {
         return descricao;

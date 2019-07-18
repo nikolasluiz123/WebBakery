@@ -2,17 +2,12 @@ package br.com.WebBakery.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
-@Entity
-public class Cidade {
+import br.com.WebBakery.abstractClass.AbstractBaseModel;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Integer id;
+@Entity
+public class Cidade extends AbstractBaseModel {
 
     @Column(length = 30)
     private String nome;
@@ -21,14 +16,6 @@ public class Cidade {
     private Estado estado;
 
     private boolean ativo;
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     public String getNome() {
         return nome;

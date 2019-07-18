@@ -16,6 +16,7 @@ import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 
 import br.com.WebBakery.dao.ClienteDao;
+import br.com.WebBakery.dao.FotoPerfilUsuarioDao;
 import br.com.WebBakery.dao.FuncionarioDao;
 import br.com.WebBakery.dao.PopulaBancoDao;
 import br.com.WebBakery.dao.UsuarioDao;
@@ -38,6 +39,7 @@ public class LoginBean implements Serializable {
     private Usuario usuario;
     private UsuarioDao usuarioDao;
     private PopulaBancoDao populaBancoDao;
+    private FotoPerfilUsuarioDao fotoPerfilUsuarioDao;
     private List<String> messages;
 
     private String senha;
@@ -51,6 +53,7 @@ public class LoginBean implements Serializable {
         this.usuario = new Usuario();
         this.usuarioDao = new UsuarioDao(this.em);
         this.populaBancoDao = new PopulaBancoDao(this.em);
+        this.fotoPerfilUsuarioDao = new FotoPerfilUsuarioDao(this.em);
         this.messages = new ArrayList<>();
     }
 
@@ -59,7 +62,7 @@ public class LoginBean implements Serializable {
         this.usuario = usuarioDao.usuarioExiste(this.usuario);
         if (loginIsValid()) {
             context.getExternalContext().getSessionMap().put("usuarioLogado", this.usuario);
-            context.getExternalContext().redirect("listaVenda.xhtml");
+            context.getExternalContext().redirect("cadastroFotoPerfilUsuario.xhtml");
         } else {
             showMessages();
         }
@@ -69,7 +72,7 @@ public class LoginBean implements Serializable {
         if (this.usuario == null) {
             this.messages.add("Usuário não encontrado!");
         }
-            
+
         // else if (!existeVinculoComUsuario()) {
         // this.messages.add("Funcionário não foi cadastrado!");
         // }

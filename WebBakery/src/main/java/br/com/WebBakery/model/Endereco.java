@@ -1,17 +1,13 @@
 package br.com.WebBakery.model;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.OneToOne;
 
-@Entity
-public class Endereco {
+import br.com.WebBakery.abstractClass.AbstractBaseModel;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Integer id;
+@Entity
+public class Endereco extends AbstractBaseModel {
+
     @OneToOne
     private Pais pais;
     @OneToOne
@@ -21,14 +17,6 @@ public class Endereco {
     @OneToOne
     private Logradouro logradouro;
     private boolean ativo;
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     public Pais getPais() {
         return pais;
