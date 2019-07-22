@@ -40,4 +40,9 @@ public class FotoPerfilUsuarioDao extends AbstractBaseDao<Foto> {
         return null;
     }
 
+    @Override
+    public Class<?> getModelClass() {
+        return Foto.class;
+    }
+
 }

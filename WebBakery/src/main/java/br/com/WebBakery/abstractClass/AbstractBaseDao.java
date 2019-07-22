@@ -16,12 +16,15 @@ public abstract class AbstractBaseDao<T> implements IBaseDao<T>{
 
     @SuppressWarnings("unchecked")
     @Override
-    public T buscarPorId(Class<?> clazz, Integer id) {
-        return (T) em.find(clazz, id);
+    public T buscarPorId(Integer id) {
+        return (T) em.find(getModelClass(), id);
     }
 
     @Override
     public void atualizar(T model) {
         em.merge(model);
     }
+    
+    public abstract Class<?> getModelClass();
 }
+

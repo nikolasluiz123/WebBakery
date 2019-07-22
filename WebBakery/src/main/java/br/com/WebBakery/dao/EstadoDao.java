@@ -41,4 +41,9 @@ public class EstadoDao extends AbstractBaseDao<Estado> {
         return estados;
     }
 
+    @Override
+    public Class<?> getModelClass() {
+        return Estado.class;
+    }
+
 }

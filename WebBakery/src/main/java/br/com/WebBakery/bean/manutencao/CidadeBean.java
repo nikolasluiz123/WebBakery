@@ -1,40 +1,29 @@
 package br.com.WebBakery.bean.manutencao;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
-import javax.inject.Inject;
 import javax.inject.Named;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 
+import br.com.WebBakery.abstractClass.AbstractBaseMBean;
 import br.com.WebBakery.dao.CidadeDao;
 import br.com.WebBakery.dao.EstadoDao;
 import br.com.WebBakery.model.Cidade;
 import br.com.WebBakery.model.Estado;
-import br.com.WebBakery.util.Faces_Util;
 import br.com.WebBakery.validator.CidadeValidator;
 
 @Named
 @ViewScoped
-public class CidadeBean implements Serializable {
+public class CidadeBean extends AbstractBaseMBean<Cidade> {
 
     private static final long serialVersionUID = -1552364059113279585L;
 
     private static final String CIDADE_UPDATED_SUCCESSFULLY = "Cidade atualizada com sucesso!";
 
     private static final String CIDADE_REGISTRED_SUCCESSFULLY = "Cidade cadastrada com sucesso!";
-
-    @PersistenceContext
-    private EntityManager em;
-    @Inject
-    transient private FacesContext context;
 
     private CidadeDao cidadeDao;
     private Cidade cidade;
@@ -46,8 +35,8 @@ public class CidadeBean implements Serializable {
 
     private CidadeValidator validator;
 
-    @PostConstruct
-    private void init() {
+    @Override
+    public void init() {
         this.cidadeDao = new CidadeDao(this.em);
         this.cidade = new Cidade();
 
@@ -91,11 +80,7 @@ public class CidadeBean implements Serializable {
     }
 
     private void verificaCidadeSessao() {
-        Integer cidadeId = (Integer) Faces_Util.getHTTPSession().getAttribute("CidadeID");
-        if (cidadeId != null) {
-            this.cidade = cidadeDao.buscarPorId(Cidade.class, cidadeId);
-            Faces_Util.getHTTPSession().removeAttribute("CidadeID");
-        }
+        this.cidade = getObjetoSessao("CidadeID", cidadeDao, cidade);
     }
 
     public void setarEstado() {

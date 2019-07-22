@@ -32,4 +32,9 @@ public class VendaDao extends AbstractBaseDao<Venda> {
         // TODO Auto-generated method stub
         return null;
     }
+
+    @Override
+    public Class<?> getModelClass() {
+        return Venda.class;
+    }
 }

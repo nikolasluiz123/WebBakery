@@ -66,4 +66,9 @@ public class EstoqueProdutoDao extends AbstractBaseDao<EstoqueProduto> {
         return null;
     }
 
+    @Override
+    public Class<?> getModelClass() {
+        return EstoqueProduto.class;
+    }
+
 }

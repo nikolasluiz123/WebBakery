@@ -1,23 +1,18 @@
 package br.com.WebBakery.bean.manutencao;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
-import javax.inject.Inject;
 import javax.inject.Named;
-import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
-import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 
 import org.primefaces.event.CellEditEvent;
 
+import br.com.WebBakery.abstractClass.AbstractBaseMBean;
 import br.com.WebBakery.dao.ClienteDao;
 import br.com.WebBakery.dao.EstoqueProdutoDao;
 import br.com.WebBakery.dao.FuncionarioDao;
@@ -35,18 +30,12 @@ import br.com.WebBakery.validator.ProdutoVendaValidator;
 
 @Named
 @ViewScoped
-public class VendaBean implements Serializable {
+public class VendaBean extends AbstractBaseMBean<Venda> {
 
     private static final long serialVersionUID = 1093115934531225702L;
 
     private static final String QUANTIDADE_LIMIT_EXCEDDED = "Quantidade inválida!";
     private static final String VENDA_REGISTRED_SUCCESSFULLY = "Venda realizada com sucesso!";
-
-    @PersistenceContext
-    transient private EntityManager em;
-
-    @Inject
-    transient private FacesContext context;
 
     private Venda venda;
     private VendaDao vendaDao;
@@ -73,8 +62,8 @@ public class VendaBean implements Serializable {
 
     private Boolean quantidadeEhValida;
 
-    @PostConstruct
-    private void init() {
+    @Override
+    public void init() {
         this.venda = new Venda();
         this.vendaDao = new VendaDao(this.em);
 

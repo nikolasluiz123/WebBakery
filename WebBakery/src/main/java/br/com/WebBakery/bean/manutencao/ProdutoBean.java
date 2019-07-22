@@ -1,40 +1,31 @@
 package br.com.WebBakery.bean.manutencao;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
-import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 
+import br.com.WebBakery.abstractClass.AbstractBaseMBean;
 import br.com.WebBakery.dao.ProdutoDao;
 import br.com.WebBakery.dao.ReceitaDao;
 import br.com.WebBakery.model.Produto;
 import br.com.WebBakery.model.Receita;
-import br.com.WebBakery.util.Faces_Util;
 import br.com.WebBakery.validator.ProdutoValidator;
 
 @Named
 @ViewScoped
-public class ProdutoBean implements Serializable {
+public class ProdutoBean extends AbstractBaseMBean<Produto> {
 
     private static final long serialVersionUID = 8861448133925257777L;
 
     private static final String UPDATED_SUCCESSFULLY = "Produto atualizado com sucesso!";
 
     private static final String REGISTERED_SUCCESSFULLY = "Produto cadastrado com sucesso!";
-
-    @PersistenceContext
-    private EntityManager em;
-    @Inject
-    transient private FacesContext context;
 
     private Produto produto;
     private ProdutoDao produtoDao;
@@ -46,8 +37,8 @@ public class ProdutoBean implements Serializable {
 
     private ProdutoValidator validator;
 
-    @PostConstruct
-    private void init() {
+    @Override
+    public void init() {
         this.produto = new Produto();
         this.produtoDao = new ProdutoDao(this.em);
 
@@ -91,11 +82,7 @@ public class ProdutoBean implements Serializable {
     }
 
     private void verificaProdutoSessao() {
-        Integer produtoId = (Integer) Faces_Util.getHTTPSession().getAttribute("ProdutoID");
-        if (produtoId != null) {
-            this.produto = produtoDao.buscarPorId(Produto.class, produtoId);
-            Faces_Util.getHTTPSession().removeAttribute("ProdutoID");
-        }
+        this.produto = getObjetoSessao("ProdutoID", produtoDao, produto);
     }
 
     private void initReceitas() {

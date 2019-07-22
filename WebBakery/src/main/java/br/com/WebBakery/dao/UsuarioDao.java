@@ -47,11 +47,15 @@ public class UsuarioDao extends AbstractBaseDao<Usuario> {
     public Usuario usuarioExiste(String email) {
         try {
             return em
-                    .createQuery(" SELECT u FROM Usuario u WHERE u.email = :pEmail ",
-                                 Usuario.class)
+                    .createQuery(" SELECT u FROM Usuario u WHERE u.email = :pEmail ", Usuario.class)
                     .setParameter("pEmail", email).getSingleResult();
         } catch (Exception e) {
             return null;
         }
+    }
+
+    @Override
+    public Class<?> getModelClass() {
+        return Usuario.class;
     }
 }

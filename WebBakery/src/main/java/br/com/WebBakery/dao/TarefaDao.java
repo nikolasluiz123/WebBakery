@@ -30,4 +30,9 @@ public class TarefaDao extends AbstractBaseDao<Tarefa> {
 
         return tarefas;
     }
+
+    @Override
+    public Class<?> getModelClass() {
+        return Tarefa.class;
+    }
 }

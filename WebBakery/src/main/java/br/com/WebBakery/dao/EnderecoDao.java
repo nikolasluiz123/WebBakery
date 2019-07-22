@@ -43,4 +43,9 @@ public class EnderecoDao extends AbstractBaseDao<Endereco> {
         return enderecos;
     }
 
+    @Override
+    public Class<?> getModelClass() {
+        return Endereco.class;
+    }
+
 }

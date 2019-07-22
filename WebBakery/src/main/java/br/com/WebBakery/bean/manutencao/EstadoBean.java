@@ -1,39 +1,28 @@
 package br.com.WebBakery.bean.manutencao;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
-import javax.inject.Inject;
 import javax.inject.Named;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 
+import br.com.WebBakery.abstractClass.AbstractBaseMBean;
 import br.com.WebBakery.dao.EstadoDao;
 import br.com.WebBakery.dao.PaisDao;
 import br.com.WebBakery.model.Estado;
 import br.com.WebBakery.model.Pais;
-import br.com.WebBakery.util.Faces_Util;
 import br.com.WebBakery.validator.EstadoValidator;
 
 @Named
 @ViewScoped
-public class EstadoBean implements Serializable {
+public class EstadoBean extends AbstractBaseMBean<Estado> {
 
     private static final String ESTADO_UPDATED_SUCCESSFULLY = "Estado atualizado com sucesso!";
     private static final String ESTADO_REGISTRED_SUCCESSFULLY = "Estado cadastrado com sucesso!";
 
     private static final long serialVersionUID = -4701039486320007318L;
-
-    @PersistenceContext
-    private EntityManager em;
-    @Inject
-    transient private FacesContext context;
 
     private EstadoDao estadoDao;
     private Estado estado;
@@ -45,8 +34,8 @@ public class EstadoBean implements Serializable {
 
     private EstadoValidator validator;
 
-    @PostConstruct
-    private void init() {
+    @Override
+    public void init() {
         this.estadoDao = new EstadoDao(this.em);
         this.estado = new Estado();
 
@@ -91,11 +80,7 @@ public class EstadoBean implements Serializable {
     }
 
     private void verificaEstadoSessao() {
-        Integer estadoId = (Integer) Faces_Util.getHTTPSession().getAttribute("EstadoID");
-        if (estadoId != null) {
-            this.estado = estadoDao.buscarPorId(Estado.class, estadoId);
-            Faces_Util.getHTTPSession().removeAttribute("EstadoID");
-        }
+        this.estado = getObjetoSessao("EstadoID", estadoDao, estado);
     }
 
     public void setarPais() {

@@ -1,26 +1,19 @@
 package br.com.WebBakery.bean.manutencao;
 
-import java.io.Serializable;
-
-import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
-import javax.inject.Inject;
 import javax.inject.Named;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 
+import br.com.WebBakery.abstractClass.AbstractBaseMBean;
 import br.com.WebBakery.dao.UsuarioDao;
 import br.com.WebBakery.enums.TipoUsuario;
 import br.com.WebBakery.model.Usuario;
-import br.com.WebBakery.util.Faces_Util;
 import br.com.WebBakery.validator.UsuarioValidator;
 
 @Named
 @ViewScoped
-public class UsuarioBean implements Serializable {
+public class UsuarioBean extends AbstractBaseMBean<Usuario> {
 
     private static final long serialVersionUID = 2840219448696216244L;
 
@@ -28,19 +21,15 @@ public class UsuarioBean implements Serializable {
 
     private static final String USUARIO_REGISTERED_SUCCESSFULLY = "Usuário cadastrado com sucesso!";
 
-    @PersistenceContext
-    transient private EntityManager em;
     private UsuarioDao usuarioDao;
     private Usuario usuario;
     private TipoUsuario tipoUsuario;
-    @Inject
-    transient private FacesContext context;
     private UsuarioValidator validator;
 
     private String senha;
 
-    @PostConstruct
-    private void init() {
+    @Override
+    public void init() {
         this.usuarioDao = new UsuarioDao(this.em);
         this.usuario = new Usuario();
         verificaUsuarioSessao();
@@ -81,11 +70,7 @@ public class UsuarioBean implements Serializable {
     }
 
     private void verificaUsuarioSessao() {
-        Integer usuarioId = (Integer) Faces_Util.getHTTPSession().getAttribute("UsuarioID");
-        if (usuarioId != null) {
-            this.usuario = usuarioDao.buscarPorId(Usuario.class, usuarioId);
-            Faces_Util.getHTTPSession().removeAttribute("UsuarioID");
-        }
+        this.usuario = getObjetoSessao("UsuarioID", usuarioDao, usuario);
     }
 
     public Usuario getUsuario() {

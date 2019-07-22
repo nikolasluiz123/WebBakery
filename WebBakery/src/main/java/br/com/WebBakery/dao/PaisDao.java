@@ -30,4 +30,9 @@ public class PaisDao extends AbstractBaseDao<Pais> {
         return paises;
     }
 
+    @Override
+    public Class<?> getModelClass() {
+        return Pais.class;
+    }
+
 }

@@ -1,18 +1,15 @@
 package br.com.WebBakery.bean.manutencao;
 
-import java.io.Serializable;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
-import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 
+import br.com.WebBakery.abstractClass.AbstractBaseMBean;
 import br.com.WebBakery.dao.CidadeDao;
 import br.com.WebBakery.dao.ClienteDao;
 import br.com.WebBakery.dao.EnderecoDao;
@@ -28,25 +25,19 @@ import br.com.WebBakery.model.Estado;
 import br.com.WebBakery.model.Logradouro;
 import br.com.WebBakery.model.Pais;
 import br.com.WebBakery.model.Usuario;
-import br.com.WebBakery.util.Faces_Util;
 import br.com.WebBakery.util.Hash_Util;
 import br.com.WebBakery.validator.ClienteValidator;
 import br.com.WebBakery.validator.EnderecoValidator;
 
 @Named
 @ViewScoped
-public class ClienteBean implements Serializable {
+public class ClienteBean extends AbstractBaseMBean<Cliente> {
 
     private static final long serialVersionUID = -7615567443762847019L;
 
     private static final String REGISTERED_SUCCESSFULLY = "Cliente cadastrado com sucesso!";
 
     private static final String UPDATED_SUCCESSFULLY = "Cliente atualizado com sucesso!";
-
-    @PersistenceContext
-    private EntityManager em;
-    @Inject
-    transient private FacesContext context;
 
     private Cliente cliente;
     private ClienteDao clienteDao;
@@ -78,7 +69,7 @@ public class ClienteBean implements Serializable {
     private String senha;
 
     @PostConstruct
-    private void init() {
+    public void init() {
         this.clienteDao = new ClienteDao(this.em);
         this.cliente = new Cliente();
 
@@ -168,11 +159,7 @@ public class ClienteBean implements Serializable {
     }
 
     private void verficarClienteSessao() {
-        Integer clienteId = (Integer) Faces_Util.getHTTPSession().getAttribute("ClienteID");
-        if (clienteId != null) {
-            this.cliente = clienteDao.buscarPorId(Cliente.class, clienteId);
-            Faces_Util.getHTTPSession().removeAttribute("ClienteID");
-        }
+        this.cliente = getObjetoSessao("ClienteID", clienteDao, cliente);
     }
 
     private void initListPaises() {

@@ -41,4 +41,9 @@ public class CidadeDao extends AbstractBaseDao<Cidade> {
         return cidades;
     }
 
+    @Override
+    public Class<?> getModelClass() {
+        return Cidade.class;
+    }
+
 }

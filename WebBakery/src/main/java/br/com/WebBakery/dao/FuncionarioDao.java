@@ -46,4 +46,9 @@ public class FuncionarioDao extends AbstractBaseDao<Funcionario> {
         }
         return f;
     }
+
+    @Override
+    public Class<?> getModelClass() {
+        return Funcionario.class;
+    }
 }

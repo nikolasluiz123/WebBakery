@@ -7,20 +7,19 @@ import javax.servlet.http.HttpSession;
 public class Faces_Util {
 
     public static HttpSession getHTTPSession() {
-        return (HttpSession) FacesContext.getCurrentInstance().getExternalContext()
-                .getSession(false);
-    }
-
-    public static FacesContext getFacesContext() {
-        FacesContext facesContext = FacesContext.getCurrentInstance();
-        return facesContext;
+        return (HttpSession) getExternalContext().getSession(false);
     }
 
     public static ExternalContext getExternalContext() {
-        FacesContext facesContext = Faces_Util.getFacesContext();
+        FacesContext facesContext = getFacesContext();
         if (facesContext != null) {
             return facesContext.getExternalContext();
         }
         return null;
     }
+
+    public static FacesContext getFacesContext() {
+        return FacesContext.getCurrentInstance();
+    }
+
 }

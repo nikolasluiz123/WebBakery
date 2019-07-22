@@ -1,8 +1,5 @@
 package br.com.WebBakery.bean.manutencao;
 
-import java.io.Serializable;
-
-import javax.annotation.PostConstruct;
 import javax.faces.bean.SessionScoped;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
@@ -12,6 +9,7 @@ import javax.transaction.Transactional;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.UploadedFile;
 
+import br.com.WebBakery.abstractClass.AbstractBaseMBean;
 import br.com.WebBakery.dao.FotoPerfilUsuarioDao;
 import br.com.WebBakery.model.Foto;
 import br.com.WebBakery.model.Usuario;
@@ -21,7 +19,7 @@ import br.com.WebBakery.validator.FotoValidator;
 
 @Named
 @SessionScoped
-public class FotoPerfilUploadBean implements Serializable {
+public class FotoPerfilUploadBean extends AbstractBaseMBean<Foto> {
 
     private static final long serialVersionUID = 9124846392202100854L;
 
@@ -33,8 +31,8 @@ public class FotoPerfilUploadBean implements Serializable {
     @PersistenceContext
     private EntityManager em;
 
-    @PostConstruct
-    private void init() throws Exception {
+    @Override
+    public void init() {
         this.foto = new Foto();
         this.dao = new FotoPerfilUsuarioDao(this.em);
         getPathFotoPastaTemporaria();
@@ -62,17 +60,22 @@ public class FotoPerfilUploadBean implements Serializable {
         }
     }
 
-    public void getPathFotoPastaTemporaria() throws Exception {
+    public void getPathFotoPastaTemporaria() {
         Usuario u = (Usuario) Faces_Util.getHTTPSession().getAttribute("usuarioLogado");
         Foto f = this.dao.getFotoUsuario(u.getId());
         if (f != null) {
-            String pathCompleto = File_Util.criarFotoPastaTemporaria(f);
+            String pathCompleto = null;
+            try {
+                pathCompleto = File_Util.criarFotoPastaTemporaria(f);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             String nomeArquivo = File_Util.getNomeArquivo(pathCompleto);
             String path = "." + "//" + "session_" + Faces_Util.getHTTPSession().getId() + "//"
                     + nomeArquivo;
             setPathFoto(path);
         } else {
-            setPathFoto(null);
+            setPathFoto("img/anonimo.png");
         }
     }
 

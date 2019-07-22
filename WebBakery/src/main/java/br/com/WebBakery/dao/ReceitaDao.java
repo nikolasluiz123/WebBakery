@@ -29,4 +29,9 @@ public class ReceitaDao extends AbstractBaseDao<Receita> {
 
         return receitas;
     }
+
+    @Override
+    public Class<?> getModelClass() {
+        return Receita.class;
+    }
 }

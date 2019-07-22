@@ -1,41 +1,30 @@
 package br.com.WebBakery.bean.manutencao;
 
-import java.io.Serializable;
-
-import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
-import javax.inject.Inject;
 import javax.inject.Named;
-import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 
+import br.com.WebBakery.abstractClass.AbstractBaseMBean;
 import br.com.WebBakery.dao.ReceitaDao;
 import br.com.WebBakery.model.Receita;
-import br.com.WebBakery.util.Faces_Util;
 import br.com.WebBakery.validator.ReceitaValidator;
 
 @Named
 @ViewScoped
-public class ReceitaBean implements Serializable {
+public class ReceitaBean extends AbstractBaseMBean<Receita> {
 
     private static final long serialVersionUID = 4300601613343189689L;
 
     private static final String UPDATED_SUCCESSFULLY = "Receita atualizada com sucesso!";
     private static final String REGISTERED_SUCCESSFULLY = "Receita cadastrada com sucesso!";
 
-    @Inject
-    transient private EntityManager em;
-    @Inject
-    transient private FacesContext context;
-
     private Receita receita;
     private ReceitaDao receitaDao;
     private ReceitaValidator validator;
 
-    @PostConstruct
-    private void init() {
+    @Override
+    public void init() {
         this.receita = new Receita();
         this.receitaDao = new ReceitaDao(this.em);
         verificaReceitaSessao();
@@ -76,11 +65,7 @@ public class ReceitaBean implements Serializable {
     }
 
     private void verificaReceitaSessao() {
-        Integer receitaId = (Integer) Faces_Util.getHTTPSession().getAttribute("ReceitaID");
-        if (receitaId != null) {
-            this.receita = receitaDao.buscarPorId(Receita.class, receitaId);
-            Faces_Util.getHTTPSession().removeAttribute("ReceitaID");
-        }
+        this.receita = getObjetoSessao("ReceitaID", receitaDao, receita);
     }
 
     public Receita getReceita() {

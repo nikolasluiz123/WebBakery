@@ -31,4 +31,9 @@ public class LogradouroDao extends AbstractBaseDao<Logradouro> {
         return logradouros;
     }
 
+    @Override
+    public Class<?> getModelClass() {
+        return Logradouro.class;
+    }
+
 }

@@ -1,18 +1,13 @@
 package br.com.WebBakery.bean.manutencao;
 
-import java.io.Serializable;
 import java.util.List;
 
-import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
-import javax.inject.Inject;
 import javax.inject.Named;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 
+import br.com.WebBakery.abstractClass.AbstractBaseMBean;
 import br.com.WebBakery.dao.CidadeDao;
 import br.com.WebBakery.dao.EnderecoDao;
 import br.com.WebBakery.dao.EstadoDao;
@@ -27,22 +22,18 @@ import br.com.WebBakery.model.Funcionario;
 import br.com.WebBakery.model.Logradouro;
 import br.com.WebBakery.model.Pais;
 import br.com.WebBakery.model.Usuario;
-import br.com.WebBakery.util.Faces_Util;
 import br.com.WebBakery.validator.EnderecoValidator;
 import br.com.WebBakery.validator.FuncionarioValidator;
 
 @Named
 @ViewScoped
-public class FuncionarioBean implements Serializable {
+public class FuncionarioBean extends AbstractBaseMBean<Funcionario> {
 
     private static final String FUNCIONARIO_UPDATED_SUCCESSFULLY = "Funcionário atualizado com sucesso!";
 
     private static final String FUNCIONARIO_REGISTRED_SUCCESSFULLY = "Funcionario cadastrado com sucesso!";
 
     private static final long serialVersionUID = -3087884190174464470L;
-
-    @PersistenceContext
-    transient private EntityManager em;
 
     private FuncionarioDao funcionarioDao;
     private Funcionario funcionario;
@@ -74,11 +65,8 @@ public class FuncionarioBean implements Serializable {
 
     private EnderecoDao enderecoDao;
 
-    @Inject
-    transient private FacesContext context;
-
-    @PostConstruct
-    private void init() {
+    @Override
+    public void init() {
         this.funcionarioDao = new FuncionarioDao(this.em);
         this.funcionario = new Funcionario();
 
@@ -160,11 +148,7 @@ public class FuncionarioBean implements Serializable {
     }
 
     private void verficarFuncionarioSessao() {
-        Integer funcionarioId = (Integer) Faces_Util.getHTTPSession().getAttribute("FuncionarioID");
-        if (funcionarioId != null) {
-            this.funcionario = funcionarioDao.buscarPorId(Funcionario.class, funcionarioId);
-            Faces_Util.getHTTPSession().removeAttribute("FuncionarioID");
-        }
+        this.funcionario = getObjetoSessao("FuncionarioID", funcionarioDao, funcionario);
     }
 
     private void initListUsuarios() {

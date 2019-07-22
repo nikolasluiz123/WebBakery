@@ -58,4 +58,9 @@ public class ClienteDao extends AbstractBaseDao<Cliente> {
         }
         return c;
     }
+
+    @Override
+    public Class<?> getModelClass() {
+        return Cliente.class;
+    }
 }

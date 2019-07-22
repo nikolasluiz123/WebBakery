@@ -1,129 +1,50 @@
 package br.com.WebBakery.bean.manutencao;
 
 import java.io.IOException;
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
-import javax.annotation.PostConstruct;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
-import javax.inject.Inject;
 import javax.inject.Named;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 
-import br.com.WebBakery.dao.ClienteDao;
-import br.com.WebBakery.dao.FuncionarioDao;
+import br.com.WebBakery.abstractClass.AbstractBaseMBean;
 import br.com.WebBakery.dao.PopulaBancoDao;
 import br.com.WebBakery.dao.UsuarioDao;
-import br.com.WebBakery.enums.TipoUsuario;
-import br.com.WebBakery.model.Cliente;
-import br.com.WebBakery.model.Funcionario;
 import br.com.WebBakery.model.Usuario;
+import br.com.WebBakery.validator.LoginValidator;
 
 @Named
 @ViewScoped
-public class LoginBean implements Serializable {
+public class LoginBean extends AbstractBaseMBean<Usuario> {
 
     private static final long serialVersionUID = 7192496569257226719L;
-
-    @Inject
-    private FacesContext context;
-    @PersistenceContext
-    private EntityManager em;
 
     private Usuario usuario;
     private UsuarioDao usuarioDao;
     private PopulaBancoDao populaBancoDao;
-    // private FotoPerfilUsuarioDao fotoPerfilUsuarioDao;
-    private List<String> messages;
-
+    private LoginValidator validator;
     private String senha;
 
-    public Usuario getUsuario() {
-        return usuario;
-    }
-
-    @PostConstruct
-    private void init() {
+    @Override
+    public void init() {
         this.usuario = new Usuario();
         this.usuarioDao = new UsuarioDao(this.em);
         this.populaBancoDao = new PopulaBancoDao(this.em);
-        // this.fotoPerfilUsuarioDao = new FotoPerfilUsuarioDao(this.em);
-        this.messages = new ArrayList<>();
     }
 
     public void logar() throws IOException {
         this.usuario = usuarioDao.usuarioExiste(this.usuario.getEmail());
-        if (loginIsValid()) {
+        this.validator = new LoginValidator(this.usuario, this.senha, this.em);
+        if (validator.isValid()) {
             context.getExternalContext().getSessionMap().put("usuarioLogado", this.usuario);
             context.getExternalContext().redirect("cadastroFotoPerfilUsuario.xhtml");
         } else {
-            showMessages();
+            validator.showMessages();
         }
-    }
-
-    private boolean loginIsValid() {
-        if (this.usuario == null) {
-            this.messages.add("Usuário não encontrado!");
-        } else if (!senhaIsValid()) {
-            this.messages.add("Usuário e/ou senha inválido(s)!");
-        } else if (!existeVinculoComUsuario()) {
-            this.messages.add("Funcionário não foi cadastrado!");
-        }
-
-        if (!this.messages.isEmpty()) {
-            return false;
-        }
-        return true;
-    }
-
-    private boolean senhaIsValid() {
-        return this.senha.hashCode() == this.usuario.getSenha();
-    }
-
-    private void showMessages() throws IOException {
-        context.getExternalContext().getFlash().setKeepMessages(true);
-        this.getMessages().forEach(message -> {
-            context.addMessage(null,
-                               new FacesMessage(FacesMessage.SEVERITY_ERROR, message, message));
-        });
-        context.getExternalContext().redirect("login.xhtml");
-    }
-
-    private Boolean existeVinculoComUsuario() {
-        FuncionarioDao fDao = new FuncionarioDao(this.em);
-        ClienteDao cDao = new ClienteDao(this.em);
-        Usuario u = this.usuarioDao.usuarioExiste(this.usuario.getEmail());
-        Cliente c = null;
-        Funcionario f = null;
-
-        if (this.usuario.getTipo() == TipoUsuario.CLIENTE) {
-            c = cDao.buscarPorIdUsuario(u.getId());
-        } else {
-            f = fDao.buscarPorIdUsuario(u.getId());
-        }
-
-        if (c != null || f != null) {
-            return true;
-        }
-        return false;
     }
 
     public void deslogar() throws IOException {
         context.getExternalContext().getSessionMap().remove("usuarioLogado");
         context.getExternalContext().redirect("login.xhtml");
-    }
-
-    public List<String> getMessages() {
-        return messages;
-    }
-
-    public void setMessages(List<String> messages) {
-        this.messages = messages;
     }
 
     public String getSenha() {
@@ -132,6 +53,10 @@ public class LoginBean implements Serializable {
 
     public void setSenha(String senha) {
         this.senha = senha;
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
     }
 
     public void setUsuario(Usuario usuario) {

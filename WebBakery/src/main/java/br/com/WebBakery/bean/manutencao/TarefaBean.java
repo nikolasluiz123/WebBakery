@@ -1,41 +1,30 @@
 package br.com.WebBakery.bean.manutencao;
 
-import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
-import javax.inject.Inject;
 import javax.inject.Named;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 
+import br.com.WebBakery.abstractClass.AbstractBaseMBean;
 import br.com.WebBakery.dao.ProdutoDao;
 import br.com.WebBakery.dao.TarefaDao;
 import br.com.WebBakery.model.Produto;
 import br.com.WebBakery.model.Tarefa;
 import br.com.WebBakery.util.Date_Util;
-import br.com.WebBakery.util.Faces_Util;
 import br.com.WebBakery.validator.TarefaValidator;
 
 @Named
 @ViewScoped
-public class TarefaBean implements Serializable {
+public class TarefaBean extends AbstractBaseMBean<Tarefa> {
 
     private static final long serialVersionUID = 2625499918546247472L;
 
     private static final String UPDATED_SUCCESSFULLY = "Tarefa atualizada com sucesso!";
 
     private static final String REGISTERED_SUCCESSFULLY = "Tarefa cadastrada com sucesso!";
-
-    @PersistenceContext
-    private EntityManager em;
-    @Inject
-    transient private FacesContext context;
 
     private Tarefa tarefa;
     private TarefaDao tarefaDao;
@@ -47,8 +36,8 @@ public class TarefaBean implements Serializable {
 
     private TarefaValidator validator;
 
-    @PostConstruct
-    private void init() {
+    @Override
+    public void init() {
         this.tarefa = new Tarefa();
         this.tarefaDao = new TarefaDao(this.em);
         this.produtoDao = new ProdutoDao(this.em);
@@ -91,11 +80,7 @@ public class TarefaBean implements Serializable {
     }
 
     private void verificaTarefaSessao() {
-        Integer tarefaId = (Integer) Faces_Util.getHTTPSession().getAttribute("TarefaID");
-        if (tarefaId != null) {
-            this.tarefa = tarefaDao.buscarPorId(Tarefa.class, tarefaId);
-            Faces_Util.getHTTPSession().removeAttribute("TarefaID");
-        }
+        this.tarefa = getObjetoSessao("TarefaID", tarefaDao, tarefa);
     }
 
     private void initProdutos() {

@@ -29,4 +29,9 @@ public class ProdutoDao extends AbstractBaseDao<Produto> {
 
         return produtos;
     }
+
+    @Override
+    public Class<?> getModelClass() {
+        return Produto.class;
+    }
 }
