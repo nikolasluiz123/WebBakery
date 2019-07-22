@@ -44,13 +44,12 @@ public class UsuarioDao extends AbstractBaseDao<Usuario> {
         return true;
     }
 
-    public Usuario usuarioExiste(Usuario usuario) {
+    public Usuario usuarioExiste(String email) {
         try {
             return em
-                    .createQuery(" SELECT u FROM Usuario u "
-                            + " WHERE u.email = :pEmail AND u.senha = :pSenha ", Usuario.class)
-                    .setParameter("pSenha", usuario.getSenha())
-                    .setParameter("pEmail", usuario.getEmail()).getSingleResult();
+                    .createQuery(" SELECT u FROM Usuario u WHERE u.email = :pEmail ",
+                                 Usuario.class)
+                    .setParameter("pEmail", email).getSingleResult();
         } catch (Exception e) {
             return null;
         }

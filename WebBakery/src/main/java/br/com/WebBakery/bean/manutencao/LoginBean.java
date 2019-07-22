@@ -16,7 +16,6 @@ import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 
 import br.com.WebBakery.dao.ClienteDao;
-import br.com.WebBakery.dao.FotoPerfilUsuarioDao;
 import br.com.WebBakery.dao.FuncionarioDao;
 import br.com.WebBakery.dao.PopulaBancoDao;
 import br.com.WebBakery.dao.UsuarioDao;
@@ -39,7 +38,7 @@ public class LoginBean implements Serializable {
     private Usuario usuario;
     private UsuarioDao usuarioDao;
     private PopulaBancoDao populaBancoDao;
-    private FotoPerfilUsuarioDao fotoPerfilUsuarioDao;
+    // private FotoPerfilUsuarioDao fotoPerfilUsuarioDao;
     private List<String> messages;
 
     private String senha;
@@ -53,13 +52,12 @@ public class LoginBean implements Serializable {
         this.usuario = new Usuario();
         this.usuarioDao = new UsuarioDao(this.em);
         this.populaBancoDao = new PopulaBancoDao(this.em);
-        this.fotoPerfilUsuarioDao = new FotoPerfilUsuarioDao(this.em);
+        // this.fotoPerfilUsuarioDao = new FotoPerfilUsuarioDao(this.em);
         this.messages = new ArrayList<>();
     }
 
     public void logar() throws IOException {
-        this.usuario.setSenha(12345678);
-        this.usuario = usuarioDao.usuarioExiste(this.usuario);
+        this.usuario = usuarioDao.usuarioExiste(this.usuario.getEmail());
         if (loginIsValid()) {
             context.getExternalContext().getSessionMap().put("usuarioLogado", this.usuario);
             context.getExternalContext().redirect("cadastroFotoPerfilUsuario.xhtml");
@@ -71,16 +69,20 @@ public class LoginBean implements Serializable {
     private boolean loginIsValid() {
         if (this.usuario == null) {
             this.messages.add("Usuário não encontrado!");
+        } else if (!senhaIsValid()) {
+            this.messages.add("Usuário e/ou senha inválido(s)!");
+        } else if (!existeVinculoComUsuario()) {
+            this.messages.add("Funcionário não foi cadastrado!");
         }
-
-        // else if (!existeVinculoComUsuario()) {
-        // this.messages.add("Funcionário não foi cadastrado!");
-        // }
 
         if (!this.messages.isEmpty()) {
             return false;
         }
         return true;
+    }
+
+    private boolean senhaIsValid() {
+        return this.senha.hashCode() == this.usuario.getSenha();
     }
 
     private void showMessages() throws IOException {
@@ -95,7 +97,7 @@ public class LoginBean implements Serializable {
     private Boolean existeVinculoComUsuario() {
         FuncionarioDao fDao = new FuncionarioDao(this.em);
         ClienteDao cDao = new ClienteDao(this.em);
-        Usuario u = this.usuarioDao.usuarioExiste(this.usuario);
+        Usuario u = this.usuarioDao.usuarioExiste(this.usuario.getEmail());
         Cliente c = null;
         Funcionario f = null;
 

@@ -11,7 +11,7 @@ import br.com.WebBakery.abstractClass.AbstractBaseModel;
 @Entity
 public class Cliente extends AbstractBaseModel {
 
-       @Column(length = 20)
+    @Column(length = 20)
     private String cpf;
 
     @Column(length = 20)

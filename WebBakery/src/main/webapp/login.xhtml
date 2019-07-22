@@ -38,6 +38,9 @@
 					<p:commandButton value="Login" action="#{loginBean.logar}"
 						process="@form" update="formMessages:messages"
 						style="margin-top: 10px;" />
+
+					<p:commandButton value="Popula Banco"
+						action="#{loginBean.popularBanco()}" />
 				</div>
 
 			</p:fieldset>

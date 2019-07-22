@@ -12,7 +12,6 @@ import javax.transaction.Transactional;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.UploadedFile;
 
-import br.com.WebBakery.abstractClass.AbstractArquivo;
 import br.com.WebBakery.dao.FotoPerfilUsuarioDao;
 import br.com.WebBakery.model.Foto;
 import br.com.WebBakery.model.Usuario;
@@ -73,7 +72,7 @@ public class FotoPerfilUploadBean implements Serializable {
                     + nomeArquivo;
             setPathFoto(path);
         } else {
-            // preciso pegar a porcaria da foto que está em uma pasta no eclipse
+            setPathFoto(null);
         }
     }
 
