@@ -26,7 +26,7 @@ public class ListaUsuarioBean extends AbstractBaseListMBean<Usuario> {
     private List<Usuario> usuariosFiltrados;
 
     public void init() {
-        this.usuarioDao = new UsuarioDao(this.em);
+        this.usuarioDao = new UsuarioDao();
         this.usuarios = new ArrayList<>();
         initListUsuarios();
     }
@@ -35,7 +35,7 @@ public class ListaUsuarioBean extends AbstractBaseListMBean<Usuario> {
     public void inativar(Usuario usuario) {
         usuario.setAtivo(false);
         this.usuarioDao.atualizar(usuario);
-        context.addMessage(null, new FacesMessage(USUARIO_INATIVATED_SUCCESSFULLY));
+        getContext().addMessage(null, new FacesMessage(USUARIO_INATIVATED_SUCCESSFULLY));
         initListUsuarios();
     }
 

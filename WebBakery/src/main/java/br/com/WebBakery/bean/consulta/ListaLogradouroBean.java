@@ -26,7 +26,7 @@ public class ListaLogradouroBean extends AbstractBaseListMBean<Logradouro> {
     private List<Logradouro> logradourosFiltrados;
 
     public void init() {
-        this.logradouroDao = new LogradouroDao(this.em);
+        this.logradouroDao = new LogradouroDao();
         this.logradouro = new Logradouro();
         this.logradouros = new ArrayList<>();
         initListLogradouros();
@@ -37,7 +37,7 @@ public class ListaLogradouroBean extends AbstractBaseListMBean<Logradouro> {
         logradouro.setAtivo(false);
         this.logradouroDao.atualizar(logradouro);
         initListLogradouros();
-        context.addMessage(null, new FacesMessage(LOGRADOURO_INATIVATED_SUCCESSFULLY));
+        getContext().addMessage(null, new FacesMessage(LOGRADOURO_INATIVATED_SUCCESSFULLY));
     }
 
     private void initListLogradouros() {

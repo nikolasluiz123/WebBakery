@@ -6,7 +6,6 @@ import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
-import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 
 import br.com.WebBakery.abstractClass.AbstractBaseRegisterMBean;
@@ -70,28 +69,28 @@ public class ClienteBean extends AbstractBaseRegisterMBean<Cliente> {
 
     @PostConstruct
     public void init() {
-        this.clienteDao = new ClienteDao(this.em);
+        this.clienteDao = new ClienteDao();
         this.cliente = new Cliente();
 
-        this.enderecoDao = new EnderecoDao(this.em);
+        this.enderecoDao = new EnderecoDao();
         this.cliente.setEndereco(new Endereco());
         this.cliente.getEndereco().setPais(new Pais());
         this.cliente.getEndereco().setEstado(new Estado());
         this.cliente.getEndereco().setCidade(new Cidade());
         this.cliente.getEndereco().setLogradouro(new Logradouro());
 
-        this.logradouroDao = new LogradouroDao(this.em);
+        this.logradouroDao = new LogradouroDao();
 
-        this.usuarioDao = new UsuarioDao(this.em);
+        this.usuarioDao = new UsuarioDao();
         this.cliente.setUsuario(new Usuario());
 
-        this.paisDao = new PaisDao(this.em);
+        this.paisDao = new PaisDao();
         this.paisSelecionado = new Pais();
 
-        this.estadoDao = new EstadoDao(this.em);
+        this.estadoDao = new EstadoDao();
         this.estadoSelecionado = new Estado();
 
-        this.cidadeDao = new CidadeDao(this.em);
+        this.cidadeDao = new CidadeDao();
         this.cidadeSelecionada = new Cidade();
 
         initListPaises();
@@ -102,7 +101,7 @@ public class ClienteBean extends AbstractBaseRegisterMBean<Cliente> {
 
     @Transactional
     public void cadastrar() {
-        this.clienteValidator = new ClienteValidator(this.cliente, this.em, this.senha);
+        this.clienteValidator = new ClienteValidator(this.cliente, this.senha);
         this.enderecoValidator = new EnderecoValidator(this.cliente.getEndereco());
         if (this.cliente.getId() == null) {
             efetuarCadastro();
@@ -119,7 +118,7 @@ public class ClienteBean extends AbstractBaseRegisterMBean<Cliente> {
             cadastrarUsuarioCliente();
             this.cliente.setAtivo(true);
             this.clienteDao.cadastrar(this.cliente);
-            context.addMessage(null, new FacesMessage(REGISTERED_SUCCESSFULLY));
+            getContext().addMessage(null, new FacesMessage(REGISTERED_SUCCESSFULLY));
         }
     }
 
@@ -148,7 +147,7 @@ public class ClienteBean extends AbstractBaseRegisterMBean<Cliente> {
             this.usuarioDao.atualizar(this.cliente.getUsuario());
             this.enderecoDao.atualizar(this.cliente.getEndereco());
             this.logradouroDao.atualizar(this.cliente.getEndereco().getLogradouro());
-            context.addMessage(null, new FacesMessage(UPDATED_SUCCESSFULLY));
+            getContext().addMessage(null, new FacesMessage(UPDATED_SUCCESSFULLY));
         }
     }
 
@@ -250,14 +249,6 @@ public class ClienteBean extends AbstractBaseRegisterMBean<Cliente> {
 
     public void setCidadeSelecionada(Cidade cidadeSelecionada) {
         this.cidadeSelecionada = cidadeSelecionada;
-    }
-
-    public EntityManager getEm() {
-        return em;
-    }
-
-    public void setEm(EntityManager em) {
-        this.em = em;
     }
 
     public ClienteDao getClienteDao() {

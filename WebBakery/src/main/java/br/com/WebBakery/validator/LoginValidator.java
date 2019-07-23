@@ -1,7 +1,5 @@
 package br.com.WebBakery.validator;
 
-import javax.persistence.EntityManager;
-
 import br.com.WebBakery.abstractClass.AbstractValidator;
 import br.com.WebBakery.dao.ClienteDao;
 import br.com.WebBakery.dao.FuncionarioDao;
@@ -21,21 +19,21 @@ public class LoginValidator extends AbstractValidator {
 
     private Usuario usuario;
     private String senha;
-    private EntityManager em;
     private UsuarioDao usuarioDao;
 
-    public LoginValidator(Usuario usuario, String senha, EntityManager em) {
+    public LoginValidator(Usuario usuario, String senha) {
         this.usuario = usuario;
         this.senha = senha;
-        this.em = em;
-        this.usuarioDao = new UsuarioDao(this.em);
+        this.usuarioDao = new UsuarioDao();
     }
 
     @Override
     public void chamarValidacoes() {
-        verificaUsuarioExiste();
-        validaSenha();
-        verificaUsuarioVinculadoFuncionario();
+        boolean existe = verificaUsuarioExiste();
+        if (existe) {
+            validaSenha();
+            verificaUsuarioVinculadoFuncionario();
+        }
     }
 
     private void validaSenha() {
@@ -52,15 +50,18 @@ public class LoginValidator extends AbstractValidator {
         }
     }
 
-    private void verificaUsuarioExiste() {
+    private boolean verificaUsuarioExiste() {
         if (this.usuario == null) {
             messages.add("Usuário não encontrado!");
+
+            return false;
         }
+        return true;
     }
 
     private Boolean existeVinculoComUsuario() {
-        FuncionarioDao fDao = new FuncionarioDao(this.em);
-        ClienteDao cDao = new ClienteDao(this.em);
+        FuncionarioDao fDao = new FuncionarioDao();
+        ClienteDao cDao = new ClienteDao();
         Usuario u = this.usuarioDao.usuarioExiste(this.usuario.getEmail());
         Cliente c = null;
         Funcionario f = null;

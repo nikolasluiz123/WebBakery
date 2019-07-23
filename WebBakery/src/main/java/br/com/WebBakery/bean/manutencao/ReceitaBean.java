@@ -26,7 +26,7 @@ public class ReceitaBean extends AbstractBaseRegisterMBean<Receita> {
     @Override
     public void init() {
         this.receita = new Receita();
-        this.receitaDao = new ReceitaDao(this.em);
+        this.receitaDao = new ReceitaDao();
         verificaReceitaSessao();
     }
 
@@ -46,7 +46,7 @@ public class ReceitaBean extends AbstractBaseRegisterMBean<Receita> {
         if (this.validator.isValid()) {
             this.receita.setAtivo(true);
             this.receitaDao.cadastrar(this.receita);
-            context.addMessage(null, new FacesMessage(REGISTERED_SUCCESSFULLY));
+            getContext().addMessage(null, new FacesMessage(REGISTERED_SUCCESSFULLY));
         }
     }
 
@@ -54,7 +54,7 @@ public class ReceitaBean extends AbstractBaseRegisterMBean<Receita> {
     private void efetuarAtualizacao() {
         if (this.validator.isValid()) {
             this.receitaDao.atualizar(this.receita);
-            context.addMessage(null, new FacesMessage(UPDATED_SUCCESSFULLY));
+            getContext().addMessage(null, new FacesMessage(UPDATED_SUCCESSFULLY));
         }
     }
 

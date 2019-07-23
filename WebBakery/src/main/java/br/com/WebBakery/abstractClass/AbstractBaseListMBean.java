@@ -13,7 +13,7 @@ public abstract class AbstractBaseListMBean<T> extends AbstractBaseMBean<T> {
         HttpSession session = Faces_Util.getHTTPSession();
         session.setAttribute(keyAtribute, id);
         try {
-            context.getExternalContext().redirect(pageRedirect);
+            getContext().getExternalContext().redirect(pageRedirect);
         } catch (IOException e) {
             e.printStackTrace();
         }

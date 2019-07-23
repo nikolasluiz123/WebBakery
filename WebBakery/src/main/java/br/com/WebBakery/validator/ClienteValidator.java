@@ -2,8 +2,6 @@ package br.com.WebBakery.validator;
 
 import java.util.Date;
 
-import javax.persistence.EntityManager;
-
 import br.com.WebBakery.abstractClass.AbstractValidator;
 import br.com.WebBakery.dao.ClienteDao;
 import br.com.WebBakery.model.Cliente;
@@ -27,10 +25,10 @@ public class ClienteValidator extends AbstractValidator {
     private ClienteDao clienteDao;
     private String senha;
 
-    public ClienteValidator(Cliente cliente, EntityManager em, String senha) {
+    public ClienteValidator(Cliente cliente, String senha) {
         this.cliente = cliente;
         this.senha = senha;
-        this.clienteDao = new ClienteDao(em);
+        this.clienteDao = new ClienteDao();
     }
 
     @Override

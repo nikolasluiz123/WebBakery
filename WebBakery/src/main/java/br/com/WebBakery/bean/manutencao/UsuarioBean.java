@@ -30,14 +30,14 @@ public class UsuarioBean extends AbstractBaseRegisterMBean<Usuario> {
 
     @Override
     public void init() {
-        this.usuarioDao = new UsuarioDao(this.em);
+        this.usuarioDao = new UsuarioDao();
         this.usuario = new Usuario();
         verificaUsuarioSessao();
     }
 
     @Transactional
     public void cadastrar() {
-        this.validator = new UsuarioValidator(this.usuario, this.em, this.senha);
+        this.validator = new UsuarioValidator(this.usuario, this.senha);
         this.usuario.setTipo(tipoUsuario);
 
         if (this.usuario.getId() == null) {
@@ -52,14 +52,14 @@ public class UsuarioBean extends AbstractBaseRegisterMBean<Usuario> {
         if (validator.isValid()) {
             this.usuario.setAtivo(true);
             this.usuarioDao.cadastrar(this.usuario);
-            context.addMessage(null, new FacesMessage(USUARIO_REGISTERED_SUCCESSFULLY));
+            getContext().addMessage(null, new FacesMessage(USUARIO_REGISTERED_SUCCESSFULLY));
         }
     }
 
     private void efetuarAtualizacao() {
         if (this.validator.isValid()) {
             this.usuarioDao.atualizar(this.usuario);
-            context.addMessage(null, new FacesMessage(USUARIO_UPDATED_SUCCESSFULLY));
+            getContext().addMessage(null, new FacesMessage(USUARIO_UPDATED_SUCCESSFULLY));
         }
     }
 

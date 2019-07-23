@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.Stateless;
-import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 
 import br.com.WebBakery.abstractClass.AbstractBaseDao;
@@ -15,17 +14,10 @@ public class UsuarioDao extends AbstractBaseDao<Usuario> {
 
     private static final long serialVersionUID = -2545830489067942125L;
 
-    public UsuarioDao(EntityManager em) {
-        this.em = em;
-    }
-
-    public UsuarioDao() {
-    }
-
     public List<Usuario> listarTodos(Boolean ativo) {
         List<Usuario> usuarios = new ArrayList<>();
 
-        usuarios = em
+        usuarios = getEntityManager()
                 .createQuery("SELECT u FROM Usuario u WHERE u.ativo = :pAtivo ORDER BY u.nome, u.sobrenome",
                              Usuario.class)
                 .setParameter("pAtivo", ativo).getResultList();
@@ -35,7 +27,8 @@ public class UsuarioDao extends AbstractBaseDao<Usuario> {
 
     public boolean emailExiste(String email) {
         try {
-            em.createQuery("SELECT u FROM Usuario u WHERE u.email = :pEmail", Usuario.class)
+            getEntityManager()
+                    .createQuery("SELECT u FROM Usuario u WHERE u.email = :pEmail", Usuario.class)
                     .setParameter("pEmail", email).getSingleResult();
 
         } catch (NoResultException e) {
@@ -46,7 +39,8 @@ public class UsuarioDao extends AbstractBaseDao<Usuario> {
 
     public Usuario usuarioExiste(String email) {
         try {
-            return em
+            return getEntityManager()
+
                     .createQuery(" SELECT u FROM Usuario u WHERE u.email = :pEmail ", Usuario.class)
                     .setParameter("pEmail", email).getSingleResult();
         } catch (Exception e) {

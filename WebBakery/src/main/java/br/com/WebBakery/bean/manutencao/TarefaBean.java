@@ -39,8 +39,8 @@ public class TarefaBean extends AbstractBaseRegisterMBean<Tarefa> {
     @Override
     public void init() {
         this.tarefa = new Tarefa();
-        this.tarefaDao = new TarefaDao(this.em);
-        this.produtoDao = new ProdutoDao(this.em);
+        this.tarefaDao = new TarefaDao();
+        this.produtoDao = new ProdutoDao();
         initQuantidadeProdutoTarefa();
         initProdutos();
         verificaTarefaSessao();
@@ -61,14 +61,14 @@ public class TarefaBean extends AbstractBaseRegisterMBean<Tarefa> {
         if (this.validator.isValid()) {
             this.tarefa.setPendente(true);
             this.tarefaDao.cadastrar(this.tarefa);
-            context.addMessage(null, new FacesMessage(REGISTERED_SUCCESSFULLY));
+            getContext().addMessage(null, new FacesMessage(REGISTERED_SUCCESSFULLY));
         }
     }
 
     private void efetuarAtualizacao() {
         if (this.validator.isValid()) {
             this.tarefaDao.atualizar(this.tarefa);
-            context.addMessage(null, new FacesMessage(UPDATED_SUCCESSFULLY));
+            getContext().addMessage(null, new FacesMessage(UPDATED_SUCCESSFULLY));
         }
     }
 

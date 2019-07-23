@@ -67,28 +67,28 @@ public class FuncionarioBean extends AbstractBaseRegisterMBean<Funcionario> {
 
     @Override
     public void init() {
-        this.funcionarioDao = new FuncionarioDao(this.em);
+        this.funcionarioDao = new FuncionarioDao();
         this.funcionario = new Funcionario();
 
-        this.enderecoDao = new EnderecoDao(this.em);
+        this.enderecoDao = new EnderecoDao();
         this.funcionario.setEndereco(new Endereco());
         this.funcionario.getEndereco().setPais(new Pais());
         this.funcionario.getEndereco().setEstado(new Estado());
         this.funcionario.getEndereco().setCidade(new Cidade());
         this.funcionario.getEndereco().setLogradouro(new Logradouro());
 
-        this.logradouroDao = new LogradouroDao(this.em);
+        this.logradouroDao = new LogradouroDao();
 
-        this.usuarioDao = new UsuarioDao(this.em);
+        this.usuarioDao = new UsuarioDao();
         this.usuarioSelecionado = new Usuario();
 
-        this.paisDao = new PaisDao(this.em);
+        this.paisDao = new PaisDao();
         this.paisSelecionado = new Pais();
 
-        this.estadoDao = new EstadoDao(this.em);
+        this.estadoDao = new EstadoDao();
         this.estadoSelecionado = new Estado();
 
-        this.cidadeDao = new CidadeDao(this.em);
+        this.cidadeDao = new CidadeDao();
         this.cidadeSelecionada = new Cidade();
 
         initListPaises();
@@ -116,7 +116,7 @@ public class FuncionarioBean extends AbstractBaseRegisterMBean<Funcionario> {
             cadastrarEnderecoFuncionario();
             this.funcionario.setAtivo(true);
             this.funcionarioDao.cadastrar(this.funcionario);
-            context.addMessage(null, new FacesMessage(FUNCIONARIO_REGISTRED_SUCCESSFULLY));
+            getContext().addMessage(null, new FacesMessage(FUNCIONARIO_REGISTRED_SUCCESSFULLY));
         }
     }
 
@@ -137,7 +137,7 @@ public class FuncionarioBean extends AbstractBaseRegisterMBean<Funcionario> {
             this.funcionarioDao.atualizar(this.funcionario);
             this.enderecoDao.atualizar(this.funcionario.getEndereco());
             this.logradouroDao.atualizar(this.funcionario.getEndereco().getLogradouro());
-            context.addMessage(null, new FacesMessage(FUNCIONARIO_UPDATED_SUCCESSFULLY));
+            getContext().addMessage(null, new FacesMessage(FUNCIONARIO_UPDATED_SUCCESSFULLY));
         }
     }
 

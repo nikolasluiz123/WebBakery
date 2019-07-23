@@ -3,10 +3,8 @@ package br.com.WebBakery.bean.manutencao;
 import java.util.List;
 
 import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
-import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 
 import br.com.WebBakery.abstractClass.AbstractBaseRegisterMBean;
@@ -18,10 +16,9 @@ import br.com.WebBakery.model.EstoqueProduto;
 public class EstoqueProdutoBean extends AbstractBaseRegisterMBean<EstoqueProduto> {
 
     private static final String UPDATED_SUCCESSFULLY = "Estoque de produto atualizado com sucesso!";
-
     private static final String REGISTERED_SUCCESSFULLY = "Produto cadastrada no estoque com sucesso!";
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 579121007228763037L;
 
     private EstoqueProduto estoqueProduto;
     private EstoqueProduto epDoBanco;
@@ -33,7 +30,7 @@ public class EstoqueProdutoBean extends AbstractBaseRegisterMBean<EstoqueProduto
     @Override
     public void init() {
         this.estoqueProduto = new EstoqueProduto();
-        this.estoqueProdutoDao = new EstoqueProdutoDao(this.em);
+        this.estoqueProdutoDao = new EstoqueProdutoDao();
         initListaEstoqueProdutos();
     }
 
@@ -49,13 +46,13 @@ public class EstoqueProdutoBean extends AbstractBaseRegisterMBean<EstoqueProduto
 
     private void efetuarCadastro() {
         this.estoqueProdutoDao.cadastrar(this.estoqueProduto);
-        context.addMessage(null, new FacesMessage(REGISTERED_SUCCESSFULLY));
+        getContext().addMessage(null, new FacesMessage(REGISTERED_SUCCESSFULLY));
     }
 
     private void efetuarAtualizacao() {
         Integer quantidade = this.estoqueProduto.getQuantidade();
         this.estoqueProdutoDao.atualizar(this.epDoBanco, quantidade);
-        context.addMessage(null, new FacesMessage(UPDATED_SUCCESSFULLY));
+        getContext().addMessage(null, new FacesMessage(UPDATED_SUCCESSFULLY));
     }
 
     private void initListaEstoqueProdutos() {
@@ -102,19 +99,4 @@ public class EstoqueProdutoBean extends AbstractBaseRegisterMBean<EstoqueProduto
         this.epDoBanco = epDoBanco;
     }
 
-    public EntityManager getEm() {
-        return em;
-    }
-
-    public void setEm(EntityManager em) {
-        this.em = em;
-    }
-
-    public FacesContext getContext() {
-        return context;
-    }
-
-    public void setContext(FacesContext context) {
-        this.context = context;
-    }
 }

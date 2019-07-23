@@ -36,10 +36,10 @@ public class EstadoBean extends AbstractBaseRegisterMBean<Estado> {
 
     @Override
     public void init() {
-        this.estadoDao = new EstadoDao(this.em);
+        this.estadoDao = new EstadoDao();
         this.estado = new Estado();
 
-        this.paisDao = new PaisDao(this.em);
+        this.paisDao = new PaisDao();
         this.paisSelecionado = new Pais();
         this.paises = new ArrayList<>();
 
@@ -62,14 +62,14 @@ public class EstadoBean extends AbstractBaseRegisterMBean<Estado> {
         if (this.validator.isValid()) {
             this.estado.setAtivo(true);
             this.estadoDao.cadastrar(this.estado);
-            context.addMessage(null, new FacesMessage(ESTADO_REGISTRED_SUCCESSFULLY));
+            getContext().addMessage(null, new FacesMessage(ESTADO_REGISTRED_SUCCESSFULLY));
         }
     }
 
     private void efetuarAtualizacao() {
         if (this.validator.isValid()) {
             this.estadoDao.atualizar(this.estado);
-            context.addMessage(null, new FacesMessage(ESTADO_UPDATED_SUCCESSFULLY));
+            getContext().addMessage(null, new FacesMessage(ESTADO_UPDATED_SUCCESSFULLY));
         }
     }
 

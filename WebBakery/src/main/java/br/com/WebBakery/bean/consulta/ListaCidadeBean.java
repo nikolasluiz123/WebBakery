@@ -26,7 +26,7 @@ public class ListaCidadeBean extends AbstractBaseListMBean<Cidade> {
     private List<Cidade> cidadesFiltradas;
 
     public void init() {
-        this.cidadeDao = new CidadeDao(this.em);
+        this.cidadeDao = new CidadeDao();
         this.cidades = new ArrayList<>();
         initListCidades();
     }
@@ -40,7 +40,7 @@ public class ListaCidadeBean extends AbstractBaseListMBean<Cidade> {
         cidade.setAtivo(false);
         this.cidadeDao.atualizar(cidade);
         initListCidades();
-        context.addMessage(null, new FacesMessage(CIDADE_INATIVATED_SUCCESSFULLY));
+        getContext().addMessage(null, new FacesMessage(CIDADE_INATIVATED_SUCCESSFULLY));
     }
 
     private void initListCidades() {

@@ -24,27 +24,26 @@ public class LoginBean extends AbstractBaseRegisterMBean<Usuario> {
     private LoginValidator validator;
     private String senha;
 
-    @Override
     public void init() {
         this.usuario = new Usuario();
-        this.usuarioDao = new UsuarioDao(this.em);
-        this.populaBancoDao = new PopulaBancoDao(this.em);
+        this.usuarioDao = new UsuarioDao();
+        this.populaBancoDao = new PopulaBancoDao();
     }
 
     public void logar() throws IOException {
         this.usuario = usuarioDao.usuarioExiste(this.usuario.getEmail());
-        this.validator = new LoginValidator(this.usuario, this.senha, this.em);
+        this.validator = new LoginValidator(this.usuario, this.senha);
         if (validator.isValid()) {
-            context.getExternalContext().getSessionMap().put("usuarioLogado", this.usuario);
-            context.getExternalContext().redirect("cadastroFotoPerfilUsuario.xhtml");
+            getContext().getExternalContext().getSessionMap().put("usuarioLogado", this.usuario);
+            getContext().getExternalContext().redirect("cadastroFotoPerfilUsuario.xhtml");
         } else {
             validator.showMessages();
         }
     }
 
     public void deslogar() throws IOException {
-        context.getExternalContext().getSessionMap().remove("usuarioLogado");
-        context.getExternalContext().redirect("login.xhtml");
+        getContext().getExternalContext().getSessionMap().remove("usuarioLogado");
+        getContext().getExternalContext().redirect("login.xhtml");
     }
 
     public String getSenha() {

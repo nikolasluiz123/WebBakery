@@ -1,30 +1,40 @@
 package br.com.WebBakery.abstractClass;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 import br.com.WebBaker.interfaces.IBaseDao;
 
 @SuppressWarnings("serial")
-public abstract class AbstractBaseDao<T> implements IBaseDao<T>{
+public abstract class AbstractBaseDao<T> implements IBaseDao<T> {
 
-    protected EntityManager em;
-    
+    @PersistenceContext
+    private EntityManager entityManager;
+
     @Override
     public void cadastrar(T model) {
-        em.persist(model);
+        entityManager.persist(model);
     }
 
     @SuppressWarnings("unchecked")
     @Override
     public T buscarPorId(Integer id) {
-        return (T) em.find(getModelClass(), id);
+        return (T) entityManager.find(getModelClass(), id);
     }
 
     @Override
     public void atualizar(T model) {
-        em.merge(model);
+        entityManager.merge(model);
     }
-    
-    public abstract Class<?> getModelClass();
-}
 
+    public abstract Class<?> getModelClass();
+
+    public EntityManager getEntityManager() {
+        return entityManager;
+    }
+
+    public void setEntityManager(EntityManager em) {
+        this.entityManager = em;
+    }
+
+}

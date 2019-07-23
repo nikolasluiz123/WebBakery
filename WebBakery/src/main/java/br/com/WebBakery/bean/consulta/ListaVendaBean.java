@@ -31,9 +31,9 @@ public class ListaVendaBean extends AbstractBaseListMBean<Venda> {
     private String valorTotalPagoFormatado;
 
     public void init() {
-        this.vendaDao = new VendaDao(this.em);
+        this.vendaDao = new VendaDao();
         this.vendas = new ArrayList<>();
-        this.produtoVendaDao = new ProdutoVendaDao(this.em);
+        this.produtoVendaDao = new ProdutoVendaDao();
         this.produtosVenda = new ArrayList<>();
         this.valorTotalPago = 0.0;
         initListVendas();

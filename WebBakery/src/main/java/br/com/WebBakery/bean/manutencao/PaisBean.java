@@ -25,7 +25,7 @@ public class PaisBean extends AbstractBaseRegisterMBean<Pais> {
 
     @Override
     public void init() {
-        this.paisDao = new PaisDao(this.em);
+        this.paisDao = new PaisDao();
         this.pais = new Pais();
         verificaPaisSessao();
     }
@@ -45,14 +45,14 @@ public class PaisBean extends AbstractBaseRegisterMBean<Pais> {
         if (validator.isValid()) {
             this.pais.setAtivo(true);
             this.paisDao.cadastrar(this.pais);
-            context.addMessage(null, new FacesMessage(REGISTRED_SUCCESSFULLY));
+            getContext().addMessage(null, new FacesMessage(REGISTRED_SUCCESSFULLY));
         }
     }
 
     private void efetuarAtualizacao() {
         if (this.validator.isValid()) {
             this.paisDao.atualizar(this.pais);
-            context.addMessage(null, new FacesMessage(PAIS_UPDATED_SUCCESSFULLY));
+            getContext().addMessage(null, new FacesMessage(PAIS_UPDATED_SUCCESSFULLY));
         }
     }
 

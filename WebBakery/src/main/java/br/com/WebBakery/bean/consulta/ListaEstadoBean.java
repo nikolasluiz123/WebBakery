@@ -26,7 +26,7 @@ public class ListaEstadoBean extends AbstractBaseListMBean<Estado> {
     private List<Estado> estadosFiltrados;
 
     public void init() {
-        this.estadoDao = new EstadoDao(this.em);
+        this.estadoDao = new EstadoDao();
         this.estados = new ArrayList<>();
         initListEstados();
     }
@@ -41,7 +41,7 @@ public class ListaEstadoBean extends AbstractBaseListMBean<Estado> {
         estado.setAtivo(false);
         this.estadoDao.atualizar(estado);
         initListEstados();
-        context.addMessage(null, new FacesMessage(ESTADO_INATIVATED_SUCCESSFULLY));
+        getContext().addMessage(null, new FacesMessage(ESTADO_INATIVATED_SUCCESSFULLY));
     }
 
     private void initListEstados() {

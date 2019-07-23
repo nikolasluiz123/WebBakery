@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.Stateless;
-import javax.persistence.EntityManager;
 
 import br.com.WebBakery.abstractClass.AbstractBaseDao;
 import br.com.WebBakery.model.Cidade;
@@ -14,17 +13,10 @@ public class CidadeDao extends AbstractBaseDao<Cidade> {
 
     private static final long serialVersionUID = -8347345341892955875L;
 
-    public CidadeDao(EntityManager em) {
-        this.em = em;
-    }
-
-    public CidadeDao() {
-    }
-
     public List<Cidade> listarTodos(Boolean ativo) {
         List<Cidade> cidades = new ArrayList<>();
 
-        cidades = em.createQuery("SELECT c FROM Cidade c WHERE c.ativo = :pAtivo", Cidade.class)
+        cidades = getEntityManager().createQuery("SELECT c FROM Cidade c WHERE c.ativo = :pAtivo", Cidade.class)
                 .setParameter("pAtivo", ativo).getResultList();
 
         return cidades;
@@ -33,7 +25,7 @@ public class CidadeDao extends AbstractBaseDao<Cidade> {
     public List<Cidade> listarTodos(boolean ativo, Integer estadoId) {
         List<Cidade> cidades = new ArrayList<>();
 
-        cidades = em
+        cidades = getEntityManager()
                 .createQuery("SELECT c FROM Cidade c WHERE c.ativo = :pAtivo AND c.estado.id = :pEstadoId",
                              Cidade.class)
                 .setParameter("pAtivo", ativo).setParameter("pEstadoId", estadoId).getResultList();

@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.Stateless;
-import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 
 import br.com.WebBakery.abstractClass.AbstractBaseDao;
@@ -15,22 +14,15 @@ public class EstoqueProdutoDao extends AbstractBaseDao<EstoqueProduto> {
 
     private static final long serialVersionUID = -2808765073810346192L;
 
-    public EstoqueProdutoDao(EntityManager em) {
-        this.em = em;
-    }
-
-    public EstoqueProdutoDao() {
-    }
-
     public void atualizar(EstoqueProduto estoque, Integer qtd) {
         estoque.setQuantidade(estoque.getQuantidade() + qtd);
-        em.merge(estoque);
+        getEntityManager().merge(estoque);
     }
 
     public List<EstoqueProduto> listarTodos() {
         List<EstoqueProduto> estoque = new ArrayList<>();
 
-        estoque = em
+        estoque = getEntityManager()
                 .createQuery("SELECT ep FROM EstoqueProduto ep WHERE ep.quantidade >= 1 ORDER BY ep.produto.descricao",
                              EstoqueProduto.class)
                 .getResultList();
@@ -40,7 +32,7 @@ public class EstoqueProdutoDao extends AbstractBaseDao<EstoqueProduto> {
 
     public EstoqueProduto existe(Integer produtoId) {
         try {
-            return em
+            return getEntityManager()
                     .createQuery("SELECT ep FROM EstoqueProduto ep WHERE ep.produto.id = :pId ",
                                  EstoqueProduto.class)
                     .setParameter("pId", produtoId).getSingleResult();
@@ -52,7 +44,7 @@ public class EstoqueProdutoDao extends AbstractBaseDao<EstoqueProduto> {
     public EstoqueProduto buscarEstoqueProduto(Integer produtoId) {
         EstoqueProduto estoque = new EstoqueProduto();
 
-        estoque = em
+        estoque = getEntityManager()
                 .createQuery("SELECT ep FROM EstoqueProduto ep WHERE ep.produto.id = :pProdutoId",
                              EstoqueProduto.class)
                 .setParameter("pProdutoId", produtoId).getSingleResult();

@@ -27,7 +27,7 @@ public class ListaProdutoBean extends AbstractBaseListMBean<Produto> {
 
     public void init() {
         this.produtos = new ArrayList<>();
-        this.produtoDao = new ProdutoDao(this.em);
+        this.produtoDao = new ProdutoDao();
         initProdutos();
     }
 
@@ -36,7 +36,7 @@ public class ListaProdutoBean extends AbstractBaseListMBean<Produto> {
         produto.setAtivo(false);
         this.produtoDao.atualizar(produto);
         initProdutos();
-        context.addMessage(null, new FacesMessage(PRODUTO_INATIVATED_SUCCESSFULLY));
+        getContext().addMessage(null, new FacesMessage(PRODUTO_INATIVATED_SUCCESSFULLY));
     }
 
     public void carregar(Integer produtoID) throws IOException {

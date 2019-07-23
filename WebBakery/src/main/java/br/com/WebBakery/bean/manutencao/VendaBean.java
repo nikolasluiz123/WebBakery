@@ -65,21 +65,21 @@ public class VendaBean extends AbstractBaseMBean<Venda> {
     @Override
     public void init() {
         this.venda = new Venda();
-        this.vendaDao = new VendaDao(this.em);
+        this.vendaDao = new VendaDao();
 
         this.clienteSelecionado = new Cliente();
         this.clientes = new ArrayList<>();
-        this.clienteDao = new ClienteDao(this.em);
+        this.clienteDao = new ClienteDao();
 
         this.estoqueProdutosSelecionados = new ArrayList<>();
         this.estoqueProdutos = new ArrayList<>();
-        this.estoqueProdutoDao = new EstoqueProdutoDao(this.em);
+        this.estoqueProdutoDao = new EstoqueProdutoDao();
 
         this.produtoVenda = new ProdutoVenda();
-        this.produtoVendaDao = new ProdutoVendaDao(this.em);
+        this.produtoVendaDao = new ProdutoVendaDao();
         this.produtosVenda = new ArrayList<>();
 
-        this.funcionarioDao = new FuncionarioDao(this.em);
+        this.funcionarioDao = new FuncionarioDao();
 
         initListProdutos();
         initListClientes();
@@ -102,7 +102,7 @@ public class VendaBean extends AbstractBaseMBean<Venda> {
             this.vendaDao.cadastrar(this.venda);
             cadastrarProdutoVenda();
             atualizarProdutosVenda();
-            context.addMessage(null, new FacesMessage(VENDA_REGISTRED_SUCCESSFULLY));
+            getContext().addMessage(null, new FacesMessage(VENDA_REGISTRED_SUCCESSFULLY));
         }
     }
 
@@ -142,7 +142,7 @@ public class VendaBean extends AbstractBaseMBean<Venda> {
                 if (quantidadeEhValida) {
                     pv.setQuantidade((Integer) newValue);
                 } else {
-                    context.addMessage(null,
+                    getContext().addMessage(null,
                                        new FacesMessage(FacesMessage.SEVERITY_ERROR,
                                                         QUANTIDADE_LIMIT_EXCEDDED,
                                                         QUANTIDADE_LIMIT_EXCEDDED));

@@ -36,7 +36,7 @@ public class FotoPerfilUploadBean extends AbstractBaseRegisterMBean<Foto> {
     @Override
     public void init() {
         this.foto = new Foto();
-        this.dao = new FotoPerfilUsuarioDao(this.em);
+        this.dao = new FotoPerfilUsuarioDao();
         getPathFotoPastaTemporaria();
     }
 

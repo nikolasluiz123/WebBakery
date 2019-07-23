@@ -25,7 +25,7 @@ public class ListaClienteBean extends AbstractBaseListMBean<Cliente> {
     private List<Cliente> clientesFiltrados;
 
     public void init() {
-        this.clienteDao = new ClienteDao(this.em);
+        this.clienteDao = new ClienteDao();
         this.clientes = new ArrayList<>();
         this.clientesFiltrados = new ArrayList<>();
         initClientes();
@@ -40,7 +40,7 @@ public class ListaClienteBean extends AbstractBaseListMBean<Cliente> {
         cliente.setAtivo(false);
         this.clienteDao.atualizar(cliente);
         initClientes();
-        context.addMessage(null, new FacesMessage(INATIVATED_SUCCESSFULLY));
+        getContext().addMessage(null, new FacesMessage(INATIVATED_SUCCESSFULLY));
     }
 
     private void initClientes() {

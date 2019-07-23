@@ -32,14 +32,13 @@ public class ListaTarefaBean extends AbstractBaseListMBean<Tarefa> {
     private EstoqueProdutoBean estoqueProdutoBean;
 
     public void init() {
-        this.tarefaDao = new TarefaDao(this.em);
+        this.tarefaDao = new TarefaDao();
         this.tarefasPendentes = new ArrayList<>();
         this.tarefasConcluidas = new ArrayList<>();
         initTarefasPendentes();
         initTarefasConcluidas();
 
         this.estoqueProdutoBean = new EstoqueProdutoBean();
-        this.estoqueProdutoBean.setEm(this.em);
     }
 
     public void carregar(Integer tarefaID) throws Exception {
@@ -53,7 +52,7 @@ public class ListaTarefaBean extends AbstractBaseListMBean<Tarefa> {
         this.tarefaDao.atualizar(tarefa);
         this.tarefasPendentes.remove(tarefa);
         this.tarefasConcluidas.add(tarefa);
-        context.addMessage(null, new FacesMessage(COMPLETE_SUCCESSFULLY));
+        getContext().addMessage(null, new FacesMessage(COMPLETE_SUCCESSFULLY));
     }
 
     private void cadastrarProdutoEstoque(Tarefa tarefa) {
@@ -61,8 +60,7 @@ public class ListaTarefaBean extends AbstractBaseListMBean<Tarefa> {
         estoqueProduto.setProduto(tarefa.getProduto());
         estoqueProduto.setQuantidade(tarefa.getQuantidade());
         this.estoqueProdutoBean.setEstoqueProduto(estoqueProduto);
-        this.estoqueProdutoBean.setEstoqueProdutoDao(new EstoqueProdutoDao(this.em));
-        this.estoqueProdutoBean.setContext(this.context);
+        this.estoqueProdutoBean.setEstoqueProdutoDao(new EstoqueProdutoDao());
         this.estoqueProdutoBean.cadastrar();
     }
 

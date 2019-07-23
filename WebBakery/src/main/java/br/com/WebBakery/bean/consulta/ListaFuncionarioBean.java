@@ -29,7 +29,7 @@ public class ListaFuncionarioBean extends AbstractBaseListMBean<Funcionario> {
     private EnderecoDao enderecoDao;
 
     public void init() {
-        this.funcionarioDao = new FuncionarioDao(this.em);
+        this.funcionarioDao = new FuncionarioDao();
         this.funcionarios = new ArrayList<>();
         initListFuncionarios();
     }
@@ -42,7 +42,7 @@ public class ListaFuncionarioBean extends AbstractBaseListMBean<Funcionario> {
         this.funcionarioDao.atualizar(funcionario);
         this.enderecoDao.atualizar(funcionario.getEndereco());
         initListFuncionarios();
-        context.addMessage(null, new FacesMessage(FUNCIONARIO_INATIVATED_SUCCESSFULLY));
+        getContext().addMessage(null, new FacesMessage(FUNCIONARIO_INATIVATED_SUCCESSFULLY));
     }
 
     @Transactional

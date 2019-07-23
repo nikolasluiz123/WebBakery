@@ -4,10 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
-import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 
 import br.com.WebBakery.abstractClass.AbstractBaseRegisterMBean;
@@ -40,9 +38,9 @@ public class ProdutoBean extends AbstractBaseRegisterMBean<Produto> {
     @Override
     public void init() {
         this.produto = new Produto();
-        this.produtoDao = new ProdutoDao(this.em);
+        this.produtoDao = new ProdutoDao();
 
-        this.receitaDao = new ReceitaDao(this.em);
+        this.receitaDao = new ReceitaDao();
         this.receitaSelecionada = new Receita();
         this.receitas = new ArrayList<>();
         initReceitas();
@@ -64,14 +62,14 @@ public class ProdutoBean extends AbstractBaseRegisterMBean<Produto> {
         if (this.validator.isValid()) {
             this.produto.setAtivo(true);
             this.produtoDao.cadastrar(this.produto);
-            context.addMessage(null, new FacesMessage(REGISTERED_SUCCESSFULLY));
+            getContext().addMessage(null, new FacesMessage(REGISTERED_SUCCESSFULLY));
         }
     }
 
     private void efetuarAtualizacao() {
         if (this.validator.isValid()) {
             this.produtoDao.atualizar(this.produto);
-            context.addMessage(null, new FacesMessage(UPDATED_SUCCESSFULLY));
+            getContext().addMessage(null, new FacesMessage(UPDATED_SUCCESSFULLY));
         }
     }
 
@@ -101,28 +99,12 @@ public class ProdutoBean extends AbstractBaseRegisterMBean<Produto> {
         this.produto = produto;
     }
 
-    public FacesContext getContext() {
-        return context;
-    }
-
-    public void setContext(FacesContext context) {
-        this.context = context;
-    }
-
     public ProdutoValidator getValidator() {
         return validator;
     }
 
     public void setValidator(ProdutoValidator validator) {
         this.validator = validator;
-    }
-
-    public EntityManager getEm() {
-        return em;
-    }
-
-    public void setEm(EntityManager em) {
-        this.em = em;
     }
 
     public Receita getReceitaSelecionada() {

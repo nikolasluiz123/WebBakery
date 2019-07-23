@@ -37,10 +37,10 @@ public class CidadeBean extends AbstractBaseRegisterMBean<Cidade> {
 
     @Override
     public void init() {
-        this.cidadeDao = new CidadeDao(this.em);
+        this.cidadeDao = new CidadeDao();
         this.cidade = new Cidade();
 
-        this.estadoDao = new EstadoDao(this.em);
+        this.estadoDao = new EstadoDao();
         this.estadoSelecionado = new Estado();
         this.estados = new ArrayList<>();
         initListEstados();
@@ -62,14 +62,14 @@ public class CidadeBean extends AbstractBaseRegisterMBean<Cidade> {
         if (this.validator.isValid()) {
             this.cidade.setAtivo(true);
             this.cidadeDao.cadastrar(this.cidade);
-            context.addMessage(null, new FacesMessage(CIDADE_REGISTRED_SUCCESSFULLY));
+            getContext().addMessage(null, new FacesMessage(CIDADE_REGISTRED_SUCCESSFULLY));
         }
     }
 
     private void efetuarAtualizacao() {
         if (this.validator.isValid()) {
             this.cidadeDao.atualizar(this.cidade);
-            context.addMessage(null, new FacesMessage(CIDADE_UPDATED_SUCCESSFULLY));
+            getContext().addMessage(null, new FacesMessage(CIDADE_UPDATED_SUCCESSFULLY));
         }
     }
 

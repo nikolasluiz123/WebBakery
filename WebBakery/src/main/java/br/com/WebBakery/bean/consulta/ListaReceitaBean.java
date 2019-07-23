@@ -27,7 +27,7 @@ public class ListaReceitaBean extends AbstractBaseListMBean<Receita> {
 
     public void init() {
         this.receitas = new ArrayList<>();
-        this.receitaDao = new ReceitaDao(this.em);
+        this.receitaDao = new ReceitaDao();
         initReceitas();
     }
 
@@ -40,7 +40,7 @@ public class ListaReceitaBean extends AbstractBaseListMBean<Receita> {
         receita.setAtivo(false);
         this.receitaDao.atualizar(receita);
         initReceitas();
-        context.addMessage(null, new FacesMessage(RECEITA_INATIVATED_SUCCESSFULLY));
+        getContext().addMessage(null, new FacesMessage(RECEITA_INATIVATED_SUCCESSFULLY));
     }
 
     private void initReceitas() {

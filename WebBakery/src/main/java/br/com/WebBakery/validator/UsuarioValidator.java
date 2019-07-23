@@ -26,9 +26,9 @@ public class UsuarioValidator extends AbstractValidator {
     private UsuarioDao usuarioDao;
     private String senha;
 
-    public UsuarioValidator(Usuario usuario, EntityManager em, String senha) {
+    public UsuarioValidator(Usuario usuario, String senha) {
         this.usuario = usuario;
-        this.usuarioDao = new UsuarioDao(em);
+        this.usuarioDao = new UsuarioDao();
         this.senha = senha;
     }
 
