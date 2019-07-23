@@ -5,6 +5,7 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.view.ViewScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
 import javax.transaction.Transactional;
 
@@ -23,6 +24,8 @@ public class EstoqueProdutoBean extends AbstractBaseRegisterMBean<EstoqueProduto
 
     private EstoqueProduto estoqueProduto;
     private EstoqueProduto epDoBanco;
+    
+    @Inject
     private EstoqueProdutoDao estoqueProdutoDao;
 
     private List<EstoqueProduto> produtosEstoque;
@@ -31,7 +34,6 @@ public class EstoqueProdutoBean extends AbstractBaseRegisterMBean<EstoqueProduto
     @PostConstruct
     private void init() {
         this.estoqueProduto = new EstoqueProduto();
-        this.estoqueProdutoDao = new EstoqueProdutoDao();
         initListaEstoqueProdutos();
     }
 

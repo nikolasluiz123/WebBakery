@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.view.ViewScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
 import javax.transaction.Transactional;
 
@@ -21,12 +22,12 @@ public class ListaEstadoBean extends AbstractBaseListMBean<Estado> {
 
     private static final String ESTADO_INATIVATED_SUCCESSFULLY = "Estado inativado com sucesso!";
 
+    @Inject
     private EstadoDao estadoDao;
     private List<Estado> estados;
     private List<Estado> estadosFiltrados;
 
     public void init() {
-        this.estadoDao = new EstadoDao();
         this.estados = new ArrayList<>();
         initListEstados();
     }

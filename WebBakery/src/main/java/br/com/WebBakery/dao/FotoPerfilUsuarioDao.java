@@ -3,6 +3,8 @@ package br.com.WebBakery.dao;
 import java.util.List;
 
 import javax.ejb.Stateless;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 import br.com.WebBakery.abstractClass.AbstractArquivo;
@@ -11,7 +13,13 @@ import br.com.WebBakery.model.Foto;
 
 @Stateless
 public class FotoPerfilUsuarioDao extends AbstractBaseDao<Foto> {
-
+    @PersistenceContext
+    transient private EntityManager entityManager;
+    
+    @Override
+    protected EntityManager getEntityManager() {
+        return this.entityManager;
+    }
     private static final long serialVersionUID = 2158380135942373657L;
 
     public Foto getFotoUsuario(Integer idUsuario) {

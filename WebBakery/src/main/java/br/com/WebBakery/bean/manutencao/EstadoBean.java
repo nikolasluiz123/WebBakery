@@ -6,6 +6,7 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.view.ViewScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
 import javax.transaction.Transactional;
 
@@ -25,9 +26,11 @@ public class EstadoBean extends AbstractBaseRegisterMBean<Estado> {
 
     private static final long serialVersionUID = -4701039486320007318L;
 
+    @Inject
     private EstadoDao estadoDao;
     private Estado estado;
 
+    @Inject
     private PaisDao paisDao;
     private Pais paisSelecionado;
     private List<Pais> paises;
@@ -37,10 +40,8 @@ public class EstadoBean extends AbstractBaseRegisterMBean<Estado> {
 
     @PostConstruct
     private void init() {
-        this.estadoDao = new EstadoDao();
         this.estado = new Estado();
 
-        this.paisDao = new PaisDao();
         this.paisSelecionado = new Pais();
         this.paises = new ArrayList<>();
 

@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.view.ViewScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
 import javax.transaction.Transactional;
 
@@ -21,12 +22,12 @@ public class ListaCidadeBean extends AbstractBaseListMBean<Cidade> {
 
     private static final long serialVersionUID = 5495188526333831332L;
 
+    @Inject
     private CidadeDao cidadeDao;
     private List<Cidade> cidades;
     private List<Cidade> cidadesFiltradas;
 
     public void init() {
-        this.cidadeDao = new CidadeDao();
         this.cidades = new ArrayList<>();
         initListCidades();
     }

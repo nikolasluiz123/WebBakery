@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
 import javax.transaction.Transactional;
 
@@ -20,7 +21,11 @@ public class LoginBean extends AbstractBaseRegisterMBean<Usuario> {
     private static final long serialVersionUID = 7192496569257226719L;
 
     private Usuario usuario;
+
+    @Inject
     private UsuarioDao usuarioDao;
+
+    @Inject
     private PopulaBancoDao populaBancoDao;
     private LoginValidator validator;
     private String senha;
@@ -28,8 +33,6 @@ public class LoginBean extends AbstractBaseRegisterMBean<Usuario> {
     @PostConstruct
     private void init() {
         this.usuario = new Usuario();
-        this.usuarioDao = new UsuarioDao();
-        this.populaBancoDao = new PopulaBancoDao();
     }
 
     public void logar() throws IOException {
@@ -40,6 +43,7 @@ public class LoginBean extends AbstractBaseRegisterMBean<Usuario> {
             getContext().getExternalContext().redirect("cadastroFotoPerfilUsuario.xhtml");
         } else {
             validator.showMessages();
+            this.usuario = new Usuario();
         }
     }
 

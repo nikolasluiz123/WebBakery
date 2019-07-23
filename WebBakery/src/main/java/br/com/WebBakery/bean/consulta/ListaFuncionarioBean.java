@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.view.ViewScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
 import javax.transaction.Transactional;
 
@@ -22,6 +23,7 @@ public class ListaFuncionarioBean extends AbstractBaseListMBean<Funcionario> {
 
     private static final String FUNCIONARIO_INATIVATED_SUCCESSFULLY = "Funcionário atualizado com sucesso!";
 
+    @Inject
     private FuncionarioDao funcionarioDao;
     private List<Funcionario> funcionarios;
     private List<Funcionario> funcionariosFiltrados;
@@ -29,7 +31,6 @@ public class ListaFuncionarioBean extends AbstractBaseListMBean<Funcionario> {
     private EnderecoDao enderecoDao;
 
     public void init() {
-        this.funcionarioDao = new FuncionarioDao();
         this.funcionarios = new ArrayList<>();
         initListFuncionarios();
     }

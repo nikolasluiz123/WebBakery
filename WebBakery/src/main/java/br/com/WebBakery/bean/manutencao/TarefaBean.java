@@ -6,6 +6,7 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.view.ViewScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
 import javax.transaction.Transactional;
 
@@ -28,8 +29,10 @@ public class TarefaBean extends AbstractBaseRegisterMBean<Tarefa> {
     private static final String REGISTERED_SUCCESSFULLY = "Tarefa cadastrada com sucesso!";
 
     private Tarefa tarefa;
+    @Inject
     private TarefaDao tarefaDao;
 
+    @Inject
     private ProdutoDao produtoDao;
     private List<Produto> produtos;
     private List<Produto> produtosFiltrados;
@@ -40,8 +43,6 @@ public class TarefaBean extends AbstractBaseRegisterMBean<Tarefa> {
     @PostConstruct
     private void init() {
         this.tarefa = new Tarefa();
-        this.tarefaDao = new TarefaDao();
-        this.produtoDao = new ProdutoDao();
         initQuantidadeProdutoTarefa();
         initProdutos();
         verificaTarefaSessao();

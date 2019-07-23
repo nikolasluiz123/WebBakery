@@ -6,6 +6,7 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.view.ViewScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
 import javax.transaction.Transactional;
 
@@ -27,11 +28,13 @@ public class ProdutoBean extends AbstractBaseRegisterMBean<Produto> {
     private static final String REGISTERED_SUCCESSFULLY = "Produto cadastrado com sucesso!";
 
     private Produto produto;
+    @Inject
     private ProdutoDao produtoDao;
 
     private Receita receitaSelecionada;
     private List<Receita> receitas;
     private List<Receita> receitasFiltradas;
+    @Inject
     private ReceitaDao receitaDao;
 
     private ProdutoValidator validator;
@@ -39,9 +42,7 @@ public class ProdutoBean extends AbstractBaseRegisterMBean<Produto> {
     @PostConstruct
     private void init() {
         this.produto = new Produto();
-        this.produtoDao = new ProdutoDao();
 
-        this.receitaDao = new ReceitaDao();
         this.receitaSelecionada = new Receita();
         this.receitas = new ArrayList<>();
         initReceitas();

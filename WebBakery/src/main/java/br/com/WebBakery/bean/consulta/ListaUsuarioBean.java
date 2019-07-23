@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.view.ViewScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
 import javax.transaction.Transactional;
 
@@ -21,12 +22,12 @@ public class ListaUsuarioBean extends AbstractBaseListMBean<Usuario> {
 
     private static final String USUARIO_INATIVATED_SUCCESSFULLY = "Usuário inativado com sucesso!";
 
+    @Inject
     private UsuarioDao usuarioDao;
     private List<Usuario> usuarios;
     private List<Usuario> usuariosFiltrados;
 
     public void init() {
-        this.usuarioDao = new UsuarioDao();
         this.usuarios = new ArrayList<>();
         initListUsuarios();
     }

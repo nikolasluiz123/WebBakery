@@ -1,5 +1,7 @@
 package br.com.WebBakery.validator;
 
+import javax.inject.Inject;
+
 import br.com.WebBakery.abstractClass.AbstractValidator;
 import br.com.WebBakery.dao.ClienteDao;
 import br.com.WebBakery.dao.FuncionarioDao;
@@ -19,12 +21,12 @@ public class LoginValidator extends AbstractValidator {
 
     private Usuario usuario;
     private String senha;
+    @Inject
     private UsuarioDao usuarioDao;
 
     public LoginValidator(Usuario usuario, String senha) {
         this.usuario = usuario;
         this.senha = senha;
-        this.usuarioDao = new UsuarioDao();
     }
 
     @Override

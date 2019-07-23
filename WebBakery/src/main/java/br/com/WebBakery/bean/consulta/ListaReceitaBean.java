@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.view.ViewScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
 import javax.transaction.Transactional;
 
@@ -21,13 +22,13 @@ public class ListaReceitaBean extends AbstractBaseListMBean<Receita> {
 
     private static final String RECEITA_INATIVATED_SUCCESSFULLY = "Receita atualizada com sucesso!";
 
+    @Inject
     private ReceitaDao receitaDao;
     private List<Receita> receitas;
     private List<Receita> receitasFiltradas;
 
     public void init() {
         this.receitas = new ArrayList<>();
-        this.receitaDao = new ReceitaDao();
         initReceitas();
     }
 

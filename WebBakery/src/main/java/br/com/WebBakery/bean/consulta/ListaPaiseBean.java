@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.view.ViewScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
 import javax.transaction.Transactional;
 
@@ -21,12 +22,12 @@ public class ListaPaiseBean extends AbstractBaseListMBean<Pais> {
 
     private static final String PAIS_INATIVATED_SUCCESSFULLY = "País inativado com sucesso!";
 
+    @Inject
     private PaisDao paisDao;
     private List<Pais> paises;
     private List<Pais> paisesFiltrados;
 
     public void init() {
-        this.paisDao = new PaisDao();
         this.paises = new ArrayList<>();
         initListPaises();
     }

@@ -4,14 +4,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.Stateless;
+import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
+import javax.persistence.PersistenceContext;
 
 import br.com.WebBakery.abstractClass.AbstractBaseDao;
 import br.com.WebBakery.model.EstoqueProduto;
 
 @Stateless
 public class EstoqueProdutoDao extends AbstractBaseDao<EstoqueProduto> {
-
+    @PersistenceContext
+    transient private EntityManager entityManager;
+    
+    @Override
+    protected EntityManager getEntityManager() {
+        return this.entityManager;
+    }
     private static final long serialVersionUID = -2808765073810346192L;
 
     public void atualizar(EstoqueProduto estoque, Integer qtd) {

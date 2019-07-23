@@ -3,6 +3,7 @@ package br.com.WebBakery.bean.manutencao;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.view.ViewScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
 import javax.transaction.Transactional;
 
@@ -22,6 +23,7 @@ public class UsuarioBean extends AbstractBaseRegisterMBean<Usuario> {
 
     private static final String USUARIO_REGISTERED_SUCCESSFULLY = "Usuário cadastrado com sucesso!";
 
+    @Inject
     private UsuarioDao usuarioDao;
     private Usuario usuario;
     private TipoUsuario tipoUsuario;
@@ -31,7 +33,6 @@ public class UsuarioBean extends AbstractBaseRegisterMBean<Usuario> {
 
     @PostConstruct
     private void init() {
-        this.usuarioDao = new UsuarioDao();
         this.usuario = new Usuario();
         verificaUsuarioSessao();
     }

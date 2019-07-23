@@ -3,6 +3,7 @@ package br.com.WebBakery.bean.manutencao;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.view.ViewScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
 import javax.transaction.Transactional;
 
@@ -21,13 +22,13 @@ public class ReceitaBean extends AbstractBaseRegisterMBean<Receita> {
     private static final String REGISTERED_SUCCESSFULLY = "Receita cadastrada com sucesso!";
 
     private Receita receita;
+    @Inject
     private ReceitaDao receitaDao;
     private ReceitaValidator validator;
 
     @PostConstruct
     private void init() {
         this.receita = new Receita();
-        this.receitaDao = new ReceitaDao();
         verificaReceitaSessao();
     }
 

@@ -6,6 +6,7 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.view.ViewScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
 import javax.transaction.Transactional;
 
@@ -26,9 +27,11 @@ public class CidadeBean extends AbstractBaseRegisterMBean<Cidade> {
 
     private static final String CIDADE_REGISTRED_SUCCESSFULLY = "Cidade cadastrada com sucesso!";
 
+    @Inject
     private CidadeDao cidadeDao;
     private Cidade cidade;
 
+    @Inject
     private EstadoDao estadoDao;
     private Estado estadoSelecionado;
     private List<Estado> estados;
@@ -38,10 +41,8 @@ public class CidadeBean extends AbstractBaseRegisterMBean<Cidade> {
 
     @PostConstruct
     private void init() {
-        this.cidadeDao = new CidadeDao();
         this.cidade = new Cidade();
 
-        this.estadoDao = new EstadoDao();
         this.estadoSelecionado = new Estado();
         this.estados = new ArrayList<>();
         initListEstados();

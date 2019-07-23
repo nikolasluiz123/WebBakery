@@ -5,6 +5,7 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.view.ViewScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
 import javax.transaction.Transactional;
 
@@ -36,34 +37,41 @@ public class FuncionarioBean extends AbstractBaseRegisterMBean<Funcionario> {
 
     private static final long serialVersionUID = -3087884190174464470L;
 
+    @Inject
     private FuncionarioDao funcionarioDao;
     private Funcionario funcionario;
 
     private FuncionarioValidator funcionarioValidator;
     private EnderecoValidator enderecoValidator;
 
+    @Inject
     private UsuarioDao usuarioDao;
     private Usuario usuarioSelecionado;
     private List<Usuario> usuarios;
     private List<Usuario> usuariosFiltrados;
 
+    @Inject
     private PaisDao paisDao;
     private Pais paisSelecionado;
     private List<Pais> paises;
     private List<Pais> paisesFiltrados;
 
+    @Inject
     private EstadoDao estadoDao;
     private Estado estadoSelecionado;
     private List<Estado> estados;
     private List<Estado> estadosFiltrados;
 
+    @Inject
     private CidadeDao cidadeDao;
     private Cidade cidadeSelecionada;
     private List<Cidade> cidades;
     private List<Cidade> cidadesFiltradas;
 
+    @Inject
     private LogradouroDao logradouroDao;
 
+    @Inject
     private EnderecoDao enderecoDao;
 
     @PostConstruct

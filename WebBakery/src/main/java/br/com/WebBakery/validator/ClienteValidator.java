@@ -2,6 +2,8 @@ package br.com.WebBakery.validator;
 
 import java.util.Date;
 
+import javax.inject.Inject;
+
 import br.com.WebBakery.abstractClass.AbstractValidator;
 import br.com.WebBakery.dao.ClienteDao;
 import br.com.WebBakery.model.Cliente;
@@ -22,13 +24,13 @@ public class ClienteValidator extends AbstractValidator {
     private static final String FIELD_CPF_EXIST = "Cpf já cadastrado!";
 
     private Cliente cliente;
+    @Inject
     private ClienteDao clienteDao;
     private String senha;
 
     public ClienteValidator(Cliente cliente, String senha) {
         this.cliente = cliente;
         this.senha = senha;
-        this.clienteDao = new ClienteDao();
     }
 
     @Override

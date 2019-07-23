@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.faces.view.ViewScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
 
 import br.com.WebBakery.abstractClass.AbstractBaseListMBean;
@@ -19,10 +20,12 @@ public class ListaVendaBean extends AbstractBaseListMBean<Venda> {
 
     private static final long serialVersionUID = 4010909718723087342L;
 
+    @Inject
     private VendaDao vendaDao;
     private List<Venda> vendas;
     private List<Venda> vendasFiltradas;
 
+    @Inject
     private ProdutoVendaDao produtoVendaDao;
     private List<ProdutoVenda> produtosVenda;
     private List<ProdutoVenda> produtosVendaFiltradas;
@@ -31,9 +34,7 @@ public class ListaVendaBean extends AbstractBaseListMBean<Venda> {
     private String valorTotalPagoFormatado;
 
     public void init() {
-        this.vendaDao = new VendaDao();
         this.vendas = new ArrayList<>();
-        this.produtoVendaDao = new ProdutoVendaDao();
         this.produtosVenda = new ArrayList<>();
         this.valorTotalPago = 0.0;
         initListVendas();

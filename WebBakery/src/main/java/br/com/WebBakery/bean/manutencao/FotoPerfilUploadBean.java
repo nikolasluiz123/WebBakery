@@ -2,6 +2,7 @@ package br.com.WebBakery.bean.manutencao;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.SessionScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -27,6 +28,8 @@ public class FotoPerfilUploadBean extends AbstractBaseRegisterMBean<Foto> {
     private static final long serialVersionUID = 9124846392202100854L;
 
     private Foto foto;
+
+    @Inject
     private FotoPerfilUsuarioDao dao;
     private String pathFoto;
     private FotoValidator fotoValidator;
@@ -37,7 +40,6 @@ public class FotoPerfilUploadBean extends AbstractBaseRegisterMBean<Foto> {
     @PostConstruct
     private void init() {
         this.foto = new Foto();
-        this.dao = new FotoPerfilUsuarioDao();
         getPathFotoPastaTemporaria();
     }
 

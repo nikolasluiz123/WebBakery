@@ -4,13 +4,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.Stateless;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 import br.com.WebBakery.abstractClass.AbstractBaseDao;
 import br.com.WebBakery.model.Estado;
 
 @Stateless
 public class EstadoDao extends AbstractBaseDao<Estado> {
-
+    @PersistenceContext
+    transient private EntityManager entityManager;
+    
+    @Override
+    protected EntityManager getEntityManager() {
+        return this.entityManager;
+    }
     private static final long serialVersionUID = -783763888391855583L;
 
     public List<Estado> listarTodos(Boolean ativo) {

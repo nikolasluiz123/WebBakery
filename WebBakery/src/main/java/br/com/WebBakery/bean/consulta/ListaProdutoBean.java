@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.view.ViewScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
 import javax.transaction.Transactional;
 
@@ -21,13 +22,13 @@ public class ListaProdutoBean extends AbstractBaseListMBean<Produto> {
 
     private static final String PRODUTO_INATIVATED_SUCCESSFULLY = "Produto inativado com sucesso!";
 
+    @Inject
     private ProdutoDao produtoDao;
     private List<Produto> produtos;
     private List<Produto> produtosFiltrados;
 
     public void init() {
         this.produtos = new ArrayList<>();
-        this.produtoDao = new ProdutoDao();
         initProdutos();
     }
 

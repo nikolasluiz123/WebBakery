@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.view.ViewScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
 import javax.transaction.Transactional;
 
@@ -20,13 +21,13 @@ public class ListaLogradouroBean extends AbstractBaseListMBean<Logradouro> {
 
     private static final String LOGRADOURO_INATIVATED_SUCCESSFULLY = "Logradouro inativado com sucesso!";
 
+    @Inject
     private LogradouroDao logradouroDao;
     private Logradouro logradouro;
     private List<Logradouro> logradouros;
     private List<Logradouro> logradourosFiltrados;
 
     public void init() {
-        this.logradouroDao = new LogradouroDao();
         this.logradouro = new Logradouro();
         this.logradouros = new ArrayList<>();
         initListLogradouros();

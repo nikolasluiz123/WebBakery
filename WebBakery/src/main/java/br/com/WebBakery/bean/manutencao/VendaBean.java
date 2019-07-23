@@ -7,6 +7,7 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.view.ViewScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.NoResultException;
 import javax.transaction.Transactional;
@@ -39,6 +40,7 @@ public class VendaBean extends AbstractBaseMBean<Venda> {
     private static final String VENDA_REGISTRED_SUCCESSFULLY = "Venda realizada com sucesso!";
 
     private Venda venda;
+    @Inject
     private VendaDao vendaDao;
     private FormaPagamento formaPagamento;
     private ProdutoVendaValidator produtoVendaValidator;
@@ -46,19 +48,22 @@ public class VendaBean extends AbstractBaseMBean<Venda> {
     private Cliente clienteSelecionado;
     private List<Cliente> clientes;
     private List<Cliente> clientesFiltrados;
+    @Inject
     private ClienteDao clienteDao;
 
     private List<EstoqueProduto> estoqueProdutosSelecionados;
     private List<EstoqueProduto> estoqueProdutos;
     private List<EstoqueProduto> estoqueProdutosFiltrados;
+    @Inject
     private EstoqueProdutoDao estoqueProdutoDao;
 
     private List<ProdutoVenda> produtosVenda;
     private List<ProdutoVenda> produtosVendaFiltrados;
 
     private ProdutoVenda produtoVenda;
+    @Inject
     private ProdutoVendaDao produtoVendaDao;
-
+    @Inject
     private FuncionarioDao funcionarioDao;
 
     private Boolean quantidadeEhValida;
@@ -66,21 +71,15 @@ public class VendaBean extends AbstractBaseMBean<Venda> {
     @PostConstruct
     private void init() {
         this.venda = new Venda();
-        this.vendaDao = new VendaDao();
 
         this.clienteSelecionado = new Cliente();
         this.clientes = new ArrayList<>();
-        this.clienteDao = new ClienteDao();
 
         this.estoqueProdutosSelecionados = new ArrayList<>();
         this.estoqueProdutos = new ArrayList<>();
-        this.estoqueProdutoDao = new EstoqueProdutoDao();
 
         this.produtoVenda = new ProdutoVenda();
-        this.produtoVendaDao = new ProdutoVendaDao();
         this.produtosVenda = new ArrayList<>();
-
-        this.funcionarioDao = new FuncionarioDao();
 
         initListProdutos();
         initListClientes();
@@ -144,9 +143,9 @@ public class VendaBean extends AbstractBaseMBean<Venda> {
                     pv.setQuantidade((Integer) newValue);
                 } else {
                     getContext().addMessage(null,
-                                       new FacesMessage(FacesMessage.SEVERITY_ERROR,
-                                                        QUANTIDADE_LIMIT_EXCEDDED,
-                                                        QUANTIDADE_LIMIT_EXCEDDED));
+                                            new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                                                             QUANTIDADE_LIMIT_EXCEDDED,
+                                                             QUANTIDADE_LIMIT_EXCEDDED));
                 }
             }
         }

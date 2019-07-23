@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.view.ViewScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
 import javax.transaction.Transactional;
 
@@ -23,6 +24,7 @@ public class ListaTarefaBean extends AbstractBaseListMBean<Tarefa> {
 
     private static String COMPLETE_SUCCESSFULLY = "Tarefa concluída com sucessor!";
 
+    @Inject
     private TarefaDao tarefaDao;
     private List<Tarefa> tarefasPendentes;
     private List<Tarefa> tarefasPendentesFiltradas;
@@ -32,7 +34,6 @@ public class ListaTarefaBean extends AbstractBaseListMBean<Tarefa> {
     private EstoqueProdutoBean estoqueProdutoBean;
 
     public void init() {
-        this.tarefaDao = new TarefaDao();
         this.tarefasPendentes = new ArrayList<>();
         this.tarefasConcluidas = new ArrayList<>();
         initTarefasPendentes();

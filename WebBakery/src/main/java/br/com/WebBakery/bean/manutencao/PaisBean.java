@@ -3,6 +3,7 @@ package br.com.WebBakery.bean.manutencao;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.view.ViewScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
 import javax.transaction.Transactional;
 
@@ -20,13 +21,13 @@ public class PaisBean extends AbstractBaseRegisterMBean<Pais> {
 
     private static final long serialVersionUID = 3302600980972231377L;
 
+    @Inject
     private PaisDao paisDao;
     private Pais pais;
     private PaisValidator validator;
 
     @PostConstruct
     private void init() {
-        this.paisDao = new PaisDao();
         this.pais = new Pais();
         verificaPaisSessao();
     }

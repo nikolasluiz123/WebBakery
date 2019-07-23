@@ -5,6 +5,7 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.view.ViewScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
 import javax.transaction.Transactional;
 
@@ -39,27 +40,35 @@ public class ClienteBean extends AbstractBaseRegisterMBean<Cliente> {
     private static final String UPDATED_SUCCESSFULLY = "Cliente atualizado com sucesso!";
 
     private Cliente cliente;
+    
+    @Inject
     private ClienteDao clienteDao;
 
+    @Inject
     private PaisDao paisDao;
     private List<Pais> paises;
     private List<Pais> paisesFiltrados;
     private Pais paisSelecionado;
 
+    @Inject
     private EstadoDao estadoDao;
     private List<Estado> estados;
     private List<Estado> estadosFiltrados;
     private Estado estadoSelecionado;
 
+    @Inject
     private CidadeDao cidadeDao;
     private List<Cidade> cidades;
     private List<Cidade> cidadesFiltradas;
     private Cidade cidadeSelecionada;
-
+    
+    @Inject
     private LogradouroDao logradouroDao;
-
+   
+    @Inject
     private EnderecoDao enderecoDao;
-
+    
+    @Inject
     private UsuarioDao usuarioDao;
 
     private ClienteValidator clienteValidator;
@@ -69,28 +78,17 @@ public class ClienteBean extends AbstractBaseRegisterMBean<Cliente> {
 
     @PostConstruct
     private void init() {
-        this.clienteDao = new ClienteDao();
         this.cliente = new Cliente();
 
-        this.enderecoDao = new EnderecoDao();
         this.cliente.setEndereco(new Endereco());
         this.cliente.getEndereco().setPais(new Pais());
         this.cliente.getEndereco().setEstado(new Estado());
         this.cliente.getEndereco().setCidade(new Cidade());
         this.cliente.getEndereco().setLogradouro(new Logradouro());
 
-        this.logradouroDao = new LogradouroDao();
-
-        this.usuarioDao = new UsuarioDao();
         this.cliente.setUsuario(new Usuario());
-
-        this.paisDao = new PaisDao();
         this.paisSelecionado = new Pais();
-
-        this.estadoDao = new EstadoDao();
         this.estadoSelecionado = new Estado();
-
-        this.cidadeDao = new CidadeDao();
         this.cidadeSelecionada = new Cidade();
 
         initListPaises();

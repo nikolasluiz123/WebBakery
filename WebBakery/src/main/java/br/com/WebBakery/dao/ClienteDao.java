@@ -4,14 +4,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.Stateless;
+import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
+import javax.persistence.PersistenceContext;
 
 import br.com.WebBakery.abstractClass.AbstractBaseDao;
 import br.com.WebBakery.model.Cliente;
 
 @Stateless
 public class ClienteDao extends AbstractBaseDao<Cliente> {
-
+    @PersistenceContext
+    transient private EntityManager entityManager;
+    
+    @Override
+    protected EntityManager getEntityManager() {
+        return this.entityManager;
+    }
     private static final long serialVersionUID = 3335677484935538227L;
 
     public List<Cliente> listarTodos(Boolean ativo) {
