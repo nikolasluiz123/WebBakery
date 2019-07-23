@@ -1,36 +1,26 @@
 package br.com.WebBakery.bean.consulta;
 
 import java.io.IOException;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
-import javax.inject.Inject;
 import javax.inject.Named;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 
+import br.com.WebBakery.abstractClass.AbstractBaseListMBean;
 import br.com.WebBakery.dao.EnderecoDao;
 import br.com.WebBakery.dao.FuncionarioDao;
 import br.com.WebBakery.model.Funcionario;
-import br.com.WebBakery.util.Faces_Util;
 
 @Named
 @ViewScoped
-public class ListaFuncionarioBean implements Serializable {
+public class ListaFuncionarioBean extends AbstractBaseListMBean<Funcionario> {
 
     private static final long serialVersionUID = 5087202394870258058L;
 
     private static final String FUNCIONARIO_INATIVATED_SUCCESSFULLY = "Funcionário atualizado com sucesso!";
-
-    @PersistenceContext
-    transient private EntityManager em;
 
     private FuncionarioDao funcionarioDao;
     private List<Funcionario> funcionarios;
@@ -38,11 +28,7 @@ public class ListaFuncionarioBean implements Serializable {
 
     private EnderecoDao enderecoDao;
 
-    @Inject
-    transient private FacesContext context;
-
-    @PostConstruct
-    private void init() {
+    public void init() {
         this.funcionarioDao = new FuncionarioDao(this.em);
         this.funcionarios = new ArrayList<>();
         initListFuncionarios();
@@ -61,9 +47,7 @@ public class ListaFuncionarioBean implements Serializable {
 
     @Transactional
     public void carregar(Integer funcionarioID) throws IOException {
-        HttpSession session = Faces_Util.getHTTPSession();
-        session.setAttribute("FuncionarioID", funcionarioID);
-        context.getExternalContext().redirect("cadastroFuncionario.xhtml");
+        setObjetoSessao(funcionarioID, "FuncionarioID", "cadastroFuncionario.xhtml");
     }
 
     private void initListFuncionarios() {

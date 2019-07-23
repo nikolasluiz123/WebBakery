@@ -7,7 +7,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import br.com.WebBaker.interfaces.IBaseMBean;
-import br.com.WebBakery.util.Faces_Util;
 
 @SuppressWarnings("serial")
 public abstract class AbstractBaseMBean<T> implements IBaseMBean {
@@ -25,15 +24,6 @@ public abstract class AbstractBaseMBean<T> implements IBaseMBean {
         init();
     }
     
-    public T getObjetoSessao(String keyAtribute, AbstractBaseDao<T> dao, AbstractBaseModel model) {
-        Integer id = (Integer) Faces_Util.getHTTPSession().getAttribute(keyAtribute);
-        if (id != null) {
-            Faces_Util.getHTTPSession().removeAttribute("PaisID");
-            return dao.buscarPorId(id);
-        }
-        return null;
-    }
-
     public EntityManager getEm() {
         return em;
     }

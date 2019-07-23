@@ -5,7 +5,7 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import javax.transaction.Transactional;
 
-import br.com.WebBakery.abstractClass.AbstractBaseMBean;
+import br.com.WebBakery.abstractClass.AbstractBaseRegisterMBean;
 import br.com.WebBakery.dao.UsuarioDao;
 import br.com.WebBakery.enums.TipoUsuario;
 import br.com.WebBakery.model.Usuario;
@@ -13,7 +13,7 @@ import br.com.WebBakery.validator.UsuarioValidator;
 
 @Named
 @ViewScoped
-public class UsuarioBean extends AbstractBaseMBean<Usuario> {
+public class UsuarioBean extends AbstractBaseRegisterMBean<Usuario> {
 
     private static final long serialVersionUID = 2840219448696216244L;
 

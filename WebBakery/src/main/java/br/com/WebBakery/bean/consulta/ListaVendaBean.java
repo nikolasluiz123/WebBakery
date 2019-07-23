@@ -1,15 +1,12 @@
 package br.com.WebBakery.bean.consulta;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 
+import br.com.WebBakery.abstractClass.AbstractBaseListMBean;
 import br.com.WebBakery.dao.ProdutoVendaDao;
 import br.com.WebBakery.dao.VendaDao;
 import br.com.WebBakery.model.ProdutoVenda;
@@ -18,12 +15,9 @@ import br.com.WebBakery.util.String_Util;
 
 @Named
 @ViewScoped
-public class ListaVendaBean implements Serializable {
+public class ListaVendaBean extends AbstractBaseListMBean<Venda> {
 
     private static final long serialVersionUID = 4010909718723087342L;
-
-    @PersistenceContext
-    private EntityManager em;
 
     private VendaDao vendaDao;
     private List<Venda> vendas;
@@ -36,8 +30,7 @@ public class ListaVendaBean implements Serializable {
     private Double valorTotalPago;
     private String valorTotalPagoFormatado;
 
-    @PostConstruct
-    private void init() {
+    public void init() {
         this.vendaDao = new VendaDao(this.em);
         this.vendas = new ArrayList<>();
         this.produtoVendaDao = new ProdutoVendaDao(this.em);

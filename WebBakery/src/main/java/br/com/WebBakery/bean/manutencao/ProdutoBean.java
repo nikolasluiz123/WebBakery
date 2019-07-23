@@ -10,7 +10,7 @@ import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 
-import br.com.WebBakery.abstractClass.AbstractBaseMBean;
+import br.com.WebBakery.abstractClass.AbstractBaseRegisterMBean;
 import br.com.WebBakery.dao.ProdutoDao;
 import br.com.WebBakery.dao.ReceitaDao;
 import br.com.WebBakery.model.Produto;
@@ -19,7 +19,7 @@ import br.com.WebBakery.validator.ProdutoValidator;
 
 @Named
 @ViewScoped
-public class ProdutoBean extends AbstractBaseMBean<Produto> {
+public class ProdutoBean extends AbstractBaseRegisterMBean<Produto> {
 
     private static final long serialVersionUID = 8861448133925257777L;
 

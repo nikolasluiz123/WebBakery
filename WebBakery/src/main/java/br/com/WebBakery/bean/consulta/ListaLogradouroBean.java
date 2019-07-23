@@ -1,42 +1,31 @@
 package br.com.WebBakery.bean.consulta;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
-import javax.inject.Inject;
 import javax.inject.Named;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 
+import br.com.WebBakery.abstractClass.AbstractBaseListMBean;
 import br.com.WebBakery.dao.LogradouroDao;
 import br.com.WebBakery.model.Logradouro;
 
 @Named
 @ViewScoped
-public class ListaLogradouroBean implements Serializable {
+public class ListaLogradouroBean extends AbstractBaseListMBean<Logradouro> {
 
     private static final long serialVersionUID = -5398966780316383519L;
 
     private static final String LOGRADOURO_INATIVATED_SUCCESSFULLY = "Logradouro inativado com sucesso!";
-
-    @PersistenceContext
-    private EntityManager em;
-    @Inject
-    transient private FacesContext context;
 
     private LogradouroDao logradouroDao;
     private Logradouro logradouro;
     private List<Logradouro> logradouros;
     private List<Logradouro> logradourosFiltrados;
 
-    @PostConstruct
-    private void init() {
+    public void init() {
         this.logradouroDao = new LogradouroDao(this.em);
         this.logradouro = new Logradouro();
         this.logradouros = new ArrayList<>();

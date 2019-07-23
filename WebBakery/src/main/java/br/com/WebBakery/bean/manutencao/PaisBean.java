@@ -5,14 +5,14 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import javax.transaction.Transactional;
 
-import br.com.WebBakery.abstractClass.AbstractBaseMBean;
+import br.com.WebBakery.abstractClass.AbstractBaseRegisterMBean;
 import br.com.WebBakery.dao.PaisDao;
 import br.com.WebBakery.model.Pais;
 import br.com.WebBakery.validator.PaisValidator;
 
 @Named
 @ViewScoped
-public class PaisBean extends AbstractBaseMBean<Pais> {
+public class PaisBean extends AbstractBaseRegisterMBean<Pais> {
 
     private static final String PAIS_UPDATED_SUCCESSFULLY = "País atualizado com sucesso!";
     private static final String REGISTRED_SUCCESSFULLY = "País cadastrado com sucesso!";

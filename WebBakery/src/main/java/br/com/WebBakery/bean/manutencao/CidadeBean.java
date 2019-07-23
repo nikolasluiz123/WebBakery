@@ -8,7 +8,7 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import javax.transaction.Transactional;
 
-import br.com.WebBakery.abstractClass.AbstractBaseMBean;
+import br.com.WebBakery.abstractClass.AbstractBaseRegisterMBean;
 import br.com.WebBakery.dao.CidadeDao;
 import br.com.WebBakery.dao.EstadoDao;
 import br.com.WebBakery.model.Cidade;
@@ -17,7 +17,7 @@ import br.com.WebBakery.validator.CidadeValidator;
 
 @Named
 @ViewScoped
-public class CidadeBean extends AbstractBaseMBean<Cidade> {
+public class CidadeBean extends AbstractBaseRegisterMBean<Cidade> {
 
     private static final long serialVersionUID = -1552364059113279585L;
 

@@ -16,29 +16,25 @@ import javax.persistence.PersistenceContext;
 import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 
+import br.com.WebBakery.abstractClass.AbstractBaseListMBean;
 import br.com.WebBakery.dao.PaisDao;
+import br.com.WebBakery.model.Cliente;
 import br.com.WebBakery.model.Pais;
 import br.com.WebBakery.util.Faces_Util;
 
 @Named
 @ViewScoped
-public class ListaPaiseBean implements Serializable {
+public class ListaPaiseBean extends AbstractBaseListMBean<Pais> {
 
     private static final long serialVersionUID = 5308260090843275203L;
 
     private static final String PAIS_INATIVATED_SUCCESSFULLY = "País inativado com sucesso!";
 
-    @PersistenceContext
-    transient private EntityManager em;
-    @Inject
-    transient private FacesContext context;
-
     private PaisDao paisDao;
     private List<Pais> paises;
     private List<Pais> paisesFiltrados;
 
-    @PostConstruct
-    private void init() {
+    public void init() {
         this.paisDao = new PaisDao(this.em);
         this.paises = new ArrayList<>();
         initListPaises();
@@ -57,9 +53,7 @@ public class ListaPaiseBean implements Serializable {
     }
 
     public void carregar(Integer paisID) throws IOException {
-        HttpSession session = Faces_Util.getHTTPSession();
-        session.setAttribute("PaisID", paisID);
-        context.getExternalContext().redirect("cadastroPais.xhtml");
+        setObjetoSessao(paisID, "PaisID", "cadastroPais.xhtml");
     }
 
     public List<Pais> getPaises() {

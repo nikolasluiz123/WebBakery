@@ -9,7 +9,7 @@ import javax.transaction.Transactional;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.UploadedFile;
 
-import br.com.WebBakery.abstractClass.AbstractBaseMBean;
+import br.com.WebBakery.abstractClass.AbstractBaseRegisterMBean;
 import br.com.WebBakery.dao.FotoPerfilUsuarioDao;
 import br.com.WebBakery.model.Foto;
 import br.com.WebBakery.model.Usuario;
@@ -19,7 +19,9 @@ import br.com.WebBakery.validator.FotoValidator;
 
 @Named
 @SessionScoped
-public class FotoPerfilUploadBean extends AbstractBaseMBean<Foto> {
+public class FotoPerfilUploadBean extends AbstractBaseRegisterMBean<Foto> {
+
+    private static final String PATH_IMG_DEFAULT = "img/anonimo.png";
 
     private static final long serialVersionUID = 9124846392202100854L;
 
@@ -50,8 +52,8 @@ public class FotoPerfilUploadBean extends AbstractBaseMBean<Foto> {
         this.foto.setNome(file.getFileName());
         this.foto.setTamanho(file.getSize());
         this.fotoValidator = new FotoValidator(this.foto);
-        Boolean isValid = this.fotoValidator.isValid();
 
+        Boolean isValid = this.fotoValidator.isValid();
         if (fotoDoBanco == null && isValid) {
             this.dao.cadastrar(this.foto);
         } else if (isValid) {
@@ -71,11 +73,10 @@ public class FotoPerfilUploadBean extends AbstractBaseMBean<Foto> {
                 e.printStackTrace();
             }
             String nomeArquivo = File_Util.getNomeArquivo(pathCompleto);
-            String path = "." + "//" + "session_" + Faces_Util.getHTTPSession().getId() + "//"
-                    + nomeArquivo;
+            String path = File_Util.getPath(nomeArquivo);
             setPathFoto(path);
         } else {
-            setPathFoto("img/anonimo.png");
+            setPathFoto(PATH_IMG_DEFAULT);
         }
     }
 

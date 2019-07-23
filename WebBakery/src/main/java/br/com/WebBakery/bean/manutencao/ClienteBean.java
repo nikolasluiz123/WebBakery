@@ -9,7 +9,7 @@ import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 
-import br.com.WebBakery.abstractClass.AbstractBaseMBean;
+import br.com.WebBakery.abstractClass.AbstractBaseRegisterMBean;
 import br.com.WebBakery.dao.CidadeDao;
 import br.com.WebBakery.dao.ClienteDao;
 import br.com.WebBakery.dao.EnderecoDao;
@@ -31,7 +31,7 @@ import br.com.WebBakery.validator.EnderecoValidator;
 
 @Named
 @ViewScoped
-public class ClienteBean extends AbstractBaseMBean<Cliente> {
+public class ClienteBean extends AbstractBaseRegisterMBean<Cliente> {
 
     private static final long serialVersionUID = -7615567443762847019L;
 

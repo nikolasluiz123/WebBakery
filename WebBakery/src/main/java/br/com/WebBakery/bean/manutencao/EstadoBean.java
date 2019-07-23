@@ -8,7 +8,7 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import javax.transaction.Transactional;
 
-import br.com.WebBakery.abstractClass.AbstractBaseMBean;
+import br.com.WebBakery.abstractClass.AbstractBaseRegisterMBean;
 import br.com.WebBakery.dao.EstadoDao;
 import br.com.WebBakery.dao.PaisDao;
 import br.com.WebBakery.model.Estado;
@@ -17,7 +17,7 @@ import br.com.WebBakery.validator.EstadoValidator;
 
 @Named
 @ViewScoped
-public class EstadoBean extends AbstractBaseMBean<Estado> {
+public class EstadoBean extends AbstractBaseRegisterMBean<Estado> {
 
     private static final String ESTADO_UPDATED_SUCCESSFULLY = "Estado atualizado com sucesso!";
     private static final String ESTADO_REGISTRED_SUCCESSFULLY = "Estado cadastrado com sucesso!";

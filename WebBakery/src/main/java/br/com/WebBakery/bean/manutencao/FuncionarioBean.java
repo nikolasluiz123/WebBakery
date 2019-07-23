@@ -7,7 +7,7 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import javax.transaction.Transactional;
 
-import br.com.WebBakery.abstractClass.AbstractBaseMBean;
+import br.com.WebBakery.abstractClass.AbstractBaseRegisterMBean;
 import br.com.WebBakery.dao.CidadeDao;
 import br.com.WebBakery.dao.EnderecoDao;
 import br.com.WebBakery.dao.EstadoDao;
@@ -27,7 +27,7 @@ import br.com.WebBakery.validator.FuncionarioValidator;
 
 @Named
 @ViewScoped
-public class FuncionarioBean extends AbstractBaseMBean<Funcionario> {
+public class FuncionarioBean extends AbstractBaseRegisterMBean<Funcionario> {
 
     private static final String FUNCIONARIO_UPDATED_SUCCESSFULLY = "Funcionário atualizado com sucesso!";
 

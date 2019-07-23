@@ -10,24 +10,31 @@ import java.util.Date;
 
 import javax.servlet.ServletContext;
 
-import br.com.WebBakery.enums.Unidade;
 import br.com.WebBakery.model.Foto;
 
 public class File_Util {
 
     public final static String PATH_SEPARATOR = "/";
+    public final static String DOUBLE_PATH_SEPARATOR = "//";
+    public final static String SCORE = ".";
 
     public static String getExtensao(String fileName) {
         if (fileName == null) {
             return null;
         }
 
-        int si = fileName.lastIndexOf(".");
+        int si = fileName.lastIndexOf(File_Util.SCORE);
         if (si < 0) {
             return null;
         }
 
         return fileName.substring(si + 1);
+    }
+
+    public static String getPath(String nomeArquivo) {
+        return File_Util.SCORE + File_Util.DOUBLE_PATH_SEPARATOR + "session_"
+                + Faces_Util.getHTTPSession().getId() + File_Util.DOUBLE_PATH_SEPARATOR
+                + nomeArquivo;
     }
 
     public synchronized static String getPastaTemporaria(String webPath, String sessionId)
@@ -40,14 +47,14 @@ public class File_Util {
         return fileSession.getAbsolutePath();
     }
 
-    public static File criarArquivo(byte[] bytes, String caminho)
+    public static File criarArquivo(byte[] bytes, String caminho, String extensao)
             throws FileNotFoundException, IOException {
         if (caminho == null || bytes == null || bytes.length == 0) {
             return null;
         }
 
         Date now = new Date();
-        caminho += File.separator + "foto_" + now.getTime() + ".JPG";
+        caminho += File.separator + "foto_" + now.getTime() + extensao;
 
         FileOutputStream fileOutputStream = null;
         File arquivo = new File(caminho);
@@ -98,7 +105,8 @@ public class File_Util {
         File arquivoFoto = File_Util
                 .criarArquivo(f.getBytes(),
                               File_Util.getPastaTemporaria(context.getRealPath("/"),
-                                                           Faces_Util.getHTTPSession().getId()));
+                                                           Faces_Util.getHTTPSession().getId()),
+                              f.getExtensao());
         return arquivoFoto.getAbsolutePath();
     }
 
@@ -116,20 +124,5 @@ public class File_Util {
         }
 
         return fullPath.substring(si + 1, fullPath.length());
-    }
-
-    public static Long getTamanhoArquivo(Unidade unidade, Long length) {
-        Long tamanho = 0L;
-        if (unidade == Unidade.KILOBYTES) {
-            tamanho = length / 1024;
-        } else if (unidade == Unidade.MEGABYTES) {
-            tamanho = length / (1024 * 2);
-        } else if (unidade == Unidade.GIGABYTES) {
-            tamanho = length / (1024 * 3);
-        } else if (unidade == Unidade.TERABYTES) {
-            tamanho = length / (1024 * 4);
-        }
-
-        return tamanho;
     }
 }

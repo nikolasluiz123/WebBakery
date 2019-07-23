@@ -5,14 +5,14 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import javax.transaction.Transactional;
 
-import br.com.WebBakery.abstractClass.AbstractBaseMBean;
+import br.com.WebBakery.abstractClass.AbstractBaseRegisterMBean;
 import br.com.WebBakery.dao.ReceitaDao;
 import br.com.WebBakery.model.Receita;
 import br.com.WebBakery.validator.ReceitaValidator;
 
 @Named
 @ViewScoped
-public class ReceitaBean extends AbstractBaseMBean<Receita> {
+public class ReceitaBean extends AbstractBaseRegisterMBean<Receita> {
 
     private static final long serialVersionUID = 4300601613343189689L;
 

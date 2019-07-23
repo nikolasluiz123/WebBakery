@@ -1,39 +1,27 @@
 package br.com.WebBakery.bean.consulta;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
-import javax.inject.Inject;
 import javax.inject.Named;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 
+import br.com.WebBakery.abstractClass.AbstractBaseListMBean;
 import br.com.WebBakery.bean.manutencao.EstoqueProdutoBean;
 import br.com.WebBakery.dao.EstoqueProdutoDao;
 import br.com.WebBakery.dao.TarefaDao;
 import br.com.WebBakery.model.EstoqueProduto;
 import br.com.WebBakery.model.Tarefa;
-import br.com.WebBakery.util.Faces_Util;
 
 @Named
 @ViewScoped
-public class ListaTarefaBean implements Serializable {
+public class ListaTarefaBean extends AbstractBaseListMBean<Tarefa> {
 
     private static final long serialVersionUID = 1800431506410605175L;
 
     private static String COMPLETE_SUCCESSFULLY = "Tarefa concluída com sucessor!";
-
-    @PersistenceContext
-    private EntityManager em;
-    @Inject
-    transient private FacesContext context;
 
     private TarefaDao tarefaDao;
     private List<Tarefa> tarefasPendentes;
@@ -43,8 +31,7 @@ public class ListaTarefaBean implements Serializable {
 
     private EstoqueProdutoBean estoqueProdutoBean;
 
-    @PostConstruct
-    private void init() {
+    public void init() {
         this.tarefaDao = new TarefaDao(this.em);
         this.tarefasPendentes = new ArrayList<>();
         this.tarefasConcluidas = new ArrayList<>();
@@ -56,9 +43,7 @@ public class ListaTarefaBean implements Serializable {
     }
 
     public void carregar(Integer tarefaID) throws Exception {
-        HttpSession session = Faces_Util.getHTTPSession();
-        session.setAttribute("TarefaID", tarefaID);
-        context.getExternalContext().redirect("cadastroTarefa.xhtml");
+        setObjetoSessao(tarefaID, "TarefaID", "cadastroTarefa.xhtml");
     }
 
     @Transactional

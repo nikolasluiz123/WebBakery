@@ -6,7 +6,7 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import javax.transaction.Transactional;
 
-import br.com.WebBakery.abstractClass.AbstractBaseMBean;
+import br.com.WebBakery.abstractClass.AbstractBaseRegisterMBean;
 import br.com.WebBakery.dao.PopulaBancoDao;
 import br.com.WebBakery.dao.UsuarioDao;
 import br.com.WebBakery.model.Usuario;
@@ -14,7 +14,7 @@ import br.com.WebBakery.validator.LoginValidator;
 
 @Named
 @ViewScoped
-public class LoginBean extends AbstractBaseMBean<Usuario> {
+public class LoginBean extends AbstractBaseRegisterMBean<Usuario> {
 
     private static final long serialVersionUID = 7192496569257226719L;
 

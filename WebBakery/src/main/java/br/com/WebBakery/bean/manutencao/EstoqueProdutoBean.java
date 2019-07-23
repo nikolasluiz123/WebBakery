@@ -9,13 +9,13 @@ import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 
-import br.com.WebBakery.abstractClass.AbstractBaseMBean;
+import br.com.WebBakery.abstractClass.AbstractBaseRegisterMBean;
 import br.com.WebBakery.dao.EstoqueProdutoDao;
 import br.com.WebBakery.model.EstoqueProduto;
 
 @Named
 @ViewScoped
-public class EstoqueProdutoBean extends AbstractBaseMBean<EstoqueProduto> {
+public class EstoqueProdutoBean extends AbstractBaseRegisterMBean<EstoqueProduto> {
 
     private static final String UPDATED_SUCCESSFULLY = "Estoque de produto atualizado com sucesso!";
 

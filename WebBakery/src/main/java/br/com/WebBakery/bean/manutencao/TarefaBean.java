@@ -8,7 +8,7 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import javax.transaction.Transactional;
 
-import br.com.WebBakery.abstractClass.AbstractBaseMBean;
+import br.com.WebBakery.abstractClass.AbstractBaseRegisterMBean;
 import br.com.WebBakery.dao.ProdutoDao;
 import br.com.WebBakery.dao.TarefaDao;
 import br.com.WebBakery.model.Produto;
@@ -18,7 +18,7 @@ import br.com.WebBakery.validator.TarefaValidator;
 
 @Named
 @ViewScoped
-public class TarefaBean extends AbstractBaseMBean<Tarefa> {
+public class TarefaBean extends AbstractBaseRegisterMBean<Tarefa> {
 
     private static final long serialVersionUID = 2625499918546247472L;
 
