@@ -68,7 +68,7 @@ public class ClienteBean extends AbstractBaseRegisterMBean<Cliente> {
     private String senha;
 
     @PostConstruct
-    public void init() {
+    private void init() {
         this.clienteDao = new ClienteDao();
         this.cliente = new Cliente();
 

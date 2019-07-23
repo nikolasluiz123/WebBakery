@@ -22,8 +22,7 @@
 				<div class="ui-g-5">
 					<p:outputLabel value="E-mail" for="email" />
 					<p:inputText id="email" value="#{loginBean.usuario.email}"
-						placeholder="Digite seu e-mail..." required="true"
-						requiredMessage="E-mail é obrigatório!">
+						placeholder="Digite seu e-mail...">
 
 						<f:passThroughAttribute name="type" value="email" />
 
@@ -31,8 +30,7 @@
 
 					<p:outputLabel value="Senha" for="senha" />
 					<p:password id="senha" value="#{loginBean.senha}"
-						placeholder="Digite sua senha..." required="true"
-						requiredMessage="Senha é obrigatória!" />
+						placeholder="Digite sua senha..." />
 
 					<p:commandButton value="Login" action="#{loginBean.logar}"
 						process="@form" update="formMessages:messages"

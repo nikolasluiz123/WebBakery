@@ -2,6 +2,7 @@ package br.com.WebBakery.bean.manutencao;
 
 import java.io.IOException;
 
+import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import javax.transaction.Transactional;
@@ -24,7 +25,8 @@ public class LoginBean extends AbstractBaseRegisterMBean<Usuario> {
     private LoginValidator validator;
     private String senha;
 
-    public void init() {
+    @PostConstruct
+    private void init() {
         this.usuario = new Usuario();
         this.usuarioDao = new UsuarioDao();
         this.populaBancoDao = new PopulaBancoDao();

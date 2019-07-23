@@ -1,5 +1,6 @@
 package br.com.WebBakery.bean.manutencao;
 
+import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
@@ -23,8 +24,8 @@ public class PaisBean extends AbstractBaseRegisterMBean<Pais> {
     private Pais pais;
     private PaisValidator validator;
 
-    @Override
-    public void init() {
+    @PostConstruct
+    private void init() {
         this.paisDao = new PaisDao();
         this.pais = new Pais();
         verificaPaisSessao();

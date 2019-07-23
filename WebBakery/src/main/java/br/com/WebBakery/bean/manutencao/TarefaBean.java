@@ -3,6 +3,7 @@ package br.com.WebBakery.bean.manutencao;
 import java.util.Date;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
@@ -36,8 +37,8 @@ public class TarefaBean extends AbstractBaseRegisterMBean<Tarefa> {
 
     private TarefaValidator validator;
 
-    @Override
-    public void init() {
+    @PostConstruct
+    private void init() {
         this.tarefa = new Tarefa();
         this.tarefaDao = new TarefaDao();
         this.produtoDao = new ProdutoDao();

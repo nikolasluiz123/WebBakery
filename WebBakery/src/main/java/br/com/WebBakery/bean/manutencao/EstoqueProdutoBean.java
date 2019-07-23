@@ -2,6 +2,7 @@ package br.com.WebBakery.bean.manutencao;
 
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
@@ -27,8 +28,8 @@ public class EstoqueProdutoBean extends AbstractBaseRegisterMBean<EstoqueProduto
     private List<EstoqueProduto> produtosEstoque;
     private List<EstoqueProduto> produtosEstoqueFiltrados;
 
-    @Override
-    public void init() {
+    @PostConstruct
+    private void init() {
         this.estoqueProduto = new EstoqueProduto();
         this.estoqueProdutoDao = new EstoqueProdutoDao();
         initListaEstoqueProdutos();

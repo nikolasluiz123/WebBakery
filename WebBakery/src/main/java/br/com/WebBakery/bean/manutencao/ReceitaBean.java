@@ -1,5 +1,6 @@
 package br.com.WebBakery.bean.manutencao;
 
+import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
@@ -23,8 +24,8 @@ public class ReceitaBean extends AbstractBaseRegisterMBean<Receita> {
     private ReceitaDao receitaDao;
     private ReceitaValidator validator;
 
-    @Override
-    public void init() {
+    @PostConstruct
+    private void init() {
         this.receita = new Receita();
         this.receitaDao = new ReceitaDao();
         verificaReceitaSessao();

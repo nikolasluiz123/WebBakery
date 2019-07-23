@@ -3,6 +3,7 @@ package br.com.WebBakery.bean.manutencao;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
@@ -34,8 +35,8 @@ public class EstadoBean extends AbstractBaseRegisterMBean<Estado> {
 
     private EstadoValidator validator;
 
-    @Override
-    public void init() {
+    @PostConstruct
+    private void init() {
         this.estadoDao = new EstadoDao();
         this.estado = new Estado();
 

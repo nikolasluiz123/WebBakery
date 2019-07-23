@@ -1,5 +1,6 @@
 package br.com.WebBakery.bean.manutencao;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.SessionScoped;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
@@ -33,8 +34,8 @@ public class FotoPerfilUploadBean extends AbstractBaseRegisterMBean<Foto> {
     @PersistenceContext
     private EntityManager em;
 
-    @Override
-    public void init() {
+    @PostConstruct
+    private void init() {
         this.foto = new Foto();
         this.dao = new FotoPerfilUsuarioDao();
         getPathFotoPastaTemporaria();
