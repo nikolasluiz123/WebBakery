@@ -83,6 +83,10 @@ public class CidadeBean extends AbstractBaseRegisterMBean<Cidade> {
 
     private void verificaCidadeSessao() {
         this.cidade = getObjetoSessao("CidadeID", cidadeDao, cidade);
+        
+        if (cidade == null) {
+            this.cidade = new Cidade();
+        }
     }
 
     public void setarEstado() {

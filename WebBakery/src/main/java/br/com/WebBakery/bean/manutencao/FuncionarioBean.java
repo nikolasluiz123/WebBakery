@@ -158,6 +158,10 @@ public class FuncionarioBean extends AbstractBaseRegisterMBean<Funcionario> {
 
     private void verficarFuncionarioSessao() {
         this.funcionario = getObjetoSessao("FuncionarioID", funcionarioDao, funcionario);
+    
+        if (funcionario == null) {
+            this.funcionario = new Funcionario();
+        }
     }
 
     private void initListUsuarios() {

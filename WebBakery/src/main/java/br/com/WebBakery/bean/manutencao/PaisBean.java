@@ -66,6 +66,10 @@ public class PaisBean extends AbstractBaseRegisterMBean<Pais> {
 
     public void verificaPaisSessao() {
         this.pais = getObjetoSessao("PaisID", paisDao, pais);
+        
+        if (pais == null) {
+            this.pais = new Pais();
+        }
     }
 
     public Pais getPais() {

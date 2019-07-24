@@ -68,6 +68,10 @@ public class ReceitaBean extends AbstractBaseRegisterMBean<Receita> {
 
     private void verificaReceitaSessao() {
         this.receita = getObjetoSessao("ReceitaID", receitaDao, receita);
+    
+        if (receita == null) {
+            this.receita = new Receita();
+        }
     }
 
     public Receita getReceita() {

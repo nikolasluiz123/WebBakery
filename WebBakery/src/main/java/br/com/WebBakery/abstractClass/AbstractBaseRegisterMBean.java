@@ -13,5 +13,4 @@ public abstract class AbstractBaseRegisterMBean<T> extends AbstractBaseMBean<T> 
         }
         return null;
     }
-
 }

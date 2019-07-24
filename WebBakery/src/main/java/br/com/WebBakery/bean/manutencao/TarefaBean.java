@@ -83,6 +83,10 @@ public class TarefaBean extends AbstractBaseRegisterMBean<Tarefa> {
 
     private void verificaTarefaSessao() {
         this.tarefa = getObjetoSessao("TarefaID", tarefaDao, tarefa);
+    
+        if (tarefa == null) {
+            this.tarefa = new Tarefa();
+        }
     }
 
     private void initProdutos() {

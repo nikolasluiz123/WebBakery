@@ -83,6 +83,10 @@ public class EstadoBean extends AbstractBaseRegisterMBean<Estado> {
 
     private void verificaEstadoSessao() {
         this.estado = getObjetoSessao("EstadoID", estadoDao, estado);
+        
+        if (estado == null) {
+            this.estado = new Estado();
+        }
     }
 
     public void setarPais() {

@@ -73,6 +73,10 @@ public class UsuarioBean extends AbstractBaseRegisterMBean<Usuario> {
 
     private void verificaUsuarioSessao() {
         this.usuario = getObjetoSessao("UsuarioID", usuarioDao, usuario);
+    
+        if (usuario == null) {
+            this.usuario = new Usuario();
+        }
     }
 
     public Usuario getUsuario() {

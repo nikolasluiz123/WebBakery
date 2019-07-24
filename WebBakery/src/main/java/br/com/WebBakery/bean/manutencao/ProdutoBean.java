@@ -83,6 +83,10 @@ public class ProdutoBean extends AbstractBaseRegisterMBean<Produto> {
 
     private void verificaProdutoSessao() {
         this.produto = getObjetoSessao("ProdutoID", produtoDao, produto);
+    
+        if (produto == null) {
+            this.produto = new Produto();
+        }
     }
 
     private void initReceitas() {

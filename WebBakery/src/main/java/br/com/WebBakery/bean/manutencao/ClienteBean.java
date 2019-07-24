@@ -157,6 +157,10 @@ public class ClienteBean extends AbstractBaseRegisterMBean<Cliente> {
 
     private void verficarClienteSessao() {
         this.cliente = getObjetoSessao("ClienteID", clienteDao, cliente);
+        
+        if (cliente == null) {
+            this.cliente = new Cliente();
+        }
     }
 
     private void initListPaises() {

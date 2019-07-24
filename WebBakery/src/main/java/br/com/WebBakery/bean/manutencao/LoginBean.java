@@ -23,19 +23,14 @@ public class LoginBean extends AbstractBaseRegisterMBean<Usuario> {
     private static final long serialVersionUID = 7192496569257226719L;
 
     private Usuario usuario;
-
     @Inject
     private UsuarioDao usuarioDao;
-
     @Inject
     private PopulaBancoDao populaBancoDao;
-
     @Inject
     private FuncionarioDao funcionarioDao;
-
     @Inject
     private ClienteDao clienteDao;
-
     private LoginValidator validator;
     private String senha;
 
