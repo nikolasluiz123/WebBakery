@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
@@ -27,7 +28,8 @@ public class ListaEstadoBean extends AbstractBaseListMBean<Estado> {
     private List<Estado> estados;
     private List<Estado> estadosFiltrados;
 
-    public void init() {
+    @PostConstruct
+    private void init() {
         this.estados = new ArrayList<>();
         initListEstados();
     }

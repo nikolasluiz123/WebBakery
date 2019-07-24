@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
@@ -30,7 +31,8 @@ public class ListaFuncionarioBean extends AbstractBaseListMBean<Funcionario> {
 
     private EnderecoDao enderecoDao;
 
-    public void init() {
+    @PostConstruct
+    private void init() {
         this.funcionarios = new ArrayList<>();
         initListFuncionarios();
     }

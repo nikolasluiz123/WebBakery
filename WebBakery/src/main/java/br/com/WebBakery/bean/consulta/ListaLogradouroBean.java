@@ -3,6 +3,7 @@ package br.com.WebBakery.bean.consulta;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
@@ -27,7 +28,8 @@ public class ListaLogradouroBean extends AbstractBaseListMBean<Logradouro> {
     private List<Logradouro> logradouros;
     private List<Logradouro> logradourosFiltrados;
 
-    public void init() {
+    @PostConstruct
+    private void init() {
         this.logradouro = new Logradouro();
         this.logradouros = new ArrayList<>();
         initListLogradouros();

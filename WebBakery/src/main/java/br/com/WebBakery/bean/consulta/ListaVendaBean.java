@@ -3,6 +3,7 @@ package br.com.WebBakery.bean.consulta;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -33,7 +34,8 @@ public class ListaVendaBean extends AbstractBaseListMBean<Venda> {
     private Double valorTotalPago;
     private String valorTotalPagoFormatado;
 
-    public void init() {
+    @PostConstruct
+    private void init() {
         this.vendas = new ArrayList<>();
         this.produtosVenda = new ArrayList<>();
         this.valorTotalPago = 0.0;

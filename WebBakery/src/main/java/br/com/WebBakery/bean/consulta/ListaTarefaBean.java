@@ -3,6 +3,7 @@ package br.com.WebBakery.bean.consulta;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
@@ -33,7 +34,8 @@ public class ListaTarefaBean extends AbstractBaseListMBean<Tarefa> {
 
     private EstoqueProdutoBean estoqueProdutoBean;
 
-    public void init() {
+    @PostConstruct
+    private void init() {
         this.tarefasPendentes = new ArrayList<>();
         this.tarefasConcluidas = new ArrayList<>();
         initTarefasPendentes();

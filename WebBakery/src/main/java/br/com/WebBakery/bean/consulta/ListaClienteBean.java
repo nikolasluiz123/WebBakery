@@ -3,6 +3,7 @@ package br.com.WebBakery.bean.consulta;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
@@ -26,7 +27,8 @@ public class ListaClienteBean extends AbstractBaseListMBean<Cliente> {
     private List<Cliente> clientes;
     private List<Cliente> clientesFiltrados;
 
-    public void init() {
+    @PostConstruct
+    private void init() {
         this.clientes = new ArrayList<>();
         this.clientesFiltrados = new ArrayList<>();
         initClientes();
