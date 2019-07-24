@@ -1,7 +1,5 @@
 package br.com.WebBakery.validator;
 
-import javax.inject.Inject;
-
 import br.com.WebBakery.abstractClass.AbstractValidator;
 import br.com.WebBakery.dao.ClienteDao;
 import br.com.WebBakery.dao.FuncionarioDao;
@@ -21,12 +19,20 @@ public class LoginValidator extends AbstractValidator {
 
     private Usuario usuario;
     private String senha;
-    @Inject
     private UsuarioDao usuarioDao;
+    private FuncionarioDao funcionarioDao;
+    private ClienteDao clienteDao;
 
-    public LoginValidator(Usuario usuario, String senha) {
+    public LoginValidator(Usuario usuario,
+                          String senha,
+                          UsuarioDao usuarioDao,
+                          FuncionarioDao funcionarioDao,
+                          ClienteDao clienteDao) {
         this.usuario = usuario;
         this.senha = senha;
+        this.usuarioDao = usuarioDao;
+        this.funcionarioDao = funcionarioDao;
+        this.clienteDao = clienteDao;
     }
 
     @Override
@@ -62,16 +68,14 @@ public class LoginValidator extends AbstractValidator {
     }
 
     private Boolean existeVinculoComUsuario() {
-        FuncionarioDao fDao = new FuncionarioDao();
-        ClienteDao cDao = new ClienteDao();
         Usuario u = this.usuarioDao.usuarioExiste(this.usuario.getEmail());
         Cliente c = null;
         Funcionario f = null;
 
         if (this.usuario.getTipo() == TipoUsuario.CLIENTE) {
-            c = cDao.buscarPorIdUsuario(u.getId());
+            c = clienteDao.buscarPorIdUsuario(u.getId());
         } else {
-            f = fDao.buscarPorIdUsuario(u.getId());
+            f = funcionarioDao.buscarPorIdUsuario(u.getId());
         }
 
         if (c != null || f != null) {

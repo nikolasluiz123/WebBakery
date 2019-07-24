@@ -39,7 +39,7 @@ public class UsuarioBean extends AbstractBaseRegisterMBean<Usuario> {
 
     @Transactional
     public void cadastrar() {
-        this.validator = new UsuarioValidator(this.usuario, this.senha);
+        this.validator = new UsuarioValidator(this.usuario, this.senha, this.usuarioDao);
         this.usuario.setTipo(tipoUsuario);
 
         if (this.usuario.getId() == null) {

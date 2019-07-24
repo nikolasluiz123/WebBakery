@@ -4,9 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.Stateless;
-import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
-import javax.persistence.PersistenceContext;
 
 import br.com.WebBakery.abstractClass.AbstractBaseDao;
 import br.com.WebBakery.model.Usuario;
@@ -16,14 +14,6 @@ public class UsuarioDao extends AbstractBaseDao<Usuario> {
 
     private static final long serialVersionUID = -2545830489067942125L;
 
-    @PersistenceContext
-   EntityManager entityManager;
-    
-    @Override
-    protected EntityManager getEntityManager() {
-        return this.entityManager;
-    }
-    
     public List<Usuario> listarTodos(Boolean ativo) {
         List<Usuario> usuarios = new ArrayList<>();
 

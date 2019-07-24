@@ -9,6 +9,8 @@ import javax.inject.Named;
 import javax.transaction.Transactional;
 
 import br.com.WebBakery.abstractClass.AbstractBaseRegisterMBean;
+import br.com.WebBakery.dao.ClienteDao;
+import br.com.WebBakery.dao.FuncionarioDao;
 import br.com.WebBakery.dao.PopulaBancoDao;
 import br.com.WebBakery.dao.UsuarioDao;
 import br.com.WebBakery.model.Usuario;
@@ -27,6 +29,13 @@ public class LoginBean extends AbstractBaseRegisterMBean<Usuario> {
 
     @Inject
     private PopulaBancoDao populaBancoDao;
+
+    @Inject
+    private FuncionarioDao funcionarioDao;
+
+    @Inject
+    private ClienteDao clienteDao;
+
     private LoginValidator validator;
     private String senha;
 
@@ -37,7 +46,11 @@ public class LoginBean extends AbstractBaseRegisterMBean<Usuario> {
 
     public void logar() throws IOException {
         this.usuario = usuarioDao.usuarioExiste(this.usuario.getEmail());
-        this.validator = new LoginValidator(this.usuario, this.senha);
+        this.validator = new LoginValidator(this.usuario,
+                                            this.senha,
+                                            this.usuarioDao,
+                                            this.funcionarioDao,
+                                            this.clienteDao);
         if (validator.isValid()) {
             getContext().getExternalContext().getSessionMap().put("usuarioLogado", this.usuario);
             getContext().getExternalContext().redirect("cadastroFotoPerfilUsuario.xhtml");

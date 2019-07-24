@@ -1,13 +1,19 @@
 package br.com.WebBakery.abstractClass;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 import br.com.WebBaker.interfaces.IBaseDao;
 
 @SuppressWarnings("serial")
 public abstract class AbstractBaseDao<T> implements IBaseDao<T> {
 
-    protected abstract EntityManager getEntityManager();
+    @PersistenceContext
+    EntityManager entityManager;
+    
+    protected EntityManager getEntityManager() {
+        return entityManager;
+    }
     
     public abstract Class<?> getModelClass();
 

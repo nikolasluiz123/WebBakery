@@ -1,7 +1,5 @@
 package br.com.WebBakery.validator;
 
-import javax.inject.Inject;
-
 import br.com.WebBakery.abstractClass.AbstractValidator;
 import br.com.WebBakery.dao.UsuarioDao;
 import br.com.WebBakery.model.Usuario;
@@ -23,13 +21,12 @@ public class UsuarioValidator extends AbstractValidator {
     private static final String FIELD_SOBRENOME_LIMIT_EXCEDDED = "Sobrenome com excedência de caractéres!";
 
     private Usuario usuario;
-    @Inject
     private UsuarioDao usuarioDao;
     private String senha;
 
-    public UsuarioValidator(Usuario usuario, String senha) {
+    public UsuarioValidator(Usuario usuario, String senha, UsuarioDao usuarioDao) {
         this.usuario = usuario;
-        this.usuarioDao = new UsuarioDao();
+        this.usuarioDao = usuarioDao;
         this.senha = senha;
     }
 
