@@ -43,7 +43,9 @@ public class ListaEstadoBean extends AbstractBaseListMBean implements IBaseListM
         String keyAtribute = "EstadoID";
         String pageRedirect = "cadastroEstado.xhtml";
         setObjetoSessao(estadoID, keyAtribute, pageRedirect);
-        getRegisterBean().getObjetoSessao(keyAtribute, estadoDao);
+        EstadoBean registerBean = getRegisterBean();
+        TOEstado objetoSessao = registerBean.getObjetoSessao(keyAtribute, estadoDao);
+        registerBean.setToEstado(objetoSessao);
     }
 
     @Transactional
