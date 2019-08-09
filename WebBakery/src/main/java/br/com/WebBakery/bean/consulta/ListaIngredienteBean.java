@@ -1,6 +1,5 @@
 package br.com.WebBakery.bean.consulta;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,6 +11,7 @@ import javax.inject.Named;
 import javax.transaction.Transactional;
 
 import br.com.WebBakery.abstractClass.AbstractBaseListMBean;
+import br.com.WebBakery.bean.manutencao.IngredienteBean;
 import br.com.WebBakery.dao.FotoIngredienteDao;
 import br.com.WebBakery.dao.IngredienteDao;
 import br.com.WebBakery.interfaces.IBaseListMBean;
@@ -19,13 +19,16 @@ import br.com.WebBakery.to.TOFotoIngrediente;
 import br.com.WebBakery.to.TOFotoProduto;
 import br.com.WebBakery.to.TOIngrediente;
 import br.com.WebBakery.to.TOIngredienteComFotos;
+import br.com.WebBakery.util.Faces_Util;
 import br.com.WebBakery.util.File_Util;
 import br.com.WebBakery.util.String_Util;
 
-@Named
+@Named(ListaIngredienteBean.BEAN_NAME)
 @ViewScoped
 public class ListaIngredienteBean extends AbstractBaseListMBean
         implements IBaseListMBean<TOIngrediente> {
+
+    static final String BEAN_NAME = "listaIngredienteBean";
 
     private static final long serialVersionUID = -5854537667186626713L;
 
@@ -35,12 +38,12 @@ public class ListaIngredienteBean extends AbstractBaseListMBean
     private IngredienteDao ingredienteDao;
     @Inject
     private FotoIngredienteDao fotoIngredienteDao;
-    private List<TOIngrediente> ingredientes;
+    private List<TOIngrediente> toIngredientes;
     private TOIngrediente ingredienteSelecionado;
 
     @PostConstruct
     private void init() {
-        this.ingredientes = new ArrayList<>();
+        this.toIngredientes = new ArrayList<>();
         this.ingredienteSelecionado = new TOIngrediente();
         initIngredientes();
     }
@@ -120,8 +123,13 @@ public class ListaIngredienteBean extends AbstractBaseListMBean
     }
 
     @Override
-    public void carregar(Integer produtoID) throws IOException {
-        setObjetoSessao(produtoID, "ProdutoID", "cadastroProduto.xhtml");
+    public void carregar(Integer produtoID) throws Exception {
+        String keyAtribute = "ProdutoID";
+        String pageRedirect = "cadastroProduto.xhtml";
+        setObjetoSessao(produtoID, keyAtribute, pageRedirect);
+        IngredienteBean registerBean = getRegisterBean();
+        TOIngrediente objetoSessao = registerBean.getObjetoSessao(keyAtribute, ingredienteDao);
+        registerBean.setToIngrediente(objetoSessao);
     }
 
     public String getPrecoFormatado(Double d) {
@@ -130,18 +138,22 @@ public class ListaIngredienteBean extends AbstractBaseListMBean
 
     private void initIngredientes() {
         try {
-            this.ingredientes = this.ingredienteDao.listarTodos(true);
+            this.toIngredientes = this.ingredienteDao.listarTodos(true);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+    
+    private IngredienteBean getRegisterBean() {
+        return ((IngredienteBean) Faces_Util.getBean(IngredienteBean.BEAN_NAME));
+    }
 
     public List<TOIngrediente> getIngredientes() {
-        return ingredientes;
+        return toIngredientes;
     }
 
     public void setIngredientes(List<TOIngrediente> ingredientes) {
-        this.ingredientes = ingredientes;
+        this.toIngredientes = ingredientes;
     }
 
     public TOIngrediente getIngredienteSelecionado() {

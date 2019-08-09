@@ -82,7 +82,7 @@ public class IngredienteBean extends AbstractBaseRegisterMBean<TOIngrediente> {
         return ingrediente;
     }
 
-    public void setIngrediente(TOIngrediente ingrediente) {
+    public void setToIngrediente(TOIngrediente ingrediente) {
         this.ingrediente = ingrediente;
     }
 
