@@ -30,9 +30,11 @@ import br.com.WebBakery.to.TOVenda;
 import br.com.WebBakery.util.Faces_Util;
 import br.com.WebBakery.validator.ProdutoVendaValidator;
 
-@Named
+@Named(VendaBean.BEAN_NAME)
 @ViewScoped
 public class VendaBean extends AbstractBaseRegisterMBean<TOVenda> {
+
+    public static final String BEAN_NAME = "vendaBean";
 
     private static final long serialVersionUID = 1093115934531225702L;
 

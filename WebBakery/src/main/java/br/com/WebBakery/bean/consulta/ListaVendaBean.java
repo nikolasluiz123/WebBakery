@@ -10,16 +10,20 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import br.com.WebBakery.abstractClass.AbstractBaseListMBean;
+import br.com.WebBakery.bean.manutencao.VendaBean;
 import br.com.WebBakery.dao.ProdutoVendaDao;
 import br.com.WebBakery.dao.VendaDao;
 import br.com.WebBakery.interfaces.IBaseListMBean;
 import br.com.WebBakery.to.TOProdutoVenda;
 import br.com.WebBakery.to.TOVenda;
+import br.com.WebBakery.util.Faces_Util;
 import br.com.WebBakery.util.String_Util;
 
-@Named
+@Named(ListaVendaBean.BEAN_NAME)
 @ViewScoped
 public class ListaVendaBean extends AbstractBaseListMBean implements IBaseListMBean<TOVenda> {
+
+    static final String BEAN_NAME = "listaVendaBean";
 
     private static final long serialVersionUID = 4010909718723087342L;
 
@@ -88,7 +92,15 @@ public class ListaVendaBean extends AbstractBaseListMBean implements IBaseListMB
 
     @Override
     public void carregar(Integer id) throws Exception {
-        setObjetoSessao(id, "VendaID", "cadastroVenda.xhtml");
+        String keyAtribute = "VendaID";
+        String pageRedirect = "cadastroVenda.xhtml";
+        setObjetoSessao(id, keyAtribute, pageRedirect);
+        VendaBean registerBean = getRegisterBean();
+        registerBean.setToVenda(registerBean.getObjetoSessao(keyAtribute, vendaDao));
+    }
+    
+    private VendaBean getRegisterBean() {
+        return ((VendaBean) Faces_Util.getBean(VendaBean.BEAN_NAME));
     }
 
     public List<TOVenda> getVendas() {
