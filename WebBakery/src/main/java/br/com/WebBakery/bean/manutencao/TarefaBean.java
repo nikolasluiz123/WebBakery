@@ -118,7 +118,7 @@ public class TarefaBean extends AbstractBaseRegisterMBean<TOTarefa> {
         return tarefa;
     }
 
-    public void setTarefa(TOTarefa tarefa) {
+    public void setToTarefa(TOTarefa tarefa) {
         this.tarefa = tarefa;
     }
 

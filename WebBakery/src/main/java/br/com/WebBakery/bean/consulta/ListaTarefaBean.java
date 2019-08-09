@@ -53,7 +53,8 @@ public class ListaTarefaBean extends AbstractBaseListMBean implements IBaseListM
         String keyAtribute = "TarefaID";
         String pageRedirect = "cadastroTarefa.xhtml";
         setObjetoSessao(tarefaID, keyAtribute, pageRedirect);
-        getRegisterBean().getObjetoSessao(keyAtribute, tarefaDao);
+        TarefaBean registerBean = getRegisterBean();
+        registerBean.setToTarefa(registerBean.getObjetoSessao(keyAtribute, tarefaDao));
     }
 
     @Transactional
