@@ -1,6 +1,5 @@
 package br.com.WebBakery.bean.consulta;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,9 +11,11 @@ import javax.inject.Named;
 import javax.transaction.Transactional;
 
 import br.com.WebBakery.abstractClass.AbstractBaseListMBean;
+import br.com.WebBakery.bean.manutencao.ReceitaBean;
 import br.com.WebBakery.dao.ReceitaDao;
 import br.com.WebBakery.interfaces.IBaseListMBean;
 import br.com.WebBakery.to.TOReceita;
+import br.com.WebBakery.util.Faces_Util;
 
 @Named
 @ViewScoped
@@ -36,8 +37,12 @@ public class ListaReceitaBean extends AbstractBaseListMBean implements IBaseList
     }
 
     @Override
-    public void carregar(Integer receitaID) throws IOException {
-        setObjetoSessao(receitaID, "ReceitaID", "cadastroReceita.xhtml");
+    public void carregar(Integer receitaID) throws Exception {
+        String keyAtribute = "ReceitaID";
+        String pageRedirect = "cadastroReceita.xhtml";
+        setObjetoSessao(receitaID, keyAtribute, pageRedirect);
+        ReceitaBean registerBean = getRegisterBean();
+        registerBean.setToReceita(registerBean.getObjetoSessao(keyAtribute, receitaDao));
     }
 
     @Transactional
@@ -61,6 +66,10 @@ public class ListaReceitaBean extends AbstractBaseListMBean implements IBaseList
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+    
+    private ReceitaBean getRegisterBean() {
+        return ((ReceitaBean) Faces_Util.getBean(ReceitaBean.BEAN_NAME));
     }
 
     public List<TOReceita> getReceitas() {

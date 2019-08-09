@@ -12,9 +12,11 @@ import br.com.WebBakery.dao.ReceitaDao;
 import br.com.WebBakery.to.TOReceita;
 import br.com.WebBakery.validator.ReceitaValidator;
 
-@Named
+@Named(ReceitaBean.BEAN_NAME)
 @ViewScoped
 public class ReceitaBean extends AbstractBaseRegisterMBean<TOReceita> {
+
+    public static final String BEAN_NAME = "receitaBean";
 
     private static final long serialVersionUID = 4300601613343189689L;
 
