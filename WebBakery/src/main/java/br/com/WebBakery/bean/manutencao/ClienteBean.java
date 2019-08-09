@@ -42,16 +42,13 @@ public class ClienteBean extends AbstractBaseRegisterMBean<TOCliente> {
     public static final String BEAN_NAME = "clienteBean";
 
     private TOCliente toCliente;
-
     @Inject
     private ClienteDao clienteDao;
-
     @Inject
     private PaisDao paisDao;
     private List<TOPais> toPaises;
     private List<TOPais> toPaisesFiltrados;
     private TOPais paisSelecionado;
-
     @Inject
     private EstadoDao estadoDao;
     private List<TOEstado> toEstados;
@@ -94,76 +91,56 @@ public class ClienteBean extends AbstractBaseRegisterMBean<TOCliente> {
 
     @Transactional
     public void cadastrar() {
-        this.clienteValidator = new ClienteValidator(this.toCliente, this.senha);
-        this.enderecoValidator = new EnderecoValidator(this.toCliente.getToEndereco());
-        if (this.toCliente.getId() == null) {
-            efetuarCadastro();
-        } else {
-            efetuarAtualizacao();
+        try {
+            this.clienteValidator = new ClienteValidator(this.toCliente, this.senha);
+            this.enderecoValidator = new EnderecoValidator(this.toCliente.getToEndereco());
+            if (this.toCliente.getId() == null) {
+                efetuarCadastro();
+            } else {
+                efetuarAtualizacao();
+            }
+            atualizarTela();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        atualizarTela();
     }
 
-    private void efetuarCadastro() {
+    private void efetuarCadastro() throws Exception {
         if (clienteValidator.isValid() && enderecoValidator.isValid()) {
             cadastrarLogradouroCliente();
             cadastrarEnderecoCliente();
             cadastrarUsuarioCliente();
             this.toCliente.setAtivo(true);
-
-            try {
-                this.clienteDao.cadastrar(this.toCliente);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
+            this.clienteDao.cadastrar(this.toCliente);
             getContext().addMessage(null, new FacesMessage(REGISTERED_SUCCESSFULLY));
         }
     }
 
-    private void cadastrarUsuarioCliente() {
+    private void cadastrarUsuarioCliente() throws Exception {
         this.toCliente.getToUsuario().setAtivo(true);
         this.toCliente.getToUsuario().setTipo(TipoUsuario.CLIENTE);
         this.toCliente.getToUsuario().setSenha(Hash_Util.getHashCode(this.senha));
-        try {
-            this.usuarioDao.cadastrar(this.toCliente.getToUsuario());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        this.usuarioDao.cadastrar(this.toCliente.getToUsuario());
     }
 
-    private void cadastrarEnderecoCliente() {
+    private void cadastrarEnderecoCliente() throws Exception {
         this.toCliente.getToEndereco().setAtivo(true);
-        try {
-            this.enderecoDao.cadastrar(this.toCliente.getToEndereco());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        this.enderecoDao.cadastrar(this.toCliente.getToEndereco());
     }
 
-    private void cadastrarLogradouroCliente() {
+    private void cadastrarLogradouroCliente() throws Exception {
         this.toCliente.getToEndereco().getToLogradouro().setAtivo(true);
         this.toCliente.getToEndereco().getToLogradouro().setToCidade(cidadeSelecionada);
-        try {
-            this.logradouroDao.cadastrar(this.toCliente.getToEndereco().getToLogradouro());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        this.logradouroDao.cadastrar(this.toCliente.getToEndereco().getToLogradouro());
     }
 
-    private void efetuarAtualizacao() {
+    private void efetuarAtualizacao() throws Exception {
         if (clienteValidator.isValid() && enderecoValidator.isValid()) {
-
-            try {
-                this.clienteDao.atualizar(this.toCliente);
-                this.toCliente.getToUsuario().setSenha(Hash_Util.getHashCode(this.senha));
-                this.usuarioDao.atualizar(this.toCliente.getToUsuario());
-                this.enderecoDao.atualizar(this.toCliente.getToEndereco());
-                this.logradouroDao.atualizar(this.toCliente.getToEndereco().getToLogradouro());
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
+            this.clienteDao.atualizar(this.toCliente);
+            this.toCliente.getToUsuario().setSenha(Hash_Util.getHashCode(this.senha));
+            this.usuarioDao.atualizar(this.toCliente.getToUsuario());
+            this.enderecoDao.atualizar(this.toCliente.getToEndereco());
+            this.logradouroDao.atualizar(this.toCliente.getToEndereco().getToLogradouro());
             getContext().addMessage(null, new FacesMessage(UPDATED_SUCCESSFULLY));
         }
     }

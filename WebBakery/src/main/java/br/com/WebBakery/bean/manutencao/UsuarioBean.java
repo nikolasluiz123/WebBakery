@@ -40,36 +40,32 @@ public class UsuarioBean extends AbstractBaseRegisterMBean<TOUsuario> {
 
     @Transactional
     public void cadastrar() {
-        this.validator = new UsuarioValidator(this.toUsuario, this.senha, this.usuarioDao);
-        this.toUsuario.setTipo(tipoUsuario);
+        try {
+            this.validator = new UsuarioValidator(this.toUsuario, this.senha, this.usuarioDao);
+            this.toUsuario.setTipo(tipoUsuario);
 
-        if (this.toUsuario.getId() == null) {
-            efetuarCadastro();
-        } else {
-            efetuarAtualizacao();
+            if (this.toUsuario.getId() == null) {
+                efetuarCadastro();
+            } else {
+                efetuarAtualizacao();
+            }
+            atualizarTela();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        atualizarTela();
     }
 
-    private void efetuarCadastro() {
+    private void efetuarCadastro() throws Exception {
         if (validator.isValid()) {
             this.toUsuario.setAtivo(true);
-            try {
-                this.usuarioDao.cadastrar(this.toUsuario);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            this.usuarioDao.cadastrar(this.toUsuario);
             getContext().addMessage(null, new FacesMessage(USUARIO_REGISTERED_SUCCESSFULLY));
         }
     }
 
-    private void efetuarAtualizacao() {
+    private void efetuarAtualizacao() throws Exception {
         if (this.validator.isValid()) {
-            try {
-                this.usuarioDao.atualizar(this.toUsuario);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            this.usuarioDao.atualizar(this.toUsuario);
             getContext().addMessage(null, new FacesMessage(USUARIO_UPDATED_SUCCESSFULLY));
         }
     }

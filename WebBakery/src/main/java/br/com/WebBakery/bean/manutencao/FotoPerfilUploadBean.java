@@ -68,25 +68,19 @@ public class FotoPerfilUploadBean extends AbstractBaseRegisterMBean<FotoPerfil> 
     }
 
     public void getPathFotoPastaTemporaria() {
-        TOUsuario u = (TOUsuario) Faces_Util.getHTTPSession().getAttribute("usuarioLogado");
-        TOFotoPerfil f = null;
         try {
-            f = this.dao.getFotoUsuario(u.getId());
-        } catch (Exception e1) {
-            e1.printStackTrace();
-        }
-        if (f != null) {
-            String pathCompleto = null;
-            try {
-                pathCompleto = File_Util.criarFotoPastaTemporaria(f);
-            } catch (Exception e) {
-                e.printStackTrace();
+            TOUsuario u = (TOUsuario) Faces_Util.getHTTPSession().getAttribute("usuarioLogado");
+            TOFotoPerfil f = this.dao.getFotoUsuario(u.getId());
+            if (f != null) {
+                String pathCompleto = File_Util.criarFotoPastaTemporaria(f);
+                String nomeArquivo = File_Util.getNomeArquivo(pathCompleto);
+                String path = File_Util.getPath(nomeArquivo);
+                setPathFoto(path);
+            } else {
+                setPathFoto(PATH_IMG_DEFAULT);
             }
-            String nomeArquivo = File_Util.getNomeArquivo(pathCompleto);
-            String path = File_Util.getPath(nomeArquivo);
-            setPathFoto(path);
-        } else {
-            setPathFoto(PATH_IMG_DEFAULT);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

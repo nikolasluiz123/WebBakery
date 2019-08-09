@@ -35,36 +35,32 @@ public class ReceitaBean extends AbstractBaseRegisterMBean<TOReceita> {
 
     @Transactional
     public void cadastrar() {
-        this.validator = new ReceitaValidator(this.toReceita);
-        if (this.toReceita.getId() == null) {
-            efetuarCadastro();
-        } else {
-            efetuarAtualizacao();
+        try {
+            this.validator = new ReceitaValidator(this.toReceita);
+            if (this.toReceita.getId() == null) {
+                efetuarCadastro();
+            } else {
+                efetuarAtualizacao();
+            }
+            atualizarTela();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        atualizarTela();
     }
 
     @Transactional
-    private void efetuarCadastro() {
+    private void efetuarCadastro() throws Exception {
         if (this.validator.isValid()) {
             this.toReceita.setAtivo(true);
-            try {
-                this.receitaDao.cadastrar(this.toReceita);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            this.receitaDao.cadastrar(this.toReceita);
             getContext().addMessage(null, new FacesMessage(REGISTERED_SUCCESSFULLY));
         }
     }
 
     @Transactional
-    private void efetuarAtualizacao() {
+    private void efetuarAtualizacao() throws Exception {
         if (this.validator.isValid()) {
-            try {
-                this.receitaDao.atualizar(this.toReceita);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            this.receitaDao.atualizar(this.toReceita);
             getContext().addMessage(null, new FacesMessage(UPDATED_SUCCESSFULLY));
         }
     }

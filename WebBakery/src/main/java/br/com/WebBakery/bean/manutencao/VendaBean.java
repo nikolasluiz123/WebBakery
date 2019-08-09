@@ -89,45 +89,41 @@ public class VendaBean extends AbstractBaseRegisterMBean<TOVenda> {
 
     @Transactional
     public void cadastrar() {
-        this.produtoVendaValidator = new ProdutoVendaValidator(this.toEstoqueProdutosSelecionados);
-        if (this.toVenda.getId() == null) {
-            efetuarCadastro();
-            atualizarTela();
+        try {
+            this.produtoVendaValidator = new ProdutoVendaValidator(this.toEstoqueProdutosSelecionados);
+            if (this.toVenda.getId() == null) {
+                efetuarCadastro();
+                atualizarTela();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
-    private void efetuarCadastro() {
+    private void efetuarCadastro() throws Exception {
         if (this.produtoVendaValidator.isValid()) {
             setarDataAtual();
             setarFuncionarioVenda();
             setarClienteVenda();
-            try {
-                this.vendaDao.cadastrar(this.toVenda);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            this.vendaDao.cadastrar(this.toVenda);
             cadastrarProdutoVenda();
             atualizarProdutosVenda();
             getContext().addMessage(null, new FacesMessage(VENDA_REGISTRED_SUCCESSFULLY));
         }
     }
 
-    private void atualizarProdutosVenda() {
+    private void atualizarProdutosVenda() throws Exception {
         for (TOProdutoVenda to : toProdutosVenda) {
             atualizarEstoque(to);
         }
     }
 
-    private void atualizarEstoque(TOProdutoVenda to) {
+    private void atualizarEstoque(TOProdutoVenda to) throws Exception {
         TOEstoqueProduto estoqueProduto;
-        try {
-            estoqueProduto = this.estoqueProdutoDao
-                    .buscarPorIdProduto(this.toProdutoVenda.getToProduto().getId());
-            estoqueProduto.setQuantidade(estoqueProduto.getQuantidade() - to.getQuantidade());
-            this.estoqueProdutoDao.atualizar(estoqueProduto);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        estoqueProduto = this.estoqueProdutoDao
+                .buscarPorIdProduto(this.toProdutoVenda.getToProduto().getId());
+        estoqueProduto.setQuantidade(estoqueProduto.getQuantidade() - to.getQuantidade());
+        this.estoqueProdutoDao.atualizar(estoqueProduto);
     }
 
     private void atualizarTela() {
@@ -170,7 +166,7 @@ public class VendaBean extends AbstractBaseRegisterMBean<TOVenda> {
                 return newValue <= ep.getQuantidade();
             }
         }
-        throw new NoResultException("TOProduto não encontrado.");
+        throw new NoResultException("Produto não encontrado.");
     }
 
     public void adicionarCarrinho() {
@@ -205,14 +201,10 @@ public class VendaBean extends AbstractBaseRegisterMBean<TOVenda> {
         this.toVenda.setData(new Date());
     }
 
-    private void setarFuncionarioVenda() {
+    private void setarFuncionarioVenda() throws Exception {
         TOUsuario u = (TOUsuario) Faces_Util.getHTTPSession().getAttribute("usuarioLogado");
         TOFuncionario f = null;
-        try {
-            f = funcionarioDao.buscarPorIdUsuario(u.getId());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        f = funcionarioDao.buscarPorIdUsuario(u.getId());
         this.toVenda.setToFuncionario(f);
     }
 
@@ -220,18 +212,14 @@ public class VendaBean extends AbstractBaseRegisterMBean<TOVenda> {
         this.toVenda.setToCliente(this.toClienteSelecionado);
     }
 
-    private void cadastrarProdutoVenda() {
+    private void cadastrarProdutoVenda() throws Exception {
         for (TOEstoqueProduto toEP : toEstoqueProdutosSelecionados) {
             this.toProdutoVenda.setToProduto(toEP.getToProduto());
             this.toProdutoVenda.setToVenda(this.toVenda);
             for (TOProdutoVenda toPV : toProdutosVenda) {
                 this.toProdutoVenda.setQuantidade(toPV.getQuantidade());
             }
-            try {
-                this.produtoVendaDao.cadastrar(this.toProdutoVenda);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            this.produtoVendaDao.cadastrar(this.toProdutoVenda);
         }
     }
 

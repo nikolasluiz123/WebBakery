@@ -51,38 +51,30 @@ public class TarefaBean extends AbstractBaseRegisterMBean<TOTarefa> {
 
     @Transactional
     public void cadastrar() {
-        this.validator = new TarefaValidator(this.tarefa);
-        if (this.tarefa.getId() == null) {
-            efetuarCadastro();
-        } else {
-            efetuarAtualizacao();
+        try {
+            this.validator = new TarefaValidator(this.tarefa);
+            if (this.tarefa.getId() == null) {
+                efetuarCadastro();
+            } else {
+                efetuarAtualizacao();
+            }
+            atualizarTela();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        atualizarTela();
     }
 
-    private void efetuarCadastro() {
+    private void efetuarCadastro() throws Exception {
         if (this.validator.isValid()) {
             this.tarefa.setAtivo(true);
-
-            try {
-                this.tarefaDao.cadastrar(this.tarefa);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
+            this.tarefaDao.cadastrar(this.tarefa);
             getContext().addMessage(null, new FacesMessage(REGISTERED_SUCCESSFULLY));
         }
     }
 
-    private void efetuarAtualizacao() {
+    private void efetuarAtualizacao() throws Exception {
         if (this.validator.isValid()) {
-
-            try {
-                this.tarefaDao.atualizar(this.tarefa);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
+            this.tarefaDao.atualizar(this.tarefa);
             getContext().addMessage(null, new FacesMessage(UPDATED_SUCCESSFULLY));
         }
     }

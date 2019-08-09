@@ -51,13 +51,13 @@ public class IngredienteBean extends AbstractBaseRegisterMBean<TOIngrediente> {
 
     private void efetuarCadastro() {
         if (ingredienteValidator.isValid()) {
-            this.ingrediente.setAtivo(true);
             try {
+                this.ingrediente.setAtivo(true);
                 this.ingredienteDao.cadastrar(this.ingrediente);
+                getContext().addMessage(null, new FacesMessage(INGREDIENTE_REGISTERED_SUCCESSFULLY));
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            getContext().addMessage(null, new FacesMessage(INGREDIENTE_REGISTERED_SUCCESSFULLY));
         }
     }
 
@@ -65,10 +65,10 @@ public class IngredienteBean extends AbstractBaseRegisterMBean<TOIngrediente> {
         if (this.ingredienteValidator.isValid()) {
             try {
                 this.ingredienteDao.atualizar(this.ingrediente);
+                getContext().addMessage(null, new FacesMessage(INGREDIENTE_UPDATED_SUCCESSFULLY));
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            getContext().addMessage(null, new FacesMessage(INGREDIENTE_UPDATED_SUCCESSFULLY));
         }
     }
 

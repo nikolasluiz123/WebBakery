@@ -59,36 +59,32 @@ public class ProdutoBean extends AbstractBaseRegisterMBean<TOProduto> {
 
     @Transactional
     public void cadastrar() {
-        this.toProduto.setToFotos(toFotosSelecionadas);
-        this.validator = new ProdutoValidator(this.toProduto);
-        if (this.toProduto.getId() == null) {
-            efetuarCadastro();
-        } else {
-            efetuarAtualizacao();
+        try {
+            this.toProduto.setToFotos(toFotosSelecionadas);
+            this.validator = new ProdutoValidator(this.toProduto);
+            if (this.toProduto.getId() == null) {
+                efetuarCadastro();
+            } else {
+                efetuarAtualizacao();
+            }
+            atualizarTela();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        atualizarTela();
     }
 
-    private void efetuarCadastro() {
+    private void efetuarCadastro() throws Exception {
         if (this.validator.isValid()) {
             this.toProduto.setAtivo(true);
-            try {
-                this.produtoDao.cadastrar(this.toProduto);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            this.produtoDao.cadastrar(this.toProduto);
             cadastrarFotos();
             getContext().addMessage(null, new FacesMessage(REGISTERED_SUCCESSFULLY));
         }
     }
 
-    private void cadastrarFotos() {
+    private void cadastrarFotos() throws Exception {
         for (TOFotoProduto to : toFotosSelecionadas) {
-            try {
-                this.fotoProdutoDao.cadastrar(to);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            this.fotoProdutoDao.cadastrar(to);
         }
         toFotosSelecionadas.clear();
     }
@@ -108,13 +104,9 @@ public class ProdutoBean extends AbstractBaseRegisterMBean<TOProduto> {
         toFotosSelecionadas.add(toFoto);
     }
 
-    private void efetuarAtualizacao() {
+    private void efetuarAtualizacao() throws Exception {
         if (this.validator.isValid()) {
-            try {
-                this.produtoDao.atualizar(this.toProduto);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            this.produtoDao.atualizar(this.toProduto);
             atualizarFotos();
             getContext().addMessage(null, new FacesMessage(UPDATED_SUCCESSFULLY));
         }
@@ -124,14 +116,10 @@ public class ProdutoBean extends AbstractBaseRegisterMBean<TOProduto> {
         return toFotosSelecionadas.isEmpty();
     }
 
-    private void atualizarFotos() {
+    private void atualizarFotos() throws Exception {
         inativarFotos();
         for (TOFotoProduto to : toFotosSelecionadas) {
-            try {
-                this.fotoProdutoDao.cadastrar(to);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            this.fotoProdutoDao.cadastrar(to);
         }
         toFotosSelecionadas.clear();
     }

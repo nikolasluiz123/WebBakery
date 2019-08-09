@@ -6,7 +6,6 @@ import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.transaction.Transactional;
 
 import br.com.WebBakery.abstractClass.AbstractBaseRegisterMBean;
 import br.com.WebBakery.dao.ClienteDao;
@@ -44,20 +43,21 @@ public class LoginBean extends AbstractBaseRegisterMBean<TOUsuario> {
     public void logar() throws IOException {
         try {
             this.toUsuario = usuarioDao.usuarioExiste(this.toUsuario.getEmail());
+            this.validator = new LoginValidator(this.toUsuario,
+                                                this.senha,
+                                                this.usuarioDao,
+                                                this.funcionarioDao,
+                                                this.clienteDao);
+            if (validator.isValid()) {
+                getContext().getExternalContext().getSessionMap().put("usuarioLogado",
+                                                                      this.toUsuario);
+                getContext().getExternalContext().redirect("cadastroFotoPerfilUsuario.xhtml");
+            } else {
+                validator.showMessages();
+                this.toUsuario = new TOUsuario();
+            }
         } catch (Exception e) {
             e.printStackTrace();
-        }
-        this.validator = new LoginValidator(this.toUsuario,
-                                            this.senha,
-                                            this.usuarioDao,
-                                            this.funcionarioDao,
-                                            this.clienteDao);
-        if (validator.isValid()) {
-            getContext().getExternalContext().getSessionMap().put("usuarioLogado", this.toUsuario);
-            getContext().getExternalContext().redirect("cadastroFotoPerfilUsuario.xhtml");
-        } else {
-            validator.showMessages();
-            this.toUsuario = new TOUsuario();
         }
     }
 
@@ -82,7 +82,6 @@ public class LoginBean extends AbstractBaseRegisterMBean<TOUsuario> {
         this.toUsuario = toUsuario;
     }
 
-    @Transactional
     public void popularBanco() {
         // this.populaBancoDao.popularBanco();
     }

@@ -22,7 +22,7 @@ import br.com.WebBakery.validator.EstadoValidator;
 public class EstadoBean extends AbstractBaseRegisterMBean<TOEstado> {
 
     public static final String BEAN_NAME = "estadoBean";
-    
+
     private static final String ESTADO_UPDATED_SUCCESSFULLY = "Estado atualizado com sucesso!";
     private static final String ESTADO_REGISTRED_SUCCESSFULLY = "Estado cadastrado com sucesso!";
 
@@ -31,7 +31,6 @@ public class EstadoBean extends AbstractBaseRegisterMBean<TOEstado> {
     @Inject
     private EstadoDao estadoDao;
     private TOEstado toEstado;
-
     @Inject
     private PaisDao paisDao;
     private TOPais toPaisSelecionado;
@@ -52,34 +51,30 @@ public class EstadoBean extends AbstractBaseRegisterMBean<TOEstado> {
 
     @Transactional
     public void cadastrar() {
-        this.validator = new EstadoValidator(this.toEstado);
-        if (this.toEstado.getId() == null) {
-            efetuarCadastro();
-        } else {
-            efetuarAtualizacao();
+        try {
+            this.validator = new EstadoValidator(this.toEstado);
+            if (this.toEstado.getId() == null) {
+                efetuarCadastro();
+            } else {
+                efetuarAtualizacao();
+            }
+            atualizarTela();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        atualizarTela();
     }
 
-    private void efetuarCadastro() {
+    private void efetuarCadastro() throws Exception {
         if (this.validator.isValid()) {
             this.toEstado.setAtivo(true);
-            try {
-                this.estadoDao.cadastrar(this.toEstado);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            this.estadoDao.cadastrar(this.toEstado);
             getContext().addMessage(null, new FacesMessage(ESTADO_REGISTRED_SUCCESSFULLY));
         }
     }
 
-    private void efetuarAtualizacao() {
+    private void efetuarAtualizacao() throws Exception {
         if (this.validator.isValid()) {
-            try {
-                this.estadoDao.atualizar(this.toEstado);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            this.estadoDao.atualizar(this.toEstado);
             getContext().addMessage(null, new FacesMessage(ESTADO_UPDATED_SUCCESSFULLY));
         }
     }

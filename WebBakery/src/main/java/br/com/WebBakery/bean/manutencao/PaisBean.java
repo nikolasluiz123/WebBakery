@@ -34,34 +34,30 @@ public class PaisBean extends AbstractBaseRegisterMBean<TOPais> {
 
     @Transactional
     public void cadastrar() {
-        this.validator = new PaisValidator(this.toPais);
-        if (this.toPais.getId() == null) {
-            efetuarCadastro();
-        } else {
-            efetuarAtualizacao();
+        try {
+            this.validator = new PaisValidator(this.toPais);
+            if (this.toPais.getId() == null) {
+                efetuarCadastro();
+            } else {
+                efetuarAtualizacao();
+            }
+            atualizarTela();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        atualizarTela();
     }
 
-    private void efetuarCadastro() {
+    private void efetuarCadastro() throws Exception {
         if (validator.isValid()) {
             this.toPais.setAtivo(true);
-            try {
-                this.paisDao.cadastrar(this.toPais);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            this.paisDao.cadastrar(this.toPais);
             getContext().addMessage(null, new FacesMessage(REGISTRED_SUCCESSFULLY));
         }
     }
 
-    private void efetuarAtualizacao() {
+    private void efetuarAtualizacao() throws Exception {
         if (this.validator.isValid()) {
-            try {
-                this.paisDao.atualizar(this.toPais);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            this.paisDao.atualizar(this.toPais);
             getContext().addMessage(null, new FacesMessage(PAIS_UPDATED_SUCCESSFULLY));
         }
     }

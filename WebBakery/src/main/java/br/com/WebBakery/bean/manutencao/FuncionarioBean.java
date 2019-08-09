@@ -103,63 +103,47 @@ public class FuncionarioBean extends AbstractBaseRegisterMBean<TOFuncionario> {
 
     @Transactional
     public void cadastrar() {
-        this.enderecoValidator = new EnderecoValidator(this.toFuncionario.getEndereco());
-        this.funcionarioValidator = new FuncionarioValidator(this.toFuncionario);
-        if (this.toFuncionario.getId() == null) {
-            efetuarCadastro();
-        } else {
-            efetuarAtualizacao();
+        try {
+            this.enderecoValidator = new EnderecoValidator(this.toFuncionario.getEndereco());
+            this.funcionarioValidator = new FuncionarioValidator(this.toFuncionario);
+            if (this.toFuncionario.getId() == null) {
+                efetuarCadastro();
+            } else {
+                efetuarAtualizacao();
+            }
+            atualizarTela();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        atualizarTela();
     }
 
-    private void efetuarCadastro() {
+    private void efetuarCadastro() throws Exception {
         if (funcionarioValidator.isValid() && enderecoValidator.isValid()) {
             cadastrarLogradouroFuncionario();
             cadastrarEnderecoFuncionario();
             this.toFuncionario.setAtivo(true);
-
-            try {
-                this.funcionarioDao.cadastrar(this.toFuncionario);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
+            this.funcionarioDao.cadastrar(this.toFuncionario);
             getContext().addMessage(null, new FacesMessage(FUNCIONARIO_REGISTRED_SUCCESSFULLY));
         }
     }
 
-    private void cadastrarEnderecoFuncionario() {
+    private void cadastrarEnderecoFuncionario() throws Exception {
         this.toFuncionario.getEndereco().setAtivo(true);
-        try {
-            this.enderecoDao.cadastrar(this.toFuncionario.getEndereco());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        this.enderecoDao.cadastrar(this.toFuncionario.getEndereco());
     }
 
-    private void cadastrarLogradouroFuncionario() {
+    private void cadastrarLogradouroFuncionario() throws Exception {
         this.toFuncionario.getEndereco().getToLogradouro().setAtivo(true);
         this.toFuncionario.getEndereco().getToLogradouro()
                 .setToCidade(this.toFuncionario.getEndereco().getToCidade());
-        try {
-            this.logradouroDao.cadastrar(this.toFuncionario.getEndereco().getToLogradouro());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        this.logradouroDao.cadastrar(this.toFuncionario.getEndereco().getToLogradouro());
     }
 
-    private void efetuarAtualizacao() {
+    private void efetuarAtualizacao() throws Exception {
         if (funcionarioValidator.isValid() && enderecoValidator.isValid()) {
-
-            try {
-                this.funcionarioDao.atualizar(this.toFuncionario);
-                this.enderecoDao.atualizar(this.toFuncionario.getEndereco());
-                this.logradouroDao.atualizar(this.toFuncionario.getEndereco().getToLogradouro());
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
+            this.funcionarioDao.atualizar(this.toFuncionario);
+            this.enderecoDao.atualizar(this.toFuncionario.getEndereco());
+            this.logradouroDao.atualizar(this.toFuncionario.getEndereco().getToLogradouro());
             getContext().addMessage(null, new FacesMessage(FUNCIONARIO_UPDATED_SUCCESSFULLY));
         }
     }

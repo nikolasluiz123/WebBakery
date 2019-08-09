@@ -44,31 +44,23 @@ public class EstoqueProdutoBean extends AbstractBaseRegisterMBean<TOEstoqueProdu
         try {
             this.toEstoqueProdutoDoBanco = estoqueProdutoDao
                     .existe(this.toEstoqueProduto.getToProduto().getId());
+            if (this.toEstoqueProdutoDoBanco == null) {
+                efetuarCadastro();
+            } else {
+                efetuarAtualizacao();
+            }
         } catch (Exception e) {
             e.printStackTrace();
-        }
-        if (this.toEstoqueProdutoDoBanco == null) {
-            efetuarCadastro();
-        } else {
-            efetuarAtualizacao();
         }
     }
 
-    private void efetuarCadastro() {
-        try {
-            this.estoqueProdutoDao.cadastrar(this.toEstoqueProduto);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    private void efetuarCadastro() throws Exception {
+        this.estoqueProdutoDao.cadastrar(this.toEstoqueProduto);
         getContext().addMessage(null, new FacesMessage(REGISTERED_SUCCESSFULLY));
     }
 
-    private void efetuarAtualizacao() {
-        try {
-            this.estoqueProdutoDao.atualizar(this.toEstoqueProdutoDoBanco);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    private void efetuarAtualizacao() throws Exception {
+        this.estoqueProdutoDao.atualizar(this.toEstoqueProdutoDoBanco);
         getContext().addMessage(null, new FacesMessage(UPDATED_SUCCESSFULLY));
     }
 
