@@ -52,6 +52,9 @@ public class ListaLogradouroBean extends AbstractBaseListMBean
         getContext().addMessage(null, new FacesMessage(LOGRADOURO_INATIVATED_SUCCESSFULLY));
     }
 
+    // Não tem formulário para cadastrar logradouros, só é cadastrado um
+    // logradouro quando um funcionario ou cliente for cadastrado e os campos de
+    // endereço forem preenchidos
     @Override
     public void carregar(Integer id) throws Exception {
         // TODO Auto-generated method stub
