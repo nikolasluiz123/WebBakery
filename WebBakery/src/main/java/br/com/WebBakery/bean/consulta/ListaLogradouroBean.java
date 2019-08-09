@@ -15,10 +15,12 @@ import br.com.WebBakery.dao.LogradouroDao;
 import br.com.WebBakery.interfaces.IBaseListMBean;
 import br.com.WebBakery.to.TOLogradouro;
 
-@Named
+@Named(ListaLogradouroBean.BEAN_NAME)
 @ViewScoped
 public class ListaLogradouroBean extends AbstractBaseListMBean
         implements IBaseListMBean<TOLogradouro> {
+
+    static final String BEAN_NAME = "listaLogradouroBean";
 
     private static final long serialVersionUID = -5398966780316383519L;
 
