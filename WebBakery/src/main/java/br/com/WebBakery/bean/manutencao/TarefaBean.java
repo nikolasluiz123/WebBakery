@@ -13,39 +13,40 @@ import javax.transaction.Transactional;
 import br.com.WebBakery.abstractClass.AbstractBaseRegisterMBean;
 import br.com.WebBakery.dao.ProdutoDao;
 import br.com.WebBakery.dao.TarefaDao;
-import br.com.WebBakery.model.Produto;
-import br.com.WebBakery.model.Tarefa;
+import br.com.WebBakery.to.TOProduto;
+import br.com.WebBakery.to.TOTarefa;
 import br.com.WebBakery.util.Date_Util;
 import br.com.WebBakery.validator.TarefaValidator;
 
-@Named
+@Named(TarefaBean.BEAN_NAME)
 @ViewScoped
-public class TarefaBean extends AbstractBaseRegisterMBean<Tarefa> {
+public class TarefaBean extends AbstractBaseRegisterMBean<TOTarefa> {
+
+    public static final String BEAN_NAME = "tarefaBean";
 
     private static final long serialVersionUID = 2625499918546247472L;
 
-    private static final String UPDATED_SUCCESSFULLY = "Tarefa atualizada com sucesso!";
+    private static final String UPDATED_SUCCESSFULLY = "TOTarefa atualizada com sucesso!";
 
-    private static final String REGISTERED_SUCCESSFULLY = "Tarefa cadastrada com sucesso!";
+    private static final String REGISTERED_SUCCESSFULLY = "TOTarefa cadastrada com sucesso!";
 
-    private Tarefa tarefa;
+    private TOTarefa tarefa;
     @Inject
     private TarefaDao tarefaDao;
 
     @Inject
     private ProdutoDao produtoDao;
-    private List<Produto> produtos;
-    private List<Produto> produtosFiltrados;
-    private Produto produtoSelecionado;
+    private List<TOProduto> produtos;
+    private List<TOProduto> produtosFiltrados;
+    private TOProduto produtoSelecionado;
 
     private TarefaValidator validator;
 
     @PostConstruct
     private void init() {
-        this.tarefa = new Tarefa();
+        this.tarefa = new TOTarefa();
         initQuantidadeProdutoTarefa();
         initProdutos();
-        verificaTarefaSessao();
     }
 
     @Transactional
@@ -61,36 +62,44 @@ public class TarefaBean extends AbstractBaseRegisterMBean<Tarefa> {
 
     private void efetuarCadastro() {
         if (this.validator.isValid()) {
-            this.tarefa.setPendente(true);
-            this.tarefaDao.cadastrar(this.tarefa);
+            this.tarefa.setAtivo(true);
+
+            try {
+                this.tarefaDao.cadastrar(this.tarefa);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
             getContext().addMessage(null, new FacesMessage(REGISTERED_SUCCESSFULLY));
         }
     }
 
     private void efetuarAtualizacao() {
         if (this.validator.isValid()) {
-            this.tarefaDao.atualizar(this.tarefa);
+
+            try {
+                this.tarefaDao.atualizar(this.tarefa);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
             getContext().addMessage(null, new FacesMessage(UPDATED_SUCCESSFULLY));
         }
     }
 
     private void atualizarTela() {
-        this.tarefa = new Tarefa();
+        this.tarefa = new TOTarefa();
         this.validator.showMessages();
         this.validator.clearMessages();
         initQuantidadeProdutoTarefa();
     }
 
-    private void verificaTarefaSessao() {
-        this.tarefa = getObjetoSessao("TarefaID", tarefaDao, tarefa);
-    
-        if (tarefa == null) {
-            this.tarefa = new Tarefa();
-        }
-    }
-
     private void initProdutos() {
-        this.produtos = this.produtoDao.listarTodos(true);
+        try {
+            this.produtos = this.produtoDao.listarTodos(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void initQuantidadeProdutoTarefa() {
@@ -98,43 +107,43 @@ public class TarefaBean extends AbstractBaseRegisterMBean<Tarefa> {
     }
 
     public void setarProduto() {
-        this.tarefa.setProduto(this.produtoSelecionado);
+        this.tarefa.setToProduto(this.produtoSelecionado);
     }
 
     public String dataFormatada(Date data) {
         return Date_Util.formatar("dd/MM/yyyy", data);
     }
 
-    public Tarefa getTarefa() {
+    public TOTarefa getTarefa() {
         return tarefa;
     }
 
-    public void setTarefa(Tarefa tarefa) {
+    public void setTarefa(TOTarefa tarefa) {
         this.tarefa = tarefa;
     }
 
-    public List<Produto> getProdutos() {
+    public List<TOProduto> getProdutos() {
         return produtos;
     }
 
-    public void setProdutos(List<Produto> produtos) {
+    public void setProdutos(List<TOProduto> produtos) {
         this.produtos = produtos;
     }
 
-    public Produto getProdutoSelecionado() {
-        return produtoSelecionado;
-    }
-
-    public void setProdutoSelecionado(Produto produtoSelecionado) {
-        this.produtoSelecionado = produtoSelecionado;
-    }
-
-    public List<Produto> getProdutosFiltrados() {
+    public List<TOProduto> getProdutosFiltrados() {
         return produtosFiltrados;
     }
 
-    public void setProdutosFiltrados(List<Produto> produtosFiltrados) {
+    public void setProdutosFiltrados(List<TOProduto> produtosFiltrados) {
         this.produtosFiltrados = produtosFiltrados;
+    }
+
+    public TOProduto getProdutoSelecionado() {
+        return produtoSelecionado;
+    }
+
+    public void setProdutoSelecionado(TOProduto produtoSelecionado) {
+        this.produtoSelecionado = produtoSelecionado;
     }
 
 }

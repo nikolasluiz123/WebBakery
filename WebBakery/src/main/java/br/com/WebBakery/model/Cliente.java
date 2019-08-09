@@ -19,8 +19,6 @@ public class Cliente extends AbstractBaseModel {
 
     private Date dataNascimento;
 
-    private boolean ativo;
-
     @OneToOne
     private Endereco endereco;
 
@@ -57,14 +55,6 @@ public class Cliente extends AbstractBaseModel {
 
     public void setDataNascimento(Date dataNascimento) {
         this.dataNascimento = dataNascimento;
-    }
-
-    public boolean isAtivo() {
-        return ativo;
-    }
-
-    public void setAtivo(boolean ativo) {
-        this.ativo = ativo;
     }
 
     public Endereco getEndereco() {

@@ -3,7 +3,7 @@ package br.com.WebBakery.validator;
 import java.math.BigDecimal;
 
 import br.com.WebBakery.abstractClass.AbstractValidator;
-import br.com.WebBakery.model.Funcionario;
+import br.com.WebBakery.to.TOFuncionario;
 import br.com.WebBakery.util.Cpf_Util;
 
 public class FuncionarioValidator extends AbstractValidator {
@@ -18,10 +18,11 @@ public class FuncionarioValidator extends AbstractValidator {
     private static final String FIELD_CPF_NOT_VALID = "CPF inválido!";
     private static final String FIELD_CPF_REQUIRED = "CPF é obrigatório!";
 
-    private Funcionario funcionario;
+    private TOFuncionario toFuncionario;
 
-    public FuncionarioValidator(Funcionario funcionario) {
-        this.funcionario = funcionario;
+    public FuncionarioValidator(TOFuncionario toFuncionario) {
+        this.toFuncionario = toFuncionario;
+        this.toFuncionario = toFuncionario;
     }
 
     public void chamarValidacoes() {
@@ -34,7 +35,7 @@ public class FuncionarioValidator extends AbstractValidator {
     }
 
     private void validaCpf() {
-        String cpf = this.funcionario.getCpf().trim();
+        String cpf = this.toFuncionario.getCpf().trim();
 
         if (cpf.isEmpty() || cpf == null) {
             this.messages.add(FIELD_CPF_REQUIRED);
@@ -45,7 +46,7 @@ public class FuncionarioValidator extends AbstractValidator {
     }
 
     private void validaRg() {
-        String rg = this.funcionario.getRg().trim().replace(".", "");
+        String rg = this.toFuncionario.getRg().trim().replace(".", "");
 
         if (rg.isEmpty() || rg == null) {
             this.messages.add(FIELD_RG_REQUIRED);
@@ -56,7 +57,7 @@ public class FuncionarioValidator extends AbstractValidator {
     }
 
     private void validaTelefone() {
-        String telefone = this.funcionario.getTelefone().replace("(", "").replace(")", "")
+        String telefone = this.toFuncionario.getTelefone().replace("(", "").replace(")", "")
                 .replace("-", "").replace(" ", "").trim();
 
         if (telefone.isEmpty() || telefone == null) {
@@ -68,19 +69,19 @@ public class FuncionarioValidator extends AbstractValidator {
     }
 
     private void validaDataNascimento() {
-        if (this.funcionario.getDataNascimento() == null) {
+        if (this.toFuncionario.getDataNascimento() == null) {
             this.messages.add(FIELD_DATA_NASCIMNETO_REQUIRED);
         }
     }
 
     private void validaSalario() {
-        if (this.funcionario.getSalario().equals(BigDecimal.ZERO)) {
+        if (this.toFuncionario.getSalario().equals(BigDecimal.ZERO)) {
             this.messages.add(FIELD_SALARIO_NOT_VALID);
         }
     }
 
     private void validaUsuario() {
-        if (this.funcionario.getUsuario() == null) {
+        if (this.toFuncionario.getToUsuario() == null) {
             this.messages.add(FIELD_USUARIO_REQUIRED);
         }
     }

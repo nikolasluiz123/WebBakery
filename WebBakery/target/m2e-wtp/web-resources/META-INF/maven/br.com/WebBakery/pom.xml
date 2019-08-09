@@ -34,21 +34,33 @@
 			<version>4.12</version>
 		</dependency>
 
-		<!-- <dependency> -->
-		<!-- <groupId>org.primefaces.themes</groupId> -->
-		<!-- <artifactId>all-themes</artifactId> -->
-		<!-- <version>1.0.10</version> -->
-		<!-- </dependency> -->
+		<dependency>
+			<groupId>org.primefaces.themes</groupId>
+			<artifactId>all-themes</artifactId>
+			<version>1.0.10</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.webjars</groupId>
+			<artifactId>font-awesome</artifactId>
+			<version>5.9.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>3.9</version>
+		</dependency>
 
 	</dependencies>
 
-	<!-- <repositories> -->
-	<!-- <repository> -->
-	<!-- <id>prime-repo</id> -->
-	<!-- <name>PrimeFaces Maven Repository</name> -->
-	<!-- <url>http://repository.primefaces.org</url> -->
-	<!-- <layout>default</layout> -->
-	<!-- </repository> -->
-	<!-- </repositories> -->
+	<repositories>
+		<repository>
+			<id>prime-repo</id>
+			<name>PrimeFaces Maven Repository</name>
+			<url>http://repository.primefaces.org</url>
+			<layout>default</layout>
+		</repository>
+	</repositories>
 
 </project>

@@ -4,8 +4,6 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 
 import org.primefaces.event.FileUploadEvent;
@@ -13,52 +11,54 @@ import org.primefaces.model.UploadedFile;
 
 import br.com.WebBakery.abstractClass.AbstractBaseRegisterMBean;
 import br.com.WebBakery.dao.FotoPerfilUsuarioDao;
-import br.com.WebBakery.model.Foto;
-import br.com.WebBakery.model.Usuario;
+import br.com.WebBakery.model.FotoPerfil;
+import br.com.WebBakery.to.TOFotoPerfil;
+import br.com.WebBakery.to.TOUsuario;
 import br.com.WebBakery.util.Faces_Util;
 import br.com.WebBakery.util.File_Util;
 import br.com.WebBakery.validator.FotoValidator;
 
 @Named
 @SessionScoped
-public class FotoPerfilUploadBean extends AbstractBaseRegisterMBean<Foto> {
+public class FotoPerfilUploadBean extends AbstractBaseRegisterMBean<FotoPerfil> {
 
     private static final String PATH_IMG_DEFAULT = "img/anonimo.png";
 
     private static final long serialVersionUID = 9124846392202100854L;
 
-    private Foto foto;
+    private TOFotoPerfil toFoto;
 
     @Inject
     private FotoPerfilUsuarioDao dao;
     private String pathFoto;
     private FotoValidator fotoValidator;
 
-    @PersistenceContext
-    private EntityManager em;
+    // @PersistenceContext
+    // private EntityManager em;
 
     @PostConstruct
     private void init() {
-        this.foto = new Foto();
+        this.toFoto = new TOFotoPerfil();
         getPathFotoPastaTemporaria();
     }
 
     @Transactional
     public void handleFileUpload(FileUploadEvent event) throws Exception {
-        Usuario u = (Usuario) Faces_Util.getHTTPSession().getAttribute("usuarioLogado");
-        Foto fotoDoBanco = this.dao.getFotoUsuario(u.getId());
+        TOUsuario u = (TOUsuario) Faces_Util.getHTTPSession().getAttribute("usuarioLogado");
+        TOFotoPerfil fotoDoBanco = this.dao.getFotoUsuario(u.getId());
 
         UploadedFile file = event.getFile();
-        this.foto.setBytes(file.getContents());
-        this.foto.setUsuario(u);
-        this.foto.setExtensao(File_Util.getExtensao(file.getFileName()));
-        this.foto.setNome(file.getFileName());
-        this.foto.setTamanho(file.getSize());
-        this.fotoValidator = new FotoValidator(this.foto);
+        this.toFoto.setAtivo(true);
+        this.toFoto.setBytes(file.getContents());
+        this.toFoto.setToUsuario(u);
+        this.toFoto.setExtensao(File_Util.getExtensao(file.getFileName()));
+        this.toFoto.setNome(file.getFileName());
+        this.toFoto.setTamanho(file.getSize());
+        this.fotoValidator = new FotoValidator(this.toFoto);
 
         Boolean isValid = this.fotoValidator.isValid();
         if (fotoDoBanco == null && isValid) {
-            this.dao.cadastrar(this.foto);
+            this.dao.cadastrar(this.toFoto);
         } else if (isValid) {
             fotoDoBanco.setBytes(file.getContents());
             this.dao.atualizar(fotoDoBanco);
@@ -66,8 +66,13 @@ public class FotoPerfilUploadBean extends AbstractBaseRegisterMBean<Foto> {
     }
 
     public void getPathFotoPastaTemporaria() {
-        Usuario u = (Usuario) Faces_Util.getHTTPSession().getAttribute("usuarioLogado");
-        Foto f = this.dao.getFotoUsuario(u.getId());
+        TOUsuario u = (TOUsuario) Faces_Util.getHTTPSession().getAttribute("usuarioLogado");
+        TOFotoPerfil f = null;
+        try {
+            f = this.dao.getFotoUsuario(u.getId());
+        } catch (Exception e1) {
+            e1.printStackTrace();
+        }
         if (f != null) {
             String pathCompleto = null;
             try {
@@ -83,12 +88,12 @@ public class FotoPerfilUploadBean extends AbstractBaseRegisterMBean<Foto> {
         }
     }
 
-    public Foto getFoto() {
-        return foto;
+    public TOFotoPerfil getToFoto() {
+        return toFoto;
     }
 
-    public void setFoto(Foto foto) {
-        this.foto = foto;
+    public void setToFoto(TOFotoPerfil toFoto) {
+        this.toFoto = toFoto;
     }
 
     public String getPathFoto() {
@@ -98,4 +103,13 @@ public class FotoPerfilUploadBean extends AbstractBaseRegisterMBean<Foto> {
     public void setPathFoto(String pathFoto) {
         this.pathFoto = pathFoto;
     }
+
+    public FotoValidator getFotoValidator() {
+        return fotoValidator;
+    }
+
+    public void setFotoValidator(FotoValidator fotoValidator) {
+        this.fotoValidator = fotoValidator;
+    }
+
 }

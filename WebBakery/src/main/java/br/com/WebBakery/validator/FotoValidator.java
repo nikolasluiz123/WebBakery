@@ -1,16 +1,18 @@
 package br.com.WebBakery.validator;
 
 import br.com.WebBakery.abstractClass.AbstractValidator;
-import br.com.WebBakery.model.Foto;
+import br.com.WebBakery.to.TOFotoPerfil;
 
 public class FotoValidator extends AbstractValidator {
 
-    private static final String FIELD_SIZE_LIMIT_EXCEDDED = "Tamanho máximo da foto ultrapassado! O tamanho máximo da foto é 3MB.";
+    private static final int MAX_SIZE_FOR_IMG = 20480;
 
-    private Foto foto;
+    private static final String FIELD_SIZE_LIMIT_EXCEDDED = "Tamanho máximo da foto ultrapassado! O tamanho máximo da toFoto é 3MB.";
 
-    public FotoValidator(Foto foto) {
-        this.foto = foto;
+    private TOFotoPerfil toFoto;
+
+    public FotoValidator(TOFotoPerfil toFoto) {
+        this.toFoto = toFoto;
     }
 
     @Override
@@ -19,8 +21,8 @@ public class FotoValidator extends AbstractValidator {
     }
 
     private void validaTamanho() {
-        Long tamanho = this.foto.getTamanho();
-        if (tamanho <= 20480) {
+        Long tamanho = this.toFoto.getTamanho();
+        if (tamanho >= MAX_SIZE_FOR_IMG) {
             messages.add(FIELD_SIZE_LIMIT_EXCEDDED);
         }
     }

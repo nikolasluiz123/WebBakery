@@ -10,11 +10,11 @@
 	<ui:define name="conteudo">
 
 		<h:form id="formDataTableEstados">
-			<p:dataTable id="tabelaEstados" value="#{listaEstadoBean.estados}"
+			<p:dataTable id="tabelaEstados" value="#{listaEstadoBean.toEstadosos}"
 				var="estado" rowKey="#{estado.id}" rows="5" paginator="true"
 				paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PageLinks} {PreviousPageLink} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 				emptyMessage="Nenhum estado encontrado." widgetVar="TabelaEstados"
-				filteredValue="#{listaEstadoBean.estadosFiltrados}">
+				filteredValue="#{listaEstadoBtoEstadosFiltradososados}">
 
 				<f:facet name="header" style="min-height: 35px; max-height: 35px">
 					<div>Estados</div>

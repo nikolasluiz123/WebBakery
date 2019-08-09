@@ -11,36 +11,43 @@ import javax.transaction.Transactional;
 
 import br.com.WebBakery.abstractClass.AbstractBaseRegisterMBean;
 import br.com.WebBakery.dao.EstoqueProdutoDao;
-import br.com.WebBakery.model.EstoqueProduto;
+import br.com.WebBakery.to.TOEstoqueProduto;
 
-@Named
+@Named(EstoqueProdutoBean.BEAN_NAME)
 @ViewScoped
-public class EstoqueProdutoBean extends AbstractBaseRegisterMBean<EstoqueProduto> {
+public class EstoqueProdutoBean extends AbstractBaseRegisterMBean<TOEstoqueProduto> {
+
+    public static final String BEAN_NAME = "estoqueProdutoBean";
 
     private static final String UPDATED_SUCCESSFULLY = "Estoque de produto atualizado com sucesso!";
-    private static final String REGISTERED_SUCCESSFULLY = "Produto cadastrada no estoque com sucesso!";
+    private static final String REGISTERED_SUCCESSFULLY = "Produto cadastrado no estoque com sucesso!";
 
     private static final long serialVersionUID = 579121007228763037L;
 
-    private EstoqueProduto estoqueProduto;
-    private EstoqueProduto epDoBanco;
-    
+    private TOEstoqueProduto toEstoqueProduto;
+    private TOEstoqueProduto toEstoqueProdutoDoBanco;
+
     @Inject
     private EstoqueProdutoDao estoqueProdutoDao;
 
-    private List<EstoqueProduto> produtosEstoque;
-    private List<EstoqueProduto> produtosEstoqueFiltrados;
+    private List<TOEstoqueProduto> toEstoqueProdutos;
+    private List<TOEstoqueProduto> toEstoqueProdutosFiltrados;
 
     @PostConstruct
     private void init() {
-        this.estoqueProduto = new EstoqueProduto();
+        this.toEstoqueProduto = new TOEstoqueProduto();
         initListaEstoqueProdutos();
     }
 
     @Transactional
     public void cadastrar() {
-        this.epDoBanco = estoqueProdutoDao.existe(this.estoqueProduto.getProduto().getId());
-        if (this.epDoBanco == null) {
+        try {
+            this.toEstoqueProdutoDoBanco = estoqueProdutoDao
+                    .existe(this.toEstoqueProduto.getToProduto().getId());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (this.toEstoqueProdutoDoBanco == null) {
             efetuarCadastro();
         } else {
             efetuarAtualizacao();
@@ -48,58 +55,53 @@ public class EstoqueProdutoBean extends AbstractBaseRegisterMBean<EstoqueProduto
     }
 
     private void efetuarCadastro() {
-        this.estoqueProdutoDao.cadastrar(this.estoqueProduto);
+        try {
+            this.estoqueProdutoDao.cadastrar(this.toEstoqueProduto);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         getContext().addMessage(null, new FacesMessage(REGISTERED_SUCCESSFULLY));
     }
 
     private void efetuarAtualizacao() {
-        Integer quantidade = this.estoqueProduto.getQuantidade();
-        this.estoqueProdutoDao.atualizar(this.epDoBanco, quantidade);
+        try {
+            this.estoqueProdutoDao.atualizar(this.toEstoqueProdutoDoBanco);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         getContext().addMessage(null, new FacesMessage(UPDATED_SUCCESSFULLY));
     }
 
     private void initListaEstoqueProdutos() {
-        this.produtosEstoque = this.estoqueProdutoDao.listarTodos();
+        try {
+            this.toEstoqueProdutos = this.estoqueProdutoDao.listarTodos(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
-    public EstoqueProduto getEstoqueProduto() {
-        return estoqueProduto;
+    public TOEstoqueProduto getToEstoqueProduto() {
+        return toEstoqueProduto;
     }
 
-    public void setEstoqueProduto(EstoqueProduto estoqueProduto) {
-        this.estoqueProduto = estoqueProduto;
+    public void setToEstoqueProduto(TOEstoqueProduto toEstoqueProduto) {
+        this.toEstoqueProduto = toEstoqueProduto;
     }
 
-    public EstoqueProdutoDao getEstoqueProdutoDao() {
-        return estoqueProdutoDao;
+    public List<TOEstoqueProduto> getToEstoqueProdutos() {
+        return toEstoqueProdutos;
     }
 
-    public void setEstoqueProdutoDao(EstoqueProdutoDao estoqueProdutoDao) {
-        this.estoqueProdutoDao = estoqueProdutoDao;
+    public void setToEstoqueProdutos(List<TOEstoqueProduto> toEstoqueProdutos) {
+        this.toEstoqueProdutos = toEstoqueProdutos;
     }
 
-    public List<EstoqueProduto> getProdutosEstoque() {
-        return produtosEstoque;
+    public List<TOEstoqueProduto> getToEstoqueProdutosFiltrados() {
+        return toEstoqueProdutosFiltrados;
     }
 
-    public void setProdutosEstoque(List<EstoqueProduto> produtosEstoque) {
-        this.produtosEstoque = produtosEstoque;
-    }
-
-    public List<EstoqueProduto> getProdutosEstoqueFiltrados() {
-        return produtosEstoqueFiltrados;
-    }
-
-    public void setProdutosEstoqueFiltrados(List<EstoqueProduto> produtosEstoqueFiltrados) {
-        this.produtosEstoqueFiltrados = produtosEstoqueFiltrados;
-    }
-
-    public EstoqueProduto getEpDoBanco() {
-        return epDoBanco;
-    }
-
-    public void setEpDoBanco(EstoqueProduto epDoBanco) {
-        this.epDoBanco = epDoBanco;
+    public void setToEstoqueProdutosFiltrados(List<TOEstoqueProduto> toEstoqueProdutosFiltrados) {
+        this.toEstoqueProdutosFiltrados = toEstoqueProdutosFiltrados;
     }
 
 }

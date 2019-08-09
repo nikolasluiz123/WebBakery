@@ -9,13 +9,14 @@ import javax.transaction.Transactional;
 
 import br.com.WebBakery.abstractClass.AbstractBaseRegisterMBean;
 import br.com.WebBakery.dao.PaisDao;
-import br.com.WebBakery.model.Pais;
+import br.com.WebBakery.to.TOPais;
 import br.com.WebBakery.validator.PaisValidator;
 
-@Named
+@Named(PaisBean.BEAN_NAME)
 @ViewScoped
-public class PaisBean extends AbstractBaseRegisterMBean<Pais> {
+public class PaisBean extends AbstractBaseRegisterMBean<TOPais> {
 
+    public static final String BEAN_NAME = "paisBean";
     private static final String PAIS_UPDATED_SUCCESSFULLY = "País atualizado com sucesso!";
     private static final String REGISTRED_SUCCESSFULLY = "País cadastrado com sucesso!";
 
@@ -23,19 +24,18 @@ public class PaisBean extends AbstractBaseRegisterMBean<Pais> {
 
     @Inject
     private PaisDao paisDao;
-    private Pais pais;
+    private TOPais toPais;
     private PaisValidator validator;
 
     @PostConstruct
     private void init() {
-        this.pais = new Pais();
-        verificaPaisSessao();
+        this.toPais = new TOPais();
     }
 
     @Transactional
     public void cadastrar() {
-        this.validator = new PaisValidator(this.pais);
-        if (this.pais.getId() == null) {
+        this.validator = new PaisValidator(this.toPais);
+        if (this.toPais.getId() == null) {
             efetuarCadastro();
         } else {
             efetuarAtualizacao();
@@ -45,39 +45,39 @@ public class PaisBean extends AbstractBaseRegisterMBean<Pais> {
 
     private void efetuarCadastro() {
         if (validator.isValid()) {
-            this.pais.setAtivo(true);
-            this.paisDao.cadastrar(this.pais);
+            this.toPais.setAtivo(true);
+            try {
+                this.paisDao.cadastrar(this.toPais);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             getContext().addMessage(null, new FacesMessage(REGISTRED_SUCCESSFULLY));
         }
     }
 
     private void efetuarAtualizacao() {
         if (this.validator.isValid()) {
-            this.paisDao.atualizar(this.pais);
+            try {
+                this.paisDao.atualizar(this.toPais);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             getContext().addMessage(null, new FacesMessage(PAIS_UPDATED_SUCCESSFULLY));
         }
     }
 
     private void atualizarTela() {
-        this.pais = new Pais();
+        this.toPais = new TOPais();
         this.validator.showMessages();
         this.validator.clearMessages();
     }
 
-    public void verificaPaisSessao() {
-        this.pais = getObjetoSessao("PaisID", paisDao, pais);
-        
-        if (pais == null) {
-            this.pais = new Pais();
-        }
+    public TOPais getToPais() {
+        return toPais;
     }
 
-    public Pais getPais() {
-        return pais;
-    }
-
-    public void setPais(Pais pais) {
-        this.pais = pais;
+    public void setToPais(TOPais toPais) {
+        this.toPais = toPais;
     }
 
 }

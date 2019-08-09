@@ -9,33 +9,32 @@ import javax.transaction.Transactional;
 
 import br.com.WebBakery.abstractClass.AbstractBaseRegisterMBean;
 import br.com.WebBakery.dao.ReceitaDao;
-import br.com.WebBakery.model.Receita;
+import br.com.WebBakery.to.TOReceita;
 import br.com.WebBakery.validator.ReceitaValidator;
 
 @Named
 @ViewScoped
-public class ReceitaBean extends AbstractBaseRegisterMBean<Receita> {
+public class ReceitaBean extends AbstractBaseRegisterMBean<TOReceita> {
 
     private static final long serialVersionUID = 4300601613343189689L;
 
-    private static final String UPDATED_SUCCESSFULLY = "Receita atualizada com sucesso!";
-    private static final String REGISTERED_SUCCESSFULLY = "Receita cadastrada com sucesso!";
+    private static final String UPDATED_SUCCESSFULLY = "TOReceita atualizada com sucesso!";
+    private static final String REGISTERED_SUCCESSFULLY = "TOReceita cadastrada com sucesso!";
 
-    private Receita receita;
+    private TOReceita toReceita;
     @Inject
     private ReceitaDao receitaDao;
     private ReceitaValidator validator;
 
     @PostConstruct
     private void init() {
-        this.receita = new Receita();
-        verificaReceitaSessao();
+        this.toReceita = new TOReceita();
     }
 
     @Transactional
     public void cadastrar() {
-        this.validator = new ReceitaValidator(this.receita);
-        if (this.receita.getId() == null) {
+        this.validator = new ReceitaValidator(this.toReceita);
+        if (this.toReceita.getId() == null) {
             efetuarCadastro();
         } else {
             efetuarAtualizacao();
@@ -46,8 +45,12 @@ public class ReceitaBean extends AbstractBaseRegisterMBean<Receita> {
     @Transactional
     private void efetuarCadastro() {
         if (this.validator.isValid()) {
-            this.receita.setAtivo(true);
-            this.receitaDao.cadastrar(this.receita);
+            this.toReceita.setAtivo(true);
+            try {
+                this.receitaDao.cadastrar(this.toReceita);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             getContext().addMessage(null, new FacesMessage(REGISTERED_SUCCESSFULLY));
         }
     }
@@ -55,30 +58,27 @@ public class ReceitaBean extends AbstractBaseRegisterMBean<Receita> {
     @Transactional
     private void efetuarAtualizacao() {
         if (this.validator.isValid()) {
-            this.receitaDao.atualizar(this.receita);
+            try {
+                this.receitaDao.atualizar(this.toReceita);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             getContext().addMessage(null, new FacesMessage(UPDATED_SUCCESSFULLY));
         }
     }
 
     private void atualizarTela() {
-        this.receita = new Receita();
+        this.toReceita = new TOReceita();
         this.validator.showMessages();
         this.validator.clearMessages();
     }
 
-    private void verificaReceitaSessao() {
-        this.receita = getObjetoSessao("ReceitaID", receitaDao, receita);
-    
-        if (receita == null) {
-            this.receita = new Receita();
-        }
+    public TOReceita getToReceita() {
+        return toReceita;
     }
 
-    public Receita getReceita() {
-        return receita;
+    public void setToReceita(TOReceita toReceita) {
+        this.toReceita = toReceita;
     }
 
-    public void setReceita(Receita receita) {
-        this.receita = receita;
-    }
 }

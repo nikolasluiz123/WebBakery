@@ -13,20 +13,21 @@ import javax.transaction.Transactional;
 
 import br.com.WebBakery.abstractClass.AbstractBaseListMBean;
 import br.com.WebBakery.dao.ReceitaDao;
-import br.com.WebBakery.model.Receita;
+import br.com.WebBakery.interfaces.IBaseListMBean;
+import br.com.WebBakery.to.TOReceita;
 
 @Named
 @ViewScoped
-public class ListaReceitaBean extends AbstractBaseListMBean<Receita> {
+public class ListaReceitaBean extends AbstractBaseListMBean implements IBaseListMBean<TOReceita> {
 
     private static final long serialVersionUID = -187265901878598052L;
 
-    private static final String RECEITA_INATIVATED_SUCCESSFULLY = "Receita atualizada com sucesso!";
+    private static final String RECEITA_INATIVATED_SUCCESSFULLY = "TOReceita atualizada com sucesso!";
 
     @Inject
     private ReceitaDao receitaDao;
-    private List<Receita> receitas;
-    private List<Receita> receitasFiltradas;
+    private List<TOReceita> receitas;
+    private List<TOReceita> receitasFiltradas;
 
     @PostConstruct
     private void init() {
@@ -34,35 +35,47 @@ public class ListaReceitaBean extends AbstractBaseListMBean<Receita> {
         initReceitas();
     }
 
+    @Override
     public void carregar(Integer receitaID) throws IOException {
         setObjetoSessao(receitaID, "ReceitaID", "cadastroReceita.xhtml");
     }
 
     @Transactional
-    public void inativar(Receita receita) {
+    @Override
+    public void inativar(TOReceita receita) {
         receita.setAtivo(false);
-        this.receitaDao.atualizar(receita);
+
+        try {
+            this.receitaDao.atualizar(receita);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         initReceitas();
         getContext().addMessage(null, new FacesMessage(RECEITA_INATIVATED_SUCCESSFULLY));
     }
 
     private void initReceitas() {
-        this.receitas = this.receitaDao.listarTodos(true);
+        try {
+            this.receitas = this.receitaDao.listarTodos(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
-    public List<Receita> getReceitas() {
+    public List<TOReceita> getReceitas() {
         return receitas;
     }
 
-    public void setReceitas(List<Receita> receitas) {
+    public void setReceitas(List<TOReceita> receitas) {
         this.receitas = receitas;
     }
 
-    public List<Receita> getReceitasFiltradas() {
+    public List<TOReceita> getReceitasFiltradas() {
         return receitasFiltradas;
     }
 
-    public void setReceitasFiltradas(List<Receita> receitasFiltradas) {
+    public void setReceitasFiltradas(List<TOReceita> receitasFiltradas) {
         this.receitasFiltradas = receitasFiltradas;
     }
 

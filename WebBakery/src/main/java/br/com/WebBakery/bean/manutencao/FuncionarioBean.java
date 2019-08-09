@@ -17,101 +17,95 @@ import br.com.WebBakery.dao.FuncionarioDao;
 import br.com.WebBakery.dao.LogradouroDao;
 import br.com.WebBakery.dao.PaisDao;
 import br.com.WebBakery.dao.UsuarioDao;
-import br.com.WebBakery.model.Cidade;
-import br.com.WebBakery.model.Endereco;
-import br.com.WebBakery.model.Estado;
-import br.com.WebBakery.model.Funcionario;
-import br.com.WebBakery.model.Logradouro;
-import br.com.WebBakery.model.Pais;
-import br.com.WebBakery.model.Usuario;
+import br.com.WebBakery.to.TOCidade;
+import br.com.WebBakery.to.TOEndereco;
+import br.com.WebBakery.to.TOEstado;
+import br.com.WebBakery.to.TOFuncionario;
+import br.com.WebBakery.to.TOLogradouro;
+import br.com.WebBakery.to.TOPais;
+import br.com.WebBakery.to.TOUsuario;
 import br.com.WebBakery.validator.EnderecoValidator;
 import br.com.WebBakery.validator.FuncionarioValidator;
 
-@Named
+@Named(FuncionarioBean.BEAN_NAME)
 @ViewScoped
-public class FuncionarioBean extends AbstractBaseRegisterMBean<Funcionario> {
+public class FuncionarioBean extends AbstractBaseRegisterMBean<TOFuncionario> {
+
+    public static final String BEAN_NAME = "funcionarioBean";
 
     private static final String FUNCIONARIO_UPDATED_SUCCESSFULLY = "Funcionário atualizado com sucesso!";
 
-    private static final String FUNCIONARIO_REGISTRED_SUCCESSFULLY = "Funcionario cadastrado com sucesso!";
+    private static final String FUNCIONARIO_REGISTRED_SUCCESSFULLY = "TOFuncionario cadastrado com sucesso!";
 
     private static final long serialVersionUID = -3087884190174464470L;
 
     @Inject
     private FuncionarioDao funcionarioDao;
-    private Funcionario funcionario;
-
+    private TOFuncionario toFuncionario;
     private FuncionarioValidator funcionarioValidator;
     private EnderecoValidator enderecoValidator;
-
     @Inject
     private UsuarioDao usuarioDao;
-    private Usuario usuarioSelecionado;
-    private List<Usuario> usuarios;
-    private List<Usuario> usuariosFiltrados;
-
+    private TOUsuario toUsuarioSelecionado;
+    private List<TOUsuario> toUsuarios;
+    private List<TOUsuario> toUsuariosFiltrados;
     @Inject
     private PaisDao paisDao;
-    private Pais paisSelecionado;
-    private List<Pais> paises;
-    private List<Pais> paisesFiltrados;
-
+    private TOPais toPaisSelecionado;
+    private List<TOPais> toPaises;
+    private List<TOPais> toPaisesFiltrados;
     @Inject
     private EstadoDao estadoDao;
-    private Estado estadoSelecionado;
-    private List<Estado> estados;
-    private List<Estado> estadosFiltrados;
-
+    private TOEstado toEstadoSelecionado;
+    private List<TOEstado> toEstados;
+    private List<TOEstado> toEstadosFiltrados;
     @Inject
     private CidadeDao cidadeDao;
-    private Cidade cidadeSelecionada;
-    private List<Cidade> cidades;
-    private List<Cidade> cidadesFiltradas;
-
+    private TOCidade toCcidadeSelecionada;
+    private List<TOCidade> toCidades;
+    private List<TOCidade> toCidadesFiltradas;
     @Inject
     private LogradouroDao logradouroDao;
-
     @Inject
     private EnderecoDao enderecoDao;
 
     @PostConstruct
     private void init() {
         this.funcionarioDao = new FuncionarioDao();
-        this.funcionario = new Funcionario();
+        this.toFuncionario = new TOFuncionario();
 
         this.enderecoDao = new EnderecoDao();
-        this.funcionario.setEndereco(new Endereco());
-        this.funcionario.getEndereco().setPais(new Pais());
-        this.funcionario.getEndereco().setEstado(new Estado());
-        this.funcionario.getEndereco().setCidade(new Cidade());
-        this.funcionario.getEndereco().setLogradouro(new Logradouro());
+        this.toFuncionario.setEndereco(new TOEndereco());
+        this.toFuncionario.getEndereco().setToPais(new TOPais());
+        this.toFuncionario.getEndereco().setToEstado(new TOEstado());
+        this.toFuncionario.getEndereco().setToCidade(new TOCidade());
+        this.toFuncionario.getEndereco().setToLogradouro(new TOLogradouro());
 
         this.logradouroDao = new LogradouroDao();
 
         this.usuarioDao = new UsuarioDao();
-        this.usuarioSelecionado = new Usuario();
+        this.toUsuarioSelecionado = new TOUsuario();
 
         this.paisDao = new PaisDao();
-        this.paisSelecionado = new Pais();
+        this.toPaisSelecionado = new TOPais();
 
         this.estadoDao = new EstadoDao();
-        this.estadoSelecionado = new Estado();
+        this.toEstadoSelecionado = new TOEstado();
 
         this.cidadeDao = new CidadeDao();
-        this.cidadeSelecionada = new Cidade();
+        this.toCcidadeSelecionada = new TOCidade();
 
         initListPaises();
         initListEstados();
         initListCidades();
         initListUsuarios();
-        verficarFuncionarioSessao();
     }
 
     @Transactional
     public void cadastrar() {
-        this.enderecoValidator = new EnderecoValidator(this.funcionario.getEndereco());
-        this.funcionarioValidator = new FuncionarioValidator(this.funcionario);
-        if (this.funcionario.getId() == null) {
+        this.enderecoValidator = new EnderecoValidator(this.toFuncionario.getEndereco());
+        this.funcionarioValidator = new FuncionarioValidator(this.toFuncionario);
+        if (this.toFuncionario.getId() == null) {
             efetuarCadastro();
         } else {
             efetuarAtualizacao();
@@ -120,194 +114,230 @@ public class FuncionarioBean extends AbstractBaseRegisterMBean<Funcionario> {
     }
 
     private void efetuarCadastro() {
-        if (funcionarioValidator.isValid() && enderecoValidator.ehValido()) {
+        if (funcionarioValidator.isValid() && enderecoValidator.isValid()) {
             cadastrarLogradouroFuncionario();
             cadastrarEnderecoFuncionario();
-            this.funcionario.setAtivo(true);
-            this.funcionarioDao.cadastrar(this.funcionario);
+            this.toFuncionario.setAtivo(true);
+
+            try {
+                this.funcionarioDao.cadastrar(this.toFuncionario);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
             getContext().addMessage(null, new FacesMessage(FUNCIONARIO_REGISTRED_SUCCESSFULLY));
         }
     }
 
     private void cadastrarEnderecoFuncionario() {
-        this.funcionario.getEndereco().setAtivo(true);
-        this.enderecoDao.cadastrar(this.funcionario.getEndereco());
+        this.toFuncionario.getEndereco().setAtivo(true);
+        try {
+            this.enderecoDao.cadastrar(this.toFuncionario.getEndereco());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void cadastrarLogradouroFuncionario() {
-        this.funcionario.getEndereco().getLogradouro().setAtivo(true);
-        this.funcionario.getEndereco().getLogradouro()
-                .setCidade(this.funcionario.getEndereco().getCidade());
-        this.logradouroDao.cadastrar(this.funcionario.getEndereco().getLogradouro());
+        this.toFuncionario.getEndereco().getToLogradouro().setAtivo(true);
+        this.toFuncionario.getEndereco().getToLogradouro()
+                .setToCidade(this.toFuncionario.getEndereco().getToCidade());
+        try {
+            this.logradouroDao.cadastrar(this.toFuncionario.getEndereco().getToLogradouro());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void efetuarAtualizacao() {
-        if (funcionarioValidator.isValid() && enderecoValidator.ehValido()) {
-            this.funcionarioDao.atualizar(this.funcionario);
-            this.enderecoDao.atualizar(this.funcionario.getEndereco());
-            this.logradouroDao.atualizar(this.funcionario.getEndereco().getLogradouro());
+        if (funcionarioValidator.isValid() && enderecoValidator.isValid()) {
+
+            try {
+                this.funcionarioDao.atualizar(this.toFuncionario);
+                this.enderecoDao.atualizar(this.toFuncionario.getEndereco());
+                this.logradouroDao.atualizar(this.toFuncionario.getEndereco().getToLogradouro());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
             getContext().addMessage(null, new FacesMessage(FUNCIONARIO_UPDATED_SUCCESSFULLY));
         }
     }
 
     private void atualizarTela() {
-        this.funcionario = new Funcionario();
+        this.toFuncionario = new TOFuncionario();
         this.funcionarioValidator.showMessages();
         this.funcionarioValidator.clearMessages();
     }
 
-    private void verficarFuncionarioSessao() {
-        this.funcionario = getObjetoSessao("FuncionarioID", funcionarioDao, funcionario);
-    
-        if (funcionario == null) {
-            this.funcionario = new Funcionario();
+    private void initListUsuarios() {
+        try {
+            this.toUsuarios = this.usuarioDao.listarTodos(true);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
-    private void initListUsuarios() {
-        this.usuarios = this.usuarioDao.listarTodos(true);
-    }
-
     private void initListCidades() {
-        this.cidades = this.cidadeDao.listarTodos(true);
+        try {
+            this.toCidades = this.cidadeDao.listarTodos(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void initListEstados() {
-        this.estados = this.estadoDao.listarTodos(true);
+        try {
+            this.toEstados = this.estadoDao.listarTodos(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void initListPaises() {
-        this.paises = this.paisDao.listarTodos(true);
+        try {
+            this.toPaises = this.paisDao.listarTodos(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void setarPais() {
-        this.funcionario.getEndereco().setPais(this.paisSelecionado);
-        carregarEstado(paisSelecionado.getId());
+        this.toFuncionario.getEndereco().setToPais(this.toPaisSelecionado);
+        carregarEstado(toPaisSelecionado.getId());
     }
 
     public void setarEstado() {
-        this.funcionario.getEndereco().setEstado(this.estadoSelecionado);
-        carregarCidade(estadoSelecionado.getId());
+        this.toFuncionario.getEndereco().setToEstado(this.toEstadoSelecionado);
+        carregarCidade(toEstadoSelecionado.getId());
     }
 
     public void setarCidade() {
-        this.funcionario.getEndereco().setCidade(this.cidadeSelecionada);
+        this.toFuncionario.getEndereco().setToCidade(this.toCcidadeSelecionada);
     }
 
     public void setarUsuario() {
-        this.funcionario.setUsuario(this.usuarioSelecionado);
+        this.toFuncionario.setToUsuario(this.toUsuarioSelecionado);
     }
 
     private void carregarEstado(Integer paisId) {
-        this.estados = this.estadoDao.listarTodos(true, paisId);
+        try {
+            this.toEstados = this.estadoDao.listarTodos(true, paisId);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void carregarCidade(Integer estadoId) {
-        this.cidades = this.cidadeDao.listarTodos(true, estadoId);
+        try {
+            this.toCidades = this.cidadeDao.listarTodos(true, estadoId);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
-    public Funcionario getFuncionario() {
-        return funcionario;
+    public TOFuncionario getToFuncionario() {
+        return toFuncionario;
     }
 
-    public void setFuncionario(Funcionario funcionario) {
-        this.funcionario = funcionario;
+    public void setToFuncionario(TOFuncionario toFuncionario) {
+        this.toFuncionario = toFuncionario;
     }
 
-    public List<Usuario> getUsuarios() {
-        return usuarios;
+    public TOUsuario getToUsuarioSelecionado() {
+        return toUsuarioSelecionado;
     }
 
-    public void setUsuarios(List<Usuario> usuarios) {
-        this.usuarios = usuarios;
+    public void setToUsuarioSelecionado(TOUsuario toUsuarioSelecionado) {
+        this.toUsuarioSelecionado = toUsuarioSelecionado;
     }
 
-    public List<Pais> getPaises() {
-        return paises;
+    public List<TOUsuario> getToUsuarios() {
+        return toUsuarios;
     }
 
-    public void setPaises(List<Pais> paises) {
-        this.paises = paises;
+    public void setToUsuarios(List<TOUsuario> toUsuarios) {
+        this.toUsuarios = toUsuarios;
     }
 
-    public List<Estado> getEstados() {
-        return estados;
+    public List<TOUsuario> getToUsuariosFiltrados() {
+        return toUsuariosFiltrados;
     }
 
-    public void setEstados(List<Estado> estados) {
-        this.estados = estados;
+    public void setToUsuariosFiltrados(List<TOUsuario> toUsuariosFiltrados) {
+        this.toUsuariosFiltrados = toUsuariosFiltrados;
     }
 
-    public List<Cidade> getCidades() {
-        return cidades;
+    public TOPais getToPaisSelecionado() {
+        return toPaisSelecionado;
     }
 
-    public void setCidades(List<Cidade> cidades) {
-        this.cidades = cidades;
+    public void setToPaisSelecionado(TOPais toPaisSelecionado) {
+        this.toPaisSelecionado = toPaisSelecionado;
     }
 
-    public Pais getPaisSelecionado() {
-        return paisSelecionado;
+    public List<TOPais> getToPaises() {
+        return toPaises;
     }
 
-    public void setPaisSelecionado(Pais paisSelecionado) {
-        this.paisSelecionado = paisSelecionado;
+    public void setToPaises(List<TOPais> toPaises) {
+        this.toPaises = toPaises;
     }
 
-    public Estado getEstadoSelecionado() {
-        return estadoSelecionado;
+    public List<TOPais> getToPaisesFiltrados() {
+        return toPaisesFiltrados;
     }
 
-    public void setEstadoSelecionado(Estado estadoSelecionado) {
-        this.estadoSelecionado = estadoSelecionado;
+    public void setToPaisesFiltrados(List<TOPais> toPaisesFiltrados) {
+        this.toPaisesFiltrados = toPaisesFiltrados;
     }
 
-    public Cidade getCidadeSelecionada() {
-        return cidadeSelecionada;
+    public TOEstado getToEstadoSelecionado() {
+        return toEstadoSelecionado;
     }
 
-    public void setCidadeSelecionada(Cidade cidadeSelecionada) {
-        this.cidadeSelecionada = cidadeSelecionada;
+    public void setToEstadoSelecionado(TOEstado toEstadoSelecionado) {
+        this.toEstadoSelecionado = toEstadoSelecionado;
     }
 
-    public Usuario getUsuarioSelecionado() {
-        return usuarioSelecionado;
+    public List<TOEstado> getToEstados() {
+        return toEstados;
     }
 
-    public void setUsuarioSelecionado(Usuario usuarioSelecionado) {
-        this.usuarioSelecionado = usuarioSelecionado;
+    public void setToEstados(List<TOEstado> toEstados) {
+        this.toEstados = toEstados;
     }
 
-    public List<Pais> getPaisesFiltrados() {
-        return paisesFiltrados;
+    public List<TOEstado> getToEstadosFiltrados() {
+        return toEstadosFiltrados;
     }
 
-    public void setPaisesFiltrados(List<Pais> paisesFiltrados) {
-        this.paisesFiltrados = paisesFiltrados;
+    public void setToEstadosFiltrados(List<TOEstado> toEstadosFiltrados) {
+        this.toEstadosFiltrados = toEstadosFiltrados;
     }
 
-    public List<Estado> getEstadosFiltrados() {
-        return estadosFiltrados;
+    public TOCidade getToCcidadeSelecionada() {
+        return toCcidadeSelecionada;
     }
 
-    public void setEstadosFiltrados(List<Estado> estadosFiltrados) {
-        this.estadosFiltrados = estadosFiltrados;
+    public void setToCcidadeSelecionada(TOCidade toCcidadeSelecionada) {
+        this.toCcidadeSelecionada = toCcidadeSelecionada;
     }
 
-    public List<Cidade> getCidadesFiltradas() {
-        return cidadesFiltradas;
+    public List<TOCidade> getToCidades() {
+        return toCidades;
     }
 
-    public void setCidadesFiltradas(List<Cidade> cidadesFiltradas) {
-        this.cidadesFiltradas = cidadesFiltradas;
+    public void setToCidades(List<TOCidade> toCidades) {
+        this.toCidades = toCidades;
     }
 
-    public List<Usuario> getUsuariosFiltrados() {
-        return usuariosFiltrados;
+    public List<TOCidade> getToCidadesFiltradas() {
+        return toCidadesFiltradas;
     }
 
-    public void setUsuariosFiltrados(List<Usuario> usuariosFiltrados) {
-        this.usuariosFiltrados = usuariosFiltrados;
+    public void setToCidadesFiltradas(List<TOCidade> toCidadesFiltradas) {
+        this.toCidadesFiltradas = toCidadesFiltradas;
     }
 
 }

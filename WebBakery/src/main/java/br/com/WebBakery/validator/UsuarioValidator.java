@@ -2,9 +2,10 @@ package br.com.WebBakery.validator;
 
 import br.com.WebBakery.abstractClass.AbstractValidator;
 import br.com.WebBakery.dao.UsuarioDao;
-import br.com.WebBakery.model.Usuario;
+import br.com.WebBakery.to.TOUsuario;
 import br.com.WebBakery.util.Email_Util;
 import br.com.WebBakery.util.Hash_Util;
+import br.com.WebBakery.util.String_Util;
 
 public class UsuarioValidator extends AbstractValidator {
 
@@ -20,12 +21,12 @@ public class UsuarioValidator extends AbstractValidator {
     private static final String FIELD_SOBRENOME_REQUIRED = "Sobrenome é obrigatório!";
     private static final String FIELD_SOBRENOME_LIMIT_EXCEDDED = "Sobrenome com excedência de caractéres!";
 
-    private Usuario usuario;
+    private TOUsuario toUsuario;
     private UsuarioDao usuarioDao;
     private String senha;
 
-    public UsuarioValidator(Usuario usuario, String senha, UsuarioDao usuarioDao) {
-        this.usuario = usuario;
+    public UsuarioValidator(TOUsuario toUsuario, String senha, UsuarioDao usuarioDao) {
+        this.toUsuario = toUsuario;
         this.usuarioDao = usuarioDao;
         this.senha = senha;
     }
@@ -39,9 +40,9 @@ public class UsuarioValidator extends AbstractValidator {
     }
 
     private void validaNome() {
-        String nome = this.usuario.getNome().trim();
+        String nome = this.toUsuario.getNome().trim();
 
-        if (nome.isEmpty() || nome == null) {
+        if (String_Util.isNullOrEmpty(nome)) {
             this.messages.add(FIELD_NOME_REQUIRED);
         }
         if (nome.length() > 40) {
@@ -50,9 +51,9 @@ public class UsuarioValidator extends AbstractValidator {
     }
 
     private void validaSobrenome() {
-        String sobrenome = this.usuario.getSobrenome().trim();
+        String sobrenome = this.toUsuario.getSobrenome().trim();
 
-        if (sobrenome.isEmpty() || sobrenome == null) {
+        if (String_Util.isNullOrEmpty(sobrenome)) {
             this.messages.add(FIELD_SOBRENOME_REQUIRED);
         }
         if (sobrenome.length() > 40) {
@@ -61,9 +62,9 @@ public class UsuarioValidator extends AbstractValidator {
     }
 
     private void validaEmail() {
-        String email = this.usuario.getEmail().trim();
+        String email = this.toUsuario.getEmail().trim();
 
-        if (email.isEmpty() || email == null) {
+        if (String_Util.isNullOrEmpty(email)) {
             messages.add(FIELD_EMAIL_REQUIRED);
         }
         if (email.length() > 50) {
@@ -73,7 +74,7 @@ public class UsuarioValidator extends AbstractValidator {
             messages.add(FIELD_EMAIL_NOT_VALID);
         }
 
-        if (this.usuario.getId() == null) {
+        if (this.toUsuario.getId() == null) {
             boolean existe = this.usuarioDao.emailExiste(email);
             if (existe) {
                 messages.add(FIELD_EMAIL_EXIST);
@@ -82,7 +83,7 @@ public class UsuarioValidator extends AbstractValidator {
     }
 
     private void validaSenha() {
-        if (this.senha.isEmpty() || this.senha == null) {
+        if (String_Util.isNullOrEmpty(this.senha)) {
             messages.add(FIELD_SENHA_REQUIRED);
         }
         if (this.senha.length() > 80) {
@@ -92,6 +93,6 @@ public class UsuarioValidator extends AbstractValidator {
             messages.add(FIELD_SENHA_VERY_WEAK);
         }
         Integer senhaHash = Hash_Util.getHashCode(this.senha);
-        this.usuario.setSenha(senhaHash);
+        this.toUsuario.setSenha(senhaHash);
     }
 }

@@ -1,5 +1,7 @@
 package br.com.WebBakery.model;
 
+import java.sql.Time;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 
@@ -8,19 +10,27 @@ import br.com.WebBakery.abstractClass.AbstractBaseModel;
 @Entity
 public class Receita extends AbstractBaseModel {
 
-    @Column(length = 255)
-    private String descricao;
+    @Column(length = 32)
+    private String nome;
 
     private Integer quantidade;
 
-    private boolean ativo;
+    private Time tempoPreparo;
 
-    public String getDescricao() {
-        return descricao;
+    public String getNome() {
+        return nome;
     }
 
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public Time getTempoPreparo() {
+        return tempoPreparo;
+    }
+
+    public void setTempoPreparo(Time tempoPreparo) {
+        this.tempoPreparo = tempoPreparo;
     }
 
     public Integer getQuantidade() {
@@ -31,11 +41,4 @@ public class Receita extends AbstractBaseModel {
         this.quantidade = quantidade;
     }
 
-    public boolean isAtivo() {
-        return ativo;
-    }
-
-    public void setAtivo(boolean ativo) {
-        this.ativo = ativo;
-    }
 }

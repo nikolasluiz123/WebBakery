@@ -15,7 +15,6 @@ public class Estado extends AbstractBaseModel {
     private String sigla;
     @ManyToOne
     private Pais pais;
-    private boolean ativo;
 
     public String getNome() {
         return nome;
@@ -39,13 +38,5 @@ public class Estado extends AbstractBaseModel {
 
     public void setSigla(String sigla) {
         this.sigla = sigla;
-    }
-
-    public boolean isAtivo() {
-        return ativo;
-    }
-
-    public void setAtivo(boolean ativo) {
-        this.ativo = ativo;
     }
 }

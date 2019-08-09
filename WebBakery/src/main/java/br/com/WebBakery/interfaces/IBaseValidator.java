@@ -1,4 +1,4 @@
-package br.com.WebBaker.interfaces;
+package br.com.WebBakery.interfaces;
 
 public interface IBaseValidator {
 

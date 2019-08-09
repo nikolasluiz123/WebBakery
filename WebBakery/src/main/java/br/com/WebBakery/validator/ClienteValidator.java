@@ -6,9 +6,10 @@ import javax.inject.Inject;
 
 import br.com.WebBakery.abstractClass.AbstractValidator;
 import br.com.WebBakery.dao.ClienteDao;
-import br.com.WebBakery.model.Cliente;
+import br.com.WebBakery.to.TOCliente;
 import br.com.WebBakery.util.Cpf_Util;
 import br.com.WebBakery.util.Email_Util;
+import br.com.WebBakery.util.String_Util;
 
 public class ClienteValidator extends AbstractValidator {
 
@@ -23,12 +24,12 @@ public class ClienteValidator extends AbstractValidator {
     private static final String FIELD_EMAIL_REQUIRED = "E-mail é obrigatório!";
     private static final String FIELD_CPF_EXIST = "Cpf já cadastrado!";
 
-    private Cliente cliente;
+    private TOCliente cliente;
     @Inject
     private ClienteDao clienteDao;
     private String senha;
 
-    public ClienteValidator(Cliente cliente, String senha) {
+    public ClienteValidator(TOCliente cliente, String senha) {
         this.cliente = cliente;
         this.senha = senha;
     }
@@ -42,9 +43,9 @@ public class ClienteValidator extends AbstractValidator {
     }
 
     private void validaUsuario() {
-        String email = this.cliente.getUsuario().getEmail().trim();
+        String email = this.cliente.getToUsuario().getEmail().trim();
 
-        if (email == null || email.isEmpty()) {
+        if (String_Util.isNullOrEmpty(email)) {
             messages.add(FIELD_EMAIL_REQUIRED);
         }
         if (!Email_Util.isValid(email)) {
@@ -61,7 +62,7 @@ public class ClienteValidator extends AbstractValidator {
     private void validaTelefone() {
         String telefone = this.cliente.getTelefone().trim();
 
-        if (telefone.isEmpty() || telefone == null) {
+        if (String_Util.isNullOrEmpty(telefone)) {
             messages.add(FIELD_TELEFONE_REQUIRED);
         }
     }
@@ -69,7 +70,7 @@ public class ClienteValidator extends AbstractValidator {
     private void validaCpf() {
         String cpf = this.cliente.getCpf().trim();
 
-        if (cpf.isEmpty() || cpf == null) {
+        if (String_Util.isNullOrEmpty(cpf)) {
             messages.add(FIELD_CPF_REQUIRED);
         }
         if (!Cpf_Util.isValid(cpf)) {

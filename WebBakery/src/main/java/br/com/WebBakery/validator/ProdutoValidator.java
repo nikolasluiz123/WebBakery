@@ -1,8 +1,9 @@
 package br.com.WebBakery.validator;
 
 import br.com.WebBakery.abstractClass.AbstractValidator;
-import br.com.WebBakery.model.Produto;
-import br.com.WebBakery.model.Receita;
+import br.com.WebBakery.to.TOProduto;
+import br.com.WebBakery.to.TOReceita;
+import br.com.WebBakery.util.String_Util;
 
 public class ProdutoValidator extends AbstractValidator {
 
@@ -12,12 +13,12 @@ public class ProdutoValidator extends AbstractValidator {
     private static final String FIELD_DESCRICAO_LIMIT_EXCEEDED = "Descrição com excedência de caractéres!";
     private static final String FIELD_DESCRICAO_REQUIRED = "Descrição é obrigatória!";
     private static final String FIELD_PRECO_REQUIRED = "Preço é obrigatório!";
-    private static final String FIELD_RECEITA_REQUIRED = "Receita é obrigatória!";
+    private static final String FIELD_RECEITA_REQUIRED = "TOReceita é obrigatória!";
 
-    private Produto produto;
+    private TOProduto toProduto;
 
-    public ProdutoValidator(Produto produto) {
-        this.produto = produto;
+    public ProdutoValidator(TOProduto toProduto) {
+        this.toProduto = toProduto;
     }
 
     @Override
@@ -29,18 +30,18 @@ public class ProdutoValidator extends AbstractValidator {
     }
 
     private void validaDescricao() {
-        String descricao = this.produto.getDescricao().trim();
+        String descricao = this.toProduto.getDescricao().trim();
 
-        if (descricao == null || descricao.isEmpty()) {
+        if (String_Util.isNullOrEmpty(descricao)) {
             messages.add(FIELD_DESCRICAO_REQUIRED);
         } else if (descricao.length() > 50) {
             messages.add(FIELD_DESCRICAO_LIMIT_EXCEEDED);
         }
-        this.produto.setDescricao(descricao);
+        this.toProduto.setDescricao(descricao);
     }
 
     private void validaTempoValidade() {
-        Integer tempoValido = this.produto.getTempoValido();
+        Integer tempoValido = this.toProduto.getTempoValido();
 
         if (tempoValido == null) {
             messages.add(FIELD_TEMPO_VALIDO_REQUIRED);
@@ -50,7 +51,7 @@ public class ProdutoValidator extends AbstractValidator {
     }
 
     private void validaPreco() {
-        Double preco = this.produto.getPreco();
+        Double preco = this.toProduto.getPreco();
 
         if (preco == null) {
             messages.add(FIELD_PRECO_REQUIRED);
@@ -61,9 +62,9 @@ public class ProdutoValidator extends AbstractValidator {
     }
 
     private void validaReceita() {
-        Receita receita = this.produto.getReceita();
+        TOReceita toReceita = this.toProduto.getToReceita();
 
-        if (receita == null) {
+        if (toReceita == null) {
             messages.add(FIELD_RECEITA_REQUIRED);
         }
     }

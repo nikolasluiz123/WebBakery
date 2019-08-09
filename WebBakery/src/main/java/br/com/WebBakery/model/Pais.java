@@ -10,11 +10,9 @@ public class Pais extends AbstractBaseModel {
 
     @Column(length = 30)
     private String nome;
-    
+
     @Column(length = 4)
     private String sigla;
-    
-    private boolean ativo;
 
     public String getNome() {
         return nome;
@@ -30,14 +28,6 @@ public class Pais extends AbstractBaseModel {
 
     public void setSigla(String sigla) {
         this.sigla = sigla;
-    }
-
-    public boolean isAtivo() {
-        return ativo;
-    }
-
-    public void setAtivo(boolean ativo) {
-        this.ativo = ativo;
     }
 
 }

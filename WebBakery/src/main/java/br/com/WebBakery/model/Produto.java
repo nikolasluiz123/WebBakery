@@ -1,7 +1,11 @@
 package br.com.WebBakery.model;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 import br.com.WebBakery.abstractClass.AbstractBaseModel;
@@ -16,9 +20,11 @@ public class Produto extends AbstractBaseModel {
 
     private Double preco;
 
-    private boolean ativo;
     @OneToOne
     private Receita receita;
+
+    @OneToMany(fetch=FetchType.LAZY, mappedBy="produto", targetEntity=FotoProduto.class, orphanRemoval = false)
+    private List<FotoProduto> fotos;
 
     public String getDescricao() {
         return descricao;
@@ -36,14 +42,6 @@ public class Produto extends AbstractBaseModel {
         this.preco = preco;
     }
 
-    public boolean isAtivo() {
-        return ativo;
-    }
-
-    public void setAtivo(boolean ativo) {
-        this.ativo = ativo;
-    }
-
     public Integer getTempoValido() {
         return tempoValido;
     }
@@ -58,6 +56,14 @@ public class Produto extends AbstractBaseModel {
 
     public void setReceita(Receita receita) {
         this.receita = receita;
+    }
+
+    public List<FotoProduto> getFotos() {
+        return fotos;
+    }
+
+    public void setFotos(List<FotoProduto> fotos) {
+        this.fotos = fotos;
     }
 
     @Override

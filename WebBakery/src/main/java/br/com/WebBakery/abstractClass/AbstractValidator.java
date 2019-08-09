@@ -6,7 +6,7 @@ import java.util.List;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 
-import br.com.WebBaker.interfaces.IBaseValidator;
+import br.com.WebBakery.interfaces.IBaseValidator;
 
 public abstract class AbstractValidator implements IBaseValidator {
 

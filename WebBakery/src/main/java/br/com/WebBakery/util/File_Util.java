@@ -10,7 +10,8 @@ import java.util.Date;
 
 import javax.servlet.ServletContext;
 
-import br.com.WebBakery.model.Foto;
+import br.com.WebBakery.abstractClass.AbstractArquivo;
+import br.com.WebBakery.abstractClass.AbstractArquivoTO;
 
 public class File_Util {
 
@@ -100,13 +101,13 @@ public class File_Util {
         }
     }
 
-    public static String criarFotoPastaTemporaria(Foto f) throws Exception {
+    public static String criarFotoPastaTemporaria(AbstractArquivoTO f) throws Exception {
         ServletContext context = (ServletContext) Faces_Util.getExternalContext().getContext();
         File arquivoFoto = File_Util
                 .criarArquivo(f.getBytes(),
                               File_Util.getPastaTemporaria(context.getRealPath("/"),
                                                            Faces_Util.getHTTPSession().getId()),
-                              f.getExtensao());
+                              File_Util.SCORE + f.getExtensao());
         return arquivoFoto.getAbsolutePath();
     }
 

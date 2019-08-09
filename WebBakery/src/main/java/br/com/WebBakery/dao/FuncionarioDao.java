@@ -2,54 +2,92 @@ package br.com.WebBakery.dao;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.StringJoiner;
 
 import javax.ejb.Stateless;
-import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
-import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
 
 import br.com.WebBakery.abstractClass.AbstractBaseDao;
 import br.com.WebBakery.model.Funcionario;
+import br.com.WebBakery.to.TOFuncionario;
 
 @Stateless
-public class FuncionarioDao extends AbstractBaseDao<Funcionario> {
-    @PersistenceContext
-    transient private EntityManager entityManager;
+public class FuncionarioDao extends AbstractBaseDao<TOFuncionario> {
+//    @PersistenceContext
+//    transient private EntityManager entityManager;
+//    
+//    @Override
+//    protected EntityManager getEntityManager() {
+//        return this.entityManager;
+//    }
+    
+    private static final long serialVersionUID = -3829525203324472005L;
     
     @Override
-    protected EntityManager getEntityManager() {
-        return this.entityManager;
-    }
-    private static final long serialVersionUID = -3829525203324472005L;
-
-    public List<Funcionario> listarTodos(Boolean ativo) {
-        List<Funcionario> funcionarios = new ArrayList<>();
-
-        funcionarios = getEntityManager()
-                .createQuery("SELECT f FROM Funcionario f WHERE f.ativo = :pAtivo",
-                             Funcionario.class)
-                .setParameter("pAtivo", ativo).getResultList();
-
-        return funcionarios;
-    }
-
-    public Funcionario buscarPorIdUsuario(Integer idUsuario) {
-        TypedQuery<Funcionario> query = getEntityManager()
-                .createQuery("SELECT f FROM Funcionario f WHERE f.ativo = TRUE AND f.usuario.id = :pIdUsuario",
-                             Funcionario.class);
-        query.setParameter("pIdUsuario", idUsuario);
-        Funcionario f = null;
-        try {
-            f = query.getSingleResult();
-        } catch (NoResultException e) {
-            return f;
-        }
-        return f;
+    public void cadastrar(TOFuncionario to) throws Exception {
+        Funcionario f = new Funcionario();
+        getConverter().getModelFromTO(to, f);
+        getEntityManager().persist(f);
     }
 
     @Override
-    public Class<?> getModelClass() {
-        return Funcionario.class;
+    public TOFuncionario buscarPorId(Integer id) throws Exception {
+        Funcionario f = getEntityManager().find(Funcionario.class, id);
+        TOFuncionario to = new TOFuncionario();
+        getConverter().getTOFromModel(f, to);
+        
+        return to;
     }
+
+    @Override
+    public void atualizar(TOFuncionario to) throws Exception {
+        Funcionario f = new Funcionario();
+        getConverter().getModelFromTO(to, f);
+        getEntityManager().merge(f);
+    }
+
+    public List<TOFuncionario> listarTodos(Boolean ativo) throws Exception {
+        List<Funcionario> funcionarios = new ArrayList<>();
+        List<TOFuncionario> toFuncionarios = new ArrayList<>();
+        
+        StringJoiner sql = new StringJoiner(QR_NL);
+        sql
+        .add("SELECT f")
+        .add("FROM ".concat(Funcionario.class.getName()).concat(" f "))
+        .add("WHERE f.ativo = :pAtivo");
+
+        funcionarios = getEntityManager().createQuery(sql.toString(), Funcionario.class)
+                                         .setParameter("pAtivo", ativo)
+                                         .getResultList();
+
+        for (Funcionario f : funcionarios) {
+            TOFuncionario to = new TOFuncionario();
+            getConverter().getTOFromModel(f, to);
+            toFuncionarios.add(to);
+        }
+        
+        return toFuncionarios;
+    }
+
+    public TOFuncionario buscarPorIdUsuario(Integer idUsuario) throws Exception {
+       TOFuncionario to = new TOFuncionario();
+        
+        StringJoiner sql = new StringJoiner(QR_NL);
+        sql
+        .add("SELECT f")
+        .add("FROM ".concat(Funcionario.class.getName()).concat(" f "))
+        .add("WHERE")
+        .add("f.ativo = :pAtivo")
+        .add("AND f.usuario.id = :pUsuarioId");
+        
+        
+        Funcionario f = getEntityManager().createQuery(sql.toString(), Funcionario.class)
+                              .setParameter("pIdUsuario", idUsuario)
+                              .setParameter("pAtivo", true)
+                              .getSingleResult();
+        
+        getConverter().getTOFromModel(f, to);
+
+        return to;
+    }
+
 }

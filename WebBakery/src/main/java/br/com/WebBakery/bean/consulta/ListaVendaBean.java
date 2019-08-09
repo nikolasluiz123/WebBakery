@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -11,25 +12,28 @@ import javax.inject.Named;
 import br.com.WebBakery.abstractClass.AbstractBaseListMBean;
 import br.com.WebBakery.dao.ProdutoVendaDao;
 import br.com.WebBakery.dao.VendaDao;
-import br.com.WebBakery.model.ProdutoVenda;
-import br.com.WebBakery.model.Venda;
+import br.com.WebBakery.interfaces.IBaseListMBean;
+import br.com.WebBakery.to.TOProdutoVenda;
+import br.com.WebBakery.to.TOVenda;
 import br.com.WebBakery.util.String_Util;
 
 @Named
 @ViewScoped
-public class ListaVendaBean extends AbstractBaseListMBean<Venda> {
+public class ListaVendaBean extends AbstractBaseListMBean implements IBaseListMBean<TOVenda> {
 
     private static final long serialVersionUID = 4010909718723087342L;
 
+    private static final String VENDA_INATIVATED_SUCCESSFULLY = "Venda inativada com sucesso!";
+
     @Inject
     private VendaDao vendaDao;
-    private List<Venda> vendas;
-    private List<Venda> vendasFiltradas;
+    private List<TOVenda> vendas;
+    private List<TOVenda> vendasFiltradas;
 
     @Inject
     private ProdutoVendaDao produtoVendaDao;
-    private List<ProdutoVenda> produtosVenda;
-    private List<ProdutoVenda> produtosVendaFiltradas;
+    private List<TOProdutoVenda> produtosVenda;
+    private List<TOProdutoVenda> produtosVendaFiltradas;
 
     private Double valorTotalPago;
     private String valorTotalPagoFormatado;
@@ -44,54 +48,78 @@ public class ListaVendaBean extends AbstractBaseListMBean<Venda> {
 
     private Double calculaValorTotalPago() {
         Double valorTotalPago = 0.0;
-        for (ProdutoVenda produtoVenda : produtosVenda) {
-            Double preco = produtoVenda.getProduto().getPreco();
+        for (TOProdutoVenda produtoVenda : produtosVenda) {
+            Double preco = produtoVenda.getToProduto().getPreco();
             Integer quantidade = produtoVenda.getQuantidade();
             valorTotalPago += preco * quantidade;
         }
-        this.valorTotalPagoFormatado = String_Util
-                .formatarDoubleParaValorMonetario(valorTotalPago);
+        this.valorTotalPagoFormatado = String_Util.formatarDoubleParaValorMonetario(valorTotalPago);
         return valorTotalPago;
     }
 
     private void initListVendas() {
-        this.vendas = this.vendaDao.listarTodos();
+        try {
+            this.vendas = this.vendaDao.listarTodos(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void initListProdutoVendas(Integer id) {
-        this.produtosVenda = this.produtoVendaDao.buscarPorIdVenda(id);
+        try {
+            this.produtosVenda = this.produtoVendaDao.buscarPorIdVenda(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         calculaValorTotalPago();
     }
+    
+    @Override
+    public void inativar(TOVenda to) {
+        to.setAtivo(false);
+        try {
+            this.vendaDao.atualizar(to);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        getContext().addMessage(null, new FacesMessage(VENDA_INATIVATED_SUCCESSFULLY));
+        initListVendas();
+    }
 
-    public List<Venda> getVendas() {
+    @Override
+    public void carregar(Integer id) throws Exception {
+        setObjetoSessao(id, "VendaID", "cadastroVenda.xhtml");
+    }
+
+    public List<TOVenda> getVendas() {
         return vendas;
     }
 
-    public void setVendas(List<Venda> vendas) {
+    public void setVendas(List<TOVenda> vendas) {
         this.vendas = vendas;
     }
 
-    public List<Venda> getVendasFiltradas() {
+    public List<TOVenda> getVendasFiltradas() {
         return vendasFiltradas;
     }
 
-    public void setVendasFiltradas(List<Venda> vendasFiltradas) {
+    public void setVendasFiltradas(List<TOVenda> vendasFiltradas) {
         this.vendasFiltradas = vendasFiltradas;
     }
 
-    public List<ProdutoVenda> getProdutosVenda() {
+    public List<TOProdutoVenda> getProdutosVenda() {
         return produtosVenda;
     }
 
-    public void setProdutosVenda(List<ProdutoVenda> produtosVenda) {
+    public void setProdutosVenda(List<TOProdutoVenda> produtosVenda) {
         this.produtosVenda = produtosVenda;
     }
 
-    public List<ProdutoVenda> getProdutosVendaFiltradas() {
+    public List<TOProdutoVenda> getProdutosVendaFiltradas() {
         return produtosVendaFiltradas;
     }
 
-    public void setProdutosVendaFiltradas(List<ProdutoVenda> produtosVendaFiltradas) {
+    public void setProdutosVendaFiltradas(List<TOProdutoVenda> produtosVendaFiltradas) {
         this.produtosVendaFiltradas = produtosVendaFiltradas;
     }
 

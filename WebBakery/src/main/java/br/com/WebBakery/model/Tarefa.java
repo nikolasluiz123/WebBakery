@@ -15,7 +15,6 @@ public class Tarefa extends AbstractBaseModel {
     @OneToOne
     private Produto produto;
     private Integer quantidade;
-    private boolean pendente;
 
     public Date getDataInicio() {
         return dataInicio;
@@ -49,11 +48,4 @@ public class Tarefa extends AbstractBaseModel {
         this.quantidade = quantidade;
     }
 
-    public boolean getPendente() {
-        return pendente;
-    }
-
-    public void setPendente(boolean pendente) {
-        this.pendente = pendente;
-    }
 }

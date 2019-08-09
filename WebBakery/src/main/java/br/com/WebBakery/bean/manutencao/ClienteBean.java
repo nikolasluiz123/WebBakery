@@ -18,20 +18,20 @@ import br.com.WebBakery.dao.LogradouroDao;
 import br.com.WebBakery.dao.PaisDao;
 import br.com.WebBakery.dao.UsuarioDao;
 import br.com.WebBakery.enums.TipoUsuario;
-import br.com.WebBakery.model.Cidade;
-import br.com.WebBakery.model.Cliente;
-import br.com.WebBakery.model.Endereco;
-import br.com.WebBakery.model.Estado;
-import br.com.WebBakery.model.Logradouro;
-import br.com.WebBakery.model.Pais;
-import br.com.WebBakery.model.Usuario;
+import br.com.WebBakery.to.TOCidade;
+import br.com.WebBakery.to.TOCliente;
+import br.com.WebBakery.to.TOEndereco;
+import br.com.WebBakery.to.TOEstado;
+import br.com.WebBakery.to.TOLogradouro;
+import br.com.WebBakery.to.TOPais;
+import br.com.WebBakery.to.TOUsuario;
 import br.com.WebBakery.util.Hash_Util;
 import br.com.WebBakery.validator.ClienteValidator;
 import br.com.WebBakery.validator.EnderecoValidator;
 
-@Named
+@Named(ClienteBean.BEAN_NAME)
 @ViewScoped
-public class ClienteBean extends AbstractBaseRegisterMBean<Cliente> {
+public class ClienteBean extends AbstractBaseRegisterMBean<TOCliente> {
 
     private static final long serialVersionUID = -7615567443762847019L;
 
@@ -39,69 +39,64 @@ public class ClienteBean extends AbstractBaseRegisterMBean<Cliente> {
 
     private static final String UPDATED_SUCCESSFULLY = "Cliente atualizado com sucesso!";
 
-    private Cliente cliente;
-    
+    public static final String BEAN_NAME = "clienteBean";
+
+    private TOCliente toCliente;
+
     @Inject
     private ClienteDao clienteDao;
 
     @Inject
     private PaisDao paisDao;
-    private List<Pais> paises;
-    private List<Pais> paisesFiltrados;
-    private Pais paisSelecionado;
+    private List<TOPais> toPaises;
+    private List<TOPais> toPaisesFiltrados;
+    private TOPais paisSelecionado;
 
     @Inject
     private EstadoDao estadoDao;
-    private List<Estado> estados;
-    private List<Estado> estadosFiltrados;
-    private Estado estadoSelecionado;
-
+    private List<TOEstado> toEstados;
+    private List<TOEstado> toEstadosFiltrados;
+    private TOEstado estadoSelecionado;
     @Inject
     private CidadeDao cidadeDao;
-    private List<Cidade> cidades;
-    private List<Cidade> cidadesFiltradas;
-    private Cidade cidadeSelecionada;
-    
+    private List<TOCidade> toCidades;
+    private List<TOCidade> toCidadesFiltradas;
+    private TOCidade cidadeSelecionada;
     @Inject
     private LogradouroDao logradouroDao;
-   
     @Inject
     private EnderecoDao enderecoDao;
-    
     @Inject
     private UsuarioDao usuarioDao;
-
     private ClienteValidator clienteValidator;
     private EnderecoValidator enderecoValidator;
-
     private String senha;
 
     @PostConstruct
     private void init() {
-        this.cliente = new Cliente();
+        this.toCliente = new TOCliente();
 
-        this.cliente.setEndereco(new Endereco());
-        this.cliente.getEndereco().setPais(new Pais());
-        this.cliente.getEndereco().setEstado(new Estado());
-        this.cliente.getEndereco().setCidade(new Cidade());
-        this.cliente.getEndereco().setLogradouro(new Logradouro());
+        this.toCliente.setToEndereco(new TOEndereco());
+        this.toCliente.getToEndereco().setToPais(new TOPais());
+        this.toCliente.getToEndereco().setToEstado(new TOEstado());
+        this.toCliente.getToEndereco().setToCidade(new TOCidade());
+        this.toCliente.getToEndereco().setToLogradouro(new TOLogradouro());
 
-        this.cliente.setUsuario(new Usuario());
-        this.paisSelecionado = new Pais();
-        this.estadoSelecionado = new Estado();
-        this.cidadeSelecionada = new Cidade();
+        this.toCliente.setToUsuario(new TOUsuario());
+        this.paisSelecionado = new TOPais();
+        this.estadoSelecionado = new TOEstado();
+        this.cidadeSelecionada = new TOCidade();
 
         initListPaises();
         initListEstados();
         initListCidades();
-        verficarClienteSessao();
     }
 
     @Transactional
     public void cadastrar() {
-        this.clienteValidator = new ClienteValidator(this.cliente, this.senha);
-        this.enderecoValidator = new EnderecoValidator(this.cliente.getEndereco());
-        if (this.cliente.getId() == null) {
+        this.clienteValidator = new ClienteValidator(this.toCliente, this.senha);
+        this.enderecoValidator = new EnderecoValidator(this.toCliente.getToEndereco());
+        if (this.toCliente.getId() == null) {
             efetuarCadastro();
         } else {
             efetuarAtualizacao();
@@ -110,243 +105,207 @@ public class ClienteBean extends AbstractBaseRegisterMBean<Cliente> {
     }
 
     private void efetuarCadastro() {
-        if (clienteValidator.isValid() && enderecoValidator.ehValido()) {
+        if (clienteValidator.isValid() && enderecoValidator.isValid()) {
             cadastrarLogradouroCliente();
             cadastrarEnderecoCliente();
             cadastrarUsuarioCliente();
-            this.cliente.setAtivo(true);
-            this.clienteDao.cadastrar(this.cliente);
+            this.toCliente.setAtivo(true);
+
+            try {
+                this.clienteDao.cadastrar(this.toCliente);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
             getContext().addMessage(null, new FacesMessage(REGISTERED_SUCCESSFULLY));
         }
     }
 
     private void cadastrarUsuarioCliente() {
-        this.cliente.getUsuario().setAtivo(true);
-        this.cliente.getUsuario().setTipo(TipoUsuario.CLIENTE);
-        this.cliente.getUsuario().setSenha(Hash_Util.getHashCode(this.senha));
-        this.usuarioDao.cadastrar(this.cliente.getUsuario());
+        this.toCliente.getToUsuario().setAtivo(true);
+        this.toCliente.getToUsuario().setTipo(TipoUsuario.CLIENTE);
+        this.toCliente.getToUsuario().setSenha(Hash_Util.getHashCode(this.senha));
+        try {
+            this.usuarioDao.cadastrar(this.toCliente.getToUsuario());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void cadastrarEnderecoCliente() {
-        this.cliente.getEndereco().setAtivo(true);
-        this.enderecoDao.cadastrar(this.cliente.getEndereco());
+        this.toCliente.getToEndereco().setAtivo(true);
+        try {
+            this.enderecoDao.cadastrar(this.toCliente.getToEndereco());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void cadastrarLogradouroCliente() {
-        this.cliente.getEndereco().getLogradouro().setAtivo(true);
-        this.cliente.getEndereco().getLogradouro().setCidade(cidadeSelecionada);
-        this.logradouroDao.cadastrar(this.cliente.getEndereco().getLogradouro());
+        this.toCliente.getToEndereco().getToLogradouro().setAtivo(true);
+        this.toCliente.getToEndereco().getToLogradouro().setToCidade(cidadeSelecionada);
+        try {
+            this.logradouroDao.cadastrar(this.toCliente.getToEndereco().getToLogradouro());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void efetuarAtualizacao() {
-        if (clienteValidator.isValid() && enderecoValidator.ehValido()) {
-            this.clienteDao.atualizar(this.cliente);
-            this.cliente.getUsuario().setSenha(Hash_Util.getHashCode(this.senha));
-            this.usuarioDao.atualizar(this.cliente.getUsuario());
-            this.enderecoDao.atualizar(this.cliente.getEndereco());
-            this.logradouroDao.atualizar(this.cliente.getEndereco().getLogradouro());
+        if (clienteValidator.isValid() && enderecoValidator.isValid()) {
+
+            try {
+                this.clienteDao.atualizar(this.toCliente);
+                this.toCliente.getToUsuario().setSenha(Hash_Util.getHashCode(this.senha));
+                this.usuarioDao.atualizar(this.toCliente.getToUsuario());
+                this.enderecoDao.atualizar(this.toCliente.getToEndereco());
+                this.logradouroDao.atualizar(this.toCliente.getToEndereco().getToLogradouro());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
             getContext().addMessage(null, new FacesMessage(UPDATED_SUCCESSFULLY));
         }
     }
 
     private void atualizarTela() {
-        this.cliente = new Cliente();
+        this.toCliente = new TOCliente();
         this.clienteValidator.showMessages();
         this.clienteValidator.clearMessages();
     }
 
-    private void verficarClienteSessao() {
-        this.cliente = getObjetoSessao("ClienteID", clienteDao, cliente);
-        
-        if (cliente == null) {
-            this.cliente = new Cliente();
+    private void initListPaises() {
+        try {
+            this.toPaises = this.paisDao.listarTodos(true);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
-    private void initListPaises() {
-        this.paises = this.paisDao.listarTodos(true);
-    }
-
     private void initListEstados() {
-        this.estados = this.estadoDao.listarTodos(true);
+        try {
+            this.toEstados = this.estadoDao.listarTodos(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void initListCidades() {
-        this.cidades = this.cidadeDao.listarTodos(true);
+        try {
+            this.toCidades = this.cidadeDao.listarTodos(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void setarPais() {
-        this.cliente.getEndereco().setPais(this.paisSelecionado);
+        this.toCliente.getToEndereco().setToPais(this.paisSelecionado);
         carregarEstado(paisSelecionado.getId());
     }
 
     public void setarEstado() {
-        this.cliente.getEndereco().setEstado(this.estadoSelecionado);
+        this.toCliente.getToEndereco().setToEstado(this.estadoSelecionado);
         carregarCidade(estadoSelecionado.getId());
     }
 
     public void setarCidade() {
-        this.cliente.getEndereco().setCidade(this.cidadeSelecionada);
+        this.toCliente.getToEndereco().setToCidade(this.cidadeSelecionada);
     }
 
     private void carregarEstado(Integer paisId) {
-        this.estados = this.estadoDao.listarTodos(true, paisId);
+        try {
+            this.toEstados = this.estadoDao.listarTodos(true, paisId);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void carregarCidade(Integer estadoId) {
-        this.cidades = this.cidadeDao.listarTodos(true, estadoId);
+        try {
+            this.toCidades = this.cidadeDao.listarTodos(true, estadoId);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
-    public Cliente getCliente() {
-        return cliente;
+    public TOCliente getToCliente() {
+        return toCliente;
     }
 
-    public void setCliente(Cliente cliente) {
-        this.cliente = cliente;
+    public void setToCliente(TOCliente toCliente) {
+        this.toCliente = toCliente;
     }
 
-    public List<Pais> getPaises() {
-        return paises;
+    public List<TOPais> getToPaises() {
+        return toPaises;
     }
 
-    public void setPaises(List<Pais> paises) {
-        this.paises = paises;
+    public void setToPaises(List<TOPais> toPaises) {
+        this.toPaises = toPaises;
     }
 
-    public Pais getPaisSelecionado() {
+    public List<TOPais> getToPaisesFiltrados() {
+        return toPaisesFiltrados;
+    }
+
+    public void setToPaisesFiltrados(List<TOPais> toPaisesFiltrados) {
+        this.toPaisesFiltrados = toPaisesFiltrados;
+    }
+
+    public TOPais getPaisSelecionado() {
         return paisSelecionado;
     }
 
-    public void setPaisSelecionado(Pais paisSelecionado) {
+    public void setPaisSelecionado(TOPais paisSelecionado) {
         this.paisSelecionado = paisSelecionado;
     }
 
-    public List<Estado> getEstados() {
-        return estados;
+    public List<TOEstado> getToEstados() {
+        return toEstados;
     }
 
-    public void setEstados(List<Estado> estados) {
-        this.estados = estados;
+    public void setToEstados(List<TOEstado> toEstados) {
+        this.toEstados = toEstados;
     }
 
-    public Estado getEstadoSelecionado() {
+    public List<TOEstado> getToEstadosFiltrados() {
+        return toEstadosFiltrados;
+    }
+
+    public void setToEstadosFiltrados(List<TOEstado> toEstadosFiltrados) {
+        this.toEstadosFiltrados = toEstadosFiltrados;
+    }
+
+    public TOEstado getEstadoSelecionado() {
         return estadoSelecionado;
     }
 
-    public void setEstadoSelecionado(Estado estadoSelecionado) {
+    public void setEstadoSelecionado(TOEstado estadoSelecionado) {
         this.estadoSelecionado = estadoSelecionado;
     }
 
-    public List<Cidade> getCidades() {
-        return cidades;
+    public List<TOCidade> getToCidades() {
+        return toCidades;
     }
 
-    public void setCidades(List<Cidade> cidades) {
-        this.cidades = cidades;
+    public void setToCidades(List<TOCidade> toCidades) {
+        this.toCidades = toCidades;
     }
 
-    public Cidade getCidadeSelecionada() {
+    public List<TOCidade> getToCidadesFiltradas() {
+        return toCidadesFiltradas;
+    }
+
+    public void setToCidadesFiltradas(List<TOCidade> toCidadesFiltradas) {
+        this.toCidadesFiltradas = toCidadesFiltradas;
+    }
+
+    public TOCidade getCidadeSelecionada() {
         return cidadeSelecionada;
     }
 
-    public void setCidadeSelecionada(Cidade cidadeSelecionada) {
+    public void setCidadeSelecionada(TOCidade cidadeSelecionada) {
         this.cidadeSelecionada = cidadeSelecionada;
-    }
-
-    public ClienteDao getClienteDao() {
-        return clienteDao;
-    }
-
-    public void setClienteDao(ClienteDao clienteDao) {
-        this.clienteDao = clienteDao;
-    }
-
-    public PaisDao getPaisDao() {
-        return paisDao;
-    }
-
-    public void setPaisDao(PaisDao paisDao) {
-        this.paisDao = paisDao;
-    }
-
-    public EstadoDao getEstadoDao() {
-        return estadoDao;
-    }
-
-    public void setEstadoDao(EstadoDao estadoDao) {
-        this.estadoDao = estadoDao;
-    }
-
-    public CidadeDao getCidadeDao() {
-        return cidadeDao;
-    }
-
-    public void setCidadeDao(CidadeDao cidadeDao) {
-        this.cidadeDao = cidadeDao;
-    }
-
-    public LogradouroDao getLogradouroDao() {
-        return logradouroDao;
-    }
-
-    public void setLogradouroDao(LogradouroDao logradouroDao) {
-        this.logradouroDao = logradouroDao;
-    }
-
-    public EnderecoDao getEnderecoDao() {
-        return enderecoDao;
-    }
-
-    public void setEnderecoDao(EnderecoDao enderecoDao) {
-        this.enderecoDao = enderecoDao;
-    }
-
-    public UsuarioDao getUsuarioDao() {
-        return usuarioDao;
-    }
-
-    public void setUsuarioDao(UsuarioDao usuarioDao) {
-        this.usuarioDao = usuarioDao;
-    }
-
-    public ClienteValidator getClienteValidator() {
-        return clienteValidator;
-    }
-
-    public void setClienteValidator(ClienteValidator clienteValidator) {
-        this.clienteValidator = clienteValidator;
-    }
-
-    public EnderecoValidator getEnderecoValidator() {
-        return enderecoValidator;
-    }
-
-    public void setEnderecoValidator(EnderecoValidator enderecoValidator) {
-        this.enderecoValidator = enderecoValidator;
-    }
-
-    public List<Pais> getPaisesFiltrados() {
-        return paisesFiltrados;
-    }
-
-    public void setPaisesFiltrados(List<Pais> paisesFiltrados) {
-        this.paisesFiltrados = paisesFiltrados;
-    }
-
-    public List<Estado> getEstadosFiltrados() {
-        return estadosFiltrados;
-    }
-
-    public void setEstadosFiltrados(List<Estado> estadosFiltrados) {
-        this.estadosFiltrados = estadosFiltrados;
-    }
-
-    public List<Cidade> getCidadesFiltradas() {
-        return cidadesFiltradas;
-    }
-
-    public void setCidadesFiltradas(List<Cidade> cidadesFiltradas) {
-        this.cidadesFiltradas = cidadesFiltradas;
     }
 
     public String getSenha() {

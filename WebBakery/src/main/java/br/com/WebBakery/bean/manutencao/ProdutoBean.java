@@ -10,49 +10,58 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.transaction.Transactional;
 
+import org.primefaces.event.FileUploadEvent;
+import org.primefaces.model.UploadedFile;
+
 import br.com.WebBakery.abstractClass.AbstractBaseRegisterMBean;
+import br.com.WebBakery.dao.FotoProdutoDao;
 import br.com.WebBakery.dao.ProdutoDao;
 import br.com.WebBakery.dao.ReceitaDao;
-import br.com.WebBakery.model.Produto;
-import br.com.WebBakery.model.Receita;
+import br.com.WebBakery.to.TOFotoProduto;
+import br.com.WebBakery.to.TOProduto;
+import br.com.WebBakery.to.TOReceita;
+import br.com.WebBakery.util.File_Util;
 import br.com.WebBakery.validator.ProdutoValidator;
 
-@Named
+@Named(ProdutoBean.BEAN_NAME)
 @ViewScoped
-public class ProdutoBean extends AbstractBaseRegisterMBean<Produto> {
+public class ProdutoBean extends AbstractBaseRegisterMBean<TOProduto> {
+
+    public static final String BEAN_NAME = "produtoBean";
 
     private static final long serialVersionUID = 8861448133925257777L;
 
-    private static final String UPDATED_SUCCESSFULLY = "Produto atualizado com sucesso!";
+    private static final String UPDATED_SUCCESSFULLY = "TOProduto atualizado com sucesso!";
 
-    private static final String REGISTERED_SUCCESSFULLY = "Produto cadastrado com sucesso!";
+    private static final String REGISTERED_SUCCESSFULLY = "TOProduto cadastrado com sucesso!";
 
-    private Produto produto;
+    private TOProduto toProduto;
     @Inject
     private ProdutoDao produtoDao;
-
-    private Receita receitaSelecionada;
-    private List<Receita> receitas;
-    private List<Receita> receitasFiltradas;
+    private TOReceita toReceitaSelecionada;
+    private List<TOReceita> toReceitas;
+    private List<TOReceita> toReceitasFiltradas;
     @Inject
     private ReceitaDao receitaDao;
-
+    @Inject
+    private FotoProdutoDao fotoProdutoDao;
+    private List<TOFotoProduto> toFotosSelecionadas;
     private ProdutoValidator validator;
 
     @PostConstruct
     private void init() {
-        this.produto = new Produto();
-
-        this.receitaSelecionada = new Receita();
-        this.receitas = new ArrayList<>();
+        this.toProduto = new TOProduto();
+        this.toFotosSelecionadas = new ArrayList<>();
+        this.toReceitaSelecionada = new TOReceita();
+        this.toReceitas = new ArrayList<>();
         initReceitas();
-        verificaProdutoSessao();
     }
 
     @Transactional
     public void cadastrar() {
-        this.validator = new ProdutoValidator(this.produto);
-        if (this.produto.getId() == null) {
+        this.toProduto.setToFotos(toFotosSelecionadas);
+        this.validator = new ProdutoValidator(this.toProduto);
+        if (this.toProduto.getId() == null) {
             efetuarCadastro();
         } else {
             efetuarAtualizacao();
@@ -62,47 +71,91 @@ public class ProdutoBean extends AbstractBaseRegisterMBean<Produto> {
 
     private void efetuarCadastro() {
         if (this.validator.isValid()) {
-            this.produto.setAtivo(true);
-            this.produtoDao.cadastrar(this.produto);
+            this.toProduto.setAtivo(true);
+            try {
+                this.produtoDao.cadastrar(this.toProduto);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            cadastrarFotos();
             getContext().addMessage(null, new FacesMessage(REGISTERED_SUCCESSFULLY));
         }
     }
 
+    private void cadastrarFotos() {
+        for (TOFotoProduto to : toFotosSelecionadas) {
+            try {
+                this.fotoProdutoDao.cadastrar(to);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        toFotosSelecionadas.clear();
+    }
+
+    @Transactional
+    public void handleFileUpload(FileUploadEvent event) throws Exception {
+        UploadedFile file = event.getFile();
+
+        TOFotoProduto toFoto = new TOFotoProduto();
+        toFoto.setAtivo(true);
+        toFoto.setBytes(file.getContents());
+        toFoto.setExtensao(File_Util.getExtensao(file.getFileName()));
+        toFoto.setNome(file.getFileName());
+        toFoto.setToProduto(toProduto);
+        toFoto.setTamanho(file.getSize());
+
+        toFotosSelecionadas.add(toFoto);
+    }
+
     private void efetuarAtualizacao() {
         if (this.validator.isValid()) {
-            this.produtoDao.atualizar(this.produto);
+            try {
+                this.produtoDao.atualizar(this.toProduto);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            atualizarFotos();
             getContext().addMessage(null, new FacesMessage(UPDATED_SUCCESSFULLY));
         }
     }
 
+    public boolean getBotaoDesabilitado() {
+        return toFotosSelecionadas.isEmpty();
+    }
+
+    private void atualizarFotos() {
+        inativarFotos();
+        for (TOFotoProduto to : toFotosSelecionadas) {
+            try {
+                this.fotoProdutoDao.cadastrar(to);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        toFotosSelecionadas.clear();
+    }
+
+    private void inativarFotos() {
+        this.fotoProdutoDao.inativarFotos(this.toProduto.getId());
+    }
+
     private void atualizarTela() {
-        this.produto = new Produto();
+        this.toProduto = new TOProduto();
         this.validator.showMessages();
         this.validator.clearMessages();
     }
 
-    private void verificaProdutoSessao() {
-        this.produto = getObjetoSessao("ProdutoID", produtoDao, produto);
-    
-        if (produto == null) {
-            this.produto = new Produto();
+    private void initReceitas() {
+        try {
+            this.toReceitas = this.receitaDao.listarTodos(true);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
-    private void initReceitas() {
-        this.receitas = this.receitaDao.listarTodos(true);
-    }
-
     public void setarReceita() {
-        this.produto.setReceita(this.receitaSelecionada);
-    }
-
-    public Produto getProduto() {
-        return produto;
-    }
-
-    public void setProduto(Produto produto) {
-        this.produto = produto;
+        this.toProduto.setToReceita(this.toReceitaSelecionada);
     }
 
     public ProdutoValidator getValidator() {
@@ -113,28 +166,44 @@ public class ProdutoBean extends AbstractBaseRegisterMBean<Produto> {
         this.validator = validator;
     }
 
-    public Receita getReceitaSelecionada() {
-        return receitaSelecionada;
+    public TOProduto getToProduto() {
+        return toProduto;
     }
 
-    public void setReceitaSelecionada(Receita receitaSelecionada) {
-        this.receitaSelecionada = receitaSelecionada;
+    public void setToProduto(TOProduto toProduto) {
+        this.toProduto = toProduto;
     }
 
-    public List<Receita> getReceitas() {
-        return receitas;
+    public TOReceita getToReceitaSelecionada() {
+        return toReceitaSelecionada;
     }
 
-    public void setReceitas(List<Receita> receitas) {
-        this.receitas = receitas;
+    public void setToReceitaSelecionada(TOReceita toReceitaSelecionada) {
+        this.toReceitaSelecionada = toReceitaSelecionada;
     }
 
-    public List<Receita> getReceitasFiltradas() {
-        return receitasFiltradas;
+    public List<TOReceita> getToReceitas() {
+        return toReceitas;
     }
 
-    public void setReceitasFiltradas(List<Receita> receitasFiltradas) {
-        this.receitasFiltradas = receitasFiltradas;
+    public void setToReceitas(List<TOReceita> toReceitas) {
+        this.toReceitas = toReceitas;
+    }
+
+    public List<TOReceita> getToReceitasFiltradas() {
+        return toReceitasFiltradas;
+    }
+
+    public void setToReceitasFiltradas(List<TOReceita> toReceitasFiltradas) {
+        this.toReceitasFiltradas = toReceitasFiltradas;
+    }
+
+    public List<TOFotoProduto> getToFotosSelecionadas() {
+        return toFotosSelecionadas;
+    }
+
+    public void setToFotosSelecionadas(List<TOFotoProduto> toFotosSelecionadas) {
+        this.toFotosSelecionadas = toFotosSelecionadas;
     }
 
 }

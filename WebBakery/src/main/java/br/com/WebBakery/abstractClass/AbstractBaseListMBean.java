@@ -7,7 +7,7 @@ import javax.servlet.http.HttpSession;
 import br.com.WebBakery.util.Faces_Util;
 
 @SuppressWarnings("serial")
-public abstract class AbstractBaseListMBean<T> extends AbstractBaseMBean<T> {
+public abstract class AbstractBaseListMBean extends AbstractBaseMBean {
 
     public void setObjetoSessao(Integer id, String keyAtribute, String pageRedirect) {
         HttpSession session = Faces_Util.getHTTPSession();
@@ -18,5 +18,5 @@ public abstract class AbstractBaseListMBean<T> extends AbstractBaseMBean<T> {
             e.printStackTrace();
         }
     }
-
+    
 }

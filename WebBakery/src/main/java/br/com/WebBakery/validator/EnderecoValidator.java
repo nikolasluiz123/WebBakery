@@ -1,127 +1,101 @@
 package br.com.WebBakery.validator;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
-
-import br.com.WebBakery.model.Cidade;
-import br.com.WebBakery.model.Endereco;
-import br.com.WebBakery.model.Estado;
-import br.com.WebBakery.model.Logradouro;
-import br.com.WebBakery.model.Pais;
+import br.com.WebBakery.abstractClass.AbstractValidator;
+import br.com.WebBakery.to.TOEndereco;
 import br.com.WebBakery.util.Cep_Util;
+import br.com.WebBakery.util.String_Util;
 
-public class EnderecoValidator {
+public class EnderecoValidator extends AbstractValidator {
 
-    private Endereco endereco;
+    private static final String FIELD_BAIRRO_NOT_VALID = "Bairro inválido!";
+    private static final String FIELD_BAIRRO_REQUIRED = "Bairro é obrigatório!";
+    private static final String FIELD_RUA_NOT_VALID = "Rua inválida!";
+    private static final String FIELD_RUA_REQUIRED = "Rua é obrigatória!";
+    private static final String FIELD_COMPLEMENTO_LIMIT_EXCEEDED = "Complemento inválido!";
+    private static final String FIELD_COMPLEMENTO_REQUIRED = "Complemento é obrigatório!";
+    private static final String FIELD_CEP_NOT_VALID = "Cep inválido!";
+    private static final String FIELD_CEP_REQUIRED = "Cep é obrigatório!";
+    private static final String FIELD_CIDADE_REQUIRED = "Cidade é obrigatória!";
+    private static final String FIELD_ESTADO_REQUIRED = "Estado é obrigatório!";
+    private static final String FIELD_PAIS_REQUIRED = "País é obrigatório!";
+    
+    private TOEndereco endereco;
 
-    private List<String> messages = new ArrayList<>();
-
-    public EnderecoValidator(Endereco endereco) {
+    public EnderecoValidator(TOEndereco endereco) {
         this.endereco = endereco;
     }
 
-    public boolean ehValido() {
+    @Override
+    public void chamarValidacoes() {
         validaPais();
         validaEstado();
         validaCidade();
         validaLogradouro();
-
-        if (!messages.isEmpty()) {
-            return false;
-        }
-        return true;
-    }
-
-    public void mostrarMensagens() {
-        messages.forEach(message -> {
-            FacesContext.getCurrentInstance()
-                    .addMessage("formCadastroFuncionario:messages",
-                                new FacesMessage(FacesMessage.SEVERITY_ERROR, message, message));
-        });
-
     }
 
     private void validaPais() {
-        if (this.endereco.getPais() == null) {
-            this.messages.add("País obrigatório!");
+        if (this.endereco.getToPais() == null) {
+            this.messages.add(FIELD_PAIS_REQUIRED);
         }
     }
 
     private void validaEstado() {
-        if (this.endereco.getEstado() == null) {
-            this.messages.add("Estado obrigatório!");
+        if (this.endereco.getToEstado() == null) {
+            this.messages.add(FIELD_ESTADO_REQUIRED);
         }
     }
 
     private void validaCidade() {
-        if (this.endereco.getCidade() == null) {
-            this.messages.add("Cidade obrigatória!");
+        if (this.endereco.getToCidade() == null) {
+            this.messages.add(FIELD_CIDADE_REQUIRED);
         }
     }
 
     private void validaLogradouro() {
-        if (this.endereco.getLogradouro().getBairro().isEmpty()
-                || this.endereco.getLogradouro().getBairro() == null) {
-            this.messages.add("Bairro obrigatório!");
-        }
-        if (this.endereco.getLogradouro().getBairro().length() > 30) {
-            this.messages.add("Bairro inválido!");
-        }
-        if (this.endereco.getLogradouro().getRua().isEmpty()
-                || this.endereco.getLogradouro().getRua() == null) {
-            this.messages.add("Rua obrigatória!");
-        }
-        if (this.endereco.getLogradouro().getRua().length() > 30) {
-            this.messages.add("Rua inválida!");
-        }
-        if (this.endereco.getLogradouro().getComplemento().isEmpty()
-                || this.endereco.getLogradouro().getComplemento() == null) {
-            this.messages.add("Complemento obrigatório!");
-        }
-        if (this.endereco.getLogradouro().getComplemento().length() > 20) {
-            this.messages.add("Complemento inválido!");
-        }
-        if (this.endereco.getLogradouro().getCep().isEmpty()
-                || this.endereco.getLogradouro().getCep() == null) {
-            this.messages.add("Cep obrigatório!");
-        }
-        if (!Cep_Util.EhValido(this.endereco.getLogradouro().getCep())) {
-            this.messages.add("Cep inválido!");
-        }
-
+        validaBairro();
+        validaRua();
+        validaComplemento();
+        validaCep();
     }
 
-    public boolean existe(List<Endereco> enderecos) {
-        for (Endereco endereco : enderecos) {
+    private void validaCep() {
+        String cep = this.endereco.getToLogradouro().getCep();
 
-            Pais paisSendoCadastrado = this.endereco.getPais();
-            Pais paisSendoPercorrido = endereco.getPais();
-
-            Estado estadoSendoCadastrado = this.endereco.getEstado();
-            Estado estadoSendoPercorrido = endereco.getEstado();
-
-            Cidade cidadeSendoCadastrada = this.endereco.getCidade();
-            Cidade cidadeSendoPercorrida = endereco.getCidade();
-
-            Logradouro logradouroSendoCadastrado = this.endereco.getLogradouro();
-            Logradouro logradouroSendoPercorrido = endereco.getLogradouro();
-
-            if (paisSendoCadastrado.equals(paisSendoPercorrido)
-                    && estadoSendoCadastrado.equals(estadoSendoPercorrido)
-                    && cidadeSendoCadastrada.equals(cidadeSendoPercorrida)
-                    && logradouroSendoCadastrado.equals(logradouroSendoPercorrido)) {
-                endereco.setAtivo(true);
-                messages.add("Endereço já cadastrado!");
-                return true;
-            }
+        if (String_Util.isNullOrEmpty(cep)) {
+            this.messages.add(FIELD_CEP_REQUIRED);
         }
-        return false;
+        if (!Cep_Util.EhValido(cep)) {
+            this.messages.add(FIELD_CEP_NOT_VALID);
+        }
     }
 
-    public void clearMessages() {
-        this.messages.clear();
+    private void validaComplemento() {
+        String complemento = this.endereco.getToLogradouro().getComplemento();
+        if (String_Util.isNullOrEmpty(complemento)) {
+            this.messages.add(FIELD_COMPLEMENTO_REQUIRED);
+        }
+        if (complemento.length() > 20) {
+            this.messages.add(FIELD_COMPLEMENTO_LIMIT_EXCEEDED);
+        }
+    }
+
+    private void validaRua() {
+        String rua = this.endereco.getToLogradouro().getRua();
+        if (String_Util.isNullOrEmpty(rua)) {
+            this.messages.add(FIELD_RUA_REQUIRED);
+        }
+        if (rua.length() > 30) {
+            this.messages.add(FIELD_RUA_NOT_VALID);
+        }
+    }
+
+    private void validaBairro() {
+        String bairro = this.endereco.getToLogradouro().getBairro();
+        if (String_Util.isNullOrEmpty(bairro)) {
+            this.messages.add(FIELD_BAIRRO_REQUIRED);
+        }
+        if (bairro.length() > 30) {
+            this.messages.add(FIELD_BAIRRO_NOT_VALID);
+        }
     }
 }

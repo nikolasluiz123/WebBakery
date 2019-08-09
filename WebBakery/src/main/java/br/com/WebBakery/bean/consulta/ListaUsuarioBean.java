@@ -1,6 +1,5 @@
 package br.com.WebBakery.bean.consulta;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,11 +12,12 @@ import javax.transaction.Transactional;
 
 import br.com.WebBakery.abstractClass.AbstractBaseListMBean;
 import br.com.WebBakery.dao.UsuarioDao;
-import br.com.WebBakery.model.Usuario;
+import br.com.WebBakery.interfaces.IBaseListMBean;
+import br.com.WebBakery.to.TOUsuario;
 
 @Named
 @ViewScoped
-public class ListaUsuarioBean extends AbstractBaseListMBean<Usuario> {
+public class ListaUsuarioBean extends AbstractBaseListMBean implements IBaseListMBean<TOUsuario> {
 
     private static final long serialVersionUID = 4493498347316041129L;
 
@@ -25,8 +25,8 @@ public class ListaUsuarioBean extends AbstractBaseListMBean<Usuario> {
 
     @Inject
     private UsuarioDao usuarioDao;
-    private List<Usuario> usuarios;
-    private List<Usuario> usuariosFiltrados;
+    private List<TOUsuario> usuarios;
+    private List<TOUsuario> usuariosFiltrados;
 
     @PostConstruct
     private void init() {
@@ -35,34 +35,45 @@ public class ListaUsuarioBean extends AbstractBaseListMBean<Usuario> {
     }
 
     @Transactional
-    public void inativar(Usuario usuario) {
+    @Override
+    public void inativar(TOUsuario usuario) {
         usuario.setAtivo(false);
-        this.usuarioDao.atualizar(usuario);
+        try {
+            this.usuarioDao.atualizar(usuario);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         getContext().addMessage(null, new FacesMessage(USUARIO_INATIVATED_SUCCESSFULLY));
         initListUsuarios();
     }
 
     private void initListUsuarios() {
-        this.usuarios = this.usuarioDao.listarTodos(true);
+        try {
+            this.usuarios = this.usuarioDao.listarTodos(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
-    public void carregar(Integer usuarioID) throws IOException {
+    @Override
+    public void carregar(Integer usuarioID) throws Exception {
         setObjetoSessao(usuarioID, "UsuarioID", "cadastroUsuario.xhtml");
     }
 
-    public List<Usuario> getUsuarios() {
+    public List<TOUsuario> getUsuarios() {
         return usuarios;
     }
 
-    public void setUsuarios(List<Usuario> usuarios) {
+    public void setUsuarios(List<TOUsuario> usuarios) {
         this.usuarios = usuarios;
     }
 
-    public List<Usuario> getUsuariosFiltrados() {
+    public List<TOUsuario> getUsuariosFiltrados() {
         return usuariosFiltrados;
     }
 
-    public void setUsuariosFiltrados(List<Usuario> usuariosFiltrados) {
+    public void setUsuariosFiltrados(List<TOUsuario> usuariosFiltrados) {
         this.usuariosFiltrados = usuariosFiltrados;
     }
+
 }

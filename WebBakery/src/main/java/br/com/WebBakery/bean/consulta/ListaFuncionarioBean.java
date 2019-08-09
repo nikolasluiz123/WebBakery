@@ -1,6 +1,5 @@
 package br.com.WebBakery.bean.consulta;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,13 +11,20 @@ import javax.inject.Named;
 import javax.transaction.Transactional;
 
 import br.com.WebBakery.abstractClass.AbstractBaseListMBean;
+import br.com.WebBakery.bean.manutencao.FuncionarioBean;
 import br.com.WebBakery.dao.EnderecoDao;
 import br.com.WebBakery.dao.FuncionarioDao;
-import br.com.WebBakery.model.Funcionario;
+import br.com.WebBakery.dao.LogradouroDao;
+import br.com.WebBakery.interfaces.IBaseListMBean;
+import br.com.WebBakery.to.TOFuncionario;
+import br.com.WebBakery.util.Faces_Util;
 
-@Named
+@Named(ListaFuncionarioBean.BEAN_NAME)
 @ViewScoped
-public class ListaFuncionarioBean extends AbstractBaseListMBean<Funcionario> {
+public class ListaFuncionarioBean extends AbstractBaseListMBean
+        implements IBaseListMBean<TOFuncionario> {
+
+    public static final String BEAN_NAME = "listaFuncionarioBean";
 
     private static final long serialVersionUID = 5087202394870258058L;
 
@@ -26,51 +32,73 @@ public class ListaFuncionarioBean extends AbstractBaseListMBean<Funcionario> {
 
     @Inject
     private FuncionarioDao funcionarioDao;
-    private List<Funcionario> funcionarios;
-    private List<Funcionario> funcionariosFiltrados;
-
+    private List<TOFuncionario> TOFuncionarios;
+    private List<TOFuncionario> TOFuncionariosFiltrados;
+    @Inject
     private EnderecoDao enderecoDao;
+    @Inject
+    private LogradouroDao logradouroDao;
 
     @PostConstruct
     private void init() {
-        this.funcionarios = new ArrayList<>();
+        this.TOFuncionarios = new ArrayList<>();
         initListFuncionarios();
     }
 
     @Transactional
-    public void inativar(Funcionario funcionario) {
-        funcionario.setAtivo(false);
-        funcionario.getEndereco().setAtivo(false);
-        // verificar se é necessário inativar o logradouro
-        this.funcionarioDao.atualizar(funcionario);
-        this.enderecoDao.atualizar(funcionario.getEndereco());
+    @Override
+    public void inativar(TOFuncionario to) {
+        to.setAtivo(false);
+        to.getEndereco().setAtivo(false);
+        to.getEndereco().getToLogradouro().setAtivo(false);
+        try {
+            this.funcionarioDao.atualizar(to);
+            this.enderecoDao.atualizar(to.getEndereco());
+            this.logradouroDao.atualizar(to.getEndereco().getToLogradouro());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         initListFuncionarios();
         getContext().addMessage(null, new FacesMessage(FUNCIONARIO_INATIVATED_SUCCESSFULLY));
     }
 
     @Transactional
-    public void carregar(Integer funcionarioID) throws IOException {
-        setObjetoSessao(funcionarioID, "FuncionarioID", "cadastroFuncionario.xhtml");
+    @Override
+    public void carregar(Integer funcionarioID) throws Exception {
+        String keyAtribute = "FuncionarioID";
+        String pageRedirect = "cadastroFuncionario.xhtml";
+        setObjetoSessao(funcionarioID, keyAtribute, pageRedirect);
+        FuncionarioBean registerBean = getRegisterBean();
+        registerBean.setToFuncionario(registerBean.getObjetoSessao(keyAtribute, funcionarioDao));
     }
 
     private void initListFuncionarios() {
-        this.funcionarios = this.funcionarioDao.listarTodos(true);
+        try {
+            this.TOFuncionarios = this.funcionarioDao.listarTodos(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    private FuncionarioBean getRegisterBean() {
+        return ((FuncionarioBean) Faces_Util.getBean(FuncionarioBean.BEAN_NAME));
     }
 
-    public List<Funcionario> getFuncionarios() {
-        return funcionarios;
+    public List<TOFuncionario> getFuncionarios() {
+        return TOFuncionarios;
     }
 
-    public void setFuncionarios(List<Funcionario> funcionarios) {
-        this.funcionarios = funcionarios;
+    public void setFuncionarios(List<TOFuncionario> funcionarios) {
+        this.TOFuncionarios = funcionarios;
     }
 
-    public List<Funcionario> getFuncionariosFiltrados() {
-        return funcionariosFiltrados;
+    public List<TOFuncionario> getFuncionariosFiltrados() {
+        return TOFuncionariosFiltrados;
     }
 
-    public void setFuncionariosFiltrados(List<Funcionario> funcionariosFiltrados) {
-        this.funcionariosFiltrados = funcionariosFiltrados;
+    public void setFuncionariosFiltrados(List<TOFuncionario> funcionariosFiltrados) {
+        this.TOFuncionariosFiltrados = funcionariosFiltrados;
     }
 
 }

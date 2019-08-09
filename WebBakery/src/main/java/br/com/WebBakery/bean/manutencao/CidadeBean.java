@@ -13,13 +13,16 @@ import javax.transaction.Transactional;
 import br.com.WebBakery.abstractClass.AbstractBaseRegisterMBean;
 import br.com.WebBakery.dao.CidadeDao;
 import br.com.WebBakery.dao.EstadoDao;
-import br.com.WebBakery.model.Cidade;
-import br.com.WebBakery.model.Estado;
+import br.com.WebBakery.interfaces.IBaseRegisterMBean;
+import br.com.WebBakery.to.TOCidade;
+import br.com.WebBakery.to.TOEstado;
 import br.com.WebBakery.validator.CidadeValidator;
 
-@Named
+@Named(CidadeBean.BEAN_NAME)
 @ViewScoped
-public class CidadeBean extends AbstractBaseRegisterMBean<Cidade> {
+public class CidadeBean extends AbstractBaseRegisterMBean<TOCidade> implements IBaseRegisterMBean {
+
+    public static final String BEAN_NAME = "cidadeBean";
 
     private static final long serialVersionUID = -1552364059113279585L;
 
@@ -29,30 +32,29 @@ public class CidadeBean extends AbstractBaseRegisterMBean<Cidade> {
 
     @Inject
     private CidadeDao cidadeDao;
-    private Cidade cidade;
+    private TOCidade toCidade;
 
     @Inject
     private EstadoDao estadoDao;
-    private Estado estadoSelecionado;
-    private List<Estado> estados;
-    private List<Estado> estadosFiltrados;
+    private TOEstado toEstadoSelecionado;
+    private List<TOEstado> toEstados;
+    private List<TOEstado> toEstadosFiltrados;
 
     private CidadeValidator validator;
 
     @PostConstruct
     private void init() {
-        this.cidade = new Cidade();
-
-        this.estadoSelecionado = new Estado();
-        this.estados = new ArrayList<>();
+        this.toCidade = new TOCidade();
+        this.toEstadoSelecionado = new TOEstado();
+        this.toEstados = new ArrayList<>();
         initListEstados();
-        verificaCidadeSessao();
     }
 
     @Transactional
+    @Override
     public void cadastrar() {
-        this.validator = new CidadeValidator(this.cidade);
-        if (this.cidade.getId() == null) {
+        this.validator = new CidadeValidator(this.toCidade);
+        if (this.toCidade.getId() == null) {
             efetuarCadastro();
         } else {
             efetuarAtualizacao();
@@ -62,71 +64,79 @@ public class CidadeBean extends AbstractBaseRegisterMBean<Cidade> {
 
     private void efetuarCadastro() {
         if (this.validator.isValid()) {
-            this.cidade.setAtivo(true);
-            this.cidadeDao.cadastrar(this.cidade);
+            this.toCidade.setAtivo(true);
+
+            try {
+                this.cidadeDao.cadastrar(this.toCidade);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
             getContext().addMessage(null, new FacesMessage(CIDADE_REGISTRED_SUCCESSFULLY));
         }
     }
 
     private void efetuarAtualizacao() {
         if (this.validator.isValid()) {
-            this.cidadeDao.atualizar(this.cidade);
+
+            try {
+                this.cidadeDao.atualizar(this.toCidade);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
             getContext().addMessage(null, new FacesMessage(CIDADE_UPDATED_SUCCESSFULLY));
         }
     }
 
     private void atualizarTela() {
-        this.cidade = new Cidade();
+        this.toCidade = new TOCidade();
         this.validator.showMessages();
         this.validator.clearMessages();
     }
 
-    private void verificaCidadeSessao() {
-        this.cidade = getObjetoSessao("CidadeID", cidadeDao, cidade);
-        
-        if (cidade == null) {
-            this.cidade = new Cidade();
-        }
-    }
-
     public void setarEstado() {
-        this.cidade.setEstado(this.estadoSelecionado);
+        this.toCidade.setToEstado(this.toEstadoSelecionado);
     }
 
     private void initListEstados() {
-        this.estados = this.estadoDao.listarTodos(true);
+        try {
+            this.toEstados = this.estadoDao.listarTodos(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
-    public Cidade getCidade() {
-        return cidade;
+    public TOCidade getToCidade() {
+        return toCidade;
     }
 
-    public void setCidade(Cidade cidade) {
-        this.cidade = cidade;
+    public void setToCidade(TOCidade toCidade) {
+        this.toCidade = toCidade;
     }
 
-    public Estado getEstadoSelecionado() {
-        return estadoSelecionado;
+    public TOEstado getToEstadoSelecionado() {
+        return toEstadoSelecionado;
     }
 
-    public void setEstadoSelecionado(Estado estadoSelecionado) {
-        this.estadoSelecionado = estadoSelecionado;
+    public void setToEstadoSelecionado(TOEstado toEstadoSelecionado) {
+        this.toEstadoSelecionado = toEstadoSelecionado;
     }
 
-    public List<Estado> getEstados() {
-        return estados;
+    public List<TOEstado> getToEstados() {
+        return toEstados;
     }
 
-    public void setEstados(List<Estado> estados) {
-        this.estados = estados;
+    public void setToEstados(List<TOEstado> toEstados) {
+        this.toEstados = toEstados;
     }
 
-    public List<Estado> getEstadosFiltrados() {
-        return estadosFiltrados;
+    public List<TOEstado> getToEstadosFiltrados() {
+        return toEstadosFiltrados;
     }
 
-    public void setEstadosFiltrados(List<Estado> estadosFiltrados) {
-        this.estadosFiltrados = estadosFiltrados;
+    public void setToEstadosFiltrados(List<TOEstado> toEstadosFiltrados) {
+        this.toEstadosFiltrados = toEstadosFiltrados;
     }
 
 }

@@ -7,7 +7,7 @@ import br.com.WebBakery.abstractClass.AbstractArquivo;
 
 
 @Entity
-public class Foto extends AbstractArquivo {
+public class FotoPerfil extends AbstractArquivo {
 
     @OneToOne
     private Usuario usuario;

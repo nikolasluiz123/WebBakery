@@ -10,12 +10,14 @@ import javax.transaction.Transactional;
 import br.com.WebBakery.abstractClass.AbstractBaseRegisterMBean;
 import br.com.WebBakery.dao.UsuarioDao;
 import br.com.WebBakery.enums.TipoUsuario;
-import br.com.WebBakery.model.Usuario;
+import br.com.WebBakery.to.TOUsuario;
 import br.com.WebBakery.validator.UsuarioValidator;
 
-@Named
+@Named(UsuarioBean.BEAN_NAME)
 @ViewScoped
-public class UsuarioBean extends AbstractBaseRegisterMBean<Usuario> {
+public class UsuarioBean extends AbstractBaseRegisterMBean<TOUsuario> {
+
+    public static final String BEAN_NAME = "usuarioBean";
 
     private static final long serialVersionUID = 2840219448696216244L;
 
@@ -25,7 +27,7 @@ public class UsuarioBean extends AbstractBaseRegisterMBean<Usuario> {
 
     @Inject
     private UsuarioDao usuarioDao;
-    private Usuario usuario;
+    private TOUsuario toUsuario;
     private TipoUsuario tipoUsuario;
     private UsuarioValidator validator;
 
@@ -33,16 +35,15 @@ public class UsuarioBean extends AbstractBaseRegisterMBean<Usuario> {
 
     @PostConstruct
     private void init() {
-        this.usuario = new Usuario();
-        verificaUsuarioSessao();
+        this.toUsuario = new TOUsuario();
     }
 
     @Transactional
     public void cadastrar() {
-        this.validator = new UsuarioValidator(this.usuario, this.senha, this.usuarioDao);
-        this.usuario.setTipo(tipoUsuario);
+        this.validator = new UsuarioValidator(this.toUsuario, this.senha, this.usuarioDao);
+        this.toUsuario.setTipo(tipoUsuario);
 
-        if (this.usuario.getId() == null) {
+        if (this.toUsuario.getId() == null) {
             efetuarCadastro();
         } else {
             efetuarAtualizacao();
@@ -52,39 +53,39 @@ public class UsuarioBean extends AbstractBaseRegisterMBean<Usuario> {
 
     private void efetuarCadastro() {
         if (validator.isValid()) {
-            this.usuario.setAtivo(true);
-            this.usuarioDao.cadastrar(this.usuario);
+            this.toUsuario.setAtivo(true);
+            try {
+                this.usuarioDao.cadastrar(this.toUsuario);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             getContext().addMessage(null, new FacesMessage(USUARIO_REGISTERED_SUCCESSFULLY));
         }
     }
 
     private void efetuarAtualizacao() {
         if (this.validator.isValid()) {
-            this.usuarioDao.atualizar(this.usuario);
+            try {
+                this.usuarioDao.atualizar(this.toUsuario);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             getContext().addMessage(null, new FacesMessage(USUARIO_UPDATED_SUCCESSFULLY));
         }
     }
 
     private void atualizarTela() {
-        this.usuario = new Usuario();
+        this.toUsuario = new TOUsuario();
         this.validator.showMessages();
         this.validator.clearMessages();
     }
 
-    private void verificaUsuarioSessao() {
-        this.usuario = getObjetoSessao("UsuarioID", usuarioDao, usuario);
-    
-        if (usuario == null) {
-            this.usuario = new Usuario();
-        }
+    public TOUsuario getToUsuario() {
+        return toUsuario;
     }
 
-    public Usuario getUsuario() {
-        return usuario;
-    }
-
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
+    public void setToUsuario(TOUsuario toUsuario) {
+        this.toUsuario = toUsuario;
     }
 
     public TipoUsuario getTipoUsuario() {

@@ -13,16 +13,16 @@ import br.com.WebBakery.dao.ClienteDao;
 import br.com.WebBakery.dao.FuncionarioDao;
 import br.com.WebBakery.dao.PopulaBancoDao;
 import br.com.WebBakery.dao.UsuarioDao;
-import br.com.WebBakery.model.Usuario;
+import br.com.WebBakery.to.TOUsuario;
 import br.com.WebBakery.validator.LoginValidator;
 
 @Named
 @ViewScoped
-public class LoginBean extends AbstractBaseRegisterMBean<Usuario> {
+public class LoginBean extends AbstractBaseRegisterMBean<TOUsuario> {
 
     private static final long serialVersionUID = 7192496569257226719L;
 
-    private Usuario usuario;
+    private TOUsuario toUsuario;
     @Inject
     private UsuarioDao usuarioDao;
     @Inject
@@ -36,22 +36,26 @@ public class LoginBean extends AbstractBaseRegisterMBean<Usuario> {
 
     @PostConstruct
     private void init() {
-        this.usuario = new Usuario();
+        this.toUsuario = new TOUsuario();
     }
 
     public void logar() throws IOException {
-        this.usuario = usuarioDao.usuarioExiste(this.usuario.getEmail());
-        this.validator = new LoginValidator(this.usuario,
+        try {
+            this.toUsuario = usuarioDao.usuarioExiste(this.toUsuario.getEmail());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        this.validator = new LoginValidator(this.toUsuario,
                                             this.senha,
                                             this.usuarioDao,
                                             this.funcionarioDao,
                                             this.clienteDao);
         if (validator.isValid()) {
-            getContext().getExternalContext().getSessionMap().put("usuarioLogado", this.usuario);
+            getContext().getExternalContext().getSessionMap().put("usuarioLogado", this.toUsuario);
             getContext().getExternalContext().redirect("cadastroFotoPerfilUsuario.xhtml");
         } else {
             validator.showMessages();
-            this.usuario = new Usuario();
+            this.toUsuario = new TOUsuario();
         }
     }
 
@@ -68,17 +72,17 @@ public class LoginBean extends AbstractBaseRegisterMBean<Usuario> {
         this.senha = senha;
     }
 
-    public Usuario getUsuario() {
-        return usuario;
+    public TOUsuario getToUsuario() {
+        return toUsuario;
     }
 
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
+    public void setToUsuario(TOUsuario toUsuario) {
+        this.toUsuario = toUsuario;
     }
 
     @Transactional
     public void popularBanco() {
-        this.populaBancoDao.popularBanco();
+        // this.populaBancoDao.popularBanco();
     }
 
 }

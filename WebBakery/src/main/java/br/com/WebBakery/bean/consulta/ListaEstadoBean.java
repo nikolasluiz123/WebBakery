@@ -1,6 +1,5 @@
 package br.com.WebBakery.bean.consulta;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,12 +11,17 @@ import javax.inject.Named;
 import javax.transaction.Transactional;
 
 import br.com.WebBakery.abstractClass.AbstractBaseListMBean;
+import br.com.WebBakery.bean.manutencao.EstadoBean;
 import br.com.WebBakery.dao.EstadoDao;
-import br.com.WebBakery.model.Estado;
+import br.com.WebBakery.interfaces.IBaseListMBean;
+import br.com.WebBakery.to.TOEstado;
+import br.com.WebBakery.util.Faces_Util;
 
-@Named
+@Named(ListaEstadoBean.BEAN_NAME)
 @ViewScoped
-public class ListaEstadoBean extends AbstractBaseListMBean<Estado> {
+public class ListaEstadoBean extends AbstractBaseListMBean implements IBaseListMBean<TOEstado> {
+
+    public static final String BEAN_NAME = "listaEstadoBean";
 
     private static final long serialVersionUID = 6531742553423518933L;
 
@@ -25,46 +29,64 @@ public class ListaEstadoBean extends AbstractBaseListMBean<Estado> {
 
     @Inject
     private EstadoDao estadoDao;
-    private List<Estado> estados;
-    private List<Estado> estadosFiltrados;
+    private List<TOEstado> toEstados;
+    private List<TOEstado> toEstadosFiltrados;
 
     @PostConstruct
     private void init() {
-        this.estados = new ArrayList<>();
+        this.toEstados = new ArrayList<>();
         initListEstados();
     }
 
-    @Transactional
-    public void carregar(Integer estadoID) throws IOException {
-        setObjetoSessao(estadoID, "EstadoID", "cadastroEstado.xhtml");
+    @Override
+    public void carregar(Integer estadoID) throws Exception {
+        String keyAtribute = "EstadoID";
+        String pageRedirect = "cadastroEstado.xhtml";
+        setObjetoSessao(estadoID, keyAtribute, pageRedirect);
+        getRegisterBean().getObjetoSessao(keyAtribute, estadoDao);
     }
 
     @Transactional
-    public void inativar(Estado estado) {
-        estado.setAtivo(false);
-        this.estadoDao.atualizar(estado);
+    @Override
+    public void inativar(TOEstado toEstado) {
+        toEstado.setAtivo(false);
+
+        try {
+            this.estadoDao.atualizar(toEstado);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         initListEstados();
         getContext().addMessage(null, new FacesMessage(ESTADO_INATIVATED_SUCCESSFULLY));
     }
 
     private void initListEstados() {
-        this.estados = this.estadoDao.listarTodos(true);
+        try {
+            this.toEstados = this.estadoDao.listarTodos(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
-    public List<Estado> getEstados() {
-        return estados;
+    private EstadoBean getRegisterBean() {
+        return ((EstadoBean) Faces_Util.getBean(EstadoBean.BEAN_NAME));
     }
 
-    public void setEstados(List<Estado> estados) {
-        this.estados = estados;
+    public List<TOEstado> getToEstados() {
+        return toEstados;
     }
 
-    public List<Estado> getEstadosFiltrados() {
-        return estadosFiltrados;
+    public void setToEstados(List<TOEstado> estados) {
+        this.toEstados = estados;
     }
 
-    public void setEstadosFiltrados(List<Estado> estadosFiltrados) {
-        this.estadosFiltrados = estadosFiltrados;
+    public List<TOEstado> getToEstadosFiltrados() {
+        return toEstadosFiltrados;
+    }
+
+    public void setToEstadosFiltrados(List<TOEstado> toEstadosFiltrados) {
+        this.toEstadosFiltrados = toEstadosFiltrados;
     }
 
 }

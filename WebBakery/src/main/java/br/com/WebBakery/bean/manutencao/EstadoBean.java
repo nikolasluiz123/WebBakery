@@ -13,14 +13,16 @@ import javax.transaction.Transactional;
 import br.com.WebBakery.abstractClass.AbstractBaseRegisterMBean;
 import br.com.WebBakery.dao.EstadoDao;
 import br.com.WebBakery.dao.PaisDao;
-import br.com.WebBakery.model.Estado;
-import br.com.WebBakery.model.Pais;
+import br.com.WebBakery.to.TOEstado;
+import br.com.WebBakery.to.TOPais;
 import br.com.WebBakery.validator.EstadoValidator;
 
-@Named
+@Named(EstadoBean.BEAN_NAME)
 @ViewScoped
-public class EstadoBean extends AbstractBaseRegisterMBean<Estado> {
+public class EstadoBean extends AbstractBaseRegisterMBean<TOEstado> {
 
+    public static final String BEAN_NAME = "estadoBean";
+    
     private static final String ESTADO_UPDATED_SUCCESSFULLY = "Estado atualizado com sucesso!";
     private static final String ESTADO_REGISTRED_SUCCESSFULLY = "Estado cadastrado com sucesso!";
 
@@ -28,31 +30,30 @@ public class EstadoBean extends AbstractBaseRegisterMBean<Estado> {
 
     @Inject
     private EstadoDao estadoDao;
-    private Estado estado;
+    private TOEstado toEstado;
 
     @Inject
     private PaisDao paisDao;
-    private Pais paisSelecionado;
-    private List<Pais> paises;
-    private List<Pais> paisesFiltrados;
+    private TOPais toPaisSelecionado;
+    private List<TOPais> toPaises;
+    private List<TOPais> toPaisesFiltrados;
 
     private EstadoValidator validator;
 
     @PostConstruct
     private void init() {
-        this.estado = new Estado();
+        this.toEstado = new TOEstado();
 
-        this.paisSelecionado = new Pais();
-        this.paises = new ArrayList<>();
+        this.toPaisSelecionado = new TOPais();
+        this.toPaises = new ArrayList<>();
 
         initListPaises();
-        verificaEstadoSessao();
     }
 
     @Transactional
     public void cadastrar() {
-        this.validator = new EstadoValidator(this.estado);
-        if (this.estado.getId() == null) {
+        this.validator = new EstadoValidator(this.toEstado);
+        if (this.toEstado.getId() == null) {
             efetuarCadastro();
         } else {
             efetuarAtualizacao();
@@ -62,71 +63,79 @@ public class EstadoBean extends AbstractBaseRegisterMBean<Estado> {
 
     private void efetuarCadastro() {
         if (this.validator.isValid()) {
-            this.estado.setAtivo(true);
-            this.estadoDao.cadastrar(this.estado);
+            this.toEstado.setAtivo(true);
+            try {
+                this.estadoDao.cadastrar(this.toEstado);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             getContext().addMessage(null, new FacesMessage(ESTADO_REGISTRED_SUCCESSFULLY));
         }
     }
 
     private void efetuarAtualizacao() {
         if (this.validator.isValid()) {
-            this.estadoDao.atualizar(this.estado);
+            try {
+                this.estadoDao.atualizar(this.toEstado);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             getContext().addMessage(null, new FacesMessage(ESTADO_UPDATED_SUCCESSFULLY));
         }
     }
 
     private void atualizarTela() {
-        this.estado = new Estado();
+        this.toEstado = new TOEstado();
         this.validator.showMessages();
         this.validator.clearMessages();
     }
 
-    private void verificaEstadoSessao() {
-        this.estado = getObjetoSessao("EstadoID", estadoDao, estado);
-        
-        if (estado == null) {
-            this.estado = new Estado();
-        }
-    }
-
     public void setarPais() {
-        this.estado.setPais(this.paisSelecionado);
+        this.toEstado.setToPais(this.toPaisSelecionado);
     }
 
     private void initListPaises() {
-        this.paises = this.paisDao.listarTodos(true);
+        try {
+            this.toPaises = this.paisDao.listarTodos(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
-    public Estado getEstado() {
-        return this.estado;
+    public TOEstado getToEstado() {
+        return this.toEstado;
     }
 
-    public void setEstado(Estado estado) {
-        this.estado = estado;
+    public void setToEstado(TOEstado toEstado) {
+        this.toEstado = toEstado;
     }
 
-    public List<Pais> getPaises() {
-        return paises;
+    public List<TOPais> getToPaises() {
+        return toPaises;
     }
 
-    public void setPaises(List<Pais> paises) {
-        this.paises = paises;
+    public void setToPaises(List<TOPais> toPaises) {
+        this.toPaises = toPaises;
     }
 
-    public Pais getPaisSelecionado() {
-        return paisSelecionado;
+    public TOPais getToPaisSelecionado() {
+        return toPaisSelecionado;
     }
 
-    public void setPaisSelecionado(Pais paisSelecionado) {
-        this.paisSelecionado = paisSelecionado;
+    public void setToPaisSelecionado(TOPais toPaisSelecionado) {
+        this.toPaisSelecionado = toPaisSelecionado;
     }
 
-    public List<Pais> getPaisesFiltrados() {
-        return paisesFiltrados;
+    public void setToPaisesFiltrados(List<TOPais> toPaisesFiltrados) {
+        this.toPaisesFiltrados = toPaisesFiltrados;
     }
 
-    public void setPaisesFiltrados(List<Pais> paisesFiltrados) {
-        this.paisesFiltrados = paisesFiltrados;
+    public List<TOPais> getToPaisesFiltrados() {
+        return toPaisesFiltrados;
+    }
+
+    public void setPaisesFiltrados(List<TOPais> toPaisesFiltrados) {
+        this.toPaisesFiltrados = toPaisesFiltrados;
     }
 
 }

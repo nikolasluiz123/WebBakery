@@ -5,11 +5,14 @@ import br.com.WebBakery.dao.ClienteDao;
 import br.com.WebBakery.dao.FuncionarioDao;
 import br.com.WebBakery.dao.UsuarioDao;
 import br.com.WebBakery.enums.TipoUsuario;
-import br.com.WebBakery.model.Cliente;
-import br.com.WebBakery.model.Funcionario;
-import br.com.WebBakery.model.Usuario;
+import br.com.WebBakery.to.TOCliente;
+import br.com.WebBakery.to.TOFuncionario;
+import br.com.WebBakery.to.TOUsuario;
+import br.com.WebBakery.util.String_Util;
 
 public class LoginValidator extends AbstractValidator {
+
+    private static final String USER_NOT_EXISTS = "Usuário não encontrado!";
 
     private static final String FIELD_SENHA_REQUIRED = "Senha é obrigatória!";
 
@@ -17,18 +20,18 @@ public class LoginValidator extends AbstractValidator {
 
     private static final String NO_RELATION_EMPLOYEE = "Nenhum funcionário cadastrado com este usuário foi encontrado!";
 
-    private Usuario usuario;
+    private TOUsuario toUsuario;
     private String senha;
     private UsuarioDao usuarioDao;
     private FuncionarioDao funcionarioDao;
     private ClienteDao clienteDao;
 
-    public LoginValidator(Usuario usuario,
+    public LoginValidator(TOUsuario toUsuario,
                           String senha,
                           UsuarioDao usuarioDao,
                           FuncionarioDao funcionarioDao,
                           ClienteDao clienteDao) {
-        this.usuario = usuario;
+        this.toUsuario = toUsuario;
         this.senha = senha;
         this.usuarioDao = usuarioDao;
         this.funcionarioDao = funcionarioDao;
@@ -45,9 +48,9 @@ public class LoginValidator extends AbstractValidator {
     }
 
     private void validaSenha() {
-        if (this.senha == null || this.senha.isEmpty()) {
+        if (String_Util.isNullOrEmpty(this.senha)) {
             messages.add(FIELD_SENHA_REQUIRED);
-        } else if (this.usuario.getSenha() != this.senha.hashCode()) {
+        } else if (this.toUsuario.getSenha() != this.senha.hashCode()) {
             messages.add(FIELD_SENHA_OR_EMAIL_NOT_VALID);
         }
     }
@@ -59,23 +62,29 @@ public class LoginValidator extends AbstractValidator {
     }
 
     private boolean verificaUsuarioExiste() {
-        if (this.usuario == null) {
-            messages.add("Usuário não encontrado!");
-
+        if (this.toUsuario == null) {
+            messages.add(USER_NOT_EXISTS);
             return false;
         }
         return true;
     }
 
     private Boolean existeVinculoComUsuario() {
-        Usuario u = this.usuarioDao.usuarioExiste(this.usuario.getEmail());
-        Cliente c = null;
-        Funcionario f = null;
+        TOUsuario u;
+        TOCliente c = null;
+        TOFuncionario f = null;
 
-        if (this.usuario.getTipo() == TipoUsuario.CLIENTE) {
-            c = clienteDao.buscarPorIdUsuario(u.getId());
-        } else {
-            f = funcionarioDao.buscarPorIdUsuario(u.getId());
+        try {
+            u = this.usuarioDao.usuarioExiste(this.toUsuario.getEmail());
+
+            if (this.toUsuario.getTipo() == TipoUsuario.CLIENTE) {
+                c = clienteDao.buscarPorIdUsuario(u.getId());
+            } else {
+                f = funcionarioDao.buscarPorIdUsuario(u.getId());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
         }
 
         if (c != null || f != null) {

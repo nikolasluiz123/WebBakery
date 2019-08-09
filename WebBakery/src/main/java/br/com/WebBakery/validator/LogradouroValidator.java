@@ -3,6 +3,7 @@ package br.com.WebBakery.validator;
 import br.com.WebBakery.abstractClass.AbstractValidator;
 import br.com.WebBakery.model.Logradouro;
 import br.com.WebBakery.util.Cep_Util;
+import br.com.WebBakery.util.String_Util;
 
 public class LogradouroValidator extends AbstractValidator {
 
@@ -31,7 +32,7 @@ public class LogradouroValidator extends AbstractValidator {
     private void validaBairro() {
         String bairro = this.logradouro.getBairro().trim();
 
-        if (bairro.isEmpty() || bairro == null) {
+        if (String_Util.isNullOrEmpty(bairro)) {
             messages.add(FIELD_BAIRRO_REQUIRED);
         }
         if (bairro.length() > 40) {
@@ -42,7 +43,7 @@ public class LogradouroValidator extends AbstractValidator {
     private void validaCep() {
         String cep = this.logradouro.getCep().trim();
 
-        if (cep.isEmpty() || cep == null) {
+        if (String_Util.isNullOrEmpty(cep)) {
             messages.add(FIELD_CEP_REQUIRED);
         }
         if (!Cep_Util.EhValido(cep)) {
@@ -53,7 +54,7 @@ public class LogradouroValidator extends AbstractValidator {
     private void validaRua() {
         String rua = this.logradouro.getRua().trim();
 
-        if (rua.isEmpty() || rua == null) {
+        if (String_Util.isNullOrEmpty(rua)) {
             messages.add(FIELD_RUA_REQUIRED);
         }
         if (rua.length() > 30) {
@@ -64,7 +65,7 @@ public class LogradouroValidator extends AbstractValidator {
     private void validaComplemento() {
         String complemento = this.logradouro.getComplemento().trim();
 
-        if (complemento.isEmpty() || complemento == null) {
+        if (String_Util.isNullOrEmpty(complemento)) {
             messages.add(FIELD_COMPLEMENTO_REQUIRED);
         }
         if (complemento.length() > 20) {

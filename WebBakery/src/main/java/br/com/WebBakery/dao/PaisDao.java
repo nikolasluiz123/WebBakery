@@ -2,37 +2,70 @@ package br.com.WebBakery.dao;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.StringJoiner;
 
 import javax.ejb.Stateless;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 
 import br.com.WebBakery.abstractClass.AbstractBaseDao;
 import br.com.WebBakery.model.Pais;
+import br.com.WebBakery.to.TOPais;
 
 @Stateless
-public class PaisDao extends AbstractBaseDao<Pais> {
-    @PersistenceContext
-    transient private EntityManager entityManager;
-    
-    @Override
-    protected EntityManager getEntityManager() {
-        return this.entityManager;
-    }
+public class PaisDao extends AbstractBaseDao<TOPais> {
     private static final long serialVersionUID = 1904464340270603917L;
 
-    public List<Pais> listarTodos(Boolean ativo) {
-        List<Pais> paises = new ArrayList<>();
+    // @PersistenceContext
+    // transient private EntityManager entityManager;
+    //
+    // @Override
+    // protected EntityManager getEntityManager() {
+    // return this.entityManager;
+    // }
 
-        paises = getEntityManager().createQuery("SELECT p FROM Pais p WHERE p.ativo = :pAtivo", Pais.class)
-                .setParameter("pAtivo", ativo).getResultList();
-
-        return paises;
+    @Override
+    public void cadastrar(TOPais to) throws Exception {
+        Pais p = new Pais();
+        getConverter().getTOFromModel(p, to);
+        getEntityManager().persist(p);
     }
 
     @Override
-    public Class<?> getModelClass() {
-        return Pais.class;
+    public TOPais buscarPorId(Integer id) throws Exception {
+        Pais p = getEntityManager().find(Pais.class, id);
+        TOPais to = new TOPais();
+        getConverter().getTOFromModel(p, to);
+        return to;
+    }
+
+    @Override
+    public void atualizar(TOPais to) throws Exception {
+        Pais p = new Pais();
+        getConverter().getTOFromModel(p, to);
+        getEntityManager().merge(p);
+    }
+
+    @Override
+    public List<TOPais> listarTodos(Boolean ativo) throws Exception {
+        List<Pais> paises = new ArrayList<>();
+        List<TOPais> tos = new ArrayList<>();
+
+        StringJoiner sql = new StringJoiner(QR_NL);
+        sql
+        .add("SELECT p")
+        .add("FROM ".concat(Pais.class.getName().concat(" p ")))
+        .add("WHERE p.ativo = :pAtivo");
+        
+        paises = getEntityManager().createQuery(sql.toString(), Pais.class)
+                                   .setParameter("pAtivo", ativo)
+                                   .getResultList();
+
+        for (Pais p : paises) {
+            TOPais to = new TOPais();
+            getConverter().getTOFromModel(p, to);
+            tos.add(to);
+        }
+
+        return tos;
     }
 
 }

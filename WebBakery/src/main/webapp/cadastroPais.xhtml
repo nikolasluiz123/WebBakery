@@ -28,7 +28,7 @@
 
 					<div class="ui-g-4">
 						<p:commandButton value="Cadastrar" process="@form"
-							update="formMessages:messages" action="#{paisBean.cadastrar}" />
+							update="formMessages:messages, @form" action="#{paisBean.cadastrar}" />
 					</div>
 				</div>
 			</p:fieldset>

@@ -1,7 +1,8 @@
 package br.com.WebBakery.validator;
 
 import br.com.WebBakery.abstractClass.AbstractValidator;
-import br.com.WebBakery.model.Pais;
+import br.com.WebBakery.to.TOPais;
+import br.com.WebBakery.util.String_Util;
 
 public class PaisValidator extends AbstractValidator {
 
@@ -10,10 +11,10 @@ public class PaisValidator extends AbstractValidator {
     private static final String FIELD_NOME_LIMIT_EXCEDDED = "Nome com excedência de caracteres!";
     private static final String FIELD_NOME_REQUIRED = "Nome é obrigatório!";
    
-    private Pais pais;
+    private TOPais toPais;
 
-    public PaisValidator(Pais pais) {
-        this.pais = pais;
+    public PaisValidator(TOPais toPais) {
+        this.toPais = toPais;
     }
 
     @Override
@@ -23,9 +24,9 @@ public class PaisValidator extends AbstractValidator {
     }
 
     private void validaNome() {
-        String nome = this.pais.getNome().trim();
+        String nome = this.toPais.getNome().trim();
 
-        if (nome.isEmpty() || nome == null) {
+        if (String_Util.isNullOrEmpty(nome)) {
             messages.add(FIELD_NOME_REQUIRED);
         }
         if (nome.length() > 30) {
@@ -34,14 +35,14 @@ public class PaisValidator extends AbstractValidator {
     }
 
     private void validaSigla() {
-        String sigla = this.pais.getSigla().trim();
+        String sigla = this.toPais.getSigla().trim();
 
-        if (sigla.isEmpty() || sigla == null) {
+        if (String_Util.isNullOrEmpty(sigla)) {
             messages.add(FIELD_SIGLA_REQUIRED);
         }
         if (sigla.length() > 4) {
             messages.add(FIELD_SIGLA_LIMIT_EXCEDDED);
         }
-        this.pais.setSigla(sigla.toUpperCase());
+        this.toPais.setSigla(sigla.toUpperCase());
     }
 }

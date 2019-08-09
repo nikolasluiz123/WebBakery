@@ -36,7 +36,7 @@ public class GraficosBean implements Serializable {
 
         BarChartDataSet barDataSet = new BarChartDataSet();
         String nomeCliente = "Jose da Silva";
-        barDataSet.setLabel("Produtos da Venda para o Cliente " + nomeCliente);
+        barDataSet.setLabel("Produtos da TOVenda para o TOCliente " + nomeCliente);
         List<Number> values = new ArrayList<>();
         values.add(65);
         values.add(59);
@@ -189,8 +189,8 @@ public class GraficosBean implements Serializable {
         Random r = new Random();
         Double precoProduto = r.nextDouble();
         FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
-                                            "Valor do Produto: R$" + precoProduto,
-                                            "Valor do Produto: R$" + precoProduto);
+                                            "Valor do TOProduto: R$" + precoProduto,
+                                            "Valor do TOProduto: R$" + precoProduto);
 
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }

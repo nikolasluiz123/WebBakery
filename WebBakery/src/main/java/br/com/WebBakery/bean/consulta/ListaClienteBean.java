@@ -11,12 +11,17 @@ import javax.inject.Named;
 import javax.transaction.Transactional;
 
 import br.com.WebBakery.abstractClass.AbstractBaseListMBean;
+import br.com.WebBakery.bean.manutencao.ClienteBean;
 import br.com.WebBakery.dao.ClienteDao;
-import br.com.WebBakery.model.Cliente;
+import br.com.WebBakery.interfaces.IBaseListMBean;
+import br.com.WebBakery.to.TOCliente;
+import br.com.WebBakery.util.Faces_Util;
 
-@Named
+@Named(ListaClienteBean.BEAN_NAME)
 @ViewScoped
-public class ListaClienteBean extends AbstractBaseListMBean<Cliente> {
+public class ListaClienteBean extends AbstractBaseListMBean implements IBaseListMBean<TOCliente> {
+
+    public static final String BEAN_NAME = "listaClienteBean";
 
     private static final long serialVersionUID = 313141180992233348L;
 
@@ -24,46 +29,65 @@ public class ListaClienteBean extends AbstractBaseListMBean<Cliente> {
 
     @Inject
     private ClienteDao clienteDao;
-    private List<Cliente> clientes;
-    private List<Cliente> clientesFiltrados;
+    private List<TOCliente> toClientes;
+    private List<TOCliente> toClientesFiltrados;
 
     @PostConstruct
     private void init() {
-        this.clientes = new ArrayList<>();
-        this.clientesFiltrados = new ArrayList<>();
+        this.toClientes = new ArrayList<>();
+        this.toClientesFiltrados = new ArrayList<>();
         initClientes();
     }
 
+    @Override
     public void carregar(Integer clienteID) throws Exception {
-        setObjetoSessao(clienteID, "ClienteID", "cadastroCliente.xhtml");
+        String keyAtribute = "ClienteID";
+        String pageRedirect = "cadastroCliente.xhtml";
+        setObjetoSessao(clienteID, keyAtribute, pageRedirect);
+        getRegisterBean().getObjetoSessao(keyAtribute, clienteDao);
     }
 
     @Transactional
-    public void inativar(Cliente cliente) {
-        cliente.setAtivo(false);
-        this.clienteDao.atualizar(cliente);
+    @Override
+    public void inativar(TOCliente to) {
+        to.setAtivo(false);
+
+        try {
+            this.clienteDao.atualizar(to);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         initClientes();
         getContext().addMessage(null, new FacesMessage(INATIVATED_SUCCESSFULLY));
     }
 
     private void initClientes() {
-        this.clientes = this.clienteDao.listarTodos(true);
+        try {
+            this.toClientes = this.clienteDao.listarTodos(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
-    public List<Cliente> getClientes() {
-        return clientes;
+    private ClienteBean getRegisterBean() {
+        return ((ClienteBean) Faces_Util.getBean(ClienteBean.BEAN_NAME));
     }
 
-    public void setClientes(List<Cliente> clientes) {
-        this.clientes = clientes;
+    public List<TOCliente> getClientes() {
+        return toClientes;
     }
 
-    public List<Cliente> getClientesFiltrados() {
-        return clientesFiltrados;
+    public void setClientes(List<TOCliente> clientes) {
+        this.toClientes = clientes;
     }
 
-    public void setClientesFiltrados(List<Cliente> clientesFiltrados) {
-        this.clientesFiltrados = clientesFiltrados;
+    public List<TOCliente> getClientesFiltrados() {
+        return toClientesFiltrados;
+    }
+
+    public void setClientesFiltrados(List<TOCliente> clientesFiltrados) {
+        this.toClientesFiltrados = clientesFiltrados;
     }
 
 }

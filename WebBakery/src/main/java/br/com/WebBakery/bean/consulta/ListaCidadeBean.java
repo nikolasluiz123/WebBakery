@@ -1,6 +1,5 @@
 package br.com.WebBakery.bean.consulta;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,12 +11,17 @@ import javax.inject.Named;
 import javax.transaction.Transactional;
 
 import br.com.WebBakery.abstractClass.AbstractBaseListMBean;
+import br.com.WebBakery.bean.manutencao.CidadeBean;
 import br.com.WebBakery.dao.CidadeDao;
-import br.com.WebBakery.model.Cidade;
+import br.com.WebBakery.interfaces.IBaseListMBean;
+import br.com.WebBakery.to.TOCidade;
+import br.com.WebBakery.util.Faces_Util;
 
-@Named
+@Named(ListaCidadeBean.BEAN_NAME)
 @ViewScoped
-public class ListaCidadeBean extends AbstractBaseListMBean<Cidade> {
+public class ListaCidadeBean extends AbstractBaseListMBean implements IBaseListMBean<TOCidade> {
+
+    public static final String BEAN_NAME = "listaCidadeBean";
 
     private static final String CIDADE_INATIVATED_SUCCESSFULLY = "Cidade inativada com sucesso!";
 
@@ -25,45 +29,65 @@ public class ListaCidadeBean extends AbstractBaseListMBean<Cidade> {
 
     @Inject
     private CidadeDao cidadeDao;
-    private List<Cidade> cidades;
-    private List<Cidade> cidadesFiltradas;
+    private List<TOCidade> toCidades;
+    private List<TOCidade> toCidadesFiltradas;
 
     @PostConstruct
     private void init() {
-        this.cidades = new ArrayList<>();
+        this.toCidades = new ArrayList<>();
         initListCidades();
     }
 
-    public void carregar(Integer cidadeID) throws IOException {
-        setObjetoSessao(cidadeID, "CidadeID", "cadastroCidade.xhtml");
+    @Override
+    public void carregar(Integer cidadeID) throws Exception {
+        String keyAtribute = "CidadeID";
+        String pageRedirect = "cadastroCidade.xhtml";
+        setObjetoSessao(cidadeID, keyAtribute, pageRedirect);
+        CidadeBean registerBean = getRegisterBean();
+        registerBean.setToCidade(registerBean.getObjetoSessao(keyAtribute, cidadeDao));
     }
 
     @Transactional
-    public void inativar(Cidade cidade) {
-        cidade.setAtivo(false);
-        this.cidadeDao.atualizar(cidade);
+    @Override
+    public void inativar(TOCidade to) {
+        to.setAtivo(false);
+
+        try {
+            this.cidadeDao.atualizar(to);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         initListCidades();
         getContext().addMessage(null, new FacesMessage(CIDADE_INATIVATED_SUCCESSFULLY));
     }
 
     private void initListCidades() {
-        this.cidades = this.cidadeDao.listarTodos(true);
+        try {
+            this.toCidades = this.cidadeDao.listarTodos(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
-    public List<Cidade> getCidades() {
-        return cidades;
+    private CidadeBean getRegisterBean() {
+        return ((CidadeBean) Faces_Util.getBean(CidadeBean.BEAN_NAME));
     }
 
-    public void setCidades(List<Cidade> cidades) {
-        this.cidades = cidades;
+    public List<TOCidade> getToCidades() {
+        return toCidades;
     }
 
-    public List<Cidade> getCidadesFiltradas() {
-        return cidadesFiltradas;
+    public void setToCidades(List<TOCidade> toCidades) {
+        this.toCidades = toCidades;
     }
 
-    public void setCidadesFiltradas(List<Cidade> cidadesFiltradas) {
-        this.cidadesFiltradas = cidadesFiltradas;
+    public List<TOCidade> getToCidadesFiltradas() {
+        return toCidadesFiltradas;
+    }
+
+    public void setToCidadesFiltradas(List<TOCidade> toCidadesFiltradas) {
+        this.toCidadesFiltradas = toCidadesFiltradas;
     }
 
 }

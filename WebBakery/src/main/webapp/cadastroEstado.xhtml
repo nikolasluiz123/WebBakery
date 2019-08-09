@@ -15,22 +15,22 @@
 
 				<div class="ui-g-12">
 					<p:outputLabel value="Nome:" for="nome" />
-					<p:inputText id="nome" value="#{estadoBean.estado.nome}"
+					<p:inputText id="nome" value="#{estadoBean.toEstado.nome}"
 						placeholder="Digite o nome..." />
 
 					<p:outputLabel value="Sigla:" for="sigla" />
-					<p:inputText id="sigla" value="#{estadoBean.estado.sigla}"
+					<p:inputText id="sigla" value="#{estadoBean.toEstado.sigla}"
 						placeholder="Digite a sigla..." />
 				</div>
 
 				<div class="ui-g-12">
 					<p:outputLabel for="pais" value="País:" />
 					<p:inputText id="pais" onclick="PF('PaisesDialog').show();"
-						value="#{estadoBean.estado.pais.nome}" readonly="true"
+						value="#{estadoBean.toEstado.pais.nome}" readonly="true"
 						placeholder="Selecione o país..." style="cursor: pointer;" />
 
 					<p:commandButton value="Cadastrar" process="@form"
-						update="formMessages:messages" action="#{estadoBean.cadastrar}" />
+						update="formMessages:messages, @form" action="#{estadoBean.cadastrar}" />
 				</div>
 
 
@@ -39,12 +39,12 @@
 			<p:dialog header="Países" widgetVar="PaisesDialog" resizable="false"
 				width="700">
 
-				<p:dataTable id="tabelaPaises" value="#{estadoBean.paises}"
+				<p:dataTable id="tabelaPaises" value="#{estadtoPaisesespaises}"
 					selectionMode="single" selection="#{estadoBean.paisSelecionado}"
 					var="pais" rowKey="#{pais.id}" rows="5" paginator="true"
 					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PageLinks} {PreviousPageLink} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 					emptyMessage="Nenhum país encontrado." widgetVar="TabelaPaises"
-					filteredValue="#{estadoBean.paisesFiltrados}">
+					filteredValue="#{etoPaisesFiltradossFiltrados}">
 
 					<p:column headerText="Nome" sortBy="#{pais.nome}"
 						filterBy="#{pais.nome}">

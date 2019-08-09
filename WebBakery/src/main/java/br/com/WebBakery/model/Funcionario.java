@@ -30,8 +30,6 @@ public class Funcionario extends AbstractBaseModel {
     @Column(length = 20)
     private String telefone;
 
-    private boolean ativo;
-
     public BigDecimal getSalario() {
         return salario;
     }
@@ -88,11 +86,4 @@ public class Funcionario extends AbstractBaseModel {
         this.telefone = telefone;
     }
 
-    public boolean isAtivo() {
-        return ativo;
-    }
-
-    public void setAtivo(boolean ativo) {
-        this.ativo = ativo;
-    }
 }

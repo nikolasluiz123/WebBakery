@@ -6,7 +6,7 @@ public enum TipoUsuario {
                          ADMINISTRADOR_ESTOQUE("Administrador de Estoque"),
                          CAIXA("Caixa"),
                          GERENTE("Gerente"),
-                         CLIENTE("Cliente");
+                         CLIENTE("TOCliente");
 
     private String nome;
 

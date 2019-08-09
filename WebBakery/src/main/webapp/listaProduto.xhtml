@@ -10,51 +10,77 @@
 	<ui:define name="conteudo">
 
 		<h:form id="formDataTableProdutos">
-			<p:dataTable var="produto" value="#{listaProdutoBean.produtos}"
-				id="tabelaProdutos" rows="5" paginator="true"
-				paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PageLinks} {PreviousPageLink} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-				rowsPerPageTemplate="5,10,15"
-				emptyMessage="Nenhum produto encontrado." widgetVar="TabelaProduto"
-				filteredValue="#{listaProdutoBean.produtosFiltrados}">
 
-				<f:facet name="header" style="min-height: 35px; max-height: 35px">
-					<div style="margin-top: 5px">Produtos</div>
-				</f:facet>
+			<p:remoteCommand name="abrirGaleria"
+				update="formDataTableProdutos:imagens, formDataTableProdutos:receita"
+				onstart="PF('DetalhesProduto').show()" />
 
-				<p:column headerText="Descrição" filterBy="#{produto.descricao}"
-					sortBy="#{produto.descricao}">
+			<p:dataGrid var="p" value="#{listaProdutoBean.produtos}" columns="3"
+				layout="grid" rows="6" paginator="true" id="produtos"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				emptyMessage="Nenhum produto foi encontrado.">
 
-					<h:outputText value="#{produto.descricao}" />
-				</p:column>
+				<f:facet name="header">
+            		Produtos
+        		</f:facet>
 
-				<p:column headerText="Tempo Válido"
-					filterBy="#{produto.tempoValido}" sortBy="#{produto.tempoValido}">
-					<h:outputText value="#{produto.tempoValido}" />
-				</p:column>
+				<p:panel header="#{p.descricao}" style="text-align:center">
+					<div class="ui-g">
+						<div class="ui-g-12">
+							<img src="#{listaProdutoBean.getPathPrimeiraFoto(p.id)}"
+								height="100px" width="100px" />
+						</div>
+						<div class="ui-g-12">
+							<h:outputText
+								value="#{listaProdutoBean.getPrecoFormatado(p.preco)}" />
+						</div>
+						<div class="ui-g-12">
+							<div>
+								<p:commandLink styleClass="fa fa-search"
+									style="margin-right: 20px;" oncomplete="abrirGaleria()"
+									action="#{listaProdutoBean.getDadosProduto()}">
+									<f:setPropertyActionListener value="#{p}"
+										target="#{listaProdutoBean.produtoSelecionado}" />
+								</p:commandLink>
 
-				<p:column headerText="Preço" filterBy="#{produto.preco}"
-					sortBy="#{produto.preco}">
-					<h:outputText value="#{produto.preco}" />
-				</p:column>
+								<p:commandLink styleClass="fa fa-pencil"
+									action="#{listaProdutoBean.carregar(p.id)}" />
+							</div>
+						</div>
+					</div>
+				</p:panel>
 
-				<p:column headerText="Receita"
-					filterBy="#{produto.receita.descricao}"
-					sortBy="#{produto.receita.descricao}">
-					<h:outputText value="#{produto.receita.descricao}" />
-				</p:column>
+			</p:dataGrid>
 
-				<p:column headerText="Alterar">
-					<p:commandLink value="Alterar"
-						action="#{listaProdutoBean.carregar(produto.id)}" process="@this" />
-				</p:column>
+			<p:dialog header="Detalhes do Produto" widgetVar="DetalhesProduto"
+				resizable="false" width="560" height="540" id="detalhesProduto">
 
-				<p:column headerText="Inativar">
-					<p:commandLink value="Inativar"
-						action="#{listaProdutoBean.inativar(produto)}"
-						update="tabelaProdutos, formMessages:messages" process="@this"
-						oncomplete="PF('TabelaProdutos').filter();" />
-				</p:column>
-			</p:dataTable>
+				<div id="conteudo" class="ui-g">
+
+					<div class="ui-g-12">
+						<p:galleria value="#{listaProdutoBean.produtoSelecionado.fotos}"
+							var="image" panelWidth="500" panelHeight="303" id="imagens"
+							autoPlay="false">
+
+							<p:graphicImage id="img" height="303" width="500"
+								value="#{listaProdutoBean.getPath(image)}" />
+
+						</p:galleria>
+					</div>
+
+					<div class="ui-g-12">
+						<p:outputLabel value="Receita" for="receita" />
+						<p:inputTextarea rows="6" cols="33" id="receita"
+							value="#{listaProdutoBean.produtoSelecionado.receita.descricao}"
+							readonly="true" />
+					</div>
+				</div>
+			</p:dialog>
+
+			<!-- 			<p:blockUI block="detalhesProduto" widgetVar="bui"> -->
+			<!-- 		        LOADING<br /> -->
+			<!-- 				<p:graphicImage name="/src/main/webapp/img/load2.gif" /> -->
+			<!-- 			</p:blockUI> -->
 		</h:form>
 	</ui:define>
 </ui:composition>

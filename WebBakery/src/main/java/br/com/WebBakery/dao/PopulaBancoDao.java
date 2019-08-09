@@ -730,7 +730,7 @@ public class PopulaBancoDao implements Serializable {
                                        "gerente".hashCode(),
                                        TipoUsuario.GERENTE);
         
-        Usuario cliente = gerarUsuario("Cliente", "da Silva","cliente@gmail.com",
+        Usuario cliente = gerarUsuario("TOCliente", "da Silva","cliente@gmail.com",
                                        "cliente".hashCode(),
                                        TipoUsuario.CLIENTE);
         

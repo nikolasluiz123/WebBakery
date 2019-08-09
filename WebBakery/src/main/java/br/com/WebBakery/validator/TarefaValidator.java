@@ -3,20 +3,20 @@ package br.com.WebBakery.validator;
 import java.util.Date;
 
 import br.com.WebBakery.abstractClass.AbstractValidator;
-import br.com.WebBakery.model.Produto;
-import br.com.WebBakery.model.Tarefa;
+import br.com.WebBakery.to.TOProduto;
+import br.com.WebBakery.to.TOTarefa;
 
 public class TarefaValidator extends AbstractValidator {
 
-    private static final String FIELD_PRODUTO_REQUIRED = "Produto é obrigatório!";
+    private static final String FIELD_PRODUTO_REQUIRED = "TOProduto é obrigatório!";
     private static final String FIELD_DATA_INICIO_REQUIRED = "Data de início é obrigatória!";
     private static final String FIELD_DATA_FIM_REQUIRED = "Data de fim é obrigatória!";
     private static final String FIELD_DATA_FIM_NOT_VALID = "Data de fim inválida!";
     private static final String FIELD_DATA_INICIO_NOT_VALID = "Data de início inválida!";
 
-    private Tarefa tarefa;
+    private TOTarefa tarefa;
 
-    public TarefaValidator(Tarefa tarefa) {
+    public TarefaValidator(TOTarefa tarefa) {
         this.tarefa = tarefa;
     }
 
@@ -27,9 +27,9 @@ public class TarefaValidator extends AbstractValidator {
     }
 
     private void validaProduto() {
-        Produto produto = this.tarefa.getProduto();
+        TOProduto toProduto = this.tarefa.getToProduto();
 
-        if (produto == null) {
+        if (toProduto == null) {
             messages.add(FIELD_PRODUTO_REQUIRED);
         }
     }

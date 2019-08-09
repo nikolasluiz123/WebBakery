@@ -12,25 +12,29 @@ import javax.transaction.Transactional;
 
 import br.com.WebBakery.abstractClass.AbstractBaseListMBean;
 import br.com.WebBakery.bean.manutencao.EstoqueProdutoBean;
-import br.com.WebBakery.dao.EstoqueProdutoDao;
+import br.com.WebBakery.bean.manutencao.TarefaBean;
 import br.com.WebBakery.dao.TarefaDao;
-import br.com.WebBakery.model.EstoqueProduto;
-import br.com.WebBakery.model.Tarefa;
+import br.com.WebBakery.interfaces.IBaseListMBean;
+import br.com.WebBakery.to.TOEstoqueProduto;
+import br.com.WebBakery.to.TOTarefa;
+import br.com.WebBakery.util.Faces_Util;
 
-@Named
+@Named(ListaTarefaBean.LIST_TAREFA_BEAN)
 @ViewScoped
-public class ListaTarefaBean extends AbstractBaseListMBean<Tarefa> {
+public class ListaTarefaBean extends AbstractBaseListMBean implements IBaseListMBean<TOTarefa> {
+
+    public static final String LIST_TAREFA_BEAN = "listaTarefaBean";
 
     private static final long serialVersionUID = 1800431506410605175L;
 
-    private static String COMPLETE_SUCCESSFULLY = "Tarefa concluída com sucessor!";
+    private static String COMPLETE_SUCCESSFULLY = "TOTarefa concluída com sucessor!";
 
     @Inject
     private TarefaDao tarefaDao;
-    private List<Tarefa> tarefasPendentes;
-    private List<Tarefa> tarefasPendentesFiltradas;
-    private List<Tarefa> tarefasConcluidas;
-    private List<Tarefa> tarefasConcuidasFiltradas;
+    private List<TOTarefa> tarefasPendentes;
+    private List<TOTarefa> tarefasPendentesFiltradas;
+    private List<TOTarefa> tarefasConcluidas;
+    private List<TOTarefa> tarefasConcuidasFiltradas;
 
     private EstoqueProdutoBean estoqueProdutoBean;
 
@@ -44,66 +48,88 @@ public class ListaTarefaBean extends AbstractBaseListMBean<Tarefa> {
         this.estoqueProdutoBean = new EstoqueProdutoBean();
     }
 
+    @Override
     public void carregar(Integer tarefaID) throws Exception {
-        setObjetoSessao(tarefaID, "TarefaID", "cadastroTarefa.xhtml");
+        String keyAtribute = "TarefaID";
+        String pageRedirect = "cadastroTarefa.xhtml";
+        setObjetoSessao(tarefaID, keyAtribute, pageRedirect);
+        getRegisterBean().getObjetoSessao(keyAtribute, tarefaDao);
     }
 
     @Transactional
-    public void concluir(Tarefa tarefa) {
+    @Override
+    public void inativar(TOTarefa tarefa) {
         cadastrarProdutoEstoque(tarefa);
-        tarefa.setPendente(false);
-        this.tarefaDao.atualizar(tarefa);
+        tarefa.setAtivo(false);
+
+        try {
+            this.tarefaDao.atualizar(tarefa);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         this.tarefasPendentes.remove(tarefa);
         this.tarefasConcluidas.add(tarefa);
         getContext().addMessage(null, new FacesMessage(COMPLETE_SUCCESSFULLY));
     }
 
-    private void cadastrarProdutoEstoque(Tarefa tarefa) {
-        EstoqueProduto estoqueProduto = new EstoqueProduto();
-        estoqueProduto.setProduto(tarefa.getProduto());
+    private void cadastrarProdutoEstoque(TOTarefa tarefa) {
+        TOEstoqueProduto estoqueProduto = new TOEstoqueProduto();
+        estoqueProduto.setToProduto(tarefa.getToProduto());
         estoqueProduto.setQuantidade(tarefa.getQuantidade());
-        this.estoqueProdutoBean.setEstoqueProduto(estoqueProduto);
-        this.estoqueProdutoBean.setEstoqueProdutoDao(new EstoqueProdutoDao());
+        this.estoqueProdutoBean.setToEstoqueProduto(estoqueProduto);
         this.estoqueProdutoBean.cadastrar();
     }
 
     private void initTarefasPendentes() {
-        this.tarefasPendentes = this.tarefaDao.listarTodos(true);
+        try {
+            this.tarefasPendentes = this.tarefaDao.listarTodos(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void initTarefasConcluidas() {
-        this.tarefasConcluidas = this.tarefaDao.listarTodos(false);
+        try {
+            this.tarefasConcluidas = this.tarefaDao.listarTodos(false);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
-    public List<Tarefa> getTarefasPendentes() {
+    private TarefaBean getRegisterBean() {
+        return ((TarefaBean) Faces_Util.getBean(TarefaBean.BEAN_NAME));
+    }
+
+    public List<TOTarefa> getTarefasPendentes() {
         return tarefasPendentes;
     }
 
-    public void setTarefasPendentes(List<Tarefa> tarefasPendentes) {
+    public void setTarefasPendentes(List<TOTarefa> tarefasPendentes) {
         this.tarefasPendentes = tarefasPendentes;
     }
 
-    public List<Tarefa> getTarefasConcluidas() {
-        return tarefasConcluidas;
-    }
-
-    public void setTarefasConcluidas(List<Tarefa> tarefasConcuidas) {
-        this.tarefasConcluidas = tarefasConcuidas;
-    }
-
-    public List<Tarefa> getTarefasPendentesFiltradas() {
+    public List<TOTarefa> getTarefasPendentesFiltradas() {
         return tarefasPendentesFiltradas;
     }
 
-    public void setTarefasPendentesFiltradas(List<Tarefa> tarefasPendentesFiltradas) {
+    public void setTarefasPendentesFiltradas(List<TOTarefa> tarefasPendentesFiltradas) {
         this.tarefasPendentesFiltradas = tarefasPendentesFiltradas;
     }
 
-    public List<Tarefa> getTarefasConcuidasFiltradas() {
+    public List<TOTarefa> getTarefasConcluidas() {
+        return tarefasConcluidas;
+    }
+
+    public void setTarefasConcluidas(List<TOTarefa> tarefasConcluidas) {
+        this.tarefasConcluidas = tarefasConcluidas;
+    }
+
+    public List<TOTarefa> getTarefasConcuidasFiltradas() {
         return tarefasConcuidasFiltradas;
     }
 
-    public void setTarefasConcuidasFiltradas(List<Tarefa> tarefasConcuidasFiltradas) {
+    public void setTarefasConcuidasFiltradas(List<TOTarefa> tarefasConcuidasFiltradas) {
         this.tarefasConcuidasFiltradas = tarefasConcuidasFiltradas;
     }
 

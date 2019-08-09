@@ -24,11 +24,15 @@
 		<class>br.com.WebBakery.model.Tarefa</class>
 		<class>br.com.WebBakery.model.EstoqueProduto</class>
 		<class>br.com.WebBakery.model.Cliente</class>
-		<class>br.com.WebBakery.model.Foto</class>
+		<class>br.com.WebBakery.model.FotoPerfil</class>
+		<class>br.com.WebBakery.model.Ingrediente</class>
+		<class>br.com.WebBakery.model.ReceitaIngrediente</class>
+		<class>br.com.WebBakery.model.EstoqueIngrediente</class>
+		<class>br.com.WebBakery.model.FotoIngrediente</class>
 
 		<properties>
 			<property name="hibernate.hbm2ddl.auto" value="update" />
-			<property name="hibernate.show_sql" value="true" />
+			<property name="hibernate.show_sql" value="false" />
 			<property name="hibernate.dialect"
 				value="org.hibernate.dialect.PostgreSQLDialect" />
 		</properties>

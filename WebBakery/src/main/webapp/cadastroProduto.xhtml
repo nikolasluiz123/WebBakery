@@ -38,8 +38,15 @@
 						value="#{produtoBean.produto.receita.descricao}" readonly="true"
 						placeholder="Selecione a receita..." style="cursor: pointer;" />
 
+					<p:fileUpload fileUploadListener="#{produtoBean.handleFileUpload}"
+						allowTypes="/(\.|\/)(jpe?g|png)$/"
+						invalidFileMessage="Tipo de arquivo é inválido!" multiple="true"
+						update="btnCadastrar" />
+
 					<p:commandButton value="Cadastrar" process="@form"
-						update="formMessages:messages" action="#{produtoBean.cadastrar}" />
+						update="formMessages:messages, @form" id="btnCadastrar"
+						action="#{produtoBean.cadastrar}"
+						disabled="#{produtoBean.getBotaoDesabilitado()}" />
 
 				</p:panelGrid>
 			</p:fieldset>

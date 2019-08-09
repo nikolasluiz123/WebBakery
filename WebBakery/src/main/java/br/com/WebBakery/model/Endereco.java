@@ -16,7 +16,6 @@ public class Endereco extends AbstractBaseModel {
     private Cidade cidade;
     @OneToOne
     private Logradouro logradouro;
-    private boolean ativo;
 
     public Pais getPais() {
         return pais;
@@ -48,14 +47,6 @@ public class Endereco extends AbstractBaseModel {
 
     public void setLogradouro(Logradouro logradouro) {
         this.logradouro = logradouro;
-    }
-
-    public boolean isAtivo() {
-        return ativo;
-    }
-
-    public void setAtivo(boolean ativo) {
-        this.ativo = ativo;
     }
 
 }

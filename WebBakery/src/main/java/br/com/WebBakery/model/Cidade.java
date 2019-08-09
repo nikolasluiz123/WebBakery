@@ -15,8 +15,6 @@ public class Cidade extends AbstractBaseModel {
     @ManyToOne
     private Estado estado;
 
-    private boolean ativo;
-
     public String getNome() {
         return nome;
     }
@@ -33,11 +31,4 @@ public class Cidade extends AbstractBaseModel {
         this.estado = estado;
     }
 
-    public boolean isAtivo() {
-        return ativo;
-    }
-
-    public void setAtivo(boolean ativo) {
-        this.ativo = ativo;
-    }
 }

@@ -12,11 +12,13 @@ import javax.transaction.Transactional;
 
 import br.com.WebBakery.abstractClass.AbstractBaseListMBean;
 import br.com.WebBakery.dao.LogradouroDao;
-import br.com.WebBakery.model.Logradouro;
+import br.com.WebBakery.interfaces.IBaseListMBean;
+import br.com.WebBakery.to.TOLogradouro;
 
 @Named
 @ViewScoped
-public class ListaLogradouroBean extends AbstractBaseListMBean<Logradouro> {
+public class ListaLogradouroBean extends AbstractBaseListMBean
+        implements IBaseListMBean<TOLogradouro> {
 
     private static final long serialVersionUID = -5398966780316383519L;
 
@@ -24,50 +26,66 @@ public class ListaLogradouroBean extends AbstractBaseListMBean<Logradouro> {
 
     @Inject
     private LogradouroDao logradouroDao;
-    private Logradouro logradouro;
-    private List<Logradouro> logradouros;
-    private List<Logradouro> logradourosFiltrados;
+    private TOLogradouro logradouro;
+    private List<TOLogradouro> logradouros;
+    private List<TOLogradouro> logradourosFiltrados;
 
     @PostConstruct
     private void init() {
-        this.logradouro = new Logradouro();
+        this.logradouro = new TOLogradouro();
         this.logradouros = new ArrayList<>();
         initListLogradouros();
     }
 
     @Transactional
-    public void inativar(Logradouro logradouro) {
+    @Override
+    public void inativar(TOLogradouro logradouro) {
         logradouro.setAtivo(false);
-        this.logradouroDao.atualizar(logradouro);
+
+        try {
+            this.logradouroDao.atualizar(logradouro);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         initListLogradouros();
         getContext().addMessage(null, new FacesMessage(LOGRADOURO_INATIVATED_SUCCESSFULLY));
     }
 
-    private void initListLogradouros() {
-        this.logradouros = this.logradouroDao.listarTodos(true);
+    @Override
+    public void carregar(Integer id) throws Exception {
+        // TODO Auto-generated method stub
     }
 
-    public Logradouro getLogradouro() {
+    private void initListLogradouros() {
+        try {
+            this.logradouros = this.logradouroDao.listarTodos(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public TOLogradouro getLogradouro() {
         return logradouro;
     }
 
-    public void setLogradouro(Logradouro logradouro) {
+    public void setLogradouro(TOLogradouro logradouro) {
         this.logradouro = logradouro;
     }
 
-    public List<Logradouro> getLogradouros() {
+    public List<TOLogradouro> getLogradouros() {
         return logradouros;
     }
 
-    public void setLogradouros(List<Logradouro> logradouros) {
+    public void setLogradouros(List<TOLogradouro> logradouros) {
         this.logradouros = logradouros;
     }
 
-    public List<Logradouro> getLogradourosFiltrados() {
+    public List<TOLogradouro> getLogradourosFiltrados() {
         return logradourosFiltrados;
     }
 
-    public void setLogradourosFiltrados(List<Logradouro> logradourosFiltrados) {
+    public void setLogradourosFiltrados(List<TOLogradouro> logradourosFiltrados) {
         this.logradourosFiltrados = logradourosFiltrados;
     }
 

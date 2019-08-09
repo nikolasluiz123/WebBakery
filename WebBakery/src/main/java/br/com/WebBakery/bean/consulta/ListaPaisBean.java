@@ -13,20 +13,21 @@ import javax.transaction.Transactional;
 
 import br.com.WebBakery.abstractClass.AbstractBaseListMBean;
 import br.com.WebBakery.dao.PaisDao;
-import br.com.WebBakery.model.Pais;
+import br.com.WebBakery.interfaces.IBaseListMBean;
+import br.com.WebBakery.to.TOPais;
 
 @Named
 @ViewScoped
-public class ListaPaiseBean extends AbstractBaseListMBean<Pais> {
+public class ListaPaisBean extends AbstractBaseListMBean implements IBaseListMBean<TOPais> {
 
-    private static final long serialVersionUID = 5308260090843275203L;
+    private static final long serialVersionUID = 4296793409566608609L;
 
     private static final String PAIS_INATIVATED_SUCCESSFULLY = "País inativado com sucesso!";
 
     @Inject
     private PaisDao paisDao;
-    private List<Pais> paises;
-    private List<Pais> paisesFiltrados;
+    private List<TOPais> paises;
+    private List<TOPais> paisesFiltrados;
 
     @PostConstruct
     private void init() {
@@ -35,34 +36,45 @@ public class ListaPaiseBean extends AbstractBaseListMBean<Pais> {
     }
 
     @Transactional
-    public void inativar(Pais pais) {
-        pais.setAtivo(false);
-        this.paisDao.atualizar(pais);
-        getContext().addMessage(null, new FacesMessage(PAIS_INATIVATED_SUCCESSFULLY));
+    @Override
+    public void inativar(TOPais to) {
+        to.setAtivo(false);
+
+        try {
+            this.paisDao.atualizar(to);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         initListPaises();
+        getContext().addMessage(null, new FacesMessage(PAIS_INATIVATED_SUCCESSFULLY));
     }
 
     private void initListPaises() {
-        this.paises = this.paisDao.listarTodos(true);
+        try {
+            this.paises = this.paisDao.listarTodos(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void carregar(Integer paisID) throws IOException {
         setObjetoSessao(paisID, "PaisID", "cadastroPais.xhtml");
     }
 
-    public List<Pais> getPaises() {
+    public List<TOPais> getPaises() {
         return paises;
     }
 
-    public void setPaises(List<Pais> paises) {
+    public void setPaises(List<TOPais> paises) {
         this.paises = paises;
     }
 
-    public List<Pais> getPaisesFiltrados() {
+    public List<TOPais> getPaisesFiltrados() {
         return paisesFiltrados;
     }
 
-    public void setPaisesFiltrados(List<Pais> paisesFiltrados) {
+    public void setPaisesFiltrados(List<TOPais> paisesFiltrados) {
         this.paisesFiltrados = paisesFiltrados;
     }
 

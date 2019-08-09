@@ -24,7 +24,7 @@
 						placeholder="Selecione o estado..." style="cursor: pointer;" />
 
 					<p:commandButton value="Cadastrar" process="@form"
-						update="formMessages:messages" action="#{cidadeBean.cadastrar}" />
+						update="formMessages:messages, @form" action="#{cidadeBean.cadastrar}" />
 
 				</p:panelGrid>
 			</p:fieldset>
@@ -37,7 +37,7 @@
 					var="estado" rowKey="#{estado.id}" rows="5" paginator="true"
 					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PageLinks} {PreviousPageLink} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 					emptyMessage="Nenhum estado encontrado." widgetVar="TabelaEstados"
-					filteredValue="#{estadoBean.paisesFiltrados}">
+					filteredValue="#{estadoBean.toPaisesFiltrados}">
 
 					<p:column headerText="Nome" sortBy="#{estado.nome}"
 						filterBy="#{estado.nome}">

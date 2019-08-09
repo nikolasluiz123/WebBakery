@@ -22,8 +22,6 @@ public class Usuario extends AbstractBaseModel {
 
     private TipoUsuario tipo;
 
-    private boolean ativo;
-
     public String getEmail() {
         return email;
     }
@@ -46,14 +44,6 @@ public class Usuario extends AbstractBaseModel {
 
     public void setTipo(TipoUsuario tipo) {
         this.tipo = tipo;
-    }
-
-    public void setAtivo(boolean ativo) {
-        this.ativo = ativo;
-    }
-
-    public boolean isAtivo() {
-        return ativo;
     }
 
     public String getNome() {

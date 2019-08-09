@@ -3,33 +3,28 @@ package br.com.WebBakery.abstractClass;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import br.com.WebBaker.interfaces.IBaseDao;
+import br.com.WebBakery.core.TransferObjectConverter;
+import br.com.WebBakery.interfaces.IBaseDao;
 
 @SuppressWarnings("serial")
 public abstract class AbstractBaseDao<T> implements IBaseDao<T> {
 
     @PersistenceContext
     EntityManager entityManager;
+
+    private TransferObjectConverter converter;
     
+    protected static final String QR_NL = "\n";
+
+    public AbstractBaseDao() {
+        this.converter = new TransferObjectConverter();
+    }
+
     protected EntityManager getEntityManager() {
         return entityManager;
     }
-    
-    public abstract Class<?> getModelClass();
 
-    @Override
-    public void cadastrar(T model) {
-        getEntityManager().persist(model);
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public T buscarPorId(Integer id) {
-        return (T) getEntityManager().find(getModelClass(), id);
-    }
-
-    @Override
-    public void atualizar(T model) {
-        getEntityManager().merge(model);
+    protected TransferObjectConverter getConverter() {
+        return converter;
     }
 }

@@ -24,8 +24,6 @@ public class Logradouro extends AbstractBaseModel {
     @Column(length = 20)
     private String complemento;
 
-    private boolean ativo;
-
     public String getBairro() {
         return bairro;
     }
@@ -66,11 +64,4 @@ public class Logradouro extends AbstractBaseModel {
         this.cidade = cidade;
     }
 
-    public boolean isAtivo() {
-        return ativo;
-    }
-
-    public void setAtivo(boolean ativo) {
-        this.ativo = ativo;
-    }
 }

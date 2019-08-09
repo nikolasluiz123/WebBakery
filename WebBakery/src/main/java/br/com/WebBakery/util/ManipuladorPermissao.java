@@ -5,10 +5,7 @@ import java.util.List;
 
 import org.primefaces.model.menu.DefaultMenuItem;
 
-import br.com.WebBakery.dao.FuncionarioDao;
 import br.com.WebBakery.enums.TipoUsuario;
-import br.com.WebBakery.model.Funcionario;
-import br.com.WebBakery.model.Usuario;
 
 public class ManipuladorPermissao {
 
@@ -39,22 +36,22 @@ public class ManipuladorPermissao {
         permissoesGerente.add("Países");
         permissoesGerente.add("Estado");
         permissoesGerente.add("Estados");
-        permissoesGerente.add("Cidade");
+        permissoesGerente.add("TOCidade");
         permissoesGerente.add("Cidades");
-        permissoesGerente.add("Cliente");
+        permissoesGerente.add("TOCliente");
         permissoesGerente.add("Clientes");
         permissoesGerente.add("Funcionário");
         permissoesGerente.add("Funcionários");
         permissoesGerente.add("Usuário");
         permissoesGerente.add("Usuários");
-        permissoesGerente.add("Produto");
+        permissoesGerente.add("TOProduto");
         permissoesGerente.add("Produtos");
-        permissoesGerente.add("Receita");
+        permissoesGerente.add("TOReceita");
         permissoesGerente.add("Receitas");
-        permissoesGerente.add("Tarefa");
+        permissoesGerente.add("TOTarefa");
         permissoesGerente.add("Tarefas");
         permissoesGerente.add("Estoque Produtos");
-        permissoesGerente.add("Venda");
+        permissoesGerente.add("TOVenda");
         permissoesGerente.add("Vendas");
     }
 
@@ -63,12 +60,12 @@ public class ManipuladorPermissao {
     }
 
     private void initListPermissoesCaixa() {
-        permissoesGerente.add("Venda");
+        permissoesGerente.add("TOVenda");
         permissoesGerente.add("Vendas");
     }
 
     private void initListPermissoesAdministradorEstoque() {
-        permissoesAdministradorEstoque.add("Tarefa");
+        permissoesAdministradorEstoque.add("TOTarefa");
         permissoesAdministradorEstoque.add("Tarefas");
         permissoesAdministradorEstoque.add("Estoque Produtos");
     }
