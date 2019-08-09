@@ -44,7 +44,6 @@ public class ListaTarefaBean extends AbstractBaseListMBean implements IBaseListM
         this.tarefasConcluidas = new ArrayList<>();
         initTarefasPendentes();
         initTarefasConcluidas();
-
         this.estoqueProdutoBean = new EstoqueProdutoBean();
     }
 
@@ -60,18 +59,16 @@ public class ListaTarefaBean extends AbstractBaseListMBean implements IBaseListM
     @Transactional
     @Override
     public void inativar(TOTarefa tarefa) {
-        cadastrarProdutoEstoque(tarefa);
-        tarefa.setAtivo(false);
-
         try {
+            cadastrarProdutoEstoque(tarefa);
+            tarefa.setAtivo(false);
             this.tarefaDao.atualizar(tarefa);
+            this.tarefasPendentes.remove(tarefa);
+            this.tarefasConcluidas.add(tarefa);
+            getContext().addMessage(null, new FacesMessage(COMPLETE_SUCCESSFULLY));
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        this.tarefasPendentes.remove(tarefa);
-        this.tarefasConcluidas.add(tarefa);
-        getContext().addMessage(null, new FacesMessage(COMPLETE_SUCCESSFULLY));
     }
 
     private void cadastrarProdutoEstoque(TOTarefa tarefa) {

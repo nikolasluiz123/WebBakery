@@ -50,16 +50,14 @@ public class ListaClienteBean extends AbstractBaseListMBean implements IBaseList
     @Transactional
     @Override
     public void inativar(TOCliente to) {
-        to.setAtivo(false);
-
         try {
+            to.setAtivo(false);
             this.clienteDao.atualizar(to);
+            initClientes();
+            getContext().addMessage(null, new FacesMessage(INATIVATED_SUCCESSFULLY));
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        initClientes();
-        getContext().addMessage(null, new FacesMessage(INATIVATED_SUCCESSFULLY));
     }
 
     private void initClientes() {

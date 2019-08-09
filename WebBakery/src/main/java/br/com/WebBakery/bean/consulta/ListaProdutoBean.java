@@ -49,41 +49,38 @@ public class ListaProdutoBean extends AbstractBaseListMBean implements IBaseList
     }
 
     public String getPathPrimeiraFoto(Integer idProduto) {
-        List<TOProdutoComFoto> produtosComFotos = new ArrayList<>();
+        String path = null;
         try {
+            List<TOProdutoComFoto> produtosComFotos = new ArrayList<>();
             produtosComFotos = this.produtoDao.listarTodosProdutoComFotos();
-        } catch (Exception e1) {
-            e1.printStackTrace();
-        }
-        TOProdutoComFoto produtoComFotos = new TOProdutoComFoto();
-        for (TOProdutoComFoto pfs : produtosComFotos) {
-            if (pfs.getToProduto().getId().equals(idProduto)) {
-                produtoComFotos = pfs;
-            }
-        }
+            TOProdutoComFoto produtoComFotos = new TOProdutoComFoto();
 
-        String pathCompleto = null;
-        try {
-            pathCompleto = File_Util.criarFotoPastaTemporaria(produtoComFotos.getToFotos().get(0));
+            for (TOProdutoComFoto pfs : produtosComFotos) {
+                if (pfs.getToProduto().getId().equals(idProduto)) {
+                    produtoComFotos = pfs;
+                }
+            }
+
+            String pathCompleto = File_Util.criarFotoPastaTemporaria(produtoComFotos.getToFotos().get(0));
+            String nomeArquivo = File_Util.getNomeArquivo(pathCompleto);
+            path = File_Util.getPath(nomeArquivo);
+
         } catch (Exception e) {
             e.printStackTrace();
         }
-        String nomeArquivo = File_Util.getNomeArquivo(pathCompleto);
-        String path = File_Util.getPath(nomeArquivo);
 
         return path;
     }
 
     public String getPath(TOFotoProduto fp) {
-        String pathCompleto = null;
+        String path = null;
         try {
-            pathCompleto = File_Util.criarFotoPastaTemporaria(fp);
+            String pathCompleto = File_Util.criarFotoPastaTemporaria(fp);
+            String nomeArquivo = File_Util.getNomeArquivo(pathCompleto);
+            path = File_Util.getPath(nomeArquivo);
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        String nomeArquivo = File_Util.getNomeArquivo(pathCompleto);
-        String path = File_Util.getPath(nomeArquivo);
 
         return path;
     }
@@ -102,16 +99,14 @@ public class ListaProdutoBean extends AbstractBaseListMBean implements IBaseList
     @Transactional
     @Override
     public void inativar(TOProduto produto) {
-        produto.setAtivo(false);
-
         try {
+            produto.setAtivo(false);
             this.produtoDao.atualizar(produto);
+            initProdutos();
+            getContext().addMessage(null, new FacesMessage(PRODUTO_INATIVATED_SUCCESSFULLY));
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        initProdutos();
-        getContext().addMessage(null, new FacesMessage(PRODUTO_INATIVATED_SUCCESSFULLY));
     }
 
     @Override

@@ -51,16 +51,14 @@ public class ListaEstadoBean extends AbstractBaseListMBean implements IBaseListM
     @Transactional
     @Override
     public void inativar(TOEstado toEstado) {
-        toEstado.setAtivo(false);
-
         try {
+            toEstado.setAtivo(false);
             this.estadoDao.atualizar(toEstado);
+            initListEstados();
+            getContext().addMessage(null, new FacesMessage(ESTADO_INATIVATED_SUCCESSFULLY));
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        initListEstados();
-        getContext().addMessage(null, new FacesMessage(ESTADO_INATIVATED_SUCCESSFULLY));
     }
 
     private void initListEstados() {

@@ -50,16 +50,14 @@ public class ListaCidadeBean extends AbstractBaseListMBean implements IBaseListM
     @Transactional
     @Override
     public void inativar(TOCidade to) {
-        to.setAtivo(false);
-
         try {
+            to.setAtivo(false);
             this.cidadeDao.atualizar(to);
+            initListCidades();
+            getContext().addMessage(null, new FacesMessage(CIDADE_INATIVATED_SUCCESSFULLY));
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        initListCidades();
-        getContext().addMessage(null, new FacesMessage(CIDADE_INATIVATED_SUCCESSFULLY));
     }
 
     private void initListCidades() {

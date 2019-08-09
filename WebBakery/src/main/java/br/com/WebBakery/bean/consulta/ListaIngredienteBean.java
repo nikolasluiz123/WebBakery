@@ -32,7 +32,7 @@ public class ListaIngredienteBean extends AbstractBaseListMBean
 
     private static final long serialVersionUID = -5854537667186626713L;
 
-    private static final String PRODUTO_INATIVATED_SUCCESSFULLY = "TOProduto inativado com sucesso!";
+    private static final String PRODUTO_INATIVATED_SUCCESSFULLY = "Produto inativado com sucesso!";
 
     @Inject
     private IngredienteDao ingredienteDao;
@@ -49,77 +49,66 @@ public class ListaIngredienteBean extends AbstractBaseListMBean
     }
 
     public String getPathPrimeiraFoto(Integer idIngrediente) {
-        List<TOIngredienteComFotos> ingredientesComFotos = new ArrayList<>();
-
+        String path = null;
         try {
+            List<TOIngredienteComFotos> ingredientesComFotos = new ArrayList<>();
             ingredientesComFotos = this.ingredienteDao.listarTodosIngredienteComFotos();
-        } catch (Exception e1) {
-            e1.printStackTrace();
-        }
-
-        TOIngredienteComFotos ingredienteComFotos = new TOIngredienteComFotos();
-        for (TOIngredienteComFotos pfs : ingredientesComFotos) {
-            if (pfs.getToIngrediente().getId().equals(idIngrediente)) {
-                ingredienteComFotos = pfs;
+            TOIngredienteComFotos ingredienteComFotos = new TOIngredienteComFotos();
+            
+            for (TOIngredienteComFotos pfs : ingredientesComFotos) {
+                if (pfs.getToIngrediente().getId().equals(idIngrediente)) {
+                    ingredienteComFotos = pfs;
+                }
             }
-        }
-
-        String pathCompleto = null;
-        try {
-            pathCompleto = File_Util
-                    .criarFotoPastaTemporaria(ingredienteComFotos.getToFotos().get(0));
+            
+            String pathCompleto = File_Util.criarFotoPastaTemporaria(ingredienteComFotos.getToFotos().get(0));
+            String nomeArquivo = File_Util.getNomeArquivo(pathCompleto);
+            path = File_Util.getPath(nomeArquivo);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        String nomeArquivo = File_Util.getNomeArquivo(pathCompleto);
-        String path = File_Util.getPath(nomeArquivo);
-
+        
         return path;
     }
 
     public String getPath(TOFotoProduto fp) {
-        String pathCompleto = null;
+        String path = null;
         try {
-            pathCompleto = File_Util.criarFotoPastaTemporaria(fp);
+            String pathCompleto = File_Util.criarFotoPastaTemporaria(fp);
+            String nomeArquivo = File_Util.getNomeArquivo(pathCompleto);
+            path = File_Util.getPath(nomeArquivo);
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        String nomeArquivo = File_Util.getNomeArquivo(pathCompleto);
-        String path = File_Util.getPath(nomeArquivo);
 
         return path;
     }
 
+    @Transactional
     public void getDadosProduto() {
-        List<TOFotoIngrediente> fotosIngrediente = new ArrayList<>();
-
         try {
+            List<TOFotoIngrediente> fotosIngrediente = new ArrayList<>();
             this.ingredienteSelecionado = this.ingredienteDao
-                    .buscarPorId(ingredienteSelecionado.getId());
-
+                                                   .buscarPorId(ingredienteSelecionado.getId());
             fotosIngrediente = this.fotoIngredienteDao
-                    .listarFotosIngrediente(ingredienteSelecionado.getId());
+                                        .listarFotosIngrediente(ingredienteSelecionado.getId());
+            this.ingredienteSelecionado.setToFotos(fotosIngrediente);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        this.ingredienteSelecionado.setToFotos(fotosIngrediente);
     }
 
     @Transactional
     @Override
     public void inativar(TOIngrediente to) {
-        to.setAtivo(false);
-
         try {
+            to.setAtivo(false);
             this.ingredienteDao.atualizar(to);
+            initIngredientes();
+            getContext().addMessage(null, new FacesMessage(PRODUTO_INATIVATED_SUCCESSFULLY));
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        initIngredientes();
-        getContext().addMessage(null, new FacesMessage(PRODUTO_INATIVATED_SUCCESSFULLY));
-
     }
 
     @Override
@@ -136,6 +125,7 @@ public class ListaIngredienteBean extends AbstractBaseListMBean
         return String_Util.formatarDoubleParaValorMonetario(d);
     }
 
+    @Transactional
     private void initIngredientes() {
         try {
             this.toIngredientes = this.ingredienteDao.listarTodos(true);
@@ -143,7 +133,7 @@ public class ListaIngredienteBean extends AbstractBaseListMBean
             e.printStackTrace();
         }
     }
-    
+
     private IngredienteBean getRegisterBean() {
         return ((IngredienteBean) Faces_Util.getBean(IngredienteBean.BEAN_NAME));
     }

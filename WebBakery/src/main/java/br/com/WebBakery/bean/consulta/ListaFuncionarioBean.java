@@ -48,19 +48,18 @@ public class ListaFuncionarioBean extends AbstractBaseListMBean
     @Transactional
     @Override
     public void inativar(TOFuncionario to) {
-        to.setAtivo(false);
-        to.getEndereco().setAtivo(false);
-        to.getEndereco().getToLogradouro().setAtivo(false);
         try {
+            to.setAtivo(false);
+            to.getEndereco().setAtivo(false);
+            to.getEndereco().getToLogradouro().setAtivo(false);
             this.funcionarioDao.atualizar(to);
             this.enderecoDao.atualizar(to.getEndereco());
             this.logradouroDao.atualizar(to.getEndereco().getToLogradouro());
+            initListFuncionarios();
+            getContext().addMessage(null, new FacesMessage(FUNCIONARIO_INATIVATED_SUCCESSFULLY));
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        initListFuncionarios();
-        getContext().addMessage(null, new FacesMessage(FUNCIONARIO_INATIVATED_SUCCESSFULLY));
     }
 
     @Transactional
@@ -80,7 +79,7 @@ public class ListaFuncionarioBean extends AbstractBaseListMBean
             e.printStackTrace();
         }
     }
-    
+
     private FuncionarioBean getRegisterBean() {
         return ((FuncionarioBean) Faces_Util.getBean(FuncionarioBean.BEAN_NAME));
     }

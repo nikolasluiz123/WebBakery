@@ -41,16 +41,14 @@ public class ListaPaisBean extends AbstractBaseListMBean implements IBaseListMBe
     @Transactional
     @Override
     public void inativar(TOPais to) {
-        to.setAtivo(false);
-
         try {
+            to.setAtivo(false);
             this.paisDao.atualizar(to);
+            initListPaises();
+            getContext().addMessage(null, new FacesMessage(PAIS_INATIVATED_SUCCESSFULLY));
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        initListPaises();
-        getContext().addMessage(null, new FacesMessage(PAIS_INATIVATED_SUCCESSFULLY));
     }
 
     private void initListPaises() {
@@ -68,7 +66,7 @@ public class ListaPaisBean extends AbstractBaseListMBean implements IBaseListMBe
         PaisBean registerBean = getRegisterBean();
         registerBean.setToPais(registerBean.getObjetoSessao(keyAtribute, paisDao));
     }
-    
+
     private PaisBean getRegisterBean() {
         return ((PaisBean) Faces_Util.getBean(PaisBean.BEAN_NAME));
     }

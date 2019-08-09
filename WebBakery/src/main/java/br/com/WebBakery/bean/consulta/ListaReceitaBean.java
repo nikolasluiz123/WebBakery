@@ -50,16 +50,14 @@ public class ListaReceitaBean extends AbstractBaseListMBean implements IBaseList
     @Transactional
     @Override
     public void inativar(TOReceita receita) {
-        receita.setAtivo(false);
-
         try {
+            receita.setAtivo(false);
             this.receitaDao.atualizar(receita);
+            initReceitas();
+            getContext().addMessage(null, new FacesMessage(RECEITA_INATIVATED_SUCCESSFULLY));
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        initReceitas();
-        getContext().addMessage(null, new FacesMessage(RECEITA_INATIVATED_SUCCESSFULLY));
     }
 
     private void initReceitas() {

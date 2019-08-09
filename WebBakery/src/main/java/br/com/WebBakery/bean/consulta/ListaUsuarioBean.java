@@ -41,14 +41,14 @@ public class ListaUsuarioBean extends AbstractBaseListMBean implements IBaseList
     @Transactional
     @Override
     public void inativar(TOUsuario usuario) {
-        usuario.setAtivo(false);
         try {
+            usuario.setAtivo(false);
             this.usuarioDao.atualizar(usuario);
+            getContext().addMessage(null, new FacesMessage(USUARIO_INATIVATED_SUCCESSFULLY));
+            initListUsuarios();
         } catch (Exception e) {
             e.printStackTrace();
         }
-        getContext().addMessage(null, new FacesMessage(USUARIO_INATIVATED_SUCCESSFULLY));
-        initListUsuarios();
     }
 
     private void initListUsuarios() {

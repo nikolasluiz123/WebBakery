@@ -72,22 +72,22 @@ public class ListaVendaBean extends AbstractBaseListMBean implements IBaseListMB
     public void initListProdutoVendas(Integer id) {
         try {
             this.produtosVenda = this.produtoVendaDao.buscarPorIdVenda(id);
+            calculaValorTotalPago();
         } catch (Exception e) {
             e.printStackTrace();
         }
-        calculaValorTotalPago();
     }
     
     @Override
     public void inativar(TOVenda to) {
-        to.setAtivo(false);
         try {
+            to.setAtivo(false);
             this.vendaDao.atualizar(to);
+            getContext().addMessage(null, new FacesMessage(VENDA_INATIVATED_SUCCESSFULLY));
+            initListVendas();
         } catch (Exception e) {
             e.printStackTrace();
         }
-        getContext().addMessage(null, new FacesMessage(VENDA_INATIVATED_SUCCESSFULLY));
-        initListVendas();
     }
 
     @Override
