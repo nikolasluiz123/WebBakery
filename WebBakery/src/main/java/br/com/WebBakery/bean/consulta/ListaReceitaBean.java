@@ -17,9 +17,11 @@ import br.com.WebBakery.interfaces.IBaseListMBean;
 import br.com.WebBakery.to.TOReceita;
 import br.com.WebBakery.util.Faces_Util;
 
-@Named
+@Named(ListaReceitaBean.BEAN_NAME)
 @ViewScoped
 public class ListaReceitaBean extends AbstractBaseListMBean implements IBaseListMBean<TOReceita> {
+
+    public static final String BEAN_NAME = "listaReceitaBean";
 
     private static final long serialVersionUID = -187265901878598052L;
 

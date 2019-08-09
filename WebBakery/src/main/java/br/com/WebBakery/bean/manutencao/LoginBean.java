@@ -16,9 +16,11 @@ import br.com.WebBakery.dao.UsuarioDao;
 import br.com.WebBakery.to.TOUsuario;
 import br.com.WebBakery.validator.LoginValidator;
 
-@Named
+@Named(LoginBean.BEAN_NAME)
 @ViewScoped
 public class LoginBean extends AbstractBaseRegisterMBean<TOUsuario> {
+
+    public static final String BEAN_NAME = "loginBean";
 
     private static final long serialVersionUID = 7192496569257226719L;
 

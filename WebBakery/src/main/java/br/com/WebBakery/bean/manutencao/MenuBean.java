@@ -14,9 +14,11 @@ import br.com.WebBakery.model.Usuario;
 import br.com.WebBakery.util.Faces_Util;
 import br.com.WebBakery.util.ManipuladorPermissao;
 
-@Named
+@Named(MenuBean.BEAN_NAME)
 public class MenuBean {
 
+    static final String BEAN_NAME = "menuBean";
+    
     private MenuModel model;
 
     public MenuBean() {

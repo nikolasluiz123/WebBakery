@@ -17,9 +17,11 @@ import br.com.WebBakery.interfaces.IBaseListMBean;
 import br.com.WebBakery.to.TOPais;
 import br.com.WebBakery.util.Faces_Util;
 
-@Named
+@Named(ListaPaisBean.BEAN_NAME)
 @ViewScoped
 public class ListaPaisBean extends AbstractBaseListMBean implements IBaseListMBean<TOPais> {
+
+    public static final String BEAN_NAME = "listaPaisBean";
 
     private static final long serialVersionUID = 4296793409566608609L;
 

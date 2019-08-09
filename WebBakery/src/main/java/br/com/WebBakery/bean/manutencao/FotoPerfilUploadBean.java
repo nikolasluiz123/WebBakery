@@ -18,9 +18,11 @@ import br.com.WebBakery.util.Faces_Util;
 import br.com.WebBakery.util.File_Util;
 import br.com.WebBakery.validator.FotoValidator;
 
-@Named
+@Named(FotoPerfilUploadBean.BEAN_NAME)
 @SessionScoped
 public class FotoPerfilUploadBean extends AbstractBaseRegisterMBean<FotoPerfil> {
+
+    static final String BEAN_NAME = "fotoPerfilUploadBean";
 
     private static final String PATH_IMG_DEFAULT = "img/anonimo.png";
 

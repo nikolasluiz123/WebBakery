@@ -23,9 +23,11 @@ import br.com.WebBakery.util.Faces_Util;
 import br.com.WebBakery.util.File_Util;
 import br.com.WebBakery.util.String_Util;
 
-@Named
+@Named(ListaProdutoBean.BEAN_NAME)
 @ViewScoped
 public class ListaProdutoBean extends AbstractBaseListMBean implements IBaseListMBean<TOProduto> {
+
+    public static final String BEAN_NAME = "listaProdutoBean";
 
     private static final long serialVersionUID = -5854537667186626713L;
 
