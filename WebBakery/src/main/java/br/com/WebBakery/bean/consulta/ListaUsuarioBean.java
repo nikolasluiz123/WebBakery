@@ -11,13 +11,17 @@ import javax.inject.Named;
 import javax.transaction.Transactional;
 
 import br.com.WebBakery.abstractClass.AbstractBaseListMBean;
+import br.com.WebBakery.bean.manutencao.UsuarioBean;
 import br.com.WebBakery.dao.UsuarioDao;
 import br.com.WebBakery.interfaces.IBaseListMBean;
 import br.com.WebBakery.to.TOUsuario;
+import br.com.WebBakery.util.Faces_Util;
 
-@Named
+@Named(ListaUsuarioBean.BEAN_NAME)
 @ViewScoped
 public class ListaUsuarioBean extends AbstractBaseListMBean implements IBaseListMBean<TOUsuario> {
+
+    static final String BEAN_NAME = "listaUsuarioBean";
 
     private static final long serialVersionUID = 4493498347316041129L;
 
@@ -57,7 +61,16 @@ public class ListaUsuarioBean extends AbstractBaseListMBean implements IBaseList
 
     @Override
     public void carregar(Integer usuarioID) throws Exception {
-        setObjetoSessao(usuarioID, "UsuarioID", "cadastroUsuario.xhtml");
+        String keyAtribute = "UsuarioID";
+        String pageRedirect = "cadastroUsuario.xhtml";
+        setObjetoSessao(usuarioID, keyAtribute, pageRedirect);
+        UsuarioBean registerBean = getRegisterBean();
+        registerBean.setToUsuario(registerBean.getObjetoSessao(keyAtribute, usuarioDao));
+    
+    }
+    
+    private UsuarioBean getRegisterBean() {
+        return ((UsuarioBean) Faces_Util.getBean(UsuarioBean.BEAN_NAME));
     }
 
     public List<TOUsuario> getUsuarios() {
