@@ -37,12 +37,12 @@ public class PaisDao extends AbstractBaseDao<TOPais> {
         return to;
     }
 
-//    @Override
-//    public void atualizar(TOPais to) throws Exception {
-//        Pais p = new Pais();
-//        getConverter().getTOFromModel(p, to);
-//        getEntityManager().merge(p);
-//    }
+    @Override
+    public void atualizar(TOPais to) throws Exception {
+        Pais p = new Pais();
+        getConverter().getTOFromModel(p, to);
+        getEntityManager().merge(p);
+    }
 
     @Override
     public List<TOPais> listarTodos(Boolean ativo) throws Exception {

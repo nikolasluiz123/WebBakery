@@ -75,11 +75,11 @@ public class FuncionarioBean extends AbstractBaseRegisterMBean<TOFuncionario> {
         this.toFuncionario = new TOFuncionario();
 
         this.enderecoDao = new EnderecoDao();
-        this.toFuncionario.setEndereco(new TOEndereco());
-        this.toFuncionario.getEndereco().setToPais(new TOPais());
-        this.toFuncionario.getEndereco().setToEstado(new TOEstado());
-        this.toFuncionario.getEndereco().setToCidade(new TOCidade());
-        this.toFuncionario.getEndereco().setToLogradouro(new TOLogradouro());
+        this.toFuncionario.setToEndereco(new TOEndereco());
+        this.toFuncionario.getToEndereco().setToPais(new TOPais());
+        this.toFuncionario.getToEndereco().setToEstado(new TOEstado());
+        this.toFuncionario.getToEndereco().setToCidade(new TOCidade());
+        this.toFuncionario.getToEndereco().setToLogradouro(new TOLogradouro());
 
         this.logradouroDao = new LogradouroDao();
 
@@ -104,7 +104,7 @@ public class FuncionarioBean extends AbstractBaseRegisterMBean<TOFuncionario> {
     @Transactional
     public void cadastrar() {
         try {
-            this.enderecoValidator = new EnderecoValidator(this.toFuncionario.getEndereco());
+            this.enderecoValidator = new EnderecoValidator(this.toFuncionario.getToEndereco());
             this.funcionarioValidator = new FuncionarioValidator(this.toFuncionario);
             if (this.toFuncionario.getId() == null) {
                 efetuarCadastro();
@@ -128,22 +128,22 @@ public class FuncionarioBean extends AbstractBaseRegisterMBean<TOFuncionario> {
     }
 
     private void cadastrarEnderecoFuncionario() throws Exception {
-        this.toFuncionario.getEndereco().setAtivo(true);
-        this.enderecoDao.cadastrar(this.toFuncionario.getEndereco());
+        this.toFuncionario.getToEndereco().setAtivo(true);
+        this.enderecoDao.cadastrar(this.toFuncionario.getToEndereco());
     }
 
     private void cadastrarLogradouroFuncionario() throws Exception {
-        this.toFuncionario.getEndereco().getToLogradouro().setAtivo(true);
-        this.toFuncionario.getEndereco().getToLogradouro()
-                .setToCidade(this.toFuncionario.getEndereco().getToCidade());
-        this.logradouroDao.cadastrar(this.toFuncionario.getEndereco().getToLogradouro());
+        this.toFuncionario.getToEndereco().getToLogradouro().setAtivo(true);
+        this.toFuncionario.getToEndereco().getToLogradouro()
+                .setToCidade(this.toFuncionario.getToEndereco().getToCidade());
+        this.logradouroDao.cadastrar(this.toFuncionario.getToEndereco().getToLogradouro());
     }
 
     private void efetuarAtualizacao() throws Exception {
         if (funcionarioValidator.isValid() && enderecoValidator.isValid()) {
             this.funcionarioDao.atualizar(this.toFuncionario);
-            this.enderecoDao.atualizar(this.toFuncionario.getEndereco());
-            this.logradouroDao.atualizar(this.toFuncionario.getEndereco().getToLogradouro());
+            this.enderecoDao.atualizar(this.toFuncionario.getToEndereco());
+            this.logradouroDao.atualizar(this.toFuncionario.getToEndereco().getToLogradouro());
             getContext().addMessage(null, new FacesMessage(FUNCIONARIO_UPDATED_SUCCESSFULLY));
         }
     }
@@ -187,17 +187,17 @@ public class FuncionarioBean extends AbstractBaseRegisterMBean<TOFuncionario> {
     }
 
     public void setarPais() {
-        this.toFuncionario.getEndereco().setToPais(this.toPaisSelecionado);
+        this.toFuncionario.getToEndereco().setToPais(this.toPaisSelecionado);
         carregarEstado(toPaisSelecionado.getId());
     }
 
     public void setarEstado() {
-        this.toFuncionario.getEndereco().setToEstado(this.toEstadoSelecionado);
+        this.toFuncionario.getToEndereco().setToEstado(this.toEstadoSelecionado);
         carregarCidade(toEstadoSelecionado.getId());
     }
 
     public void setarCidade() {
-        this.toFuncionario.getEndereco().setToCidade(this.toCcidadeSelecionada);
+        this.toFuncionario.getToEndereco().setToCidade(this.toCcidadeSelecionada);
     }
 
     public void setarUsuario() {
