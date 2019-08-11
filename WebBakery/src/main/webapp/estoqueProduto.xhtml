@@ -10,13 +10,13 @@
 	<ui:define name="conteudo">
 
 		<h:form id="formDataTableEstoqueProduto">
-			<p:dataTable var="estoqueProduto"
-				value="#{estoqueProdutoBean.produtosEstoque}"
+			<p:dataTable var="toEstoqueProduto"
+				value="#{estoqueProdutoBean.toEstoqueProdutos}"
 				id="tabelaEstoqueProdutos" rows="10" paginator="true"
 				paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PageLinks} {PreviousPageLink} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 				rowsPerPageTemplate="10,15,20,25,30"
 				widgetVar="TabelaEstoqueProdutos"
-				filteredValue="#{estoqueProdutoBean.produtosEstoqueFiltrados}"
+				filteredValue="#{estoqueProdutoBean.toEstoqueProdutosFiltrados}"
 				emptyMessage="Nenhum produto foi encontrado no estoque.">
 
 				<f:facet name="header" style="min-height: 35px">
@@ -24,15 +24,15 @@
 				</f:facet>
 
 				<p:column headerText="Produto"
-					sortBy="#{estoqueProduto.produto.descricao}"
-					filterBy="#{estoqueProduto.produto.descricao}">
-					<h:outputText value="#{estoqueProduto.produto.descricao}" />
+					sortBy="#{toEstoqueProduto.toProduto.descricao}"
+					filterBy="#{toEstoqueProduto.toProduto.descricao}">
+					<h:outputText value="#{toEstoqueProduto.toProduto.descricao}" />
 				</p:column>
 
 				<p:column headerText="Quantidade"
-					sortBy="#{estoqueProduto.quantidade}"
-					filterBy="#{estoqueProduto.quantidade}">
-					<h:outputText value="#{estoqueProduto.quantidade}" />
+					sortBy="#{toEstoqueProduto.quantidade}"
+					filterBy="#{toEstoqueProduto.quantidade}">
+					<h:outputText value="#{toEstoqueProduto.quantidade}" />
 				</p:column>
 			</p:dataTable>
 		</h:form>

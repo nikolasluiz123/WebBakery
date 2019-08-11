@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.StringJoiner;
 
 import javax.ejb.Stateless;
+import javax.persistence.NoResultException;
 
 import br.com.WebBakery.abstractClass.AbstractBaseDao;
 import br.com.WebBakery.model.Usuario;
@@ -83,6 +84,7 @@ public class UsuarioDao extends AbstractBaseDao<TOUsuario> {
 
     public TOUsuario usuarioExiste(String email) throws Exception {
         TOUsuario to = new TOUsuario();
+        Usuario u = new Usuario();
         
         StringJoiner sql = new StringJoiner(QR_NL);
         sql
@@ -90,9 +92,13 @@ public class UsuarioDao extends AbstractBaseDao<TOUsuario> {
         .add("FROM ".concat(Usuario.class.getName()).concat(" u "))
         .add("WHERE u.email = :pEmail");
         
-        Usuario u = getEntityManager().createQuery(sql.toString(), Usuario.class)
-                                      .setParameter("pEmail", email)
-                                      .getSingleResult();
+        try {
+            u = getEntityManager().createQuery(sql.toString(), Usuario.class)
+                                  .setParameter("pEmail", email)
+                                  .getSingleResult();
+        } catch (NoResultException e) {
+            return to;
+        }
         
         getConverter().getTOFromModel(u, to);
         

@@ -29,12 +29,12 @@ public class ListaUsuarioBean extends AbstractBaseListMBean implements IBaseList
 
     @Inject
     private UsuarioDao usuarioDao;
-    private List<TOUsuario> usuarios;
-    private List<TOUsuario> usuariosFiltrados;
+    private List<TOUsuario> toUsuarios;
+    private List<TOUsuario> toUsuariosFiltrados;
 
     @PostConstruct
     private void init() {
-        this.usuarios = new ArrayList<>();
+        this.toUsuarios = new ArrayList<>();
         initListUsuarios();
     }
 
@@ -53,7 +53,7 @@ public class ListaUsuarioBean extends AbstractBaseListMBean implements IBaseList
 
     private void initListUsuarios() {
         try {
-            this.usuarios = this.usuarioDao.listarTodos(true);
+            this.toUsuarios = this.usuarioDao.listarTodos(true);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -66,27 +66,27 @@ public class ListaUsuarioBean extends AbstractBaseListMBean implements IBaseList
         setObjetoSessao(usuarioID, keyAtribute, pageRedirect);
         UsuarioBean registerBean = getRegisterBean();
         registerBean.setToUsuario(registerBean.getObjetoSessao(keyAtribute, usuarioDao));
-    
+
     }
-    
+
     private UsuarioBean getRegisterBean() {
         return ((UsuarioBean) Faces_Util.getBean(UsuarioBean.BEAN_NAME));
     }
 
-    public List<TOUsuario> getUsuarios() {
-        return usuarios;
+    public List<TOUsuario> getToUsuarios() {
+        return toUsuarios;
     }
 
-    public void setUsuarios(List<TOUsuario> usuarios) {
-        this.usuarios = usuarios;
+    public void setToUsuarios(List<TOUsuario> toUsuarios) {
+        this.toUsuarios = toUsuarios;
     }
 
-    public List<TOUsuario> getUsuariosFiltrados() {
-        return usuariosFiltrados;
+    public List<TOUsuario> getToUsuariosFiltrados() {
+        return toUsuariosFiltrados;
     }
 
-    public void setUsuariosFiltrados(List<TOUsuario> usuariosFiltrados) {
-        this.usuariosFiltrados = usuariosFiltrados;
+    public void setToUsuariosFiltrados(List<TOUsuario> toUsuariosFiltrados) {
+        this.toUsuariosFiltrados = toUsuariosFiltrados;
     }
 
 }

@@ -1,9 +1,13 @@
 package br.com.WebBakery.abstractClass;
 
+import br.com.WebBakery.core.annotations.TOEntity;
+
 public class AbstractBaseTO {
 
+    @TOEntity(fieldName = "id")
     private Integer id;
 
+    @TOEntity(fieldName = "ativo")
     private boolean ativo;
 
     public Integer getId() {

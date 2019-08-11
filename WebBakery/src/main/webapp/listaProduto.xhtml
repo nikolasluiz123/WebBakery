@@ -15,7 +15,7 @@
 				update="formDataTableProdutos:imagens, formDataTableProdutos:receita"
 				onstart="PF('DetalhesProduto').show()" />
 
-			<p:dataGrid var="p" value="#{listaProdutoBean.produtos}" columns="3"
+			<p:dataGrid var="p" value="#{listaProdutoBean.toProdutos}" columns="3"
 				layout="grid" rows="6" paginator="true" id="produtos"
 				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 				emptyMessage="Nenhum produto foi encontrado.">

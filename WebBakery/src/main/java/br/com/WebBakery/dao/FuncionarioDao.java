@@ -77,7 +77,7 @@ public class FuncionarioDao extends AbstractBaseDao<TOFuncionario> {
         .add("FROM ".concat(Funcionario.class.getName()).concat(" f "))
         .add("WHERE")
         .add("f.ativo = :pAtivo")
-        .add("AND f.usuario.id = :pUsuarioId");
+        .add("AND f.usuario.id = :pIdUsuario");
         
         
         Funcionario f = getEntityManager().createQuery(sql.toString(), Funcionario.class)

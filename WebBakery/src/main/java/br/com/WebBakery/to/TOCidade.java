@@ -1,10 +1,13 @@
 package br.com.WebBakery.to;
 
 import br.com.WebBakery.abstractClass.AbstractBaseTO;
+import br.com.WebBakery.core.annotations.TOEntity;
 
 public class TOCidade extends AbstractBaseTO {
 
+    @TOEntity(fieldName = "nome")
     private String nome;
+    @TOEntity(fieldName = "estado")
     private TOEstado toEstado;
 
     public String getNome() {

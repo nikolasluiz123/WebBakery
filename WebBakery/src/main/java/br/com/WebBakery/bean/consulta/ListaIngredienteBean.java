@@ -39,12 +39,12 @@ public class ListaIngredienteBean extends AbstractBaseListMBean
     @Inject
     private FotoIngredienteDao fotoIngredienteDao;
     private List<TOIngrediente> toIngredientes;
-    private TOIngrediente ingredienteSelecionado;
+    private TOIngrediente toIngredienteSelecionado;
 
     @PostConstruct
     private void init() {
         this.toIngredientes = new ArrayList<>();
-        this.ingredienteSelecionado = new TOIngrediente();
+        this.toIngredienteSelecionado = new TOIngrediente();
         initIngredientes();
     }
 
@@ -54,20 +54,21 @@ public class ListaIngredienteBean extends AbstractBaseListMBean
             List<TOIngredienteComFotos> ingredientesComFotos = new ArrayList<>();
             ingredientesComFotos = this.ingredienteDao.listarTodosIngredienteComFotos();
             TOIngredienteComFotos ingredienteComFotos = new TOIngredienteComFotos();
-            
+
             for (TOIngredienteComFotos pfs : ingredientesComFotos) {
                 if (pfs.getToIngrediente().getId().equals(idIngrediente)) {
                     ingredienteComFotos = pfs;
                 }
             }
-            
-            String pathCompleto = File_Util.criarFotoPastaTemporaria(ingredienteComFotos.getToFotos().get(0));
+
+            String pathCompleto = File_Util
+                    .criarFotoPastaTemporaria(ingredienteComFotos.getToFotos().get(0));
             String nomeArquivo = File_Util.getNomeArquivo(pathCompleto);
             path = File_Util.getPath(nomeArquivo);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        
+
         return path;
     }
 
@@ -85,14 +86,14 @@ public class ListaIngredienteBean extends AbstractBaseListMBean
     }
 
     @Transactional
-    public void getDadosProduto() {
+    public void getDadosIngrediente() {
         try {
             List<TOFotoIngrediente> fotosIngrediente = new ArrayList<>();
-            this.ingredienteSelecionado = this.ingredienteDao
-                                                   .buscarPorId(ingredienteSelecionado.getId());
+            this.toIngredienteSelecionado = this.ingredienteDao
+                    .buscarPorId(toIngredienteSelecionado.getId());
             fotosIngrediente = this.fotoIngredienteDao
-                                        .listarFotosIngrediente(ingredienteSelecionado.getId());
-            this.ingredienteSelecionado.setToFotos(fotosIngrediente);
+                    .listarFotosIngrediente(toIngredienteSelecionado.getId());
+            this.toIngredienteSelecionado.setToFotos(fotosIngrediente);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -138,20 +139,20 @@ public class ListaIngredienteBean extends AbstractBaseListMBean
         return ((IngredienteBean) Faces_Util.getBean(IngredienteBean.BEAN_NAME));
     }
 
-    public List<TOIngrediente> getIngredientes() {
+    public List<TOIngrediente> getToIngredientes() {
         return toIngredientes;
     }
 
-    public void setIngredientes(List<TOIngrediente> ingredientes) {
-        this.toIngredientes = ingredientes;
+    public void setToIngredientes(List<TOIngrediente> toIngredientes) {
+        this.toIngredientes = toIngredientes;
     }
 
-    public TOIngrediente getIngredienteSelecionado() {
-        return ingredienteSelecionado;
+    public TOIngrediente getToIngredienteSelecionado() {
+        return toIngredienteSelecionado;
     }
 
-    public void setIngredienteSelecionado(TOIngrediente ingredienteSelecionado) {
-        this.ingredienteSelecionado = ingredienteSelecionado;
+    public void setToIngredienteSelecionado(TOIngrediente toIngredienteSelecionado) {
+        this.toIngredienteSelecionado = toIngredienteSelecionado;
     }
 
 }

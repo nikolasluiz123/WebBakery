@@ -1,13 +1,19 @@
 package br.com.WebBakery.to;
 
 import br.com.WebBakery.abstractClass.AbstractBaseTO;
+import br.com.WebBakery.core.annotations.TOEntity;
 
 public class TOLogradouro extends AbstractBaseTO {
 
+    @TOEntity(fieldName = "cidade")
     private TOCidade toCidade;
+    @TOEntity(fieldName = "bairro")
     private String bairro;
+    @TOEntity(fieldName = "cep")
     private String cep;
+    @TOEntity(fieldName = "rua")
     private String rua;
+    @TOEntity(fieldName = "complemento")
     private String complemento;
 
     public String getBairro() {

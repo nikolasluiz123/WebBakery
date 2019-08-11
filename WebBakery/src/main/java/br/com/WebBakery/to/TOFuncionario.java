@@ -4,16 +4,23 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 import br.com.WebBakery.abstractClass.AbstractBaseTO;
+import br.com.WebBakery.core.annotations.TOEntity;
 
 public class TOFuncionario extends AbstractBaseTO {
 
+    @TOEntity(fieldName = "salario")
     private BigDecimal salario;
-    private TOEndereco endereco;
+    @TOEntity(fieldName = "toEndereco")
+    private TOEndereco toEndereco;
+    @TOEntity(fieldName = "usuario")
     private TOUsuario toUsuario;
+    @TOEntity(fieldName = "dataNascimento")
     private Date dataNascimento;
-    private String dataNascimentoFormatada;
+    @TOEntity(fieldName = "cpf")
     private String cpf;
+    @TOEntity(fieldName = "rg")
     private String rg;
+    @TOEntity(fieldName = "telefone")
     private String telefone;
 
     public BigDecimal getSalario() {
@@ -24,12 +31,12 @@ public class TOFuncionario extends AbstractBaseTO {
         this.salario = salario;
     }
 
-    public TOEndereco getEndereco() {
-        return endereco;
+    public TOEndereco getToEndereco() {
+        return toEndereco;
     }
 
-    public void setEndereco(TOEndereco endereco) {
-        this.endereco = endereco;
+    public void setToEndereco(TOEndereco toEndereco) {
+        this.toEndereco = toEndereco;
     }
 
     public Date getDataNascimento() {
@@ -70,14 +77,6 @@ public class TOFuncionario extends AbstractBaseTO {
 
     public void setToUsuario(TOUsuario toUsuario) {
         this.toUsuario = toUsuario;
-    }
-
-    public String getDataNascimentoFormatada() {
-        return dataNascimentoFormatada;
-    }
-
-    public void setDataNascimentoFormatada(String dataNascimentoFormatada) {
-        this.dataNascimentoFormatada = dataNascimentoFormatada;
     }
 
 }

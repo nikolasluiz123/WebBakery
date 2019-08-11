@@ -28,20 +28,20 @@ public class IngredienteBean extends AbstractBaseRegisterMBean<TOIngrediente> {
     @Inject
     private IngredienteDao ingredienteDao;
     private IngredienteValidator ingredienteValidator;
-    private TOIngrediente ingrediente;
+    private TOIngrediente toIngrediente;
     private UnidadeMedida unidadeMedida;
 
     @PostConstruct
     private void init() {
-        this.ingrediente = new TOIngrediente();
+        this.toIngrediente = new TOIngrediente();
     }
 
     @Transactional
     public void cadastrar() {
-        this.ingredienteValidator = new IngredienteValidator(this.ingrediente);
-        this.ingrediente.setUnidadeMedida(unidadeMedida);
+        this.ingredienteValidator = new IngredienteValidator(this.toIngrediente);
+        this.toIngrediente.setUnidadeMedida(unidadeMedida);
 
-        if (this.ingrediente.getId() == null) {
+        if (this.toIngrediente.getId() == null) {
             efetuarCadastro();
         } else {
             efetuarAtualizacao();
@@ -52,9 +52,10 @@ public class IngredienteBean extends AbstractBaseRegisterMBean<TOIngrediente> {
     private void efetuarCadastro() {
         if (ingredienteValidator.isValid()) {
             try {
-                this.ingrediente.setAtivo(true);
-                this.ingredienteDao.cadastrar(this.ingrediente);
-                getContext().addMessage(null, new FacesMessage(INGREDIENTE_REGISTERED_SUCCESSFULLY));
+                this.toIngrediente.setAtivo(true);
+                this.ingredienteDao.cadastrar(this.toIngrediente);
+                getContext().addMessage(null,
+                                        new FacesMessage(INGREDIENTE_REGISTERED_SUCCESSFULLY));
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -64,7 +65,7 @@ public class IngredienteBean extends AbstractBaseRegisterMBean<TOIngrediente> {
     private void efetuarAtualizacao() {
         if (this.ingredienteValidator.isValid()) {
             try {
-                this.ingredienteDao.atualizar(this.ingrediente);
+                this.ingredienteDao.atualizar(this.toIngrediente);
                 getContext().addMessage(null, new FacesMessage(INGREDIENTE_UPDATED_SUCCESSFULLY));
             } catch (Exception e) {
                 e.printStackTrace();
@@ -73,17 +74,17 @@ public class IngredienteBean extends AbstractBaseRegisterMBean<TOIngrediente> {
     }
 
     private void atualizarTela() {
-        this.ingrediente = new TOIngrediente();
+        this.toIngrediente = new TOIngrediente();
         this.ingredienteValidator.showMessages();
         this.ingredienteValidator.clearMessages();
     }
 
-    public TOIngrediente getIngrediente() {
-        return ingrediente;
+    public TOIngrediente getToIngrediente() {
+        return toIngrediente;
     }
 
-    public void setToIngrediente(TOIngrediente ingrediente) {
-        this.ingrediente = ingrediente;
+    public void setToIngrediente(TOIngrediente toIngrediente) {
+        this.toIngrediente = toIngrediente;
     }
 
     public UnidadeMedida getUnidadeMedida() {

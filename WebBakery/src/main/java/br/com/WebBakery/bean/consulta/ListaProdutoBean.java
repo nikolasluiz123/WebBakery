@@ -37,14 +37,14 @@ public class ListaProdutoBean extends AbstractBaseListMBean implements IBaseList
     private ProdutoDao produtoDao;
     @Inject
     private FotoProdutoDao fotoProdutoDao;
-    private List<TOProduto> produtos;
-    private TOProduto produtoSelecionado;
+    private List<TOProduto> toProdutos;
+    private TOProduto toProdutoSelecionado;
 
     @PostConstruct
     private void init() {
-        this.produtos = new ArrayList<>();
-        this.produtoSelecionado = new TOProduto();
-        this.produtoSelecionado.setToReceita(new TOReceita());
+        this.toProdutos = new ArrayList<>();
+        this.toProdutoSelecionado = new TOProduto();
+        this.toProdutoSelecionado.setToReceita(new TOReceita());
         initProdutos();
     }
 
@@ -61,7 +61,8 @@ public class ListaProdutoBean extends AbstractBaseListMBean implements IBaseList
                 }
             }
 
-            String pathCompleto = File_Util.criarFotoPastaTemporaria(produtoComFotos.getToFotos().get(0));
+            String pathCompleto = File_Util
+                    .criarFotoPastaTemporaria(produtoComFotos.getToFotos().get(0));
             String nomeArquivo = File_Util.getNomeArquivo(pathCompleto);
             path = File_Util.getPath(nomeArquivo);
 
@@ -88,9 +89,9 @@ public class ListaProdutoBean extends AbstractBaseListMBean implements IBaseList
     @Transactional
     public void getDadosProduto() {
         try {
-            this.produtoSelecionado = this.produtoDao.buscarPorId(produtoSelecionado.getId());
-            this.produtoSelecionado
-                    .setToFotos(this.fotoProdutoDao.listarFotosProduto(produtoSelecionado.getId()));
+            this.toProdutoSelecionado = this.produtoDao.buscarPorId(toProdutoSelecionado.getId());
+            this.toProdutoSelecionado.setToFotos(this.fotoProdutoDao
+                    .listarFotosProduto(toProdutoSelecionado.getId()));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -124,30 +125,30 @@ public class ListaProdutoBean extends AbstractBaseListMBean implements IBaseList
 
     private void initProdutos() {
         try {
-            this.produtos = this.produtoDao.listarTodos(true);
+            this.toProdutos = this.produtoDao.listarTodos(true);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-    
+
     private ProdutoBean getRegisterBean() {
         return ((ProdutoBean) Faces_Util.getBean(ProdutoBean.BEAN_NAME));
     }
 
-    public List<TOProduto> getProdutos() {
-        return produtos;
+    public List<TOProduto> getToProdutos() {
+        return toProdutos;
     }
 
-    public void setProdutos(List<TOProduto> produtos) {
-        this.produtos = produtos;
+    public void setToProdutos(List<TOProduto> toProdutos) {
+        this.toProdutos = toProdutos;
     }
 
-    public TOProduto getProdutoSelecionado() {
-        return produtoSelecionado;
+    public TOProduto getToProdutoSelecionado() {
+        return toProdutoSelecionado;
     }
 
-    public void setProdutoSelecionado(TOProduto produtoSelecionado) {
-        this.produtoSelecionado = produtoSelecionado;
+    public void setToProdutoSelecionado(TOProduto toProdutoSelecionado) {
+        this.toProdutoSelecionado = toProdutoSelecionado;
     }
 
 }

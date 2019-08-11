@@ -1,11 +1,15 @@
 package br.com.WebBakery.to;
 
 import br.com.WebBakery.abstractClass.AbstractBaseTO;
+import br.com.WebBakery.core.annotations.TOEntity;
 
 public class TOProdutoVenda extends AbstractBaseTO {
 
+    @TOEntity(fieldName = "produti")
     private TOProduto toProduto;
+    @TOEntity(fieldName = "venda")
     private TOVenda toVenda;
+    @TOEntity(fieldName = "quantidade")
     private Integer quantidade;
 
     public TOProduto getToProduto() {

@@ -62,7 +62,7 @@ public class LoginValidator extends AbstractValidator {
     }
 
     private boolean verificaUsuarioExiste() {
-        if (this.toUsuario == null) {
+        if (this.toUsuario.getId() == null) {
             messages.add(USER_NOT_EXISTS);
             return false;
         }
@@ -70,7 +70,7 @@ public class LoginValidator extends AbstractValidator {
     }
 
     private Boolean existeVinculoComUsuario() {
-        TOUsuario u;
+        TOUsuario u = null;
         TOCliente c = null;
         TOFuncionario f = null;
 

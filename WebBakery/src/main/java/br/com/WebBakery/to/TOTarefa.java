@@ -3,12 +3,17 @@ package br.com.WebBakery.to;
 import java.util.Date;
 
 import br.com.WebBakery.abstractClass.AbstractBaseTO;
+import br.com.WebBakery.core.annotations.TOEntity;
 
 public class TOTarefa extends AbstractBaseTO {
 
+    @TOEntity(fieldName = "dataInicio")
     private Date dataInicio;
+    @TOEntity(fieldName = "dataFim")
     private Date dataFim;
+    @TOEntity(fieldName = "produto")
     private TOProduto toProduto;
+    @TOEntity(fieldName = "quantidade")
     private Integer quantidade;
 
     public Date getDataInicio() {

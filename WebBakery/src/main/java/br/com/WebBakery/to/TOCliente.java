@@ -3,14 +3,19 @@ package br.com.WebBakery.to;
 import java.util.Date;
 
 import br.com.WebBakery.abstractClass.AbstractBaseTO;
+import br.com.WebBakery.core.annotations.TOEntity;
 
 public class TOCliente extends AbstractBaseTO {
 
+    @TOEntity(fieldName = "cpf")
     private String cpf;
+    @TOEntity(fieldName = "telefone")
     private String telefone;
+    @TOEntity(fieldName = "dataNascimento")
     private Date dataNascimento;
-    private String dataNascimentoFormatada;
+    @TOEntity(fieldName = "endereco")
     private TOEndereco toEndereco;
+    @TOEntity(fieldName = "usuario")
     private TOUsuario toUsuario;
 
     public String getCpf() {
@@ -35,14 +40,6 @@ public class TOCliente extends AbstractBaseTO {
 
     public void setDataNascimento(Date dataNascimento) {
         this.dataNascimento = dataNascimento;
-    }
-
-    public String getDataNascimentoFormatada() {
-        return dataNascimentoFormatada;
-    }
-
-    public void setDataNascimentoFormatada(String dataNascimentoFormatada) {
-        this.dataNascimentoFormatada = dataNascimentoFormatada;
     }
 
     public TOEndereco getToEndereco() {

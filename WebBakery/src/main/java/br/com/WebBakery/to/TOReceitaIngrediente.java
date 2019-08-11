@@ -1,13 +1,18 @@
 package br.com.WebBakery.to;
 
 import br.com.WebBakery.abstractClass.AbstractBaseTO;
+import br.com.WebBakery.core.annotations.TOEntity;
 import br.com.WebBakery.enums.UnidadeMedida;
 
 public class TOReceitaIngrediente extends AbstractBaseTO {
 
+    @TOEntity(fieldName = "receita")
     private TOReceita toReceita;
+    @TOEntity(fieldName = "ingrediente")
     private TOIngrediente toIngrediente;
+    @TOEntity(fieldName = "quantidadeIngrediente")
     private Double quantidadeIngrediente;
+    @TOEntity(fieldName = "unidadeMedida")
     private UnidadeMedida unidadeMedida;
 
     public TOReceita getToReceita() {

@@ -3,11 +3,14 @@ package br.com.WebBakery.to;
 import java.util.List;
 
 import br.com.WebBakery.abstractClass.AbstractBaseTO;
+import br.com.WebBakery.core.annotations.TOEntity;
 import br.com.WebBakery.enums.UnidadeMedida;
 
 public class TOIngrediente extends AbstractBaseTO {
 
+    @TOEntity(fieldName = "nome")
     private String nome;
+    @TOEntity(fieldName = "unidadeMedida")
     private UnidadeMedida unidadeMedida;
     private List<TOFotoIngrediente> toFotos;
 

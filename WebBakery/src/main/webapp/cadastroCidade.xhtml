@@ -15,12 +15,12 @@
 				<p:panelGrid columns="2">
 
 					<p:outputLabel value="Nome:" for="nome" />
-					<p:inputText id="nome" value="#{cidadeBean.cidade.nome}"
+					<p:inputText id="nome" value="#{cidadeBean.toCidade.nome}"
 						placeholder="Digite o nome..." />
 
 					<p:outputLabel for="estado" value="Estado:" />
 					<p:inputText id="estado" onclick="PF('EstadosDialog').show();"
-						value="#{cidadeBean.cidade.estado.nome}" readonly="true"
+						value="#{cidadeBean.toCidade.estado.nome}" readonly="true"
 						placeholder="Selecione o estado..." style="cursor: pointer;" />
 
 					<p:commandButton value="Cadastrar" process="@form"
@@ -32,20 +32,20 @@
 			<p:dialog header="Estados" widgetVar="EstadosDialog"
 				resizable="false" width="700">
 
-				<p:dataTable id="tabelaEstados" value="#{cidadeBean.estados}"
-					selectionMode="single" selection="#{cidadeBean.estadoSelecionado}"
-					var="estado" rowKey="#{estado.id}" rows="5" paginator="true"
+				<p:dataTable id="tabelaEstados" value="#{cidadeBean.toEstados}"
+					selectionMode="single" selection="#{cidadeBean.toEstadoSelecionado}"
+					var="toEstado" rowKey="#{toEstado.id}" rows="5" paginator="true"
 					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PageLinks} {PreviousPageLink} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 					emptyMessage="Nenhum estado encontrado." widgetVar="TabelaEstados"
 					filteredValue="#{estadoBean.toPaisesFiltrados}">
 
-					<p:column headerText="Nome" sortBy="#{estado.nome}"
-						filterBy="#{estado.nome}">
-						<h:outputText value="#{estado.nome}" />
+					<p:column headerText="Nome" sortBy="#{toEstado.nome}"
+						filterBy="#{toEstado.nome}">
+						<h:outputText value="#{toEstado.nome}" />
 					</p:column>
-					<p:column headerText="Sigla" sortBy="#{estado.sigla}"
-						filterBy="#{estado.sigla}">
-						<h:outputText value="#{estado.sigla}" />
+					<p:column headerText="Sigla" sortBy="#{toEstado.sigla}"
+						filterBy="#{toEstado.sigla}">
+						<h:outputText value="#{toEstado.sigla}" />
 					</p:column>
 				</p:dataTable>
 				<p:commandButton value="Selecionar" process="@form" update="@form"

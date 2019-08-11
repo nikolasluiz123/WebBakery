@@ -7,7 +7,7 @@ import javax.faces.event.PhaseEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.event.PhaseListener;
 
-import br.com.WebBakery.model.Usuario;
+import br.com.WebBakery.to.TOUsuario;
 
 public class Autorizador implements PhaseListener {
 
@@ -23,7 +23,7 @@ public class Autorizador implements PhaseListener {
             return;
         }
 
-        Usuario usuarioLogado = (Usuario) context.getExternalContext().getSessionMap()
+        TOUsuario usuarioLogado = (TOUsuario) context.getExternalContext().getSessionMap()
                 .get("usuarioLogado");
 
         if (usuarioLogado != null) {

@@ -28,14 +28,12 @@ public class ListaLogradouroBean extends AbstractBaseListMBean
 
     @Inject
     private LogradouroDao logradouroDao;
-    private TOLogradouro logradouro;
-    private List<TOLogradouro> logradouros;
-    private List<TOLogradouro> logradourosFiltrados;
+    private List<TOLogradouro> toLogradouros;
+    private List<TOLogradouro> toLogradourosFiltrados;
 
     @PostConstruct
     private void init() {
-        this.logradouro = new TOLogradouro();
-        this.logradouros = new ArrayList<>();
+        this.toLogradouros = new ArrayList<>();
         initListLogradouros();
     }
 
@@ -53,7 +51,8 @@ public class ListaLogradouroBean extends AbstractBaseListMBean
     }
 
     // Não tem formulário para cadastrar logradouros, só é cadastrado um
-    // logradouro quando um funcionario ou cliente for cadastrado e os campos de
+    // toLogradouro quando um funcionario ou cliente for cadastrado e os campos
+    // de
     // endereço forem preenchidos
     @Override
     public void carregar(Integer id) throws Exception {
@@ -63,34 +62,26 @@ public class ListaLogradouroBean extends AbstractBaseListMBean
     @Transactional
     private void initListLogradouros() {
         try {
-            this.logradouros = this.logradouroDao.listarTodos(true);
+            this.toLogradouros = this.logradouroDao.listarTodos(true);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public TOLogradouro getLogradouro() {
-        return logradouro;
+    public List<TOLogradouro> getToLogradouros() {
+        return toLogradouros;
     }
 
-    public void setLogradouro(TOLogradouro logradouro) {
-        this.logradouro = logradouro;
+    public void setToLogradouros(List<TOLogradouro> toLogradouros) {
+        this.toLogradouros = toLogradouros;
     }
 
-    public List<TOLogradouro> getLogradouros() {
-        return logradouros;
+    public List<TOLogradouro> getToLogradourosFiltrados() {
+        return toLogradourosFiltrados;
     }
 
-    public void setLogradouros(List<TOLogradouro> logradouros) {
-        this.logradouros = logradouros;
-    }
-
-    public List<TOLogradouro> getLogradourosFiltrados() {
-        return logradourosFiltrados;
-    }
-
-    public void setLogradourosFiltrados(List<TOLogradouro> logradourosFiltrados) {
-        this.logradourosFiltrados = logradourosFiltrados;
+    public void setToLogradourosFiltrados(List<TOLogradouro> toLogradourosFiltrados) {
+        this.toLogradourosFiltrados = toLogradourosFiltrados;
     }
 
 }

@@ -16,26 +16,26 @@
 
 					<p:outputLabel value="Descrição" for="descricao" />
 					<p:inputText id="descricao"
-						value="#{produtoBean.produto.descricao}"
+						value="#{produtoBean.toProduto.descricao}"
 						placeholder="Digite a descrição..." />
 
 					<p:outputLabel for="diasValido" value="Dias Válido" />
 					<h:panelGrid columns="1" style="margin-bottom: 10px">
 						<p:inputNumber id="diasValido"
-							value="#{produtoBean.produto.tempoValido}" decimalPlaces="0"
+							value="#{produtoBean.toProduto.tempoValido}" decimalPlaces="0"
 							maxValue="180" minValue="0" placeholder="Digite os dias..." />
 						<p:slider for="diasValido" maxValue="180" />
 					</h:panelGrid>
 
 					<p:outputLabel value="Preço:" for="preco" />
-					<p:inputNumber id="preco" value="#{produtoBean.produto.preco}"
+					<p:inputNumber id="preco" value="#{produtoBean.toProduto.preco}"
 						symbol="R$" decimalSeparator="," thousandSeparator="."
 						placeholder="Digite o preço..." minValue="0" />
 
 					<p:outputLabel for="receita" value="Receita:" />
 					<p:inputTextarea id="receita"
 						onclick="PF('ReceitasDialog').show();"
-						value="#{produtoBean.produto.receita.descricao}" readonly="true"
+						value="#{produtoBean.toProduto.toReceita.nome}" readonly="true"
 						placeholder="Selecione a receita..." style="cursor: pointer;" />
 
 					<p:fileUpload fileUploadListener="#{produtoBean.handleFileUpload}"
@@ -54,24 +54,19 @@
 			<p:dialog header="Receitas" widgetVar="ReceitasDialog"
 				resizable="false" width="800">
 
-				<p:dataTable var="receita" value="#{produtoBean.receitas}"
+				<p:dataTable var="toReceita" value="#{produtoBean.toReceitas}"
 					selectionMode="single"
-					selection="#{produtoBean.receitaSelecionada}" id="tabelaReceitas"
-					rowKey="#{receita.id}" rows="5" paginator="true"
+					selection="#{produtoBean.toReceitaSelecionada}" id="tabelaReceitas"
+					rowKey="#{toReceita.id}" rows="5" paginator="true"
 					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PageLinks} {PreviousPageLink} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 					rowsPerPageTemplate="5,10,15"
 					emptyMessage="Nenhuma receita encontrada."
 					widgetVar="TabelaReceitas"
-					filteredValue="#{produtoBean.receitasFiltradas}">
+					filteredValue="#{produtoBean.toReceitasFiltradas}">
 
-					<p:column headerText="Descrição" filterBy="#{receita.descricao}"
-						sortBy="#{receita.descricao}">
-						<h:outputText value="#{receita.descricao}" />
-					</p:column>
-
-					<p:column headerText="Quantidade" filterBy="#{receita.quantidade}"
-						sortBy="#{receita.quantidade}">
-						<h:outputText value="#{receita.quantidade}" />
+					<p:column headerText="Descrição" filterBy="#{toReceita.nome}"
+						sortBy="#{toReceita.nome}">
+						<h:outputText value="#{toReceita.nome}" />
 					</p:column>
 
 				</p:dataTable>

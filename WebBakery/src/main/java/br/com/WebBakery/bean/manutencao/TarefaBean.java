@@ -30,21 +30,21 @@ public class TarefaBean extends AbstractBaseRegisterMBean<TOTarefa> {
 
     private static final String REGISTERED_SUCCESSFULLY = "TOTarefa cadastrada com sucesso!";
 
-    private TOTarefa tarefa;
+    private TOTarefa toTarefa;
     @Inject
     private TarefaDao tarefaDao;
 
     @Inject
     private ProdutoDao produtoDao;
-    private List<TOProduto> produtos;
-    private List<TOProduto> produtosFiltrados;
-    private TOProduto produtoSelecionado;
+    private List<TOProduto> toProdutos;
+    private List<TOProduto> toProdutosFiltrados;
+    private TOProduto toProdutoSelecionado;
 
     private TarefaValidator validator;
 
     @PostConstruct
     private void init() {
-        this.tarefa = new TOTarefa();
+        this.toTarefa = new TOTarefa();
         initQuantidadeProdutoTarefa();
         initProdutos();
     }
@@ -52,8 +52,8 @@ public class TarefaBean extends AbstractBaseRegisterMBean<TOTarefa> {
     @Transactional
     public void cadastrar() {
         try {
-            this.validator = new TarefaValidator(this.tarefa);
-            if (this.tarefa.getId() == null) {
+            this.validator = new TarefaValidator(this.toTarefa);
+            if (this.toTarefa.getId() == null) {
                 efetuarCadastro();
             } else {
                 efetuarAtualizacao();
@@ -66,21 +66,21 @@ public class TarefaBean extends AbstractBaseRegisterMBean<TOTarefa> {
 
     private void efetuarCadastro() throws Exception {
         if (this.validator.isValid()) {
-            this.tarefa.setAtivo(true);
-            this.tarefaDao.cadastrar(this.tarefa);
+            this.toTarefa.setAtivo(true);
+            this.tarefaDao.cadastrar(this.toTarefa);
             getContext().addMessage(null, new FacesMessage(REGISTERED_SUCCESSFULLY));
         }
     }
 
     private void efetuarAtualizacao() throws Exception {
         if (this.validator.isValid()) {
-            this.tarefaDao.atualizar(this.tarefa);
+            this.tarefaDao.atualizar(this.toTarefa);
             getContext().addMessage(null, new FacesMessage(UPDATED_SUCCESSFULLY));
         }
     }
 
     private void atualizarTela() {
-        this.tarefa = new TOTarefa();
+        this.toTarefa = new TOTarefa();
         this.validator.showMessages();
         this.validator.clearMessages();
         initQuantidadeProdutoTarefa();
@@ -88,54 +88,54 @@ public class TarefaBean extends AbstractBaseRegisterMBean<TOTarefa> {
 
     private void initProdutos() {
         try {
-            this.produtos = this.produtoDao.listarTodos(true);
+            this.toProdutos = this.produtoDao.listarTodos(true);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     private void initQuantidadeProdutoTarefa() {
-        this.tarefa.setQuantidade(1);
+        this.toTarefa.setQuantidade(1);
     }
 
     public void setarProduto() {
-        this.tarefa.setToProduto(this.produtoSelecionado);
+        this.toTarefa.setToProduto(this.toProdutoSelecionado);
     }
 
     public String dataFormatada(Date data) {
         return Date_Util.formatar("dd/MM/yyyy", data);
     }
 
-    public TOTarefa getTarefa() {
-        return tarefa;
+    public TOTarefa getToTarefa() {
+        return toTarefa;
     }
 
-    public void setToTarefa(TOTarefa tarefa) {
-        this.tarefa = tarefa;
+    public void setToTarefa(TOTarefa toTarefa) {
+        this.toTarefa = toTarefa;
     }
 
-    public List<TOProduto> getProdutos() {
-        return produtos;
+    public List<TOProduto> getToProdutos() {
+        return toProdutos;
     }
 
-    public void setProdutos(List<TOProduto> produtos) {
-        this.produtos = produtos;
+    public void setToProdutos(List<TOProduto> toProdutos) {
+        this.toProdutos = toProdutos;
     }
 
-    public List<TOProduto> getProdutosFiltrados() {
-        return produtosFiltrados;
+    public List<TOProduto> getToProdutosFiltrados() {
+        return toProdutosFiltrados;
     }
 
-    public void setProdutosFiltrados(List<TOProduto> produtosFiltrados) {
-        this.produtosFiltrados = produtosFiltrados;
+    public void setToProdutosFiltrados(List<TOProduto> toProdutosFiltrados) {
+        this.toProdutosFiltrados = toProdutosFiltrados;
     }
 
-    public TOProduto getProdutoSelecionado() {
-        return produtoSelecionado;
+    public TOProduto getToProdutoSelecionado() {
+        return toProdutoSelecionado;
     }
 
-    public void setProdutoSelecionado(TOProduto produtoSelecionado) {
-        this.produtoSelecionado = produtoSelecionado;
+    public void setToProdutoSelecionado(TOProduto toProdutoSelecionado) {
+        this.toProdutoSelecionado = toProdutoSelecionado;
     }
 
 }

@@ -3,12 +3,17 @@ package br.com.WebBakery.to;
 import java.util.List;
 
 import br.com.WebBakery.abstractClass.AbstractBaseTO;
+import br.com.WebBakery.core.annotations.TOEntity;
 
 public class TOProduto extends AbstractBaseTO {
 
+    @TOEntity(fieldName = "descricao")
     private String descricao;
+    @TOEntity(fieldName = "tempoValido")
     private Integer tempoValido;
+    @TOEntity(fieldName = "preco")
     private Double preco;
+    @TOEntity(fieldName = "receita")
     private TOReceita toReceita;
     private List<TOFotoProduto> toFotos;
 

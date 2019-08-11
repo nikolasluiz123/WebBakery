@@ -10,49 +10,47 @@
 	<ui:define name="conteudo">
 
 		<h:form id="formDataTableClientes">
-			<p:dataTable var="cliente"
-				value="#{listaClientesBean.clientes}"
+			<p:dataTable var="toCliente" value="#{listaClienteBean.toClientes}"
 				id="tabelaClientes" rows="10" paginator="true"
 				paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PageLinks} {PreviousPageLink} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-				rowsPerPageTemplate="10,15,20,25,30"
-				widgetVar="TabelaClientes"
-				filteredValue="#{listaClientesBean.clientesFiltrados}"
+				rowsPerPageTemplate="10,15,20,25,30" widgetVar="TabelaClientes"
+				filteredValue="#{listaClienteBean.toClientesFiltrados}"
 				emptyMessage="Nenhum cliente encontrado">
 
 				<f:facet name="header" style="min-height: 35px">
 					<div>Clientes</div>
 				</f:facet>
 
-				<p:column headerText="Nome" sortBy="#{cliente.nome}"
-					filterBy="#{cliente.nome}">
-					<h:outputText value="#{cliente.nome}" />
+				<p:column headerText="Nome" sortBy="#{toCliente.nome}"
+					filterBy="#{toCliente.nome}">
+					<h:outputText value="#{toCliente.nome}" />
 				</p:column>
 
-				<p:column headerText="Sobrenome" sortBy="#{cliente.sobrenome}"
-					filterBy="#{cliente.sobrenome}">
-					<h:outputText value="#{cliente.sobrenome}" />
+				<p:column headerText="Sobrenome" sortBy="#{toCliente.sobrenome}"
+					filterBy="#{toCliente.sobrenome}">
+					<h:outputText value="#{toCliente.sobrenome}" />
 				</p:column>
 
-				<p:column headerText="CPF" sortBy="#{cliente.cpf}"
-					filterBy="#{cliente.cpf}">
-					<h:outputText value="#{cliente.cpf}" />
+				<p:column headerText="CPF" sortBy="#{toCliente.cpf}"
+					filterBy="#{toCliente.cpf}">
+					<h:outputText value="#{toCliente.cpf}" />
 				</p:column>
 
-				<p:column headerText="Telefone" sortBy="#{cliente.telefone}"
-					filterBy="#{cliente.telefone}">
-					<h:outputText value="#{cliente.telefone}" />
+				<p:column headerText="Telefone" sortBy="#{toCliente.telefone}"
+					filterBy="#{toCliente.telefone}">
+					<h:outputText value="#{toCliente.telefone}" />
 				</p:column>
 
 				<p:column headerText="Data de Nascimneto"
-					sortBy="#{cliente.dataNascimento}"
-					filterBy="#{cliente.dataNascimento}">
-					<h:outputText value="#{cliente.dataNascimento}"
+					sortBy="#{toCliente.dataNascimento}"
+					filterBy="#{toCliente.dataNascimento}">
+					<h:outputText value="#{toCliente.dataNascimento}"
 						converter="SimpleDateConverter" />
 				</p:column>
 
-				<p:column headerText="Usuário" sortBy="#{cliente.usuario.email}"
-					filterBy="#{cliente.usuario.email}">
-					<h:outputText value="#{cliente.usuario.email}" />
+				<p:column headerText="Usuário" sortBy="#{toCliente.usuario.email}"
+					filterBy="#{toCliente.usuario.email}">
+					<h:outputText value="#{toCliente.usuario.email}" />
 				</p:column>
 
 			</p:dataTable>

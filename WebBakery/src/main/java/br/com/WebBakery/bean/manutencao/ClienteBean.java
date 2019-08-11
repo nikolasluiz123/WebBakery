@@ -48,17 +48,17 @@ public class ClienteBean extends AbstractBaseRegisterMBean<TOCliente> {
     private PaisDao paisDao;
     private List<TOPais> toPaises;
     private List<TOPais> toPaisesFiltrados;
-    private TOPais paisSelecionado;
+    private TOPais toPaisSelecionado;
     @Inject
     private EstadoDao estadoDao;
     private List<TOEstado> toEstados;
     private List<TOEstado> toEstadosFiltrados;
-    private TOEstado estadoSelecionado;
+    private TOEstado toEstadoSelecionado;
     @Inject
     private CidadeDao cidadeDao;
     private List<TOCidade> toCidades;
     private List<TOCidade> toCidadesFiltradas;
-    private TOCidade cidadeSelecionada;
+    private TOCidade toCidadeSelecionada;
     @Inject
     private LogradouroDao logradouroDao;
     @Inject
@@ -80,9 +80,9 @@ public class ClienteBean extends AbstractBaseRegisterMBean<TOCliente> {
         this.toCliente.getToEndereco().setToLogradouro(new TOLogradouro());
 
         this.toCliente.setToUsuario(new TOUsuario());
-        this.paisSelecionado = new TOPais();
-        this.estadoSelecionado = new TOEstado();
-        this.cidadeSelecionada = new TOCidade();
+        this.toPaisSelecionado = new TOPais();
+        this.toEstadoSelecionado = new TOEstado();
+        this.toCidadeSelecionada = new TOCidade();
 
         initListPaises();
         initListEstados();
@@ -130,7 +130,7 @@ public class ClienteBean extends AbstractBaseRegisterMBean<TOCliente> {
 
     private void cadastrarLogradouroCliente() throws Exception {
         this.toCliente.getToEndereco().getToLogradouro().setAtivo(true);
-        this.toCliente.getToEndereco().getToLogradouro().setToCidade(cidadeSelecionada);
+        this.toCliente.getToEndereco().getToLogradouro().setToCidade(toCidadeSelecionada);
         this.logradouroDao.cadastrar(this.toCliente.getToEndereco().getToLogradouro());
     }
 
@@ -176,17 +176,17 @@ public class ClienteBean extends AbstractBaseRegisterMBean<TOCliente> {
     }
 
     public void setarPais() {
-        this.toCliente.getToEndereco().setToPais(this.paisSelecionado);
-        carregarEstado(paisSelecionado.getId());
+        this.toCliente.getToEndereco().setToPais(this.toPaisSelecionado);
+        carregarEstado(toPaisSelecionado.getId());
     }
 
     public void setarEstado() {
-        this.toCliente.getToEndereco().setToEstado(this.estadoSelecionado);
-        carregarCidade(estadoSelecionado.getId());
+        this.toCliente.getToEndereco().setToEstado(this.toEstadoSelecionado);
+        carregarCidade(toEstadoSelecionado.getId());
     }
 
     public void setarCidade() {
-        this.toCliente.getToEndereco().setToCidade(this.cidadeSelecionada);
+        this.toCliente.getToEndereco().setToCidade(this.toCidadeSelecionada);
     }
 
     private void carregarEstado(Integer paisId) {
@@ -229,12 +229,12 @@ public class ClienteBean extends AbstractBaseRegisterMBean<TOCliente> {
         this.toPaisesFiltrados = toPaisesFiltrados;
     }
 
-    public TOPais getPaisSelecionado() {
-        return paisSelecionado;
+    public TOPais getToPaisSelecionado() {
+        return toPaisSelecionado;
     }
 
-    public void setPaisSelecionado(TOPais paisSelecionado) {
-        this.paisSelecionado = paisSelecionado;
+    public void setToPaisSelecionado(TOPais toPaisSelecionado) {
+        this.toPaisSelecionado = toPaisSelecionado;
     }
 
     public List<TOEstado> getToEstados() {
@@ -253,12 +253,12 @@ public class ClienteBean extends AbstractBaseRegisterMBean<TOCliente> {
         this.toEstadosFiltrados = toEstadosFiltrados;
     }
 
-    public TOEstado getEstadoSelecionado() {
-        return estadoSelecionado;
+    public TOEstado getToEstadoSelecionado() {
+        return toEstadoSelecionado;
     }
 
-    public void setEstadoSelecionado(TOEstado estadoSelecionado) {
-        this.estadoSelecionado = estadoSelecionado;
+    public void setToEstadoSelecionado(TOEstado toEstadoSelecionado) {
+        this.toEstadoSelecionado = toEstadoSelecionado;
     }
 
     public List<TOCidade> getToCidades() {
@@ -277,12 +277,12 @@ public class ClienteBean extends AbstractBaseRegisterMBean<TOCliente> {
         this.toCidadesFiltradas = toCidadesFiltradas;
     }
 
-    public TOCidade getCidadeSelecionada() {
-        return cidadeSelecionada;
+    public TOCidade getToCidadeSelecionada() {
+        return toCidadeSelecionada;
     }
 
-    public void setCidadeSelecionada(TOCidade cidadeSelecionada) {
-        this.cidadeSelecionada = cidadeSelecionada;
+    public void setToCidadeSelecionada(TOCidade toCidadeSelecionada) {
+        this.toCidadeSelecionada = toCidadeSelecionada;
     }
 
     public String getSenha() {

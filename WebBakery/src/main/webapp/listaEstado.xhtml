@@ -10,35 +10,35 @@
 	<ui:define name="conteudo">
 
 		<h:form id="formDataTableEstados">
-			<p:dataTable id="tabelaEstados" value="#{listaEstadoBean.toEstadosos}"
-				var="estado" rowKey="#{estado.id}" rows="5" paginator="true"
+			<p:dataTable id="tabelaEstados" value="#{listaEstadoBean.toEstados}"
+				var="toEstado" rowKey="#{toEstado.id}" rows="5" paginator="true"
 				paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PageLinks} {PreviousPageLink} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 				emptyMessage="Nenhum estado encontrado." widgetVar="TabelaEstados"
-				filteredValue="#{listaEstadoBtoEstadosFiltradososados}">
+				filteredValue="#{listaEstadoBean.toEstadosFiltrados}">
 
 				<f:facet name="header" style="min-height: 35px; max-height: 35px">
 					<div>Estados</div>
 
 				</f:facet>
 
-				<p:column headerText="Nome" sortBy="#{estado.nome}"
+				<p:column headerText="Nome" sortBy="#{toEstado.nome}"
 					filterBy="#{estado.nome}">
 					<h:outputText value="#{estado.nome}" />
 				</p:column>
 
-				<p:column headerText="Sigla" sortBy="#{estado.sigla}"
-					filterBy="#{estado.sigla}">
-					<h:outputText value="#{estado.sigla}" />
+				<p:column headerText="Sigla" sortBy="#{toEstado.sigla}"
+					filterBy="#{toEstado.sigla}">
+					<h:outputText value="#{toEstado.sigla}" />
 				</p:column>
 
 				<p:column headerText="Alterar">
 					<p:commandLink value="Alterar"
-						action="#{listaEstadoBean.carregar(estado.id)}" process="@this" />
+						action="#{listaEstadoBean.carregar(toEstado.id)}" process="@this" />
 				</p:column>
 
 				<p:column headerText="Inativar">
 					<p:commandLink value="Inativar"
-						action="#{listaEstadoBean.inativar(estado)}"
+						action="#{listaEstadoBean.inativar(toEstado)}"
 						update="tabelaEstados, formMessages:messages" process="@this"
 						oncomplete="PF('TabelaEstados').filter();" />
 				</p:column>

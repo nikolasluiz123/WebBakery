@@ -40,7 +40,7 @@ public class LoginBean extends AbstractBaseRegisterMBean<TOUsuario> {
         this.toUsuario = new TOUsuario();
     }
 
-    public void logar() throws IOException {
+    public void logar() {
         try {
             this.toUsuario = usuarioDao.usuarioExiste(this.toUsuario.getEmail());
             this.validator = new LoginValidator(this.toUsuario,
@@ -51,19 +51,22 @@ public class LoginBean extends AbstractBaseRegisterMBean<TOUsuario> {
             if (validator.isValid()) {
                 getContext().getExternalContext().getSessionMap().put("usuarioLogado",
                                                                       this.toUsuario);
-                getContext().getExternalContext().redirect("cadastroFotoPerfilUsuario.xhtml");
+                getContext().getExternalContext().redirect("cadastroPais.xhtml");
             } else {
                 validator.showMessages();
-                this.toUsuario = new TOUsuario();
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public void deslogar() throws IOException {
-        getContext().getExternalContext().getSessionMap().remove("usuarioLogado");
-        getContext().getExternalContext().redirect("login.xhtml");
+    public void deslogar() {
+        try {
+            getContext().getExternalContext().getSessionMap().remove("usuarioLogado");
+            getContext().getExternalContext().redirect("login.xhtml");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public String getSenha() {

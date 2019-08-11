@@ -10,36 +10,35 @@
 	<ui:define name="conteudo">
 
 		<h:form id="formDataTablePaises">
-			<p:dataTable var="pais" value="#{listaPaisesBean.paises}"
+			<p:dataTable var="toPais" value="#{listaPaisBean.toPaises}"
 				id="tabelaPaises" rows="5" paginator="true"
 				paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PageLinks} {PreviousPageLink} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 				rowsPerPageTemplate="5,10,15" emptyMessage="Nenhum país encontrado."
 				widgetVar="TabelaPaises"
-				filteredValue="#{listaPaisesBean.paisesFiltrados}">
+				filteredValue="#{listaPaisBean.toPaisesFiltrados}">
 
 				<f:facet name="header">
 					<div>Países</div>
-
 				</f:facet>
 
-				<p:column headerText="Nome" sortBy="#{pais.nome}"
-					filterBy="#{pais.nome}">
-					<h:outputText value="#{pais.nome}" />
+				<p:column headerText="Nome" sortBy="#{toPais.nome}"
+					filterBy="#{toPais.nome}">
+					<h:outputText value="#{toPais.nome}" />
 				</p:column>
 
-				<p:column headerText="Sigla" sortBy="#{pais.sigla}"
-					filterBy="#{pais.sigla}">
-					<h:outputText value="#{pais.sigla}" />
+				<p:column headerText="Sigla" sortBy="#{toPais.sigla}"
+					filterBy="#{toPais.sigla}">
+					<h:outputText value="#{toPais.sigla}" />
 				</p:column>
 
 				<p:column headerText="Alterar">
 					<p:commandLink value="Alterar"
-						action="#{listaPaisesBean.carregar(pais.id)}" process="@this" />
+						action="#{listaPaisesBean.carregar(toPais.id)}" process="@this" />
 				</p:column>
 
 				<p:column headerText="Inativar">
 					<p:commandLink value="Inativar"
-						action="#{listaPaisesBean.inativar(pais)}"
+						action="#{listaPaisesBean.inativar(toPais)}"
 						update="tabelaPaises, formMessages:messages" process="@this"
 						oncomplete="PF('TabelaPaises').filter();" />
 				</p:column>

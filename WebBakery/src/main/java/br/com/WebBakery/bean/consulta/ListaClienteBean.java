@@ -72,20 +72,20 @@ public class ListaClienteBean extends AbstractBaseListMBean implements IBaseList
         return ((ClienteBean) Faces_Util.getBean(ClienteBean.BEAN_NAME));
     }
 
-    public List<TOCliente> getClientes() {
+    public List<TOCliente> getToClientes() {
         return toClientes;
     }
 
-    public void setClientes(List<TOCliente> clientes) {
-        this.toClientes = clientes;
+    public void setToClientes(List<TOCliente> toClientes) {
+        this.toClientes = toClientes;
     }
 
-    public List<TOCliente> getClientesFiltrados() {
+    public List<TOCliente> getToClientesFiltrados() {
         return toClientesFiltrados;
     }
 
-    public void setClientesFiltrados(List<TOCliente> clientesFiltrados) {
-        this.toClientesFiltrados = clientesFiltrados;
+    public void setToClientesFiltrados(List<TOCliente> toClientesFiltrados) {
+        this.toClientesFiltrados = toClientesFiltrados;
     }
 
 }

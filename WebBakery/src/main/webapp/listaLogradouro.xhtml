@@ -11,46 +11,46 @@
 
 		<h:form id="formDataTableLogradouros">
 			<p:dataTable id="tabelaLogradouros"
-				value="#{listaLogradouroBean.logradouros}" var="logradouro"
-				rowKey="#{logradouro.id}" rows="5" paginator="true"
+				value="#{listaLogradouroBean.toLogradouros}" var="toLogradouro"
+				rowKey="#{toLogradouro.id}" rows="5" paginator="true"
 				paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PageLinks} {PreviousPageLink} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 				emptyMessage="Nenhum logradouro encontrado."
 				widgetVar="TabelaLogradouros"
-				filteredValue="#{listaLogradouroBean.logradourosFiltrados}">
+				filteredValue="#{listaLogradouroBean.toLogradourosFiltrados}">
 
 				<f:facet name="header" style="min-height: 35px; max-height: 35px">
 					<div style="margin-top: 5px">Logradouros</div>
 				</f:facet>
 
-				<p:column headerText="Bairro" sortBy="#{logradouro.bairro}"
-					filterBy="#{logradouro.bairro}">
-					<h:outputText value="#{logradouro.bairro}" />
+				<p:column headerText="Bairro" sortBy="#{toLogradouro.bairro}"
+					filterBy="#{toLogradouro.bairro}">
+					<h:outputText value="#{toLogradouro.bairro}" />
 				</p:column>
 
-				<p:column headerText="Cep" sortBy="#{logradouro.cep}"
-					filterBy="#{logradouro.cep}">
-					<h:outputText value="#{logradouro.cep}" />
+				<p:column headerText="Cep" sortBy="#{toLogradouro.cep}"
+					filterBy="#{toLogradouro.cep}">
+					<h:outputText value="#{toLogradouro.cep}" />
 				</p:column>
 
-				<p:column headerText="Rua" sortBy="#{logradouro.rua}"
-					filterBy="#{logradouro.rua}">
-					<h:outputText value="#{logradouro.rua}" />
+				<p:column headerText="Rua" sortBy="#{toLogradouro.rua}"
+					filterBy="#{toLogradouro.rua}">
+					<h:outputText value="#{toLogradouro.rua}" />
 				</p:column>
 
 				<p:column headerText="Complemento"
-					sortBy="#{logradouro.complemento}"
-					filterBy="#{logradouro.complemento}">
-					<h:outputText value="#{logradouro.complemento}" />
+					sortBy="#{toLogradouro.complemento}"
+					filterBy="#{toLogradouro.complemento}">
+					<h:outputText value="#{toLogradouro.complemento}" />
 				</p:column>
 
-				<p:column headerText="Cidade" sortBy="#{logradouro.cidade.nome}"
-					filterBy="#{logradouro.cidade.nome}">
-					<h:outputText value="#{logradouro.cidade.nome}" />
+				<p:column headerText="Cidade" sortBy="#{toLogradouro.cidade.nome}"
+					filterBy="#{toLogradouro.cidade.nome}">
+					<h:outputText value="#{toLogradouro.cidade.nome}" />
 				</p:column>
 
 				<p:column headerText="Inativar">
 					<p:commandLink value="Inativar"
-						action="#{listaLogradouroBean.inativar(logradouro)}"
+						action="#{listaLogradouroBean.inativar(toLogradouro)}"
 						update="tabelaLogradouros, formMessages:messages" process="@this"
 						oncomplete="PF('TabelaLogradouros').filter();" />
 				</p:column>

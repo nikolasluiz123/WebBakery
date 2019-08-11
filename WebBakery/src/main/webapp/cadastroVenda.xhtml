@@ -10,16 +10,16 @@
 	<ui:define name="conteudo">
 
 		<h:form id="formCadastroVenda">
-			<p:dataTable id="tabelaEstoqueProdutos" var="estoqueProduto"
-				value="#{vendaBean.estoqueProdutos}"
-				selection="#{vendaBean.estoqueProdutosSelecionados}"
-				rowKey="#{estoqueProduto.id}" style="margin-bottom:0" rows="5"
+			<p:dataTable id="tabelaEstoqueProdutos" var="toEstoqueProduto"
+				value="#{vendaBean.toEstoqueProdutos}"
+				selection="#{vendaBean.toEstoqueProdutosSelecionados}"
+				rowKey="#{toEstoqueProduto.id}" style="margin-bottom:0" rows="5"
 				paginator="true"
 				paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PageLinks} {PreviousPageLink} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 				rowsPerPageTemplate="5,10,15"
 				emptyMessage="Nenhum produto encontrado."
 				widgetVar="TabelaEstoqueProdutos"
-				filteredValue="#{vendaBean.estoqueProdutosFiltrados}">
+				filteredValue="#{vendaBean.toEstoqueProdutosFiltrados}">
 
 				<p:ajax event="rowSelectCheckbox"
 					update="formCadastroVenda:funcionalidades" />
@@ -36,13 +36,13 @@
 					style="width:16px;text-align:center" />
 
 				<p:column headerText="Nome"
-					filterBy="#{estoqueProduto.produto.descricao}">
-					<h:outputText value="#{estoqueProduto.produto.descricao}" />
+					filterBy="#{estoqueProduto.toProduto.descricao}">
+					<h:outputText value="#{estoqueProduto.toProduto.descricao}" />
 				</p:column>
 
 				<p:column headerText="Preço"
-					filterBy="#{estoqueProduto.produto.preco}">
-					<h:outputText value="#{estoqueProduto.produto.preco}" />
+					filterBy="#{estoqueProduto.toProduto.preco}">
+					<h:outputText value="#{estoqueProduto.toProduto.preco}" />
 				</p:column>
 
 				<p:column headerText="Quantidade em Estoque"
@@ -54,15 +54,15 @@
 			<div jsf:id="funcionalidades">
 				<p:outputLabel for="cliente" value="Cliente:" />
 				<p:inputText id="cliente" onclick="PF('ClientesDialog').show();"
-					value="#{vendaBean.venda.cliente.usuario.nome} #{vendaBean.venda.cliente.usuario.sobrenome}"
+					value="#{vendaBean.toVenda.toCliente.toUsuario.nome} #{vendaBean.toVenda.toCliente.toUsuario.sobrenome}"
 					readonly="true" placeholder="Selecione o cliente..."
 					style="cursor: pointer;"
-					disabled="#{empty vendaBean.estoqueProdutosSelecionados}" />
+					disabled="#{empty vendaBean.toEstoqueProdutosSelecionados}" />
 
 				<p:outputLabel value="Forma de Pagamento:" for="formaPagamento" />
 				<p:selectOneMenu value="#{vendaBean.formaPagamento}"
 					id="formaPagamento"
-					disabled="#{empty vendaBean.estoqueProdutosSelecionados}">
+					disabled="#{empty vendaBean.toEstoqueProdutosSelecionados}">
 					<f:selectItems value="#{vendaBean.formasPagamento}" var="forma"
 						itemLabel="#{forma.nome}" itemValue="#{forma}" />
 				</p:selectOneMenu>
@@ -70,36 +70,36 @@
 				<p:commandButton value="Adicionar ao Carrinho" id="addCarrinho"
 					oncomplete="PF('ProdutosVendaDialog').show();"
 					action="#{vendaBean.adicionarCarrinho}"
-					disabled="#{empty vendaBean.estoqueProdutosSelecionados}"
+					disabled="#{empty vendaBean.toEstoqueProdutosSelecionados}"
 					update="tabelaProdutosVenda" />
 			</div>
 
 			<p:dialog header="Clientes" widgetVar="ClientesDialog"
 				resizable="false" width="700">
 
-				<p:dataTable var="cliente" value="#{vendaBean.clientes}"
-					selectionMode="single" selection="#{vendaBean.clienteSelecionado}"
-					id="tabelaVendas" rowKey="#{cliente.id}" rows="5" paginator="true"
+				<p:dataTable var="toCliente" value="#{vendaBean.toClientes"
+					selectionMode="single" selection="#{vendaBean.toClienteSelecionado}"
+					id="tabelaVendas" rowKey="#{toCliente.id}" rows="5" paginator="true"
 					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PageLinks} {PreviousPageLink} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 					rowsPerPageTemplate="5,10,15"
 					emptyMessage="Nenhum cliente encontrado."
 					widgetVar="TabelaClientes"
-					filteredValue="#{vendaBean.clientesFiltrados}">
+					filteredValue="#{vendaBean.toClientesFiltrados}">
 
-					<p:column headerText="Nome" filterBy="#{cliente.usuario.nome}"
-						sortBy="#{cliente.usuario.nome}">
-						<h:outputText value="#{cliente.usuario.nome}" />
+					<p:column headerText="Nome" filterBy="#{toCliente.toUsuario.nome}"
+						sortBy="#{cliente.toUsuario.nome}">
+						<h:outputText value="#{toCliente.toUsuario.nome}" />
 					</p:column>
 
 					<p:column headerText="Sobrenome"
-						filterBy="#{cliente.usuario.sobrenome}"
-						sortBy="#{cliente.usuario.sobrenome}">
-						<h:outputText value="#{cliente.usuario.sobrenome}" />
+						filterBy="#{toCliente.toUsuario.sobrenome}"
+						sortBy="#{toCliente.toUsuario.sobrenome}">
+						<h:outputText value="#{toCliente.toUsuario.sobrenome}" />
 					</p:column>
 
-					<p:column headerText="Cpf" filterBy="#{cliente.cpf}"
-						sortBy="#{cliente.cpf}">
-						<h:outputText value="#{cliente.cpf}" />
+					<p:column headerText="Cpf" filterBy="#{toCliente.cpf}"
+						sortBy="#{toCliente.cpf}">
+						<h:outputText value="#{toCliente.cpf}" />
 					</p:column>
 				</p:dataTable>
 				<p:commandButton value="Selecionar" process="@form"
@@ -111,36 +111,36 @@
 			<p:dialog header="Produtos da Venda" id="lovProdutosVenda"
 				widgetVar="ProdutosVendaDialog" resizable="false" width="700">
 
-				<p:dataTable var="produtoVenda" value="#{vendaBean.produtosVenda}"
-					id="tabelaProdutosVenda" rowKey="#{produtoVenda.id}" rows="5"
+				<p:dataTable var="toProdutoVenda" value="#{vendaBean.toProdutosVenda}"
+					id="tabelaProdutosVenda" rowKey="#{toProdutoVenda.id}" rows="5"
 					paginator="true"
 					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PageLinks} {PreviousPageLink} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 					rowsPerPageTemplate="5,10,15"
 					emptyMessage="Nenhum produto da venda encontrado."
 					widgetVar="TabelaProdutosVenda"
-					filteredValue="#{vendaBean.produtosVendaFiltrados}" editable="true"
+					filteredValue="#{vendaBean.toProdutosVendaFiltrados}" editable="true"
 					editMode="cell">
 
 					<p:ajax event="cellEdit" listener="#{vendaBean.onCellEdit}"
 						update="formMessages:messages" />
 					<p:ajax event="cellEditInit"
-						listener="#{vendaBean.produtoVendaSendoEditado}" />
+						listener="#{vendaBean.toProdutoVendaSendoEditado}" />
 
 					<p:column headerText="Nome"
-						filterBy="#{produtoVenda.produto.descricao}"
-						sortBy="#{produtoVenda.produto.descricao}">
-						<h:outputText value="#{produtoVenda.produto.descricao}" />
+						filterBy="#{toProdutoVenda.toProduto.descricao}"
+						sortBy="#{toProdutoVenda.toProduto.descricao}">
+						<h:outputText value="#{toProdutoVenda.toProduto.descricao}" />
 					</p:column>
 
 					<p:column headerText="Quantidade">
 						<p:cellEditor>
 							<f:facet name="output">
 								<h:outputText id="outputQuantidade"
-									value="#{produtoVenda.quantidade}" />
+									value="#{toProdutoVenda.quantidade}" />
 							</f:facet>
 							<f:facet name="input">
 								<p:inputNumber id="inputQuantidade"
-									value="#{produtoVenda.quantidade}" decimalPlaces="0" />
+									value="#{toProdutoVenda.quantidade}" decimalPlaces="0" />
 							</f:facet>
 						</p:cellEditor>
 					</p:column>

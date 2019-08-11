@@ -32,8 +32,8 @@ public class ListaFuncionarioBean extends AbstractBaseListMBean
 
     @Inject
     private FuncionarioDao funcionarioDao;
-    private List<TOFuncionario> TOFuncionarios;
-    private List<TOFuncionario> TOFuncionariosFiltrados;
+    private List<TOFuncionario> toFuncionarios;
+    private List<TOFuncionario> toFuncionariosFiltrados;
     @Inject
     private EnderecoDao enderecoDao;
     @Inject
@@ -41,7 +41,7 @@ public class ListaFuncionarioBean extends AbstractBaseListMBean
 
     @PostConstruct
     private void init() {
-        this.TOFuncionarios = new ArrayList<>();
+        this.toFuncionarios = new ArrayList<>();
         initListFuncionarios();
     }
 
@@ -50,11 +50,11 @@ public class ListaFuncionarioBean extends AbstractBaseListMBean
     public void inativar(TOFuncionario to) {
         try {
             to.setAtivo(false);
-            to.getEndereco().setAtivo(false);
-            to.getEndereco().getToLogradouro().setAtivo(false);
+            to.getToEndereco().setAtivo(false);
+            to.getToEndereco().getToLogradouro().setAtivo(false);
             this.funcionarioDao.atualizar(to);
-            this.enderecoDao.atualizar(to.getEndereco());
-            this.logradouroDao.atualizar(to.getEndereco().getToLogradouro());
+            this.enderecoDao.atualizar(to.getToEndereco());
+            this.logradouroDao.atualizar(to.getToEndereco().getToLogradouro());
             initListFuncionarios();
             getContext().addMessage(null, new FacesMessage(FUNCIONARIO_INATIVATED_SUCCESSFULLY));
         } catch (Exception e) {
@@ -74,7 +74,7 @@ public class ListaFuncionarioBean extends AbstractBaseListMBean
 
     private void initListFuncionarios() {
         try {
-            this.TOFuncionarios = this.funcionarioDao.listarTodos(true);
+            this.toFuncionarios = this.funcionarioDao.listarTodos(true);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -84,20 +84,20 @@ public class ListaFuncionarioBean extends AbstractBaseListMBean
         return ((FuncionarioBean) Faces_Util.getBean(FuncionarioBean.BEAN_NAME));
     }
 
-    public List<TOFuncionario> getFuncionarios() {
-        return TOFuncionarios;
+    public List<TOFuncionario> getToFuncionarios() {
+        return toFuncionarios;
     }
 
-    public void setFuncionarios(List<TOFuncionario> funcionarios) {
-        this.TOFuncionarios = funcionarios;
+    public void setToFuncionarios(List<TOFuncionario> toFuncionarios) {
+        this.toFuncionarios = toFuncionarios;
     }
 
-    public List<TOFuncionario> getFuncionariosFiltrados() {
-        return TOFuncionariosFiltrados;
+    public List<TOFuncionario> getToFuncionariosFiltrados() {
+        return toFuncionariosFiltrados;
     }
 
-    public void setFuncionariosFiltrados(List<TOFuncionario> funcionariosFiltrados) {
-        this.TOFuncionariosFiltrados = funcionariosFiltrados;
+    public void setToFuncionariosFiltrados(List<TOFuncionario> toFuncionariosFiltrados) {
+        this.toFuncionariosFiltrados = toFuncionariosFiltrados;
     }
 
 }

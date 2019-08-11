@@ -15,7 +15,7 @@
 				update="formDataTableIngrediente"
 				onstart="PF('DetalhesIngrediente').show()" />
 
-			<p:dataGrid var="i" value="#{listaIngredienteBean.ingredientes}"
+			<p:dataGrid var="i" value="#{listaIngredienteBean.toIngredientes}"
 				columns="3" layout="grid" rows="6" paginator="true"
 				id="ingredientes"
 				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
@@ -40,7 +40,7 @@
 									style="margin-right: 20px;" oncomplete="abrirGaleria()"
 									action="#{listaIngredienteBean.getDadosIngrediente()}">
 									<f:setPropertyActionListener value="#{p}"
-										target="#{listaIngredienteBean.ingredienteSelecionado}" />
+										target="#{listaIngredienteBean.toIngredienteSelecionado}" />
 								</p:commandLink>
 
 								<p:commandLink styleClass="fa fa-pencil"

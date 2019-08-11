@@ -1,14 +1,20 @@
 package br.com.WebBakery.to;
 
 import br.com.WebBakery.abstractClass.AbstractBaseTO;
+import br.com.WebBakery.core.annotations.TOEntity;
 import br.com.WebBakery.enums.TipoUsuario;
 
 public class TOUsuario extends AbstractBaseTO {
 
+    @TOEntity(fieldName = "nome")
     private String nome;
+    @TOEntity(fieldName = "sobrenome")
     private String sobrenome;
+    @TOEntity(fieldName = "email")
     private String email;
+    @TOEntity(fieldName = "senha")
     private Integer senha;
+    @TOEntity(fieldName = "tipo")
     private TipoUsuario tipo;
 
     public String getNome() {

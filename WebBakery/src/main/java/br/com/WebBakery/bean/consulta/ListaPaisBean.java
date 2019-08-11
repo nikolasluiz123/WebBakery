@@ -29,12 +29,12 @@ public class ListaPaisBean extends AbstractBaseListMBean implements IBaseListMBe
 
     @Inject
     private PaisDao paisDao;
-    private List<TOPais> paises;
-    private List<TOPais> paisesFiltrados;
+    private List<TOPais> toPaises;
+    private List<TOPais> toPaisesFiltrados;
 
     @PostConstruct
     private void init() {
-        this.paises = new ArrayList<>();
+        this.toPaises = new ArrayList<>();
         initListPaises();
     }
 
@@ -53,7 +53,7 @@ public class ListaPaisBean extends AbstractBaseListMBean implements IBaseListMBe
 
     private void initListPaises() {
         try {
-            this.paises = this.paisDao.listarTodos(true);
+            this.toPaises = this.paisDao.listarTodos(true);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -71,20 +71,20 @@ public class ListaPaisBean extends AbstractBaseListMBean implements IBaseListMBe
         return ((PaisBean) Faces_Util.getBean(PaisBean.BEAN_NAME));
     }
 
-    public List<TOPais> getPaises() {
-        return paises;
+    public List<TOPais> getToPaises() {
+        return toPaises;
     }
 
-    public void setPaises(List<TOPais> paises) {
-        this.paises = paises;
+    public void setToPaises(List<TOPais> toPaises) {
+        this.toPaises = toPaises;
     }
 
-    public List<TOPais> getPaisesFiltrados() {
-        return paisesFiltrados;
+    public List<TOPais> getToPaisesFiltrados() {
+        return toPaisesFiltrados;
     }
 
-    public void setPaisesFiltrados(List<TOPais> paisesFiltrados) {
-        this.paisesFiltrados = paisesFiltrados;
+    public void setToPaisesFiltrados(List<TOPais> toPaisesFiltrados) {
+        this.toPaisesFiltrados = toPaisesFiltrados;
     }
 
 }

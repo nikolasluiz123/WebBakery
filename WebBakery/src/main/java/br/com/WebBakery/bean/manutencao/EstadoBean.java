@@ -98,19 +98,11 @@ public class EstadoBean extends AbstractBaseRegisterMBean<TOEstado> {
     }
 
     public TOEstado getToEstado() {
-        return this.toEstado;
+        return toEstado;
     }
 
     public void setToEstado(TOEstado toEstado) {
         this.toEstado = toEstado;
-    }
-
-    public List<TOPais> getToPaises() {
-        return toPaises;
-    }
-
-    public void setToPaises(List<TOPais> toPaises) {
-        this.toPaises = toPaises;
     }
 
     public TOPais getToPaisSelecionado() {
@@ -121,15 +113,19 @@ public class EstadoBean extends AbstractBaseRegisterMBean<TOEstado> {
         this.toPaisSelecionado = toPaisSelecionado;
     }
 
-    public void setToPaisesFiltrados(List<TOPais> toPaisesFiltrados) {
-        this.toPaisesFiltrados = toPaisesFiltrados;
+    public List<TOPais> getToPaises() {
+        return toPaises;
+    }
+
+    public void setToPaises(List<TOPais> toPaises) {
+        this.toPaises = toPaises;
     }
 
     public List<TOPais> getToPaisesFiltrados() {
         return toPaisesFiltrados;
     }
 
-    public void setPaisesFiltrados(List<TOPais> toPaisesFiltrados) {
+    public void setToPaisesFiltrados(List<TOPais> toPaisesFiltrados) {
         this.toPaisesFiltrados = toPaisesFiltrados;
     }
 
