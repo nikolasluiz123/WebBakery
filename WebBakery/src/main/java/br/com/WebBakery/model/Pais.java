@@ -5,13 +5,17 @@ import javax.persistence.Entity;
 
 import br.com.WebBakery.abstractClass.AbstractBaseModel;
 
-@Entity
+@Entity(name = Pais.TABLE_NAME)
 public class Pais extends AbstractBaseModel {
 
-    @Column(length = 30)
+    public static final String TABLE_NAME = "paises";
+    private static final String NOME_PAIS = "nome_pais";
+    private static final String SIGLA_PAIS = "sigla_pais";
+
+    @Column(length = STRING_LENGTH_32C, name = NOME_PAIS)
     private String nome;
 
-    @Column(length = 4)
+    @Column(length = STRING_LENGTH_4C, name = SIGLA_PAIS)
     private String sigla;
 
     public String getNome() {

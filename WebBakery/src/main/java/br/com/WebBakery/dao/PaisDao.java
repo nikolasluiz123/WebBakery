@@ -12,20 +12,13 @@ import br.com.WebBakery.to.TOPais;
 
 @Stateless
 public class PaisDao extends AbstractBaseDao<TOPais> {
+    
     private static final long serialVersionUID = 1904464340270603917L;
-
-    // @PersistenceContext
-    // transient private EntityManager entityManager;
-    //
-    // @Override
-    // protected EntityManager getEntityManager() {
-    // return this.entityManager;
-    // }
 
     @Override
     public void cadastrar(TOPais to) throws Exception {
         Pais p = new Pais();
-        getConverter().getTOFromModel(p, to);
+        getConverter().getModelFromTO(to, p);
         getEntityManager().persist(p);
     }
 

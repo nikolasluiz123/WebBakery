@@ -11,11 +11,9 @@ import javax.inject.Named;
 import javax.transaction.Transactional;
 
 import br.com.WebBakery.abstractClass.AbstractBaseListMBean;
-import br.com.WebBakery.bean.manutencao.PaisBean;
 import br.com.WebBakery.dao.PaisDao;
 import br.com.WebBakery.interfaces.IBaseListMBean;
 import br.com.WebBakery.to.TOPais;
-import br.com.WebBakery.util.Faces_Util;
 
 @Named(ListaPaisBean.BEAN_NAME)
 @ViewScoped
@@ -63,12 +61,6 @@ public class ListaPaisBean extends AbstractBaseListMBean implements IBaseListMBe
         String keyAtribute = "PaisID";
         String pageRedirect = "cadastroPais.xhtml";
         setObjetoSessao(paisID, keyAtribute, pageRedirect);
-        PaisBean registerBean = getRegisterBean();
-        registerBean.setToPais(registerBean.getObjetoSessao(keyAtribute, paisDao));
-    }
-
-    private PaisBean getRegisterBean() {
-        return ((PaisBean) Faces_Util.getBean(PaisBean.BEAN_NAME));
     }
 
     public List<TOPais> getToPaises() {

@@ -5,8 +5,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
+import br.com.WebBakery.interfaces.IBaseModel;
+
 @MappedSuperclass
-public abstract class AbstractBaseModel {
+public abstract class AbstractBaseModel implements IBaseModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)

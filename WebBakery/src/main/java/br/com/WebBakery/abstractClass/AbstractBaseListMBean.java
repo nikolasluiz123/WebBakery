@@ -10,9 +10,9 @@ import br.com.WebBakery.util.Faces_Util;
 public abstract class AbstractBaseListMBean extends AbstractBaseMBean {
 
     public void setObjetoSessao(Integer id, String keyAtribute, String pageRedirect) {
-        HttpSession session = Faces_Util.getHTTPSession();
-        session.setAttribute(keyAtribute, id);
         try {
+            HttpSession session = Faces_Util.getHTTPSession();
+            session.setAttribute(keyAtribute, id);
             getContext().getExternalContext().redirect(pageRedirect);
         } catch (IOException e) {
             e.printStackTrace();

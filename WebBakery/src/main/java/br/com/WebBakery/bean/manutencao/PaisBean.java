@@ -1,16 +1,15 @@
 package br.com.WebBakery.bean.manutencao;
 
-import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.transaction.Transactional;
 
+import br.com.WebBakery.abstractClass.AbstractBaseDao;
 import br.com.WebBakery.abstractClass.AbstractBaseRegisterMBean;
 import br.com.WebBakery.dao.PaisDao;
 import br.com.WebBakery.to.TOPais;
-import br.com.WebBakery.validator.PaisValidator;
 
 @Named(PaisBean.BEAN_NAME)
 @ViewScoped
@@ -24,22 +23,14 @@ public class PaisBean extends AbstractBaseRegisterMBean<TOPais> {
 
     @Inject
     private PaisDao paisDao;
-    private TOPais toPais;
-    private PaisValidator validator;
-
-    @PostConstruct
-    private void init() {
-        this.toPais = new TOPais();
-    }
-
+    
     @Transactional
-    public void cadastrar() {
+    public void salvar() {
         try {
-            this.validator = new PaisValidator(this.toPais);
-            if (this.toPais.getId() == null) {
-                efetuarCadastro();
-            } else {
-                efetuarAtualizacao();
+            if (validator.isValid()) {
+                getTo().setAtivo(true);
+                getDao().cadastrar(getTo());
+                showMessageSuccess();
             }
             atualizarTela();
         } catch (Exception e) {
@@ -47,33 +38,31 @@ public class PaisBean extends AbstractBaseRegisterMBean<TOPais> {
         }
     }
 
-    private void efetuarCadastro() throws Exception {
-        if (validator.isValid()) {
-            this.toPais.setAtivo(true);
-            this.paisDao.cadastrar(this.toPais);
-            getContext().addMessage(null, new FacesMessage(REGISTRED_SUCCESSFULLY));
+    private void showMessageSuccess() {
+        if (getTo().getId() == null) {
+            getContext().addMessage(null, new FacesMessage(getMsgInsert()));
+        } else {
+            getContext().addMessage(null, new FacesMessage(getMsgUpdate()));
         }
     }
-
-    private void efetuarAtualizacao() throws Exception {
-        if (this.validator.isValid()) {
-            this.paisDao.atualizar(this.toPais);
-            getContext().addMessage(null, new FacesMessage(PAIS_UPDATED_SUCCESSFULLY));
-        }
+    
+    @Override
+    protected AbstractBaseDao<TOPais> getDao() {
+        return paisDao;
     }
 
-    private void atualizarTela() {
-        this.toPais = new TOPais();
-        this.validator.showMessages();
-        this.validator.clearMessages();
+    @Override
+    protected TOPais getNewInstaceTO() {
+        return new TOPais();
     }
 
-    public TOPais getToPais() {
-        return toPais;
+    @Override
+    protected String getMsgInsert() {
+        return PAIS_UPDATED_SUCCESSFULLY;
     }
 
-    public void setToPais(TOPais toPais) {
-        this.toPais = toPais;
+    @Override
+    protected String getMsgUpdate() {
+        return REGISTRED_SUCCESSFULLY;
     }
-
 }
