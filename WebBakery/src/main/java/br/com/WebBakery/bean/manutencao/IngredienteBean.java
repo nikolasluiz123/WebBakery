@@ -8,7 +8,6 @@ import javax.transaction.Transactional;
 
 import br.com.WebBakery.abstractClass.AbstractBaseDao;
 import br.com.WebBakery.abstractClass.AbstractBaseRegisterMBean;
-import br.com.WebBakery.abstractClass.AbstractValidator;
 import br.com.WebBakery.dao.IngredienteDao;
 import br.com.WebBakery.enums.UnidadeMedida;
 import br.com.WebBakery.to.TOIngrediente;
@@ -24,24 +23,28 @@ public class IngredienteBean extends AbstractBaseRegisterMBean<TOIngrediente> {
 
     @Inject
     private IngredienteDao ingredienteDao;
-    private IngredienteValidator ingredienteValidator;
     private UnidadeMedida unidadeMedida;
 
     @Transactional
     public void cadastrar() {
         try {
-            this.ingredienteValidator = new IngredienteValidator(this.getTo());
             this.getTo().setUnidadeMedida(unidadeMedida);
+            addValidators();
 
-            if (getValidator().isValid()) {
+            if (isValid()) {
                 this.getTo().setAtivo(true);
-                this.ingredienteDao.salvar(this.getTo());
+                this.ingredienteDao.salvar(getTo());
                 showMessageSuccess();
             }
             atualizarTela();
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void addValidators() {
+        IngredienteValidator ingredienteValidator = new IngredienteValidator(getTo());
+        addValidator(ingredienteValidator);
     }
 
     @PostConstruct
@@ -69,11 +72,6 @@ public class IngredienteBean extends AbstractBaseRegisterMBean<TOIngrediente> {
     @Override
     protected AbstractBaseDao<TOIngrediente> getDao() {
         return ingredienteDao;
-    }
-
-    @Override
-    public AbstractValidator getValidator() {
-        return ingredienteValidator;
     }
 
     @Override

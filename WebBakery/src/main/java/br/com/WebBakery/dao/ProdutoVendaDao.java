@@ -17,9 +17,16 @@ public class ProdutoVendaDao extends AbstractBaseDao<TOProdutoVenda> {
 
     @Override
     public void salvar(TOProdutoVenda to) throws Exception {
-        ProdutoVenda pv = new ProdutoVenda();
-        getConverter().getModelFromTO(to, pv);
-        getEntityManager().merge(pv);
+        ProdutoVenda pv = null;
+        if (to.getId() == null) {
+            pv = new ProdutoVenda();
+        } else {
+            pv = getEntityManager().find(ProdutoVenda.class, to.getId());
+        }
+        
+        getConverter().getModelFromTO(to, pv);            
+        
+        getEntityManager().persist(pv);
     }
 
     @Override

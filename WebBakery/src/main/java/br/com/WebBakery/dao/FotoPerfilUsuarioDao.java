@@ -17,9 +17,16 @@ public class FotoPerfilUsuarioDao extends AbstractBaseDao<TOFotoPerfil> {
 
     @Override
     public void salvar(TOFotoPerfil to) throws Exception {
-        FotoPerfil fotoPerfil = new FotoPerfil();
-        getConverter().getModelFromTO(to, fotoPerfil);
-        getEntityManager().merge(fotoPerfil);
+        FotoPerfil fp = null;
+        if (to.getId() == null) {
+            fp = new FotoPerfil();
+        } else {
+            fp = getEntityManager().find(FotoPerfil.class, to.getId());
+        }
+        
+        getConverter().getModelFromTO(to, fp);            
+        
+        getEntityManager().persist(fp);
     }
 
     @Override

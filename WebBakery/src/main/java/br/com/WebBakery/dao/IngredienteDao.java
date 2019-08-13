@@ -20,9 +20,16 @@ public class IngredienteDao extends AbstractBaseDao<TOIngrediente> {
 
     @Override
     public void salvar(TOIngrediente to) throws Exception {
-        Ingrediente i = new Ingrediente();
-        getConverter().getModelFromTO(to, i);
-        getEntityManager().merge(i);
+        Ingrediente i = null;
+        if (to.getId() == null) {
+            i = new Ingrediente();
+        } else {
+            i = getEntityManager().find(Ingrediente.class, to.getId());
+        }
+        
+        getConverter().getModelFromTO(to, i);            
+        
+        getEntityManager().persist(i);
     }
 
     @Override

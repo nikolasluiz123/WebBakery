@@ -10,10 +10,8 @@ import javax.transaction.Transactional;
 
 import br.com.WebBakery.abstractClass.AbstractBaseDao;
 import br.com.WebBakery.abstractClass.AbstractBaseRegisterMBean;
-import br.com.WebBakery.abstractClass.AbstractValidator;
 import br.com.WebBakery.dao.EstoqueProdutoDao;
 import br.com.WebBakery.to.TOEstoqueProduto;
-import br.com.WebBakery.validator.EstoqueProdutoValidator;
 
 @Named(EstoqueProdutoBean.BEAN_NAME)
 @ViewScoped
@@ -23,7 +21,7 @@ public class EstoqueProdutoBean extends AbstractBaseRegisterMBean<TOEstoqueProdu
 
     private static final long serialVersionUID = 579121007228763037L;
 
-    private TOEstoqueProduto toEstoqueProdutoDoBanco;
+    // private TOEstoqueProduto toEstoqueProdutoDoBanco;
 
     @Inject
     private EstoqueProdutoDao estoqueProdutoDao;
@@ -40,18 +38,18 @@ public class EstoqueProdutoBean extends AbstractBaseRegisterMBean<TOEstoqueProdu
         }
 
         initListaEstoqueProdutos();
-
     }
 
     @Transactional
     public void cadastrar() {
         try {
-            this.toEstoqueProdutoDoBanco = estoqueProdutoDao.existe(getTo().getToProduto().getId());
-            if (this.toEstoqueProdutoDoBanco == null) {
-                getTo().setAtivo(true);
-                this.estoqueProdutoDao.salvar(getTo());
-                showMessageSuccess();
-            }
+            // this.toEstoqueProdutoDoBanco =
+            // estoqueProdutoDao.existe(getTo().getToProduto().getId());
+            // if (this.toEstoqueProdutoDoBanco == null) {
+            getTo().setAtivo(true);
+            this.estoqueProdutoDao.salvar(getTo());
+            showMessageSuccess();
+            // }
             atualizarTela();
         } catch (Exception e) {
             e.printStackTrace();
@@ -69,13 +67,6 @@ public class EstoqueProdutoBean extends AbstractBaseRegisterMBean<TOEstoqueProdu
     @Override
     protected AbstractBaseDao<TOEstoqueProduto> getDao() {
         return estoqueProdutoDao;
-    }
-
-    @Override
-    public AbstractValidator getValidator() {
-        // Só é feito assim pois o validator está vazio.
-        // Quando houver algo a ser validade, trocar pelo field.
-        return new EstoqueProdutoValidator(getTo());
     }
 
     @Override

@@ -18,9 +18,16 @@ public class FotoProdutoDao extends AbstractBaseDao<TOFotoProduto> {
 
     @Override
     public void salvar(TOFotoProduto to) throws Exception {
-        FotoProduto fotoProduto = new FotoProduto();
-        getConverter().getModelFromTO(to, fotoProduto);
-        getEntityManager().merge(fotoProduto);
+        FotoProduto fp = null;
+        if (to.getId() == null) {
+            fp = new FotoProduto();
+        } else {
+            fp = getEntityManager().find(FotoProduto.class, to.getId());
+        }
+        
+        getConverter().getModelFromTO(to, fp);            
+        
+        getEntityManager().persist(fp);
     }
 
     @Override

@@ -16,7 +16,6 @@ import org.primefaces.event.CellEditEvent;
 
 import br.com.WebBakery.abstractClass.AbstractBaseDao;
 import br.com.WebBakery.abstractClass.AbstractBaseRegisterMBean;
-import br.com.WebBakery.abstractClass.AbstractValidator;
 import br.com.WebBakery.dao.ClienteDao;
 import br.com.WebBakery.dao.EstoqueProdutoDao;
 import br.com.WebBakery.dao.FuncionarioDao;
@@ -45,7 +44,6 @@ public class VendaBean extends AbstractBaseRegisterMBean<TOVenda> {
     @Inject
     private VendaDao vendaDao;
     private FormaPagamento formaPagamento;
-    private ProdutoVendaValidator produtoVendaValidator;
 
     private TOCliente toClienteSelecionado;
     private List<TOCliente> toClientes;
@@ -95,8 +93,8 @@ public class VendaBean extends AbstractBaseRegisterMBean<TOVenda> {
     @Transactional
     public void cadastrar() {
         try {
-            this.produtoVendaValidator = new ProdutoVendaValidator(this.toEstoqueProdutosSelecionados);
-            if (getValidator().isValid()) {
+            addValidators();
+            if (isValid()) {
                 setarDataDaVenda();
                 setarFuncionarioVenda();
                 setarClienteVenda();
@@ -110,6 +108,11 @@ public class VendaBean extends AbstractBaseRegisterMBean<TOVenda> {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void addValidators() {
+        ProdutoVendaValidator produtoVendaValidator = new ProdutoVendaValidator(this.toEstoqueProdutosSelecionados);
+        addValidator(produtoVendaValidator);
     }
 
     private void acoesAposAtualizarTela() {
@@ -243,11 +246,6 @@ public class VendaBean extends AbstractBaseRegisterMBean<TOVenda> {
     @Override
     protected AbstractBaseDao<TOVenda> getDao() {
         return vendaDao;
-    }
-
-    @Override
-    public AbstractValidator getValidator() {
-        return produtoVendaValidator;
     }
 
     @Override

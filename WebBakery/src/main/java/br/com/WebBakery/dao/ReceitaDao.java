@@ -17,9 +17,16 @@ public class ReceitaDao extends AbstractBaseDao<TOReceita> {
 
     @Override
     public void salvar(TOReceita to) throws Exception {
-        Receita r = new Receita();
-        getConverter().getModelFromTO(to, r);
-        getEntityManager().merge(r);
+        Receita r = null;
+        if (to.getId() == null) {
+            r = new Receita();
+        } else {
+            r = getEntityManager().find(Receita.class, to.getId());
+        }
+        
+        getConverter().getModelFromTO(to, r);            
+        
+        getEntityManager().persist(r);
     }
 
     @Override

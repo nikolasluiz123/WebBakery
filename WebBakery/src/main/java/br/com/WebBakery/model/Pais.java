@@ -8,8 +8,8 @@ import br.com.WebBakery.abstractClass.AbstractBaseModel;
 @Entity(name = Pais.TABLE_NAME)
 public class Pais extends AbstractBaseModel {
 
-    public static final String TABLE_NAME = "paises";
-    public static final String FK_NAME = "fk_pais";
+    public static final String TABLE_NAME = "pais";
+    public static final String FK_NAME = "id_pais";
     
     private static final String NOME_PAIS = "nome" + "_" + Pais.TABLE_NAME;
     private static final String SIGLA_PAIS = "sigla" + "_" + Pais.TABLE_NAME;

@@ -17,9 +17,16 @@ public class FuncionarioDao extends AbstractBaseDao<TOFuncionario> {
     
     @Override
     public void salvar(TOFuncionario to) throws Exception {
-        Funcionario f = new Funcionario();
-        getConverter().getModelFromTO(to, f);
-        getEntityManager().merge(f);
+        Funcionario f = null;
+        if (to.getId() == null) {
+            f = new Funcionario();
+        } else {
+            f = getEntityManager().find(Funcionario.class, to.getId());
+        }
+        
+        getConverter().getModelFromTO(to, f);            
+        
+        getEntityManager().persist(f);
     }
 
     @Override
@@ -39,7 +46,8 @@ public class FuncionarioDao extends AbstractBaseDao<TOFuncionario> {
         sql
         .add("SELECT f")
         .add("FROM ".concat(Funcionario.class.getName()).concat(" f "))
-        .add("WHERE f.ativo = :pAtivo");
+        .add("WHERE f.ativo = :pAtivo")
+        .add("ORDER BY f.usuario.nome, f.usuario.sobrenome");
 
         funcionarios = getEntityManager().createQuery(sql.toString(), Funcionario.class)
                                          .setParameter("pAtivo", ativo)

@@ -14,8 +14,8 @@ public class Endereco extends AbstractBaseModel {
     private static final String FK_ESTADO_ENDERECO = Estado.FK_NAME + "_" + Endereco.TABLE_NAME;
     private static final String FK_PAIS_ENDERECO = Pais.FK_NAME + "_" + Endereco.TABLE_NAME;
 
-    public static final String TABLE_NAME = "enderecos";
-    public static final String FK_NAME = "fk_endereco";
+    public static final String TABLE_NAME = "endereco";
+    public static final String FK_NAME = "id_endereco";
 
     @OneToOne
     @JoinColumn(name = FK_PAIS_ENDERECO)

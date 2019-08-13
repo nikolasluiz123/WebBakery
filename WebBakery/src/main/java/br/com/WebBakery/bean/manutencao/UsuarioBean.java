@@ -8,7 +8,6 @@ import javax.transaction.Transactional;
 
 import br.com.WebBakery.abstractClass.AbstractBaseDao;
 import br.com.WebBakery.abstractClass.AbstractBaseRegisterMBean;
-import br.com.WebBakery.abstractClass.AbstractValidator;
 import br.com.WebBakery.dao.UsuarioDao;
 import br.com.WebBakery.enums.TipoUsuario;
 import br.com.WebBakery.to.TOUsuario;
@@ -25,7 +24,6 @@ public class UsuarioBean extends AbstractBaseRegisterMBean<TOUsuario> {
     @Inject
     private UsuarioDao usuarioDao;
     private TipoUsuario tipoUsuario;
-    private UsuarioValidator validator;
 
     private String senha;
 
@@ -39,12 +37,11 @@ public class UsuarioBean extends AbstractBaseRegisterMBean<TOUsuario> {
     }
 
     @Transactional
-    public void cadastrar() {
+    public void salvar() {
         try {
-            this.validator = new UsuarioValidator(this.getTo(), this.senha, this.usuarioDao);
             this.getTo().setTipo(tipoUsuario);
-
-            if (getValidator().isValid()) {
+            addValidators();
+            if (isValid()) {
                 this.getTo().setAtivo(true);
                 this.usuarioDao.salvar(this.getTo());
                 showMessageSuccess();
@@ -55,14 +52,16 @@ public class UsuarioBean extends AbstractBaseRegisterMBean<TOUsuario> {
         }
     }
 
-    @Override
-    protected AbstractBaseDao<TOUsuario> getDao() {
-        return usuarioDao;
+    private void addValidators() {
+        UsuarioValidator usuarioValidator = new UsuarioValidator(this.getTo(),
+                                                                 this.senha,
+                                                                 this.usuarioDao);
+        addValidator(usuarioValidator);
     }
 
     @Override
-    public AbstractValidator getValidator() {
-        return validator;
+    protected AbstractBaseDao<TOUsuario> getDao() {
+        return usuarioDao;
     }
 
     @Override
@@ -92,8 +91,7 @@ public class UsuarioBean extends AbstractBaseRegisterMBean<TOUsuario> {
 
     @Override
     protected String getBeanName() {
-        // TODO Auto-generated method stub
-        return null;
+        return BEAN_NAME;
     }
 
 }

@@ -20,9 +20,10 @@
 			<p:fieldset legend="Dados do Usuário">
 
 				<div class="ui-g-5">
+
 					<p:outputLabel value="E-mail" for="email" />
 					<p:inputText id="email" value="#{loginBean.to.email}"
-						placeholder="Digite seu e-mail...">
+						placeholder="Digite seu e-mail..." autocomplete="off">
 
 						<f:passThroughAttribute name="type" value="email" />
 
@@ -30,7 +31,7 @@
 
 					<p:outputLabel value="Senha" for="senha" />
 					<p:password id="senha" value="#{loginBean.senha}"
-						placeholder="Digite sua senha..." />
+						placeholder="Digite sua senha..." autocomplete="off" />
 
 					<p:commandButton value="Login" action="#{loginBean.login}"
 						process="@form" update="formMessages:messages"

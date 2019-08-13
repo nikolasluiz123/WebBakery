@@ -13,8 +13,8 @@ import br.com.WebBakery.abstractClass.AbstractBaseModel;
 @Entity(name = Funcionario.TABLE_NAME)
 public class Funcionario extends AbstractBaseModel {
 
-    static final String TABLE_NAME = "funcionarios";
-    public static final String FK_NAME = "fk_funcionario";
+    static final String TABLE_NAME = "funcionario";
+    public static final String FK_NAME = "id_funcionario";
 
     private static final String TELEFONE_FUNCIONARIO = "telefone" + "_" + Funcionario.TABLE_NAME;
     private static final String RG_FUNCIONARIO = "rg" + "_" + Funcionario.TABLE_NAME;

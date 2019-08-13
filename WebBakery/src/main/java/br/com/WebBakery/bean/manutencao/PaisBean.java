@@ -8,7 +8,6 @@ import javax.transaction.Transactional;
 
 import br.com.WebBakery.abstractClass.AbstractBaseDao;
 import br.com.WebBakery.abstractClass.AbstractBaseRegisterMBean;
-import br.com.WebBakery.abstractClass.AbstractValidator;
 import br.com.WebBakery.dao.PaisDao;
 import br.com.WebBakery.to.TOPais;
 import br.com.WebBakery.validator.PaisValidator;
@@ -23,7 +22,6 @@ public class PaisBean extends AbstractBaseRegisterMBean<TOPais> {
 
     @Inject
     private PaisDao paisDao;
-    private PaisValidator validator;
 
     @PostConstruct
     private void init() {
@@ -38,8 +36,8 @@ public class PaisBean extends AbstractBaseRegisterMBean<TOPais> {
     @Transactional
     public void salvar() {
         try {
-            this.validator = new PaisValidator(getTo());
-            if (getValidator().isValid()) {
+            addValidators();
+            if (isValid()) {
                 getTo().setAtivo(true);
                 this.paisDao.salvar(getTo());
                 showMessageSuccess();
@@ -50,6 +48,11 @@ public class PaisBean extends AbstractBaseRegisterMBean<TOPais> {
         }
     }
 
+    private void addValidators() {
+        PaisValidator paisValidator = new PaisValidator(getTo());
+        addValidator(paisValidator);
+    }
+
     @Override
     protected AbstractBaseDao<TOPais> getDao() {
         return paisDao;
@@ -58,11 +61,6 @@ public class PaisBean extends AbstractBaseRegisterMBean<TOPais> {
     @Override
     protected TOPais getNewInstaceTO() {
         return new TOPais();
-    }
-
-    @Override
-    public AbstractValidator getValidator() {
-        return this.validator;
     }
 
     @Override

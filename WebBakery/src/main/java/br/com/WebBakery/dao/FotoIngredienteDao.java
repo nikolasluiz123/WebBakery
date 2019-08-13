@@ -18,9 +18,16 @@ public class FotoIngredienteDao extends AbstractBaseDao<TOFotoIngrediente> {
     
     @Override
     public void salvar(TOFotoIngrediente to) throws Exception {
-        FotoIngrediente fotoIngrediente = new FotoIngrediente();
-        getConverter().getModelFromTO(to, fotoIngrediente);
-        getEntityManager().merge(fotoIngrediente);
+        FotoIngrediente fi = null;
+        if (to.getId() == null) {
+            fi = new FotoIngrediente();
+        } else {
+            fi = getEntityManager().find(FotoIngrediente.class, to.getId());
+        }
+        
+        getConverter().getModelFromTO(to, fi);            
+        
+        getEntityManager().persist(fi);
     }
 
     @Override

@@ -12,8 +12,8 @@ import br.com.WebBakery.abstractClass.AbstractBaseModel;
 @Entity(name = Venda.TABLE_NAME)
 public class Venda extends AbstractBaseModel {
     
-    public static final String TABLE_NAME = "vendas";
-    public static final String FK_NAME = "fk_venda";
+    public static final String TABLE_NAME = "venda";
+    public static final String FK_NAME = "id_venda";
 
     private static final String FK_FUNCIONARIO_VENDA = Funcionario.FK_NAME + "_" + Venda.TABLE_NAME;
     private static final String FK_CLIENTE_VENDA = Cliente.FK_NAME + "_" + Venda.TABLE_NAME;

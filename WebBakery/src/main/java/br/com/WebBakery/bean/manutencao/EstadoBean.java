@@ -11,7 +11,6 @@ import javax.transaction.Transactional;
 
 import br.com.WebBakery.abstractClass.AbstractBaseDao;
 import br.com.WebBakery.abstractClass.AbstractBaseRegisterMBean;
-import br.com.WebBakery.abstractClass.AbstractValidator;
 import br.com.WebBakery.dao.EstadoDao;
 import br.com.WebBakery.dao.PaisDao;
 import br.com.WebBakery.to.TOEstado;
@@ -34,8 +33,6 @@ public class EstadoBean extends AbstractBaseRegisterMBean<TOEstado> {
     private List<TOPais> toPaises;
     private List<TOPais> toPaisesFiltrados;
 
-    private EstadoValidator validator;
-
     @PostConstruct
     private void init() {
         verificaObjetoSessao();
@@ -54,8 +51,8 @@ public class EstadoBean extends AbstractBaseRegisterMBean<TOEstado> {
     @Transactional
     public void cadastrar() {
         try {
-            this.validator = new EstadoValidator(getTo());
-            if (getValidator().isValid()) {
+            addValidators();
+            if (isValid()) {
                 this.getTo().setAtivo(true);
                 this.estadoDao.salvar(this.getTo());
                 showMessageSuccess();
@@ -64,6 +61,11 @@ public class EstadoBean extends AbstractBaseRegisterMBean<TOEstado> {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void addValidators() {
+        EstadoValidator estadoValidator = new EstadoValidator(getTo());
+        addValidator(estadoValidator);
     }
 
     public void setarPais() {
@@ -105,11 +107,6 @@ public class EstadoBean extends AbstractBaseRegisterMBean<TOEstado> {
     @Override
     protected AbstractBaseDao<TOEstado> getDao() {
         return estadoDao;
-    }
-
-    @Override
-    public AbstractValidator getValidator() {
-        return validator;
     }
 
     @Override

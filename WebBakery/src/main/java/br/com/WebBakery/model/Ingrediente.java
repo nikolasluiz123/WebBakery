@@ -13,8 +13,8 @@ import br.com.WebBakery.enums.UnidadeMedida;
 @Entity(name = Ingrediente.TABLE_NAME)
 public class Ingrediente extends AbstractBaseModel {
 
-    static final String TABLE_NAME = "ingredientes";
-    public static final String FK_NAME = "fk_ingrediente";
+    static final String TABLE_NAME = "ingrediente";
+    public static final String FK_NAME = "id_ingrediente";
     
     private static final String UNIDADE_MEDIDA_INGREDIENTE = "unidade_medida" + "_" + Ingrediente.TABLE_NAME;
     private static final String NOME_INGREDIENTE = "nome" + "_" + Ingrediente.TABLE_NAME;

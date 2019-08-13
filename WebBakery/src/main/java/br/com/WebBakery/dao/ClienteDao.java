@@ -18,9 +18,19 @@ public class ClienteDao extends AbstractBaseDao<TOCliente> {
 
     @Override
     public void salvar(TOCliente to) throws Exception {
-        Cliente c = new Cliente();
-        getConverter().getModelFromTO(to, c);
-        getEntityManager().merge(c);
+        Cliente c = null;
+        if (to.getId() == null) {
+            c = new Cliente();
+        } else {
+            c = getEntityManager().find(Cliente.class, to.getId());
+        }
+        
+        getConverter().getModelFromTO(to, c);            
+        
+        /*getEntityManager().find(Endereco.class, c.getEndereco().getId());
+        getEntityManager().find(Usuario.class, c.getUsuario().getId());*/
+        
+        getEntityManager().persist(c);
     }
 
     @Override
@@ -41,7 +51,7 @@ public class ClienteDao extends AbstractBaseDao<TOCliente> {
         .add("SELECT c")
         .add("FROM ".concat(Cliente.class.getName()).concat(" c "))
         .add("WHERE c.ativo = :pAtivo")
-        .add("ORDER BY c.nome, c.sobrenome");
+        .add("ORDER BY c.usuario.nome, c.usuario.sobrenome");
 
         clientes = getEntityManager().createQuery(sql.toString(), Cliente.class)
                                      .setParameter("pAtivo", ativo)

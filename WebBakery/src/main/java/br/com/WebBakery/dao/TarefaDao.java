@@ -17,9 +17,16 @@ public class TarefaDao extends AbstractBaseDao<TOTarefa> {
 
     @Override
     public void salvar(TOTarefa to) throws Exception {
-        Tarefa t = new Tarefa();
-        getConverter().getModelFromTO(to, t);
-        getEntityManager().merge(t);
+        Tarefa t = null;
+        if (to.getId() == null) {
+            t = new Tarefa();
+        } else {
+            t = getEntityManager().find(Tarefa.class, to.getId());
+        }
+        
+        getConverter().getModelFromTO(to, t);            
+        
+        getEntityManager().persist(t);
     }
 
     @Override

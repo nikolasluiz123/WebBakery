@@ -9,8 +9,8 @@ import br.com.WebBakery.abstractClass.AbstractArquivo;
 @Entity(name = FotoIngrediente.TABLE_NAME)
 public class FotoIngrediente extends AbstractArquivo {
 
-    static final String TABLE_NAME = "fotos_ingredientes";
-    public static final String FK_NAME = "fk_foto_ingrediente";
+    static final String TABLE_NAME = "foto_ingrediente";
+    public static final String FK_NAME = "id_foto_ingrediente";
 
     private static final String FK_INGREDIENTE_FOTO_INGREDIENTE = Ingrediente.FK_NAME + "_" + FotoIngrediente.TABLE_NAME;
 

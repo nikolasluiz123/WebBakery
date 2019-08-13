@@ -9,9 +9,9 @@ import javax.inject.Named;
 
 import br.com.WebBakery.abstractClass.AbstractBaseDao;
 import br.com.WebBakery.abstractClass.AbstractBaseRegisterMBean;
-import br.com.WebBakery.abstractClass.AbstractValidator;
 import br.com.WebBakery.dao.ClienteDao;
 import br.com.WebBakery.dao.FuncionarioDao;
+import br.com.WebBakery.dao.PopulaBancoDao;
 import br.com.WebBakery.dao.UsuarioDao;
 import br.com.WebBakery.to.TOUsuario;
 import br.com.WebBakery.validator.LoginValidator;
@@ -30,13 +30,12 @@ public class LoginBean extends AbstractBaseRegisterMBean<TOUsuario> {
 
     @Inject
     private UsuarioDao usuarioDao;
-    // @Inject
-    // private PopulaBancoDao populaBancoDao;
+//     @Inject
+//     private PopulaBancoDao populaBancoDao;
     @Inject
     private FuncionarioDao funcionarioDao;
     @Inject
     private ClienteDao clienteDao;
-    private LoginValidator validator;
     private String senha;
 
     @PostConstruct
@@ -52,8 +51,7 @@ public class LoginBean extends AbstractBaseRegisterMBean<TOUsuario> {
     public void login() {
         try {
             setTo(returnUserIfExists());
-            this.validator = new LoginValidator(this
-                    .getTo(), this.senha, this.usuarioDao, this.funcionarioDao, this.clienteDao);
+            addValidators();
             redirectUser();
         } catch (Exception e) {
             e.printStackTrace();
@@ -69,12 +67,21 @@ public class LoginBean extends AbstractBaseRegisterMBean<TOUsuario> {
         }
     }
 
+    private void addValidators() {
+        LoginValidator loginValidator = new LoginValidator(getTo(),
+                                                           this.senha,
+                                                           this.usuarioDao,
+                                                           this.funcionarioDao,
+                                                           this.clienteDao);
+        addValidator(loginValidator);
+    }
+
     private void redirectUser() throws IOException {
-        if (validator.isValid()) {
+        if (isValid()) {
             setUserSession();
             getContext().getExternalContext().redirect(PAGE_WELCOME_REDIRECT);
         } else {
-            validator.showMessages();
+            showMessagesValidatorChain();
         }
     }
 
@@ -100,17 +107,12 @@ public class LoginBean extends AbstractBaseRegisterMBean<TOUsuario> {
     }
 
     public void popularBanco() {
-        // this.populaBancoDao.popularBanco();
+//         this.populaBancoDao.popularBanco();
     }
 
     @Override
     protected AbstractBaseDao<TOUsuario> getDao() {
         return usuarioDao;
-    }
-
-    @Override
-    public AbstractValidator getValidator() {
-        return validator;
     }
 
     @Override

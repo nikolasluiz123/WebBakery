@@ -10,7 +10,7 @@ import br.com.WebBakery.abstractClass.AbstractBaseModel;
 @Entity(name = EstoqueProduto.TABLE_NAME)
 public class EstoqueProduto extends AbstractBaseModel {
 
-    static final String TABLE_NAME = "estoque_produtos";
+    static final String TABLE_NAME = "estoque_produto";
 
     private static final String QUANTIDADE_ESTOQUE_PRODUTO = "quantidade" + "_" + EstoqueProduto.TABLE_NAME;
     private static final String FK_PRODUTO_ESTOQUE_PRODUTO = Produto.FK_NAME + "_" + EstoqueProduto.TABLE_NAME;

@@ -18,7 +18,7 @@ public class EnderecoValidator extends AbstractValidator {
     private static final String FIELD_CIDADE_REQUIRED = "Cidade é obrigatória!";
     private static final String FIELD_ESTADO_REQUIRED = "Estado é obrigatório!";
     private static final String FIELD_PAIS_REQUIRED = "País é obrigatório!";
-    
+
     private TOEndereco endereco;
 
     public EnderecoValidator(TOEndereco endereco) {
@@ -34,19 +34,19 @@ public class EnderecoValidator extends AbstractValidator {
     }
 
     private void validaPais() {
-        if (this.endereco.getToPais() == null) {
+        if (this.endereco.getToPais().getId() == null) {
             this.messages.add(FIELD_PAIS_REQUIRED);
         }
     }
 
     private void validaEstado() {
-        if (this.endereco.getToEstado() == null) {
+        if (this.endereco.getToEstado().getId() == null) {
             this.messages.add(FIELD_ESTADO_REQUIRED);
         }
     }
 
     private void validaCidade() {
-        if (this.endereco.getToCidade() == null) {
+        if (this.endereco.getToCidade().getId() == null) {
             this.messages.add(FIELD_CIDADE_REQUIRED);
         }
     }
@@ -63,38 +63,37 @@ public class EnderecoValidator extends AbstractValidator {
 
         if (String_Util.isNullOrEmpty(cep)) {
             this.messages.add(FIELD_CEP_REQUIRED);
-        }
-        if (!Cep_Util.EhValido(cep)) {
+        } else if (!Cep_Util.EhValido(cep)) {
             this.messages.add(FIELD_CEP_NOT_VALID);
         }
     }
 
     private void validaComplemento() {
         String complemento = this.endereco.getToLogradouro().getComplemento();
+        
         if (String_Util.isNullOrEmpty(complemento)) {
             this.messages.add(FIELD_COMPLEMENTO_REQUIRED);
-        }
-        if (complemento.length() > 20) {
+        } else if (complemento.length() > 32) {
             this.messages.add(FIELD_COMPLEMENTO_LIMIT_EXCEEDED);
         }
     }
 
     private void validaRua() {
         String rua = this.endereco.getToLogradouro().getRua();
+        
         if (String_Util.isNullOrEmpty(rua)) {
             this.messages.add(FIELD_RUA_REQUIRED);
-        }
-        if (rua.length() > 30) {
+        } else if (rua.length() > 32) {
             this.messages.add(FIELD_RUA_NOT_VALID);
         }
     }
 
     private void validaBairro() {
         String bairro = this.endereco.getToLogradouro().getBairro();
+        
         if (String_Util.isNullOrEmpty(bairro)) {
             this.messages.add(FIELD_BAIRRO_REQUIRED);
-        }
-        if (bairro.length() > 30) {
+        } else if (bairro.length() > 32) {
             this.messages.add(FIELD_BAIRRO_NOT_VALID);
         }
     }

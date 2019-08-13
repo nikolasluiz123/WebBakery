@@ -17,9 +17,18 @@ public class LogradouroDao extends AbstractBaseDao<TOLogradouro> {
 
     @Override
     public void salvar(TOLogradouro to) throws Exception {
-        Logradouro l = new Logradouro();
-        getConverter().getModelFromTO(to, l);
-        getEntityManager().merge(l);
+        Logradouro l = null;
+        if (to.getId() == null) {
+            l = new Logradouro();
+        } else {
+            l = getEntityManager().find(Logradouro.class, to.getId());
+        }
+        
+        getConverter().getModelFromTO(to, l);            
+        
+        getEntityManager().persist(l);
+        getEntityManager().flush();
+        to.setId(l.getId());
     }
 
     @Override

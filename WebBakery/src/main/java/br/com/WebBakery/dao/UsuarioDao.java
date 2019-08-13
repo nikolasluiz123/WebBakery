@@ -18,9 +18,18 @@ public class UsuarioDao extends AbstractBaseDao<TOUsuario> {
 
     @Override
     public void salvar(TOUsuario to) throws Exception {
-        Usuario u = new Usuario();
-        getConverter().getModelFromTO(to, u);
-        getEntityManager().merge(u);
+        Usuario u = null;
+        if (to.getId() == null) {
+            u = new Usuario();
+        } else {
+            u = getEntityManager().find(Usuario.class, to.getId());
+        }
+        
+        getConverter().getModelFromTO(to, u);            
+        
+        getEntityManager().persist(u);
+        getEntityManager().flush();
+        to.setId(u.getId());
     }
 
     @Override
@@ -58,6 +67,8 @@ public class UsuarioDao extends AbstractBaseDao<TOUsuario> {
     }
 
     public boolean emailExiste(String email) {
+        Usuario u = null;
+        
         StringJoiner sql = new StringJoiner(QR_NL);
         sql
         .add("SELECT u")
@@ -66,13 +77,16 @@ public class UsuarioDao extends AbstractBaseDao<TOUsuario> {
         .add("u.ativo = :pAtivo")
         .add("AND u.email = :pEmail");
         
-        Usuario u = getEntityManager().createQuery(sql.toString(), Usuario.class)
-                                      .setParameter("pEmail", email)
-                                      .setParameter("pAtivo", true)
-                                      .getSingleResult();
+        try {
+            u = getEntityManager().createQuery(sql.toString(), Usuario.class)
+                    .setParameter("pEmail", email)
+                    .setParameter("pAtivo", true)
+                    .getSingleResult();
+        } catch (NoResultException e) {
+            return false;
+        }
         
         return u != null;
-
     }
 
     public TOUsuario usuarioExiste(String email) throws Exception {

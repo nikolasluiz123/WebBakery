@@ -9,8 +9,8 @@ import br.com.WebBakery.enums.TipoUsuario;
 @Entity(name = Usuario.TABLE_NAME)
 public class Usuario extends AbstractBaseModel {
     
-    public static final String TABLE_NAME = "usuarios";
-    public static final String FK_NAME = "fk_usuario";
+    public static final String TABLE_NAME = "usuario";
+    public static final String FK_NAME = "id_usuario";
 
     private static final String TIPO_USUARIO_USUARIO = "tipo_usuario" + "_" + Usuario.TABLE_NAME;
     private static final String SENHA_USUARIO = "senha" + "_" + Usuario.TABLE_NAME;

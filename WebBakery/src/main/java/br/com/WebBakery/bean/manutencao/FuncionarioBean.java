@@ -10,7 +10,6 @@ import javax.transaction.Transactional;
 
 import br.com.WebBakery.abstractClass.AbstractBaseDao;
 import br.com.WebBakery.abstractClass.AbstractBaseRegisterMBean;
-import br.com.WebBakery.abstractClass.AbstractValidator;
 import br.com.WebBakery.dao.CidadeDao;
 import br.com.WebBakery.dao.EnderecoDao;
 import br.com.WebBakery.dao.EstadoDao;
@@ -37,7 +36,6 @@ public class FuncionarioBean extends AbstractBaseRegisterMBean<TOFuncionario> {
 
     @Inject
     private FuncionarioDao funcionarioDao;
-    private FuncionarioValidator funcionarioValidator;
     @Inject
     private UsuarioDao usuarioDao;
     private TOUsuario toUsuarioSelecionado;
@@ -104,8 +102,8 @@ public class FuncionarioBean extends AbstractBaseRegisterMBean<TOFuncionario> {
     @Transactional
     public void cadastrar() {
         try {
-            this.funcionarioValidator = new FuncionarioValidator(this.getTo());
-            if (getValidator().isValid()) {
+            addValidators();
+            if (isValid()) {
                 cadastrarLogradouroFuncionario();
                 cadastrarEnderecoFuncionario();
                 getTo().setAtivo(true);
@@ -116,6 +114,11 @@ public class FuncionarioBean extends AbstractBaseRegisterMBean<TOFuncionario> {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void addValidators() {
+        FuncionarioValidator funcionarioValidator = new FuncionarioValidator(this.getTo());
+        addValidator(funcionarioValidator);
     }
 
     private void cadastrarEnderecoFuncionario() throws Exception {
@@ -295,11 +298,6 @@ public class FuncionarioBean extends AbstractBaseRegisterMBean<TOFuncionario> {
     @Override
     protected AbstractBaseDao<TOFuncionario> getDao() {
         return funcionarioDao;
-    }
-
-    @Override
-    public AbstractValidator getValidator() {
-        return funcionarioValidator;
     }
 
     @Override

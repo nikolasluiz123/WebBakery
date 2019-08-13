@@ -17,9 +17,18 @@ public class EnderecoDao extends AbstractBaseDao<TOEndereco> {
     
     @Override
     public void salvar(TOEndereco to) throws Exception {
-        Endereco e = new Endereco();
-        getConverter().getModelFromTO(to, e);
-        getEntityManager().merge(e);
+        Endereco e = null;
+        if (to.getId() == null) {
+            e = new Endereco();
+        } else {
+            e = getEntityManager().find(Endereco.class, to.getId());
+        }
+        
+        getConverter().getModelFromTO(to, e);            
+        
+        getEntityManager().persist(e);
+        getEntityManager().flush();
+        to.setId(e.getId());
     }
 
     @Override

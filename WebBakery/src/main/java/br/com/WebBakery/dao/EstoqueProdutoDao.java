@@ -17,9 +17,16 @@ public class EstoqueProdutoDao extends AbstractBaseDao<TOEstoqueProduto> {
 
     @Override
     public void salvar(TOEstoqueProduto to) throws Exception {
-        EstoqueProduto estoqueProduto = new EstoqueProduto();
-        getConverter().getModelFromTO(to, estoqueProduto);
-        getEntityManager().merge(estoqueProduto);
+        EstoqueProduto ep = null;
+        if (to.getId() == null) {
+            ep = new EstoqueProduto();
+        } else {
+            ep = getEntityManager().find(EstoqueProduto.class, to.getId());
+        }
+        
+        getConverter().getModelFromTO(to, ep);            
+        
+        getEntityManager().persist(ep);
     }
 
     @Override

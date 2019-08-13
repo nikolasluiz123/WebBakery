@@ -10,7 +10,6 @@ import javax.inject.Named;
 
 import br.com.WebBakery.abstractClass.AbstractBaseDao;
 import br.com.WebBakery.abstractClass.AbstractBaseRegisterMBean;
-import br.com.WebBakery.abstractClass.AbstractValidator;
 import br.com.WebBakery.dao.CidadeDao;
 import br.com.WebBakery.dao.EstadoDao;
 import br.com.WebBakery.interfaces.IBaseRegisterMBean;
@@ -34,8 +33,6 @@ public class CidadeBean extends AbstractBaseRegisterMBean<TOCidade> implements I
     private List<TOEstado> toEstados;
     private List<TOEstado> toEstadosFiltrados;
 
-    private CidadeValidator validator;
-
     @PostConstruct
     private void init() {
         verificaObjetoSessao();
@@ -52,8 +49,8 @@ public class CidadeBean extends AbstractBaseRegisterMBean<TOCidade> implements I
     @Override
     public void salvar() {
         try {
-            this.validator = new CidadeValidator(getTo());
-            if (getValidator().isValid()) {
+            addValidators();
+            if (isValid()) {
                 getTo().setAtivo(true);
                 this.cidadeDao.salvar(getTo());
                 showMessageSuccess();
@@ -62,6 +59,11 @@ public class CidadeBean extends AbstractBaseRegisterMBean<TOCidade> implements I
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void addValidators() {
+        CidadeValidator cidadeValidator = new CidadeValidator(getTo());
+        addValidator(cidadeValidator);
     }
 
     public void setarEstado() {
@@ -79,11 +81,6 @@ public class CidadeBean extends AbstractBaseRegisterMBean<TOCidade> implements I
     @Override
     protected AbstractBaseDao<TOCidade> getDao() {
         return this.cidadeDao;
-    }
-
-    @Override
-    public AbstractValidator getValidator() {
-        return this.validator;
     }
 
     @Override

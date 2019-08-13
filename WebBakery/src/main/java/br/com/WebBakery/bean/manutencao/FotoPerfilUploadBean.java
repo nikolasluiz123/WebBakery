@@ -11,7 +11,6 @@ import org.primefaces.model.UploadedFile;
 
 import br.com.WebBakery.abstractClass.AbstractBaseDao;
 import br.com.WebBakery.abstractClass.AbstractBaseRegisterMBean;
-import br.com.WebBakery.abstractClass.AbstractValidator;
 import br.com.WebBakery.dao.FotoPerfilUsuarioDao;
 import br.com.WebBakery.to.TOFotoPerfil;
 import br.com.WebBakery.to.TOUsuario;
@@ -32,18 +31,16 @@ public class FotoPerfilUploadBean extends AbstractBaseRegisterMBean<TOFotoPerfil
     @Inject
     private FotoPerfilUsuarioDao dao;
     private String pathFoto;
-    private FotoValidator fotoValidator;
 
     @PostConstruct
     private void init() {
         verificaObjetoSessao();
-        
+
         if (getTo() == null) {
             resetTo();
         }
-        
+
         getPathFotoPastaTemporaria();
-        
     }
 
     @Transactional
@@ -58,9 +55,9 @@ public class FotoPerfilUploadBean extends AbstractBaseRegisterMBean<TOFotoPerfil
         getTo().setExtensao(File_Util.getExtensao(file.getFileName()));
         getTo().setNome(file.getFileName());
         getTo().setTamanho(file.getSize());
-        this.fotoValidator = new FotoValidator(getTo());
 
-        Boolean isValid = getValidator().isValid();
+        addValidators();
+        boolean isValid = isValid();
 
         if (fotoDoBanco == null && isValid) {
             this.dao.salvar(getTo());
@@ -68,6 +65,11 @@ public class FotoPerfilUploadBean extends AbstractBaseRegisterMBean<TOFotoPerfil
             fotoDoBanco.setBytes(file.getContents());
             this.dao.salvar(fotoDoBanco);
         }
+    }
+
+    private void addValidators() {
+        FotoValidator fotoValidator = new FotoValidator(getTo());
+        addValidator(fotoValidator);
     }
 
     public void getPathFotoPastaTemporaria() {
@@ -93,11 +95,6 @@ public class FotoPerfilUploadBean extends AbstractBaseRegisterMBean<TOFotoPerfil
     }
 
     @Override
-    public AbstractValidator getValidator() {
-        return fotoValidator;
-    }
-
-    @Override
     protected TOFotoPerfil getNewInstaceTO() {
         return new TOFotoPerfil();
     }
@@ -108,14 +105,6 @@ public class FotoPerfilUploadBean extends AbstractBaseRegisterMBean<TOFotoPerfil
 
     public void setPathFoto(String pathFoto) {
         this.pathFoto = pathFoto;
-    }
-
-    public FotoValidator getFotoValidator() {
-        return fotoValidator;
-    }
-
-    public void setFotoValidator(FotoValidator fotoValidator) {
-        this.fotoValidator = fotoValidator;
     }
 
     @Override

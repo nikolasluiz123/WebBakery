@@ -15,31 +15,31 @@
 				<p:panelGrid columns="2">
 
 					<p:outputLabel value="Nome:" for="nome" />
-					<p:inputText id="nome" value="#{clienteBean.toCliente.toUsuario.nome}"
+					<p:inputText id="nome" value="#{clienteBean.to.toUsuario.nome}"
 						placeholder="Digite o nome..." />
 
 					<p:outputLabel value="Sobrenome:" for="sobrenome" />
 					<p:inputText id="sobrenome"
-						value="#{clienteBean.toCliente.toUsuario.sobrenome}"
+						value="#{clienteBean.to.toUsuario.sobrenome}"
 						placeholder="Digite o sobrenome..." />
 
 					<p:outputLabel value="CPF:" for="cpf" />
-					<p:inputMask id="cpf" value="#{clienteBean.toCliente.cpf}"
+					<p:inputMask id="cpf" value="#{clienteBean.to.cpf}"
 						placeholder="Digite o cpf..." mask="999.999.999-99" />
 
 					<p:outputLabel value="Telefone:" for="telefone" />
-					<p:inputMask id="telefone" value="#{clienteBean.toCliente.telefone}"
+					<p:inputMask id="telefone" value="#{clienteBean.to.telefone}"
 						placeholder="Digite o telefone..." mask="(99) 99999-9999" />
 
 					<p:outputLabel value="Data de Nascimento:" for="dataNascimento" />
 					<p:calendar id="dataNascimento"
-						value="#{clienteBean.toCliente.dataNascimento}" pattern="dd/MM/yyyy"
+						value="#{clienteBean.to.dataNascimento}" pattern="dd/MM/yyyy"
 						mask="true" placeholder="Digite data de nascimento..."
 						converter="SimpleDateConverter" />
 
 					<p:outputLabel for="email" value="E-mail:" />
 					<p:inputText id="email"
-						value="#{clienteBean.toCliente.toUsuario.email}"
+						value="#{clienteBean.to.toUsuario.email}"
 						placeholder="Digite o e-mail..." />
 
 					<p:outputLabel for="senha" value="Senha:" />
@@ -48,39 +48,39 @@
 
 					<p:outputLabel for="pais" value="País:" />
 					<p:inputText id="pais" onclick="PF('PaisesDialog').show();"
-						value="#{clienteBean.toCliente.toEndereco.toPais.nome}" readonly="true"
+						value="#{clienteBean.to.toEndereco.toPais.nome}" readonly="true"
 						placeholder="Selecione o país..." style="cursor: pointer;" />
 
 					<p:outputLabel for="estado" value="Estado:" />
 					<p:inputText id="estado" onclick="PF('EstadosDialog').show();"
-						value="#{clienteBean.toCliente.toEndereco.toEstado.nome}"
+						value="#{clienteBean.to.toEndereco.toEstado.nome}"
 						readonly="true" placeholder="Selecione o estado..."
 						style="cursor: pointer;" />
 
 					<p:outputLabel for="cidade" value="Cidade:" />
 					<p:inputText id="cidade" onclick="PF('CidadesDialog').show();"
-						value="#{clienteBean.toCliente.toEndereco.toCidade.nome}"
+						value="#{clienteBean.to.toEndereco.toCidade.nome}"
 						readonly="true" placeholder="Selecione a cidade..."
 						style="cursor: pointer;" />
 
 					<p:outputLabel value="Bairro:" for="bairro" />
 					<p:inputText id="bairro"
-						value="#{clienteBean.toCliente.toEndereco.toLogradouro.bairro}"
+						value="#{clienteBean.to.toEndereco.toLogradouro.bairro}"
 						placeholder="Digite o bairro..." />
 
 					<p:outputLabel value="Cep:" for="cep" />
 					<p:inputMask id="cep"
-						value="#{clienteBean.toCliente.toEndereco.toLogradouro.cep}"
+						value="#{clienteBean.to.toEndereco.toLogradouro.cep}"
 						placeholder="Digite o cep..." mask="99999-999" />
 
 					<p:outputLabel value="Rua:" for="rua" />
 					<p:inputText id="rua"
-						value="#{clienteBean.toCliente.toEndereco.toLogradouro.rua}"
+						value="#{clienteBean.to.toEndereco.toLogradouro.rua}"
 						placeholder="Digite a rua..." />
 
 					<p:outputLabel value="Complemento:" for="complemento" />
 					<p:inputText id="complemento"
-						value="#{clienteBean.toCliente.toEndereco.toLogradouro.complemento}"
+						value="#{clienteBean.to.toEndereco.toLogradouro.complemento}"
 						placeholder="Digite o complemento..." />
 
 					<p:commandButton value="Cadastrar" process="@form"

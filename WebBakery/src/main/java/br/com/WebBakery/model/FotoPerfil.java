@@ -9,7 +9,7 @@ import br.com.WebBakery.abstractClass.AbstractArquivo;
 @Entity(name = FotoPerfil.TABLE_NAME)
 public class FotoPerfil extends AbstractArquivo {
 
-    static final String TABLE_NAME = "fotos_perfil";
+    static final String TABLE_NAME = "foto_perfil";
 
     private static final String FK_USUARIO_FOTO_PERFIL = Usuario.FK_NAME + "_" + FotoPerfil.TABLE_NAME;
     

@@ -17,9 +17,16 @@ public class VendaDao extends AbstractBaseDao<TOVenda> {
 
     @Override
     public void salvar(TOVenda to) throws Exception {
-        Venda v = new Venda();
-        getConverter().getModelFromTO(to, v);
-        getEntityManager().merge(v);
+        Venda v = null;
+        if (to.getId() == null) {
+            v = new Venda();
+        } else {
+            v = getEntityManager().find(Venda.class, to.getId());
+        }
+        
+        getConverter().getModelFromTO(to, v);            
+        
+        getEntityManager().persist(v);
     }
 
     @Override

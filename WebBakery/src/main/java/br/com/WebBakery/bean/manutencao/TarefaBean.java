@@ -11,7 +11,6 @@ import javax.transaction.Transactional;
 
 import br.com.WebBakery.abstractClass.AbstractBaseDao;
 import br.com.WebBakery.abstractClass.AbstractBaseRegisterMBean;
-import br.com.WebBakery.abstractClass.AbstractValidator;
 import br.com.WebBakery.dao.ProdutoDao;
 import br.com.WebBakery.dao.TarefaDao;
 import br.com.WebBakery.to.TOProduto;
@@ -36,8 +35,6 @@ public class TarefaBean extends AbstractBaseRegisterMBean<TOTarefa> {
     private List<TOProduto> toProdutosFiltrados;
     private TOProduto toProdutoSelecionado;
 
-    private TarefaValidator validator;
-
     @PostConstruct
     private void init() {
         verificaObjetoSessao();
@@ -45,7 +42,7 @@ public class TarefaBean extends AbstractBaseRegisterMBean<TOTarefa> {
         if (getTo() == null) {
             resetTo();
         }
-        
+
         initQuantidadeProdutoTarefa();
         initProdutos();
 
@@ -54,8 +51,8 @@ public class TarefaBean extends AbstractBaseRegisterMBean<TOTarefa> {
     @Transactional
     public void cadastrar() {
         try {
-            this.validator = new TarefaValidator(this.getTo());
-            if (getValidator().isValid()) {
+            addValidators();
+            if (isValid()) {
                 this.getTo().setAtivo(true);
                 this.tarefaDao.salvar(this.getTo());
                 showMessageSuccess();
@@ -64,6 +61,11 @@ public class TarefaBean extends AbstractBaseRegisterMBean<TOTarefa> {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void addValidators() {
+        TarefaValidator tarefaValidator = new TarefaValidator(this.getTo());
+        addValidator(tarefaValidator);
     }
 
     private void initProdutos() {
@@ -89,11 +91,6 @@ public class TarefaBean extends AbstractBaseRegisterMBean<TOTarefa> {
     @Override
     protected AbstractBaseDao<TOTarefa> getDao() {
         return tarefaDao;
-    }
-
-    @Override
-    public AbstractValidator getValidator() {
-        return validator;
     }
 
     @Override

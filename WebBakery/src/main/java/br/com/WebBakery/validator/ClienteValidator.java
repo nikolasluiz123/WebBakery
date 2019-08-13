@@ -2,8 +2,6 @@ package br.com.WebBakery.validator;
 
 import java.util.Date;
 
-import javax.inject.Inject;
-
 import br.com.WebBakery.abstractClass.AbstractValidator;
 import br.com.WebBakery.dao.ClienteDao;
 import br.com.WebBakery.to.TOCliente;
@@ -23,17 +21,19 @@ public class ClienteValidator extends AbstractValidator {
     private static final String FIELD_EMAIL_NOT_VALID = "E-mail inválido!";
     private static final String FIELD_EMAIL_REQUIRED = "E-mail é obrigatório!";
     private static final String FIELD_CPF_EXIST = "Cpf já cadastrado!";
+    private static final String FIELD_NOME_REQUIRED = "Nome é obrigatório!";
+    private static final String FIELD_NOME_LIMIT_EXCEDDED = "Nome com excedência de caractéres!";
+    private static final String FIELD_SOBRENOME_REQUIRED = "Sobrenome é obrigatório!";
+    private static final String FIELD_SOBRENOME_LIMIT_EXCEDDED = "Sobrenome com excedência de caractéres!";
 
     private TOCliente cliente;
-    @Inject
     private ClienteDao clienteDao;
-    private EnderecoValidator enderecoValidator;
     private String senha;
 
-    public ClienteValidator(TOCliente toCliente, String senha) {
+    public ClienteValidator(TOCliente toCliente, String senha, ClienteDao clienteDao) {
         this.cliente = toCliente;
         this.senha = senha;
-        this.enderecoValidator = new EnderecoValidator(toCliente.getToEndereco());
+        this.clienteDao = clienteDao;
     }
 
     @Override
@@ -41,25 +41,6 @@ public class ClienteValidator extends AbstractValidator {
         validaDataNascimento();
         validaCpf();
         validaTelefone();
-        validaUsuario();
-        this.enderecoValidator.chamarValidacoes();
-    }
-
-    private void validaUsuario() {
-        String email = this.cliente.getToUsuario().getEmail().trim();
-
-        if (String_Util.isNullOrEmpty(email)) {
-            messages.add(FIELD_EMAIL_REQUIRED);
-        }
-        if (!Email_Util.isValid(email)) {
-            messages.add(FIELD_EMAIL_NOT_VALID);
-        }
-        if (this.senha == null || this.senha.isEmpty()) {
-            messages.add(FIELD_SENHA_REQUIRED);
-        }
-        if (this.senha.length() > 255 || this.senha.length() < 5) {
-            messages.add(FIELD_SENHA_NOT_VALID);
-        }
     }
 
     private void validaTelefone() {
@@ -72,15 +53,13 @@ public class ClienteValidator extends AbstractValidator {
 
     private void validaCpf() {
         String cpf = this.cliente.getCpf().trim();
+        boolean existe = this.clienteDao.cpfExiste(cpf, true);
 
         if (String_Util.isNullOrEmpty(cpf)) {
             messages.add(FIELD_CPF_REQUIRED);
-        }
-        if (!Cpf_Util.isValid(cpf)) {
+        } else if (!Cpf_Util.isValid(cpf)) {
             messages.add(FIELD_CPF_NOT_VALID);
-        }
-        boolean existe = this.clienteDao.cpfExiste(cpf, true);
-        if (existe) {
+        } else if (existe) {
             messages.add(FIELD_CPF_EXIST);
         }
     }

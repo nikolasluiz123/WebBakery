@@ -8,7 +8,6 @@ import javax.transaction.Transactional;
 
 import br.com.WebBakery.abstractClass.AbstractBaseDao;
 import br.com.WebBakery.abstractClass.AbstractBaseRegisterMBean;
-import br.com.WebBakery.abstractClass.AbstractValidator;
 import br.com.WebBakery.dao.ReceitaDao;
 import br.com.WebBakery.to.TOReceita;
 import br.com.WebBakery.validator.ReceitaValidator;
@@ -23,23 +22,22 @@ public class ReceitaBean extends AbstractBaseRegisterMBean<TOReceita> {
 
     @Inject
     private ReceitaDao receitaDao;
-    private ReceitaValidator validator;
 
     @PostConstruct
     private void init() {
         verificaObjetoSessao();
-        
+
         if (getTo() == null) {
             resetTo();
         }
-        
+
     }
-    
+
     @Transactional
     public void cadastrar() {
         try {
-            this.validator = new ReceitaValidator(this.getTo());
-            if (getValidator().isValid()) {
+            addValidators();
+            if (isValid()) {
                 this.getTo().setAtivo(true);
                 this.receitaDao.salvar(this.getTo());
                 showMessageSuccess();
@@ -50,14 +48,14 @@ public class ReceitaBean extends AbstractBaseRegisterMBean<TOReceita> {
         }
     }
 
-    @Override
-    protected AbstractBaseDao<TOReceita> getDao() {
-        return receitaDao;
+    private void addValidators() {
+        ReceitaValidator receitaValidator = new ReceitaValidator(this.getTo());
+        addValidator(receitaValidator);
     }
 
     @Override
-    public AbstractValidator getValidator() {
-        return validator;
+    protected AbstractBaseDao<TOReceita> getDao() {
+        return receitaDao;
     }
 
     @Override

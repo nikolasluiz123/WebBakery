@@ -21,14 +21,15 @@
 					<div>Clientes</div>
 				</f:facet>
 
-				<p:column headerText="Nome" sortBy="#{toCliente.nome}"
-					filterBy="#{toCliente.nome}">
-					<h:outputText value="#{toCliente.nome}" />
+				<p:column headerText="Nome" sortBy="#{toCliente.toUsuario.nome}"
+					filterBy="#{toCliente.toUsuario.nome}">
+					<h:outputText value="#{toCliente.toUsuario.nome}" />
 				</p:column>
 
-				<p:column headerText="Sobrenome" sortBy="#{toCliente.sobrenome}"
-					filterBy="#{toCliente.sobrenome}">
-					<h:outputText value="#{toCliente.sobrenome}" />
+				<p:column headerText="Sobrenome"
+					sortBy="#{toCliente.toUsuario.sobrenome}"
+					filterBy="#{toCliente.toUsuario.sobrenome}">
+					<h:outputText value="#{toCliente.toUsuario.sobrenome}" />
 				</p:column>
 
 				<p:column headerText="CPF" sortBy="#{toCliente.cpf}"
@@ -48,9 +49,22 @@
 						converter="SimpleDateConverter" />
 				</p:column>
 
-				<p:column headerText="Usuário" sortBy="#{toCliente.usuario.email}"
-					filterBy="#{toCliente.usuario.email}">
-					<h:outputText value="#{toCliente.usuario.email}" />
+				<p:column headerText="Usuário" sortBy="#{toCliente.toUsuario.email}"
+					filterBy="#{toCliente.toUsuario.email}">
+					<h:outputText value="#{toCliente.toUsuario.email}" />
+				</p:column>
+
+				<p:column headerText="Alterar">
+					<p:commandLink value="Alterar"
+						action="#{listaClienteBean.carregar(toCliente.id, 'ClienteID', 'cadastroCliente.xhtml')}"
+						process="@this" />
+				</p:column>
+
+				<p:column headerText="Inativar">
+					<p:commandLink value="Inativar"
+						action="#{listaClienteBean.inativar(toCliente)}"
+						update="tabelaClientes, formMessages:messages" process="@this"
+						oncomplete="PF('TabelaClientes').filter();" />
 				</p:column>
 
 			</p:dataTable>

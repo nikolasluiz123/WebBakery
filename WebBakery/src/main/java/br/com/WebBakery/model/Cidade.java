@@ -10,8 +10,8 @@ import br.com.WebBakery.abstractClass.AbstractBaseModel;
 @Entity(name = Cidade.TABLE_NAME)
 public class Cidade extends AbstractBaseModel {
 
-    public static final String TABLE_NAME = "cidades";
-    public static final String FK_NAME = "fk_cidade";
+    public static final String TABLE_NAME = "cidade";
+    public static final String FK_NAME = "id_cidade";
     
     private static final String FK_ESTADO_PAIS = Estado.FK_NAME + "_" + Cidade.TABLE_NAME;
     private static final String NOME_CIDADE = "nome" + "_" + Cidade.TABLE_NAME;

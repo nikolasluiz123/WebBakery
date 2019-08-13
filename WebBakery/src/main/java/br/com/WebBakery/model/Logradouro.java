@@ -10,8 +10,8 @@ import br.com.WebBakery.abstractClass.AbstractBaseModel;
 @Entity(name = Logradouro.TABLE_NAME)
 public class Logradouro extends AbstractBaseModel {
 
-    static final String TABLE_NAME = "logradouros";
-    public static final String FK_NAME = "fk_logradouro";
+    static final String TABLE_NAME = "logradouro";
+    public static final String FK_NAME = "id_logradouro";
     
     private static final String COMPLEMENTO_LOGRADOURO = "complemento" + "_" + Logradouro.TABLE_NAME;
     private static final String RUA_LOGRADOURO = "rua" + "_" + Logradouro.TABLE_NAME;

@@ -10,7 +10,6 @@ import javax.transaction.Transactional;
 
 import br.com.WebBakery.abstractClass.AbstractBaseDao;
 import br.com.WebBakery.abstractClass.AbstractBaseRegisterMBean;
-import br.com.WebBakery.abstractClass.AbstractValidator;
 import br.com.WebBakery.dao.CidadeDao;
 import br.com.WebBakery.dao.ClienteDao;
 import br.com.WebBakery.dao.EnderecoDao;
@@ -21,13 +20,12 @@ import br.com.WebBakery.dao.UsuarioDao;
 import br.com.WebBakery.enums.TipoUsuario;
 import br.com.WebBakery.to.TOCidade;
 import br.com.WebBakery.to.TOCliente;
-import br.com.WebBakery.to.TOEndereco;
 import br.com.WebBakery.to.TOEstado;
-import br.com.WebBakery.to.TOLogradouro;
 import br.com.WebBakery.to.TOPais;
-import br.com.WebBakery.to.TOUsuario;
 import br.com.WebBakery.util.Hash_Util;
 import br.com.WebBakery.validator.ClienteValidator;
+import br.com.WebBakery.validator.EnderecoValidator;
+import br.com.WebBakery.validator.UsuarioValidator;
 
 @Named(ClienteBean.BEAN_NAME)
 @ViewScoped
@@ -37,7 +35,6 @@ public class ClienteBean extends AbstractBaseRegisterMBean<TOCliente> {
 
     public static final String BEAN_NAME = "clienteBean";
 
-    private TOCliente toCliente;
     @Inject
     private ClienteDao clienteDao;
     @Inject
@@ -59,9 +56,10 @@ public class ClienteBean extends AbstractBaseRegisterMBean<TOCliente> {
     private LogradouroDao logradouroDao;
     @Inject
     private EnderecoDao enderecoDao;
+
     @Inject
     private UsuarioDao usuarioDao;
-    private ClienteValidator clienteValidator;
+
     private String senha;
 
     @PostConstruct
@@ -72,15 +70,6 @@ public class ClienteBean extends AbstractBaseRegisterMBean<TOCliente> {
             resetTo();
         }
 
-        this.toCliente = new TOCliente();
-
-        this.toCliente.setToEndereco(new TOEndereco());
-        this.toCliente.getToEndereco().setToPais(new TOPais());
-        this.toCliente.getToEndereco().setToEstado(new TOEstado());
-        this.toCliente.getToEndereco().setToCidade(new TOCidade());
-        this.toCliente.getToEndereco().setToLogradouro(new TOLogradouro());
-
-        this.toCliente.setToUsuario(new TOUsuario());
         this.toPaisSelecionado = new TOPais();
         this.toEstadoSelecionado = new TOEstado();
         this.toCidadeSelecionada = new TOCidade();
@@ -93,13 +82,13 @@ public class ClienteBean extends AbstractBaseRegisterMBean<TOCliente> {
     @Transactional
     public void cadastrar() {
         try {
-            this.clienteValidator = new ClienteValidator(this.toCliente, this.senha);
-            if (getValidator().isValid()) {
+            addValidators();
+            if (isValid()) {
                 cadastrarLogradouroCliente();
                 cadastrarEnderecoCliente();
                 cadastrarUsuarioCliente();
-                this.toCliente.setAtivo(true);
-                this.clienteDao.salvar(this.toCliente);
+                this.getTo().setAtivo(true);
+                this.clienteDao.salvar(this.getTo());
                 showMessageSuccess();
             }
             atualizarTela();
@@ -108,22 +97,33 @@ public class ClienteBean extends AbstractBaseRegisterMBean<TOCliente> {
         }
     }
 
+    private void addValidators() {
+        ClienteValidator clienteValidator = new ClienteValidator(getTo(), senha, clienteDao);
+        addValidator(clienteValidator);
+        EnderecoValidator enderecoValidator = new EnderecoValidator(getTo().getToEndereco());
+        addValidator(enderecoValidator);
+        UsuarioValidator usuarioValidator = new UsuarioValidator(getTo().getToUsuario(),
+                                                                 senha,
+                                                                 usuarioDao);
+        addValidator(usuarioValidator);
+    }
+
     private void cadastrarUsuarioCliente() throws Exception {
-        this.toCliente.getToUsuario().setAtivo(true);
-        this.toCliente.getToUsuario().setTipo(TipoUsuario.CLIENTE);
-        this.toCliente.getToUsuario().setSenha(Hash_Util.getHashCode(this.senha));
-        this.usuarioDao.salvar(this.toCliente.getToUsuario());
+        getTo().getToUsuario().setAtivo(true);
+        getTo().getToUsuario().setTipo(TipoUsuario.CLIENTE);
+        getTo().getToUsuario().setSenha(Hash_Util.getHashCode(this.senha));
+        this.usuarioDao.salvar(this.getTo().getToUsuario());
     }
 
     private void cadastrarEnderecoCliente() throws Exception {
-        this.toCliente.getToEndereco().setAtivo(true);
-        this.enderecoDao.salvar(this.toCliente.getToEndereco());
+        this.getTo().getToEndereco().setAtivo(true);
+        this.enderecoDao.salvar(this.getTo().getToEndereco());
     }
 
     private void cadastrarLogradouroCliente() throws Exception {
-        this.toCliente.getToEndereco().getToLogradouro().setAtivo(true);
-        this.toCliente.getToEndereco().getToLogradouro().setToCidade(toCidadeSelecionada);
-        this.logradouroDao.salvar(this.toCliente.getToEndereco().getToLogradouro());
+        this.getTo().getToEndereco().getToLogradouro().setAtivo(true);
+        this.getTo().getToEndereco().getToLogradouro().setToCidade(toCidadeSelecionada);
+        this.logradouroDao.salvar(this.getTo().getToEndereco().getToLogradouro());
     }
 
     private void initListPaises() {
@@ -151,17 +151,17 @@ public class ClienteBean extends AbstractBaseRegisterMBean<TOCliente> {
     }
 
     public void setarPais() {
-        this.toCliente.getToEndereco().setToPais(this.toPaisSelecionado);
+        this.getTo().getToEndereco().setToPais(this.toPaisSelecionado);
         carregarEstado(toPaisSelecionado.getId());
     }
 
     public void setarEstado() {
-        this.toCliente.getToEndereco().setToEstado(this.toEstadoSelecionado);
+        this.getTo().getToEndereco().setToEstado(this.toEstadoSelecionado);
         carregarCidade(toEstadoSelecionado.getId());
     }
 
     public void setarCidade() {
-        this.toCliente.getToEndereco().setToCidade(this.toCidadeSelecionada);
+        this.getTo().getToEndereco().setToCidade(this.toCidadeSelecionada);
     }
 
     private void carregarEstado(Integer paisId) {
@@ -178,14 +178,6 @@ public class ClienteBean extends AbstractBaseRegisterMBean<TOCliente> {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    public TOCliente getToCliente() {
-        return toCliente;
-    }
-
-    public void setToCliente(TOCliente toCliente) {
-        this.toCliente = toCliente;
     }
 
     public List<TOPais> getToPaises() {
@@ -271,11 +263,6 @@ public class ClienteBean extends AbstractBaseRegisterMBean<TOCliente> {
     @Override
     protected AbstractBaseDao<TOCliente> getDao() {
         return this.clienteDao;
-    }
-
-    @Override
-    public AbstractValidator getValidator() {
-        return this.clienteValidator;
     }
 
     @Override
