@@ -8,7 +8,6 @@ import javax.faces.application.FacesMessage;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.transaction.Transactional;
 
 import br.com.WebBakery.abstractClass.AbstractBaseListMBean;
 import br.com.WebBakery.dao.PaisDao;
@@ -36,19 +35,6 @@ public class ListaPaisBean extends AbstractBaseListMBean implements IBaseListMBe
         initListPaises();
     }
 
-    @Transactional
-    @Override
-    public void inativar(TOPais to) {
-        try {
-            to.setAtivo(false);
-            this.paisDao.atualizar(to);
-            initListPaises();
-            getContext().addMessage(null, new FacesMessage(PAIS_INATIVATED_SUCCESSFULLY));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
     private void initListPaises() {
         try {
             this.toPaises = this.paisDao.listarTodos(true);
@@ -57,10 +43,16 @@ public class ListaPaisBean extends AbstractBaseListMBean implements IBaseListMBe
         }
     }
 
-    public void carregar(Integer paisID) throws Exception {
-        String keyAtribute = "PaisID";
-        String pageRedirect = "cadastroPais.xhtml";
-        setObjetoSessao(paisID, keyAtribute, pageRedirect);
+    @Override
+    public void inativar(TOPais to) {
+        try {
+            to.setAtivo(false);
+            this.paisDao.salvar(to);
+            initListPaises();
+            getContext().addMessage(null, new FacesMessage(PAIS_INATIVATED_SUCCESSFULLY));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public List<TOPais> getToPaises() {
@@ -77,6 +69,12 @@ public class ListaPaisBean extends AbstractBaseListMBean implements IBaseListMBe
 
     public void setToPaisesFiltrados(List<TOPais> toPaisesFiltrados) {
         this.toPaisesFiltrados = toPaisesFiltrados;
+
+    }
+
+    @Override
+    protected String getBeanName() {
+        return BEAN_NAME;
     }
 
 }

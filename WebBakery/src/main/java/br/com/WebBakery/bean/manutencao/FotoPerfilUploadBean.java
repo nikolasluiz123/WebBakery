@@ -9,9 +9,10 @@ import javax.transaction.Transactional;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.UploadedFile;
 
+import br.com.WebBakery.abstractClass.AbstractBaseDao;
 import br.com.WebBakery.abstractClass.AbstractBaseRegisterMBean;
+import br.com.WebBakery.abstractClass.AbstractValidator;
 import br.com.WebBakery.dao.FotoPerfilUsuarioDao;
-import br.com.WebBakery.model.FotoPerfil;
 import br.com.WebBakery.to.TOFotoPerfil;
 import br.com.WebBakery.to.TOUsuario;
 import br.com.WebBakery.util.Faces_Util;
@@ -20,7 +21,7 @@ import br.com.WebBakery.validator.FotoValidator;
 
 @Named(FotoPerfilUploadBean.BEAN_NAME)
 @SessionScoped
-public class FotoPerfilUploadBean extends AbstractBaseRegisterMBean<FotoPerfil> {
+public class FotoPerfilUploadBean extends AbstractBaseRegisterMBean<TOFotoPerfil> {
 
     static final String BEAN_NAME = "fotoPerfilUploadBean";
 
@@ -28,20 +29,21 @@ public class FotoPerfilUploadBean extends AbstractBaseRegisterMBean<FotoPerfil> 
 
     private static final long serialVersionUID = 9124846392202100854L;
 
-    private TOFotoPerfil toFoto;
-
     @Inject
     private FotoPerfilUsuarioDao dao;
     private String pathFoto;
     private FotoValidator fotoValidator;
 
-    // @PersistenceContext
-    // private EntityManager em;
-
     @PostConstruct
     private void init() {
-        this.toFoto = new TOFotoPerfil();
+        verificaObjetoSessao();
+        
+        if (getTo() == null) {
+            resetTo();
+        }
+        
         getPathFotoPastaTemporaria();
+        
     }
 
     @Transactional
@@ -50,20 +52,21 @@ public class FotoPerfilUploadBean extends AbstractBaseRegisterMBean<FotoPerfil> 
         TOFotoPerfil fotoDoBanco = this.dao.getFotoUsuario(u.getId());
 
         UploadedFile file = event.getFile();
-        this.toFoto.setAtivo(true);
-        this.toFoto.setBytes(file.getContents());
-        this.toFoto.setToUsuario(u);
-        this.toFoto.setExtensao(File_Util.getExtensao(file.getFileName()));
-        this.toFoto.setNome(file.getFileName());
-        this.toFoto.setTamanho(file.getSize());
-        this.fotoValidator = new FotoValidator(this.toFoto);
+        getTo().setAtivo(true);
+        getTo().setBytes(file.getContents());
+        getTo().setToUsuario(u);
+        getTo().setExtensao(File_Util.getExtensao(file.getFileName()));
+        getTo().setNome(file.getFileName());
+        getTo().setTamanho(file.getSize());
+        this.fotoValidator = new FotoValidator(getTo());
 
-        Boolean isValid = this.fotoValidator.isValid();
+        Boolean isValid = getValidator().isValid();
+
         if (fotoDoBanco == null && isValid) {
-            this.dao.cadastrar(this.toFoto);
+            this.dao.salvar(getTo());
         } else if (isValid) {
             fotoDoBanco.setBytes(file.getContents());
-            this.dao.atualizar(fotoDoBanco);
+            this.dao.salvar(fotoDoBanco);
         }
     }
 
@@ -84,12 +87,19 @@ public class FotoPerfilUploadBean extends AbstractBaseRegisterMBean<FotoPerfil> 
         }
     }
 
-    public TOFotoPerfil getToFoto() {
-        return toFoto;
+    @Override
+    protected AbstractBaseDao<TOFotoPerfil> getDao() {
+        return dao;
     }
 
-    public void setToFoto(TOFotoPerfil toFoto) {
-        this.toFoto = toFoto;
+    @Override
+    public AbstractValidator getValidator() {
+        return fotoValidator;
+    }
+
+    @Override
+    protected TOFotoPerfil getNewInstaceTO() {
+        return new TOFotoPerfil();
     }
 
     public String getPathFoto() {
@@ -106,6 +116,11 @@ public class FotoPerfilUploadBean extends AbstractBaseRegisterMBean<FotoPerfil> 
 
     public void setFotoValidator(FotoValidator fotoValidator) {
         this.fotoValidator = fotoValidator;
+    }
+
+    @Override
+    protected String getBeanName() {
+        return BEAN_NAME;
     }
 
 }

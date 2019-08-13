@@ -12,21 +12,14 @@ import br.com.WebBakery.to.TOVenda;
 
 @Stateless
 public class VendaDao extends AbstractBaseDao<TOVenda> {
-//    @PersistenceContext
-//    transient private EntityManager entityManager;
-//
-//    @Override
-//    protected EntityManager getEntityManager() {
-//        return this.entityManager;
-//    }
 
     private static final long serialVersionUID = 3684593379387389702L;
 
     @Override
-    public void cadastrar(TOVenda to) throws Exception {
+    public void salvar(TOVenda to) throws Exception {
         Venda v = new Venda();
         getConverter().getModelFromTO(to, v);
-        getEntityManager().persist(v);
+        getEntityManager().merge(v);
     }
 
     @Override
@@ -38,13 +31,6 @@ public class VendaDao extends AbstractBaseDao<TOVenda> {
         return to;
     }
 
-    @Override
-    public void atualizar(TOVenda to) throws Exception {
-        Venda v = new Venda();
-        getConverter().getModelFromTO(to, v);
-        getEntityManager().persist(v);
-    }
-    
     @Override
     public List<TOVenda> listarTodos(Boolean ativo) throws Exception {
         List<Venda> vendas = new ArrayList<>();

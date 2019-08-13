@@ -8,14 +8,11 @@ import javax.faces.application.FacesMessage;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.transaction.Transactional;
 
 import br.com.WebBakery.abstractClass.AbstractBaseListMBean;
-import br.com.WebBakery.bean.manutencao.CidadeBean;
 import br.com.WebBakery.dao.CidadeDao;
 import br.com.WebBakery.interfaces.IBaseListMBean;
 import br.com.WebBakery.to.TOCidade;
-import br.com.WebBakery.util.Faces_Util;
 
 @Named(ListaCidadeBean.BEAN_NAME)
 @ViewScoped
@@ -39,20 +36,10 @@ public class ListaCidadeBean extends AbstractBaseListMBean implements IBaseListM
     }
 
     @Override
-    public void carregar(Integer cidadeID) throws Exception {
-        String keyAtribute = "CidadeID";
-        String pageRedirect = "cadastroCidade.xhtml";
-        setObjetoSessao(cidadeID, keyAtribute, pageRedirect);
-        CidadeBean registerBean = getRegisterBean();
-        registerBean.setToCidade(registerBean.getObjetoSessao(keyAtribute, cidadeDao));
-    }
-
-    @Transactional
-    @Override
     public void inativar(TOCidade to) {
         try {
             to.setAtivo(false);
-            this.cidadeDao.atualizar(to);
+            this.cidadeDao.salvar(to);
             initListCidades();
             getContext().addMessage(null, new FacesMessage(CIDADE_INATIVATED_SUCCESSFULLY));
         } catch (Exception e) {
@@ -66,10 +53,6 @@ public class ListaCidadeBean extends AbstractBaseListMBean implements IBaseListM
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    private CidadeBean getRegisterBean() {
-        return ((CidadeBean) Faces_Util.getBean(CidadeBean.BEAN_NAME));
     }
 
     public List<TOCidade> getToCidades() {
@@ -86,6 +69,11 @@ public class ListaCidadeBean extends AbstractBaseListMBean implements IBaseListM
 
     public void setToCidadesFiltradas(List<TOCidade> toCidadesFiltradas) {
         this.toCidadesFiltradas = toCidadesFiltradas;
+    }
+
+    @Override
+    protected String getBeanName() {
+        return BEAN_NAME;
     }
 
 }

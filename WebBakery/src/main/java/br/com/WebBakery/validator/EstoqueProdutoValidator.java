@@ -1,13 +1,14 @@
 package br.com.WebBakery.validator;
 
 import br.com.WebBakery.abstractClass.AbstractValidator;
-import br.com.WebBakery.model.EstoqueProduto;
+import br.com.WebBakery.to.TOEstoqueProduto;
 
 public class EstoqueProdutoValidator extends AbstractValidator {
 
-    private EstoqueProduto estoqueProduto;
+    @SuppressWarnings("unused")
+    private TOEstoqueProduto estoqueProduto;
 
-    public EstoqueProdutoValidator(EstoqueProduto estoqueProduto) {
+    public EstoqueProdutoValidator(TOEstoqueProduto estoqueProduto) {
         this.estoqueProduto = estoqueProduto;
     }
 

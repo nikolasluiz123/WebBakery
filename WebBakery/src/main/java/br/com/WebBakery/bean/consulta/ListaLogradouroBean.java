@@ -42,21 +42,12 @@ public class ListaLogradouroBean extends AbstractBaseListMBean
     public void inativar(TOLogradouro logradouro) {
         try {
             logradouro.setAtivo(false);
-            this.logradouroDao.atualizar(logradouro);
+            this.logradouroDao.salvar(logradouro);
             initListLogradouros();
             getContext().addMessage(null, new FacesMessage(LOGRADOURO_INATIVATED_SUCCESSFULLY));
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    // Não tem formulário para cadastrar logradouros, só é cadastrado um
-    // toLogradouro quando um funcionario ou cliente for cadastrado e os campos
-    // de
-    // endereço forem preenchidos
-    @Override
-    public void carregar(Integer id) throws Exception {
-        // TODO Auto-generated method stub
     }
 
     @Transactional
@@ -82,6 +73,11 @@ public class ListaLogradouroBean extends AbstractBaseListMBean
 
     public void setToLogradourosFiltrados(List<TOLogradouro> toLogradourosFiltrados) {
         this.toLogradourosFiltrados = toLogradourosFiltrados;
+    }
+
+    @Override
+    protected String getBeanName() {
+        return BEAN_NAME;
     }
 
 }

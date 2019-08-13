@@ -12,21 +12,14 @@ import br.com.WebBakery.to.TOFuncionario;
 
 @Stateless
 public class FuncionarioDao extends AbstractBaseDao<TOFuncionario> {
-//    @PersistenceContext
-//    transient private EntityManager entityManager;
-//    
-//    @Override
-//    protected EntityManager getEntityManager() {
-//        return this.entityManager;
-//    }
     
     private static final long serialVersionUID = -3829525203324472005L;
     
     @Override
-    public void cadastrar(TOFuncionario to) throws Exception {
+    public void salvar(TOFuncionario to) throws Exception {
         Funcionario f = new Funcionario();
         getConverter().getModelFromTO(to, f);
-        getEntityManager().persist(f);
+        getEntityManager().merge(f);
     }
 
     @Override
@@ -36,13 +29,6 @@ public class FuncionarioDao extends AbstractBaseDao<TOFuncionario> {
         getConverter().getTOFromModel(f, to);
         
         return to;
-    }
-
-    @Override
-    public void atualizar(TOFuncionario to) throws Exception {
-        Funcionario f = new Funcionario();
-        getConverter().getModelFromTO(to, f);
-        getEntityManager().merge(f);
     }
 
     public List<TOFuncionario> listarTodos(Boolean ativo) throws Exception {

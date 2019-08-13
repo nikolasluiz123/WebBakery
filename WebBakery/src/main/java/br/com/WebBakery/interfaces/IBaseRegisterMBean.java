@@ -2,5 +2,5 @@ package br.com.WebBakery.interfaces;
 
 public interface IBaseRegisterMBean {
 
-    public void cadastrar();
+    public void salvar();
 }

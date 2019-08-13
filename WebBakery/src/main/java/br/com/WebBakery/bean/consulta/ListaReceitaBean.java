@@ -8,14 +8,11 @@ import javax.faces.application.FacesMessage;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.transaction.Transactional;
 
 import br.com.WebBakery.abstractClass.AbstractBaseListMBean;
-import br.com.WebBakery.bean.manutencao.ReceitaBean;
 import br.com.WebBakery.dao.ReceitaDao;
 import br.com.WebBakery.interfaces.IBaseListMBean;
 import br.com.WebBakery.to.TOReceita;
-import br.com.WebBakery.util.Faces_Util;
 
 @Named(ListaReceitaBean.BEAN_NAME)
 @ViewScoped
@@ -39,20 +36,10 @@ public class ListaReceitaBean extends AbstractBaseListMBean implements IBaseList
     }
 
     @Override
-    public void carregar(Integer receitaID) throws Exception {
-        String keyAtribute = "ReceitaID";
-        String pageRedirect = "cadastroReceita.xhtml";
-        setObjetoSessao(receitaID, keyAtribute, pageRedirect);
-        ReceitaBean registerBean = getRegisterBean();
-        registerBean.setToReceita(registerBean.getObjetoSessao(keyAtribute, receitaDao));
-    }
-
-    @Transactional
-    @Override
     public void inativar(TOReceita receita) {
         try {
             receita.setAtivo(false);
-            this.receitaDao.atualizar(receita);
+            this.receitaDao.salvar(receita);
             initReceitas();
             getContext().addMessage(null, new FacesMessage(RECEITA_INATIVATED_SUCCESSFULLY));
         } catch (Exception e) {
@@ -68,10 +55,6 @@ public class ListaReceitaBean extends AbstractBaseListMBean implements IBaseList
         }
     }
     
-    private ReceitaBean getRegisterBean() {
-        return ((ReceitaBean) Faces_Util.getBean(ReceitaBean.BEAN_NAME));
-    }
-
     public List<TOReceita> getReceitas() {
         return receitas;
     }
@@ -86,6 +69,11 @@ public class ListaReceitaBean extends AbstractBaseListMBean implements IBaseList
 
     public void setReceitasFiltradas(List<TOReceita> receitasFiltradas) {
         this.receitasFiltradas = receitasFiltradas;
+    }
+
+    @Override
+    protected String getBeanName() {
+        return BEAN_NAME;
     }
 
 }

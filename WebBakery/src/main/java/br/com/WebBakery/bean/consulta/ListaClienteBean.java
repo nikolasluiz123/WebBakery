@@ -8,14 +8,11 @@ import javax.faces.application.FacesMessage;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.transaction.Transactional;
 
 import br.com.WebBakery.abstractClass.AbstractBaseListMBean;
-import br.com.WebBakery.bean.manutencao.ClienteBean;
 import br.com.WebBakery.dao.ClienteDao;
 import br.com.WebBakery.interfaces.IBaseListMBean;
 import br.com.WebBakery.to.TOCliente;
-import br.com.WebBakery.util.Faces_Util;
 
 @Named(ListaClienteBean.BEAN_NAME)
 @ViewScoped
@@ -40,19 +37,10 @@ public class ListaClienteBean extends AbstractBaseListMBean implements IBaseList
     }
 
     @Override
-    public void carregar(Integer clienteID) throws Exception {
-        String keyAtribute = "ClienteID";
-        String pageRedirect = "cadastroCliente.xhtml";
-        setObjetoSessao(clienteID, keyAtribute, pageRedirect);
-        getRegisterBean().getObjetoSessao(keyAtribute, clienteDao);
-    }
-
-    @Transactional
-    @Override
     public void inativar(TOCliente to) {
         try {
             to.setAtivo(false);
-            this.clienteDao.atualizar(to);
+            this.clienteDao.salvar(to);
             initClientes();
             getContext().addMessage(null, new FacesMessage(INATIVATED_SUCCESSFULLY));
         } catch (Exception e) {
@@ -66,10 +54,6 @@ public class ListaClienteBean extends AbstractBaseListMBean implements IBaseList
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    private ClienteBean getRegisterBean() {
-        return ((ClienteBean) Faces_Util.getBean(ClienteBean.BEAN_NAME));
     }
 
     public List<TOCliente> getToClientes() {
@@ -86,6 +70,11 @@ public class ListaClienteBean extends AbstractBaseListMBean implements IBaseList
 
     public void setToClientesFiltrados(List<TOCliente> toClientesFiltrados) {
         this.toClientesFiltrados = toClientesFiltrados;
+    }
+
+    @Override
+    protected String getBeanName() {
+        return BEAN_NAME;
     }
 
 }

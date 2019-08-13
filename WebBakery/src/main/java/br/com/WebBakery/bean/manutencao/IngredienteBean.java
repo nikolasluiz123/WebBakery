@@ -1,13 +1,14 @@
 package br.com.WebBakery.bean.manutencao;
 
 import javax.annotation.PostConstruct;
-import javax.faces.application.FacesMessage;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.transaction.Transactional;
 
+import br.com.WebBakery.abstractClass.AbstractBaseDao;
 import br.com.WebBakery.abstractClass.AbstractBaseRegisterMBean;
+import br.com.WebBakery.abstractClass.AbstractValidator;
 import br.com.WebBakery.dao.IngredienteDao;
 import br.com.WebBakery.enums.UnidadeMedida;
 import br.com.WebBakery.to.TOIngrediente;
@@ -21,70 +22,36 @@ public class IngredienteBean extends AbstractBaseRegisterMBean<TOIngrediente> {
 
     private static final long serialVersionUID = 1014269765533137572L;
 
-    private static final String INGREDIENTE_REGISTERED_SUCCESSFULLY = "TOIngrediente cadastrado com sucesso!";
-
-    private static final String INGREDIENTE_UPDATED_SUCCESSFULLY = "TOIngrediente atualizado com sucesso!";
-
     @Inject
     private IngredienteDao ingredienteDao;
     private IngredienteValidator ingredienteValidator;
-    private TOIngrediente toIngrediente;
     private UnidadeMedida unidadeMedida;
-
-    @PostConstruct
-    private void init() {
-        this.toIngrediente = new TOIngrediente();
-    }
 
     @Transactional
     public void cadastrar() {
-        this.ingredienteValidator = new IngredienteValidator(this.toIngrediente);
-        this.toIngrediente.setUnidadeMedida(unidadeMedida);
+        try {
+            this.ingredienteValidator = new IngredienteValidator(this.getTo());
+            this.getTo().setUnidadeMedida(unidadeMedida);
 
-        if (this.toIngrediente.getId() == null) {
-            efetuarCadastro();
-        } else {
-            efetuarAtualizacao();
-        }
-        atualizarTela();
-    }
-
-    private void efetuarCadastro() {
-        if (ingredienteValidator.isValid()) {
-            try {
-                this.toIngrediente.setAtivo(true);
-                this.ingredienteDao.cadastrar(this.toIngrediente);
-                getContext().addMessage(null,
-                                        new FacesMessage(INGREDIENTE_REGISTERED_SUCCESSFULLY));
-            } catch (Exception e) {
-                e.printStackTrace();
+            if (getValidator().isValid()) {
+                this.getTo().setAtivo(true);
+                this.ingredienteDao.salvar(this.getTo());
+                showMessageSuccess();
             }
+            atualizarTela();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
-    private void efetuarAtualizacao() {
-        if (this.ingredienteValidator.isValid()) {
-            try {
-                this.ingredienteDao.atualizar(this.toIngrediente);
-                getContext().addMessage(null, new FacesMessage(INGREDIENTE_UPDATED_SUCCESSFULLY));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+    @PostConstruct
+    private void init() {
+        verificaObjetoSessao();
+
+        if (getTo() == null) {
+            resetTo();
         }
-    }
 
-    private void atualizarTela() {
-        this.toIngrediente = new TOIngrediente();
-        this.ingredienteValidator.showMessages();
-        this.ingredienteValidator.clearMessages();
-    }
-
-    public TOIngrediente getToIngrediente() {
-        return toIngrediente;
-    }
-
-    public void setToIngrediente(TOIngrediente toIngrediente) {
-        this.toIngrediente = toIngrediente;
     }
 
     public UnidadeMedida getUnidadeMedida() {
@@ -97,5 +64,25 @@ public class IngredienteBean extends AbstractBaseRegisterMBean<TOIngrediente> {
 
     public UnidadeMedida[] getUnidadeMedidas() {
         return UnidadeMedida.values();
+    }
+
+    @Override
+    protected AbstractBaseDao<TOIngrediente> getDao() {
+        return ingredienteDao;
+    }
+
+    @Override
+    public AbstractValidator getValidator() {
+        return ingredienteValidator;
+    }
+
+    @Override
+    protected TOIngrediente getNewInstaceTO() {
+        return new TOIngrediente();
+    }
+
+    @Override
+    protected String getBeanName() {
+        return BEAN_NAME;
     }
 }

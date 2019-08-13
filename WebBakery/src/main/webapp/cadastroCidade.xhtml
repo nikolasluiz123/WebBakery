@@ -15,16 +15,16 @@
 				<p:panelGrid columns="2">
 
 					<p:outputLabel value="Nome:" for="nome" />
-					<p:inputText id="nome" value="#{cidadeBean.toCidade.nome}"
+					<p:inputText id="nome" value="#{cidadeBean.to.nome}"
 						placeholder="Digite o nome..." />
 
 					<p:outputLabel for="estado" value="Estado:" />
 					<p:inputText id="estado" onclick="PF('EstadosDialog').show();"
-						value="#{cidadeBean.toCidade.estado.nome}" readonly="true"
+						value="#{cidadeBean.to.toEstado.nome}" readonly="true"
 						placeholder="Selecione o estado..." style="cursor: pointer;" />
 
 					<p:commandButton value="Cadastrar" process="@form"
-						update="formMessages:messages, @form" action="#{cidadeBean.cadastrar}" />
+						update="formMessages:messages, @form" action="#{cidadeBean.salvar}" />
 
 				</p:panelGrid>
 			</p:fieldset>

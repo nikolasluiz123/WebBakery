@@ -12,15 +12,25 @@ import br.com.WebBakery.to.TOFotoPerfil;
 
 @Stateless
 public class FotoPerfilUsuarioDao extends AbstractBaseDao<TOFotoPerfil> {
-//    @PersistenceContext
-//    transient private EntityManager entityManager;
-//    
-//    @Override
-//    protected EntityManager getEntityManager() {
-//        return this.entityManager;
-//    }
+
     private static final long serialVersionUID = 2158380135942373657L;
 
+    @Override
+    public void salvar(TOFotoPerfil to) throws Exception {
+        FotoPerfil fotoPerfil = new FotoPerfil();
+        getConverter().getModelFromTO(to, fotoPerfil);
+        getEntityManager().merge(fotoPerfil);
+    }
+
+    @Override
+    public TOFotoPerfil buscarPorId(Integer id) throws Exception {
+        FotoPerfil fotoPerfil = getEntityManager().find(FotoPerfil.class, id);
+        TOFotoPerfil to = new TOFotoPerfil();
+        getConverter().getTOFromModel(fotoPerfil, to);
+
+        return to;
+    }
+    
     public TOFotoPerfil getFotoUsuario(Integer idUsuario) throws Exception {
         List<FotoPerfil> fotos = new ArrayList<>();
         List<TOFotoPerfil> toFotos = new ArrayList<>();
@@ -72,29 +82,6 @@ public class FotoPerfilUsuarioDao extends AbstractBaseDao<TOFotoPerfil> {
         }
         
         return toFotosPerfil;
-    }
-
-    @Override
-    public void cadastrar(TOFotoPerfil to) throws Exception {
-        FotoPerfil fotoPerfil = new FotoPerfil();
-        getConverter().getModelFromTO(to, fotoPerfil);
-        getEntityManager().persist(fotoPerfil);
-    }
-
-    @Override
-    public TOFotoPerfil buscarPorId(Integer id) throws Exception {
-        FotoPerfil fotoPerfil = getEntityManager().find(FotoPerfil.class, id);
-        TOFotoPerfil to = new TOFotoPerfil();
-        getConverter().getTOFromModel(fotoPerfil, to);
-
-        return to;
-    }
-
-    @Override
-    public void atualizar(TOFotoPerfil to) throws Exception {
-        FotoPerfil fotoPerfil = new FotoPerfil();
-        getConverter().getModelFromTO(to, fotoPerfil);
-        getEntityManager().merge(fotoPerfil);
     }
 
 }

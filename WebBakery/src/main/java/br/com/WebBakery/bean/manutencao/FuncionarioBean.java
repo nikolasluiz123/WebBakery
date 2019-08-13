@@ -3,13 +3,14 @@ package br.com.WebBakery.bean.manutencao;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
-import javax.faces.application.FacesMessage;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.transaction.Transactional;
 
+import br.com.WebBakery.abstractClass.AbstractBaseDao;
 import br.com.WebBakery.abstractClass.AbstractBaseRegisterMBean;
+import br.com.WebBakery.abstractClass.AbstractValidator;
 import br.com.WebBakery.dao.CidadeDao;
 import br.com.WebBakery.dao.EnderecoDao;
 import br.com.WebBakery.dao.EstadoDao;
@@ -24,7 +25,6 @@ import br.com.WebBakery.to.TOFuncionario;
 import br.com.WebBakery.to.TOLogradouro;
 import br.com.WebBakery.to.TOPais;
 import br.com.WebBakery.to.TOUsuario;
-import br.com.WebBakery.validator.EnderecoValidator;
 import br.com.WebBakery.validator.FuncionarioValidator;
 
 @Named(FuncionarioBean.BEAN_NAME)
@@ -33,17 +33,11 @@ public class FuncionarioBean extends AbstractBaseRegisterMBean<TOFuncionario> {
 
     public static final String BEAN_NAME = "funcionarioBean";
 
-    private static final String FUNCIONARIO_UPDATED_SUCCESSFULLY = "Funcionário atualizado com sucesso!";
-
-    private static final String FUNCIONARIO_REGISTRED_SUCCESSFULLY = "TOFuncionario cadastrado com sucesso!";
-
     private static final long serialVersionUID = -3087884190174464470L;
 
     @Inject
     private FuncionarioDao funcionarioDao;
-    private TOFuncionario toFuncionario;
     private FuncionarioValidator funcionarioValidator;
-    private EnderecoValidator enderecoValidator;
     @Inject
     private UsuarioDao usuarioDao;
     private TOUsuario toUsuarioSelecionado;
@@ -71,15 +65,20 @@ public class FuncionarioBean extends AbstractBaseRegisterMBean<TOFuncionario> {
 
     @PostConstruct
     private void init() {
+        verificaObjetoSessao();
+
+        if (getTo() == null) {
+            resetTo();
+        }
+
         this.funcionarioDao = new FuncionarioDao();
-        this.toFuncionario = new TOFuncionario();
 
         this.enderecoDao = new EnderecoDao();
-        this.toFuncionario.setToEndereco(new TOEndereco());
-        this.toFuncionario.getToEndereco().setToPais(new TOPais());
-        this.toFuncionario.getToEndereco().setToEstado(new TOEstado());
-        this.toFuncionario.getToEndereco().setToCidade(new TOCidade());
-        this.toFuncionario.getToEndereco().setToLogradouro(new TOLogradouro());
+        this.getTo().setToEndereco(new TOEndereco());
+        this.getTo().getToEndereco().setToPais(new TOPais());
+        this.getTo().getToEndereco().setToEstado(new TOEstado());
+        this.getTo().getToEndereco().setToCidade(new TOCidade());
+        this.getTo().getToEndereco().setToLogradouro(new TOLogradouro());
 
         this.logradouroDao = new LogradouroDao();
 
@@ -99,17 +98,19 @@ public class FuncionarioBean extends AbstractBaseRegisterMBean<TOFuncionario> {
         initListEstados();
         initListCidades();
         initListUsuarios();
+
     }
 
     @Transactional
     public void cadastrar() {
         try {
-            this.enderecoValidator = new EnderecoValidator(this.toFuncionario.getToEndereco());
-            this.funcionarioValidator = new FuncionarioValidator(this.toFuncionario);
-            if (this.toFuncionario.getId() == null) {
-                efetuarCadastro();
-            } else {
-                efetuarAtualizacao();
+            this.funcionarioValidator = new FuncionarioValidator(this.getTo());
+            if (getValidator().isValid()) {
+                cadastrarLogradouroFuncionario();
+                cadastrarEnderecoFuncionario();
+                getTo().setAtivo(true);
+                this.funcionarioDao.salvar(this.getTo());
+                showMessageSuccess();
             }
             atualizarTela();
         } catch (Exception e) {
@@ -117,41 +118,16 @@ public class FuncionarioBean extends AbstractBaseRegisterMBean<TOFuncionario> {
         }
     }
 
-    private void efetuarCadastro() throws Exception {
-        if (funcionarioValidator.isValid() && enderecoValidator.isValid()) {
-            cadastrarLogradouroFuncionario();
-            cadastrarEnderecoFuncionario();
-            this.toFuncionario.setAtivo(true);
-            this.funcionarioDao.cadastrar(this.toFuncionario);
-            getContext().addMessage(null, new FacesMessage(FUNCIONARIO_REGISTRED_SUCCESSFULLY));
-        }
-    }
-
     private void cadastrarEnderecoFuncionario() throws Exception {
-        this.toFuncionario.getToEndereco().setAtivo(true);
-        this.enderecoDao.cadastrar(this.toFuncionario.getToEndereco());
+        this.getTo().getToEndereco().setAtivo(true);
+        this.enderecoDao.salvar(this.getTo().getToEndereco());
     }
 
     private void cadastrarLogradouroFuncionario() throws Exception {
-        this.toFuncionario.getToEndereco().getToLogradouro().setAtivo(true);
-        this.toFuncionario.getToEndereco().getToLogradouro()
-                .setToCidade(this.toFuncionario.getToEndereco().getToCidade());
-        this.logradouroDao.cadastrar(this.toFuncionario.getToEndereco().getToLogradouro());
-    }
-
-    private void efetuarAtualizacao() throws Exception {
-        if (funcionarioValidator.isValid() && enderecoValidator.isValid()) {
-            this.funcionarioDao.atualizar(this.toFuncionario);
-            this.enderecoDao.atualizar(this.toFuncionario.getToEndereco());
-            this.logradouroDao.atualizar(this.toFuncionario.getToEndereco().getToLogradouro());
-            getContext().addMessage(null, new FacesMessage(FUNCIONARIO_UPDATED_SUCCESSFULLY));
-        }
-    }
-
-    private void atualizarTela() {
-        this.toFuncionario = new TOFuncionario();
-        this.funcionarioValidator.showMessages();
-        this.funcionarioValidator.clearMessages();
+        this.getTo().getToEndereco().getToLogradouro().setAtivo(true);
+        this.getTo().getToEndereco().getToLogradouro()
+                .setToCidade(this.getTo().getToEndereco().getToCidade());
+        this.logradouroDao.salvar(this.getTo().getToEndereco().getToLogradouro());
     }
 
     private void initListUsuarios() {
@@ -187,21 +163,21 @@ public class FuncionarioBean extends AbstractBaseRegisterMBean<TOFuncionario> {
     }
 
     public void setarPais() {
-        this.toFuncionario.getToEndereco().setToPais(this.toPaisSelecionado);
+        this.getTo().getToEndereco().setToPais(this.toPaisSelecionado);
         carregarEstado(toPaisSelecionado.getId());
     }
 
     public void setarEstado() {
-        this.toFuncionario.getToEndereco().setToEstado(this.toEstadoSelecionado);
+        this.getTo().getToEndereco().setToEstado(this.toEstadoSelecionado);
         carregarCidade(toEstadoSelecionado.getId());
     }
 
     public void setarCidade() {
-        this.toFuncionario.getToEndereco().setToCidade(this.toCcidadeSelecionada);
+        this.getTo().getToEndereco().setToCidade(this.toCcidadeSelecionada);
     }
 
     public void setarUsuario() {
-        this.toFuncionario.setToUsuario(this.toUsuarioSelecionado);
+        this.getTo().setToUsuario(this.toUsuarioSelecionado);
     }
 
     private void carregarEstado(Integer paisId) {
@@ -218,14 +194,6 @@ public class FuncionarioBean extends AbstractBaseRegisterMBean<TOFuncionario> {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    public TOFuncionario getToFuncionario() {
-        return toFuncionario;
-    }
-
-    public void setToFuncionario(TOFuncionario toFuncionario) {
-        this.toFuncionario = toFuncionario;
     }
 
     public TOUsuario getToUsuarioSelecionado() {
@@ -322,6 +290,26 @@ public class FuncionarioBean extends AbstractBaseRegisterMBean<TOFuncionario> {
 
     public void setToCidadesFiltradas(List<TOCidade> toCidadesFiltradas) {
         this.toCidadesFiltradas = toCidadesFiltradas;
+    }
+
+    @Override
+    protected AbstractBaseDao<TOFuncionario> getDao() {
+        return funcionarioDao;
+    }
+
+    @Override
+    public AbstractValidator getValidator() {
+        return funcionarioValidator;
+    }
+
+    @Override
+    protected TOFuncionario getNewInstaceTO() {
+        return new TOFuncionario();
+    }
+
+    @Override
+    protected String getBeanName() {
+        return BEAN_NAME;
     }
 
 }

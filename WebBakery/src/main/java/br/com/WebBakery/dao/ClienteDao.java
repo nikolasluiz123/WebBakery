@@ -14,21 +14,13 @@ import br.com.WebBakery.to.TOCliente;
 @Stateless
 public class ClienteDao extends AbstractBaseDao<TOCliente> {
 
-    // @PersistenceContext
-    // transient private EntityManager entityManager;
-    //
-    // @Override
-    // protected EntityManager getEntityManager() {
-    // return this.entityManager;
-    // }
-
     private static final long serialVersionUID = 3335677484935538227L;
 
     @Override
-    public void cadastrar(TOCliente to) throws Exception {
+    public void salvar(TOCliente to) throws Exception {
         Cliente c = new Cliente();
         getConverter().getModelFromTO(to, c);
-        getEntityManager().persist(c);
+        getEntityManager().merge(c);
     }
 
     @Override
@@ -38,13 +30,6 @@ public class ClienteDao extends AbstractBaseDao<TOCliente> {
         getConverter().getTOFromModel(c, to);
 
         return to;
-    }
-
-    @Override
-    public void atualizar(TOCliente to) throws Exception {
-        Cliente c = new Cliente();
-        getConverter().getTOFromModel(c, to);
-        getEntityManager().merge(c);
     }
 
     public List<TOCliente> listarTodos(Boolean ativo) throws Exception {

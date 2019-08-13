@@ -1,22 +1,34 @@
 package br.com.WebBakery.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
 
 import br.com.WebBakery.abstractClass.AbstractBaseModel;
 import br.com.WebBakery.enums.UnidadeMedida;
 
-@Entity
+@Entity(name = ReceitaIngrediente.TABLE_NAME)
 public class ReceitaIngrediente extends AbstractBaseModel {
 
+    public static final String TABLE_NAME = "receita_ingrediente";
+
+    private static final String UNIDADE_MEDIDA_RECEITA_INGREDIENTE = "unidade_medida" + "_" + ReceitaIngrediente.TABLE_NAME;
+    private static final String QUANTIDADE_INGREDIENTE_RECEITA_INGREDIENTE = "quantidade_ingrediente" + "_" + ReceitaIngrediente.TABLE_NAME;
+    private static final String FK_INGREDIENTE_RECEITA_INGREDIENTE = Ingrediente.FK_NAME + "_" + ReceitaIngrediente.TABLE_NAME;
+    private static final String FK_RECEITA_RECEITA_INGREDIENTE = Receita.FK_NAME + "_" + ReceitaIngrediente.TABLE_NAME;
+
     @OneToOne
+    @Column(name = FK_RECEITA_RECEITA_INGREDIENTE)
     private Receita receita;
 
     @OneToOne
+    @Column(name = FK_INGREDIENTE_RECEITA_INGREDIENTE)
     private Ingrediente ingrediente;
 
+    @Column(name = QUANTIDADE_INGREDIENTE_RECEITA_INGREDIENTE)
     private Double quantidadeIngrediente;
 
+    @Column(name = UNIDADE_MEDIDA_RECEITA_INGREDIENTE)
     private UnidadeMedida unidadeMedida;
 
     public Receita getReceita() {

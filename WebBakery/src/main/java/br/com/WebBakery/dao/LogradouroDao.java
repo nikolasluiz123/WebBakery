@@ -13,20 +13,13 @@ import br.com.WebBakery.to.TOLogradouro;
 @Stateless
 public class LogradouroDao extends AbstractBaseDao<TOLogradouro> {
     
-//    @PersistenceContext
-//    transient private EntityManager entityManager;
-//    
-//    @Override
-//    protected EntityManager getEntityManager() {
-//        return this.entityManager;
-//    }
     private static final long serialVersionUID = -3918599275005523240L;
 
     @Override
-    public void cadastrar(TOLogradouro to) throws Exception {
+    public void salvar(TOLogradouro to) throws Exception {
         Logradouro l = new Logradouro();
         getConverter().getModelFromTO(to, l);
-        getEntityManager().persist(l);
+        getEntityManager().merge(l);
     }
 
     @Override
@@ -38,13 +31,6 @@ public class LogradouroDao extends AbstractBaseDao<TOLogradouro> {
         return to;
     }
 
-    @Override
-    public void atualizar(TOLogradouro to) throws Exception {
-        Logradouro l = new Logradouro();
-        getConverter().getModelFromTO(to, l);
-        getEntityManager().merge(l);
-    }
-    
     public List<TOLogradouro> listarTodos(Boolean ativo) throws Exception {
         List<Logradouro> logradouros = new ArrayList<>();
         List<TOLogradouro> toLogradouros = new ArrayList<>();

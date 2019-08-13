@@ -29,7 +29,7 @@ public class PaisValidator extends AbstractValidator {
         if (String_Util.isNullOrEmpty(nome)) {
             messages.add(FIELD_NOME_REQUIRED);
         }
-        if (nome.length() > 30) {
+        if (nome.length() > 32) {
             messages.add(FIELD_NOME_LIMIT_EXCEDDED);
         }
     }

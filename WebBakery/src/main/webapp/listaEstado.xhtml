@@ -22,8 +22,8 @@
 				</f:facet>
 
 				<p:column headerText="Nome" sortBy="#{toEstado.nome}"
-					filterBy="#{estado.nome}">
-					<h:outputText value="#{estado.nome}" />
+					filterBy="#{toEstado.nome}">
+					<h:outputText value="#{toEstado.nome}" />
 				</p:column>
 
 				<p:column headerText="Sigla" sortBy="#{toEstado.sigla}"
@@ -33,7 +33,8 @@
 
 				<p:column headerText="Alterar">
 					<p:commandLink value="Alterar"
-						action="#{listaEstadoBean.carregar(toEstado.id)}" process="@this" />
+						action="#{listaEstadoBean.carregar(toEstado.id, 'EstadoID', 'cadastroEstado.xhtml')}"
+						process="@this" />
 				</p:column>
 
 				<p:column headerText="Inativar">

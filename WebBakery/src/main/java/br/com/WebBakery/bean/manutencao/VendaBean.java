@@ -14,7 +14,9 @@ import javax.transaction.Transactional;
 
 import org.primefaces.event.CellEditEvent;
 
+import br.com.WebBakery.abstractClass.AbstractBaseDao;
 import br.com.WebBakery.abstractClass.AbstractBaseRegisterMBean;
+import br.com.WebBakery.abstractClass.AbstractValidator;
 import br.com.WebBakery.dao.ClienteDao;
 import br.com.WebBakery.dao.EstoqueProdutoDao;
 import br.com.WebBakery.dao.FuncionarioDao;
@@ -39,9 +41,7 @@ public class VendaBean extends AbstractBaseRegisterMBean<TOVenda> {
     private static final long serialVersionUID = 1093115934531225702L;
 
     private static final String QUANTIDADE_LIMIT_EXCEDDED = "Quantidade inválida!";
-    private static final String VENDA_REGISTRED_SUCCESSFULLY = "TOVenda realizada com sucesso!";
 
-    private TOVenda toVenda;
     @Inject
     private VendaDao vendaDao;
     private FormaPagamento formaPagamento;
@@ -72,7 +72,11 @@ public class VendaBean extends AbstractBaseRegisterMBean<TOVenda> {
 
     @PostConstruct
     private void init() {
-        this.toVenda = new TOVenda();
+        verificaObjetoSessao();
+
+        if (getTo() == null) {
+            resetTo();
+        }
 
         this.toClienteSelecionado = new TOCliente();
         this.toClientes = new ArrayList<>();
@@ -85,31 +89,34 @@ public class VendaBean extends AbstractBaseRegisterMBean<TOVenda> {
 
         initListProdutos();
         initListClientes();
+
     }
 
     @Transactional
     public void cadastrar() {
         try {
             this.produtoVendaValidator = new ProdutoVendaValidator(this.toEstoqueProdutosSelecionados);
-            if (this.toVenda.getId() == null) {
-                efetuarCadastro();
-                atualizarTela();
+            if (getValidator().isValid()) {
+                setarDataDaVenda();
+                setarFuncionarioVenda();
+                setarClienteVenda();
+                this.vendaDao.salvar(this.getTo());
+                cadastrarProdutoVenda();
+                atualizarProdutosVenda();
+                showMessageSuccess();
             }
+            atualizarTela();
+            acoesAposAtualizarTela();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private void efetuarCadastro() throws Exception {
-        if (this.produtoVendaValidator.isValid()) {
-            setarDataAtual();
-            setarFuncionarioVenda();
-            setarClienteVenda();
-            this.vendaDao.cadastrar(this.toVenda);
-            cadastrarProdutoVenda();
-            atualizarProdutosVenda();
-            getContext().addMessage(null, new FacesMessage(VENDA_REGISTRED_SUCCESSFULLY));
-        }
+    private void acoesAposAtualizarTela() {
+        this.toProdutoVenda = new TOProdutoVenda();
+        this.toProdutosVenda.clear();
+        this.toEstoqueProdutosSelecionados.clear();
+        initListProdutos();
     }
 
     private void atualizarProdutosVenda() throws Exception {
@@ -123,17 +130,7 @@ public class VendaBean extends AbstractBaseRegisterMBean<TOVenda> {
         estoqueProduto = this.estoqueProdutoDao
                 .buscarPorIdProduto(this.toProdutoVenda.getToProduto().getId());
         estoqueProduto.setQuantidade(estoqueProduto.getQuantidade() - to.getQuantidade());
-        this.estoqueProdutoDao.atualizar(estoqueProduto);
-    }
-
-    private void atualizarTela() {
-        this.toVenda = new TOVenda();
-        this.toProdutoVenda = new TOProdutoVenda();
-        this.toProdutosVenda.clear();
-        this.toEstoqueProdutosSelecionados.clear();
-        this.produtoVendaValidator.showMessages();
-        this.produtoVendaValidator.clearMessages();
-        initListProdutos();
+        this.estoqueProdutoDao.salvar(estoqueProduto);
     }
 
     public void onCellEdit(CellEditEvent event) {
@@ -197,34 +194,34 @@ public class VendaBean extends AbstractBaseRegisterMBean<TOVenda> {
         this.toProdutosVenda.remove(to);
     }
 
-    private void setarDataAtual() {
-        this.toVenda.setData(new Date());
+    private void setarDataDaVenda() {
+        this.getTo().setData(new Date());
     }
 
     private void setarFuncionarioVenda() throws Exception {
         TOUsuario u = (TOUsuario) Faces_Util.getHTTPSession().getAttribute("usuarioLogado");
         TOFuncionario f = null;
         f = funcionarioDao.buscarPorIdUsuario(u.getId());
-        this.toVenda.setToFuncionario(f);
+        this.getTo().setToFuncionario(f);
     }
 
     private void setarClienteVenda() {
-        this.toVenda.setToCliente(this.toClienteSelecionado);
+        this.getTo().setToCliente(this.toClienteSelecionado);
     }
 
     private void cadastrarProdutoVenda() throws Exception {
         for (TOEstoqueProduto toEP : toEstoqueProdutosSelecionados) {
             this.toProdutoVenda.setToProduto(toEP.getToProduto());
-            this.toProdutoVenda.setToVenda(this.toVenda);
+            this.toProdutoVenda.setToVenda(this.getTo());
             for (TOProdutoVenda toPV : toProdutosVenda) {
                 this.toProdutoVenda.setQuantidade(toPV.getQuantidade());
             }
-            this.produtoVendaDao.cadastrar(this.toProdutoVenda);
+            this.produtoVendaDao.salvar(this.toProdutoVenda);
         }
     }
 
     public void setarCliente() {
-        this.toVenda.setToCliente(toClienteSelecionado);
+        this.getTo().setToCliente(toClienteSelecionado);
     }
 
     private void initListClientes() {
@@ -243,12 +240,19 @@ public class VendaBean extends AbstractBaseRegisterMBean<TOVenda> {
         }
     }
 
-    public TOVenda getToVenda() {
-        return toVenda;
+    @Override
+    protected AbstractBaseDao<TOVenda> getDao() {
+        return vendaDao;
     }
 
-    public void setToVenda(TOVenda toVenda) {
-        this.toVenda = toVenda;
+    @Override
+    public AbstractValidator getValidator() {
+        return produtoVendaValidator;
+    }
+
+    @Override
+    protected TOVenda getNewInstaceTO() {
+        return new TOVenda();
     }
 
     public FormaPagamento getFormaPagamento() {
@@ -337,6 +341,11 @@ public class VendaBean extends AbstractBaseRegisterMBean<TOVenda> {
 
     public void setQuantidadeEhValida(Boolean quantidadeEhValida) {
         this.quantidadeEhValida = quantidadeEhValida;
+    }
+
+    @Override
+    protected String getBeanName() {
+        return BEAN_NAME;
     }
 
 }

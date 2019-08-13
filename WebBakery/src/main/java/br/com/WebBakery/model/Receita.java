@@ -7,14 +7,23 @@ import javax.persistence.Entity;
 
 import br.com.WebBakery.abstractClass.AbstractBaseModel;
 
-@Entity
+@Entity(name = Receita.TABLE_NAME)
 public class Receita extends AbstractBaseModel {
+    
+    static final String TABLE_NAME = "receitas";
+    public static final String FK_NAME = "fk_receita";
 
-    @Column(length = 32)
+    private static final String TEMPO_PREPARO_RECEITA = "tempo_preparo" + "_" + Receita.TABLE_NAME;
+    private static final String QUANTIDADE_RECEITA = "quantidade" + "_" + Receita.TABLE_NAME;
+    private static final String NOME_RECEITA = "nome" + "_" + Receita.TABLE_NAME;
+
+    @Column(length = STRING_LENGTH_32C, name = NOME_RECEITA)
     private String nome;
 
+    @Column(name = QUANTIDADE_RECEITA)
     private Integer quantidade;
 
+    @Column(name = TEMPO_PREPARO_RECEITA)
     private Time tempoPreparo;
 
     public String getNome() {

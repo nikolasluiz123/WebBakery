@@ -15,20 +15,14 @@ import br.com.WebBakery.to.TOProdutoComFoto;
 
 @Stateless
 public class ProdutoDao extends AbstractBaseDao<TOProduto> {
-    // @PersistenceContext
-    // transient private EntityManager entityManager;
-    //
-    // @Override
-    // protected EntityManager getEntityManager() {
-    // return this.entityManager;
-    // }
+
     private static final long serialVersionUID = 8719276490177777230L;
 
     @Override
-    public void cadastrar(TOProduto to) throws Exception {
+    public void salvar(TOProduto to) throws Exception {
         Produto p = new Produto();
         getConverter().getModelFromTO(to, p);
-        getEntityManager().persist(p);
+        getEntityManager().merge(p);
     }
 
     @Override
@@ -38,13 +32,6 @@ public class ProdutoDao extends AbstractBaseDao<TOProduto> {
         getConverter().getTOFromModel(p, to);
 
         return to;
-    }
-
-    @Override
-    public void atualizar(TOProduto to) throws Exception {
-        Produto p = new Produto();
-        getConverter().getModelFromTO(to, p);
-        getEntityManager().merge(p);
     }
 
     public List<TOProduto> listarTodos(Boolean ativo) throws Exception {

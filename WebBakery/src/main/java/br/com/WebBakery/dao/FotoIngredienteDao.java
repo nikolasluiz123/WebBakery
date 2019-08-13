@@ -16,19 +16,11 @@ public class FotoIngredienteDao extends AbstractBaseDao<TOFotoIngrediente> {
 
     private static final long serialVersionUID = 7731961468170386624L;
     
-//    @PersistenceContext
-//    transient private EntityManager entityManager;
-//
-//    @Override
-//    protected EntityManager getEntityManager() {
-//        return this.entityManager;
-//    }
-
     @Override
-    public void cadastrar(TOFotoIngrediente to) throws Exception {
+    public void salvar(TOFotoIngrediente to) throws Exception {
         FotoIngrediente fotoIngrediente = new FotoIngrediente();
         getConverter().getModelFromTO(to, fotoIngrediente);
-        getEntityManager().persist(fotoIngrediente);
+        getEntityManager().merge(fotoIngrediente);
     }
 
     @Override
@@ -40,13 +32,6 @@ public class FotoIngredienteDao extends AbstractBaseDao<TOFotoIngrediente> {
         return to;
     }
 
-    @Override
-    public void atualizar(TOFotoIngrediente to) throws Exception {
-        FotoIngrediente fotoIngrediente = new FotoIngrediente();
-        getConverter().getModelFromTO(to, fotoIngrediente);
-        
-    }
-    
     public List<TOFotoIngrediente> listarTodos(Boolean ativo) throws Exception {
         List<FotoIngrediente> fotosIngredientes = new ArrayList<>();
         List<TOFotoIngrediente> toFotosIngredientes = new ArrayList<>();

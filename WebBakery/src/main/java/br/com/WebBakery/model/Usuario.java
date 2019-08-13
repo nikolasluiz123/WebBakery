@@ -6,20 +6,31 @@ import javax.persistence.Entity;
 import br.com.WebBakery.abstractClass.AbstractBaseModel;
 import br.com.WebBakery.enums.TipoUsuario;
 
-@Entity
+@Entity(name = Usuario.TABLE_NAME)
 public class Usuario extends AbstractBaseModel {
+    
+    public static final String TABLE_NAME = "usuarios";
+    public static final String FK_NAME = "fk_usuario";
 
-    @Column(length = 40)
+    private static final String TIPO_USUARIO_USUARIO = "tipo_usuario" + "_" + Usuario.TABLE_NAME;
+    private static final String SENHA_USUARIO = "senha" + "_" + Usuario.TABLE_NAME;
+    private static final String EMAIL_USUARIO = "email" + "_" + Usuario.TABLE_NAME;
+    private static final String SOBRENOME_USUARIO = "sobrenome" + "_" + Usuario.TABLE_NAME;
+    private static final String NOME_USUARIO = "nome" + "_" + Usuario.TABLE_NAME;
+
+    @Column(length = STRING_LENGTH_32C, name = NOME_USUARIO)
     private String nome;
 
-    @Column(length = 40)
+    @Column(length = STRING_LENGTH_32C, name = SOBRENOME_USUARIO)
     private String sobrenome;
 
-    @Column(length = 50)
+    @Column(length = STRING_LENGTH_32C, name = EMAIL_USUARIO)
     private String email;
 
+    @Column(name = SENHA_USUARIO)
     private Integer senha;
 
+    @Column(name = TIPO_USUARIO_USUARIO)
     private TipoUsuario tipo;
 
     public String getEmail() {

@@ -1,6 +1,6 @@
 package br.com.WebBakery.bean.manutencao;
 
-import javax.faces.application.FacesMessage;
+import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -8,28 +8,40 @@ import javax.transaction.Transactional;
 
 import br.com.WebBakery.abstractClass.AbstractBaseDao;
 import br.com.WebBakery.abstractClass.AbstractBaseRegisterMBean;
+import br.com.WebBakery.abstractClass.AbstractValidator;
 import br.com.WebBakery.dao.PaisDao;
 import br.com.WebBakery.to.TOPais;
+import br.com.WebBakery.validator.PaisValidator;
 
 @Named(PaisBean.BEAN_NAME)
 @ViewScoped
 public class PaisBean extends AbstractBaseRegisterMBean<TOPais> {
 
     public static final String BEAN_NAME = "paisBean";
-    private static final String PAIS_UPDATED_SUCCESSFULLY = "País atualizado com sucesso!";
-    private static final String REGISTRED_SUCCESSFULLY = "País cadastrado com sucesso!";
 
     private static final long serialVersionUID = 3302600980972231377L;
 
     @Inject
     private PaisDao paisDao;
-    
+    private PaisValidator validator;
+
+    @PostConstruct
+    private void init() {
+        verificaObjetoSessao();
+
+        if (getTo() == null) {
+            resetTo();
+        }
+
+    }
+
     @Transactional
     public void salvar() {
         try {
-            if (validator.isValid()) {
+            this.validator = new PaisValidator(getTo());
+            if (getValidator().isValid()) {
                 getTo().setAtivo(true);
-                getDao().cadastrar(getTo());
+                this.paisDao.salvar(getTo());
                 showMessageSuccess();
             }
             atualizarTela();
@@ -38,14 +50,6 @@ public class PaisBean extends AbstractBaseRegisterMBean<TOPais> {
         }
     }
 
-    private void showMessageSuccess() {
-        if (getTo().getId() == null) {
-            getContext().addMessage(null, new FacesMessage(getMsgInsert()));
-        } else {
-            getContext().addMessage(null, new FacesMessage(getMsgUpdate()));
-        }
-    }
-    
     @Override
     protected AbstractBaseDao<TOPais> getDao() {
         return paisDao;
@@ -57,12 +61,12 @@ public class PaisBean extends AbstractBaseRegisterMBean<TOPais> {
     }
 
     @Override
-    protected String getMsgInsert() {
-        return PAIS_UPDATED_SUCCESSFULLY;
+    public AbstractValidator getValidator() {
+        return this.validator;
     }
 
     @Override
-    protected String getMsgUpdate() {
-        return REGISTRED_SUCCESSFULLY;
+    protected String getBeanName() {
+        return BEAN_NAME;
     }
 }

@@ -12,20 +12,20 @@ import br.com.WebBakery.to.TOEstado;
 
 @Stateless
 public class EstadoDao extends AbstractBaseDao<TOEstado> {
-//    @PersistenceContext
-//    transient private EntityManager entityManager;
-//
-//    @Override
-//    protected EntityManager getEntityManager() {
-//        return this.entityManager;
-//    }
 
     private static final long serialVersionUID = -783763888391855583L;
 
     @Override
-    public void cadastrar(TOEstado to) throws Exception {
-        Estado e = new Estado();
+    public void salvar(TOEstado to) throws Exception {
+        Estado e = null;
+        if (to.getId() == null) {
+           e = new Estado();
+        } else {
+            e = getEntityManager().find(Estado.class, to.getId());
+        }
+        
         getConverter().getModelFromTO(to, e);
+        
         getEntityManager().persist(e);
     }
 
@@ -38,13 +38,6 @@ public class EstadoDao extends AbstractBaseDao<TOEstado> {
         return to;
     }
 
-    @Override
-    public void atualizar(TOEstado to) throws Exception {
-        Estado e = new Estado();
-        getConverter().getModelFromTO(to, e);
-        
-    }
-    
     public List<TOEstado> listarTodos(Boolean ativo) throws Exception {
         List<Estado> estados = new ArrayList<>();
         List<TOEstado> toEstados = new ArrayList<>();

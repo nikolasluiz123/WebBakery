@@ -8,22 +8,19 @@ import javax.faces.application.FacesMessage;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.transaction.Transactional;
 
 import br.com.WebBakery.abstractClass.AbstractBaseListMBean;
 import br.com.WebBakery.bean.manutencao.EstoqueProdutoBean;
-import br.com.WebBakery.bean.manutencao.TarefaBean;
 import br.com.WebBakery.dao.TarefaDao;
 import br.com.WebBakery.interfaces.IBaseListMBean;
 import br.com.WebBakery.to.TOEstoqueProduto;
 import br.com.WebBakery.to.TOTarefa;
-import br.com.WebBakery.util.Faces_Util;
 
-@Named(ListaTarefaBean.LIST_TAREFA_BEAN)
+@Named(ListaTarefaBean.BEAN_NAME)
 @ViewScoped
 public class ListaTarefaBean extends AbstractBaseListMBean implements IBaseListMBean<TOTarefa> {
 
-    public static final String LIST_TAREFA_BEAN = "listaTarefaBean";
+    public static final String BEAN_NAME = "listaTarefaBean";
 
     private static final long serialVersionUID = 1800431506410605175L;
 
@@ -48,21 +45,11 @@ public class ListaTarefaBean extends AbstractBaseListMBean implements IBaseListM
     }
 
     @Override
-    public void carregar(Integer tarefaID) throws Exception {
-        String keyAtribute = "TarefaID";
-        String pageRedirect = "cadastroTarefa.xhtml";
-        setObjetoSessao(tarefaID, keyAtribute, pageRedirect);
-        TarefaBean registerBean = getRegisterBean();
-        registerBean.setToTarefa(registerBean.getObjetoSessao(keyAtribute, tarefaDao));
-    }
-
-    @Transactional
-    @Override
     public void inativar(TOTarefa tarefa) {
         try {
             cadastrarProdutoEstoque(tarefa);
             tarefa.setAtivo(false);
-            this.tarefaDao.atualizar(tarefa);
+            this.tarefaDao.salvar(tarefa);
             this.tarefasPendentes.remove(tarefa);
             this.tarefasConcluidas.add(tarefa);
             getContext().addMessage(null, new FacesMessage(COMPLETE_SUCCESSFULLY));
@@ -75,7 +62,7 @@ public class ListaTarefaBean extends AbstractBaseListMBean implements IBaseListM
         TOEstoqueProduto estoqueProduto = new TOEstoqueProduto();
         estoqueProduto.setToProduto(tarefa.getToProduto());
         estoqueProduto.setQuantidade(tarefa.getQuantidade());
-        this.estoqueProdutoBean.setToEstoqueProduto(estoqueProduto);
+        this.estoqueProdutoBean.setTo(estoqueProduto);
         this.estoqueProdutoBean.cadastrar();
     }
 
@@ -93,10 +80,6 @@ public class ListaTarefaBean extends AbstractBaseListMBean implements IBaseListM
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    private TarefaBean getRegisterBean() {
-        return ((TarefaBean) Faces_Util.getBean(TarefaBean.BEAN_NAME));
     }
 
     public List<TOTarefa> getTarefasPendentes() {
@@ -129,6 +112,11 @@ public class ListaTarefaBean extends AbstractBaseListMBean implements IBaseListM
 
     public void setTarefasConcuidasFiltradas(List<TOTarefa> tarefasConcuidasFiltradas) {
         this.tarefasConcuidasFiltradas = tarefasConcuidasFiltradas;
+    }
+
+    @Override
+    protected String getBeanName() {
+        return BEAN_NAME;
     }
 
 }

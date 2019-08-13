@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
-import javax.faces.application.FacesMessage;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -13,6 +12,7 @@ import javax.transaction.Transactional;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.UploadedFile;
 
+import br.com.WebBakery.abstractClass.AbstractBaseDao;
 import br.com.WebBakery.abstractClass.AbstractBaseRegisterMBean;
 import br.com.WebBakery.dao.FotoProdutoDao;
 import br.com.WebBakery.dao.ProdutoDao;
@@ -31,10 +31,6 @@ public class ProdutoBean extends AbstractBaseRegisterMBean<TOProduto> {
 
     private static final long serialVersionUID = 8861448133925257777L;
 
-    private static final String UPDATED_SUCCESSFULLY = "TOProduto atualizado com sucesso!";
-
-    private static final String REGISTERED_SUCCESSFULLY = "TOProduto cadastrado com sucesso!";
-
     private TOProduto toProduto;
     @Inject
     private ProdutoDao produtoDao;
@@ -50,11 +46,18 @@ public class ProdutoBean extends AbstractBaseRegisterMBean<TOProduto> {
 
     @PostConstruct
     private void init() {
+        verificaObjetoSessao();
+
+        if (getTo() == null) {
+            resetTo();
+        }
+
         this.toProduto = new TOProduto();
         this.toFotosSelecionadas = new ArrayList<>();
         this.toReceitaSelecionada = new TOReceita();
         this.toReceitas = new ArrayList<>();
         initReceitas();
+
     }
 
     @Transactional
@@ -62,10 +65,11 @@ public class ProdutoBean extends AbstractBaseRegisterMBean<TOProduto> {
         try {
             this.toProduto.setToFotos(toFotosSelecionadas);
             this.validator = new ProdutoValidator(this.toProduto);
-            if (this.toProduto.getId() == null) {
-                efetuarCadastro();
-            } else {
-                efetuarAtualizacao();
+            if (getValidator().isValid()) {
+                this.toProduto.setAtivo(true);
+                this.produtoDao.salvar(this.toProduto);
+                cadastrarFotos();
+                showMessageSuccess();
             }
             atualizarTela();
         } catch (Exception e) {
@@ -73,18 +77,10 @@ public class ProdutoBean extends AbstractBaseRegisterMBean<TOProduto> {
         }
     }
 
-    private void efetuarCadastro() throws Exception {
-        if (this.validator.isValid()) {
-            this.toProduto.setAtivo(true);
-            this.produtoDao.cadastrar(this.toProduto);
-            cadastrarFotos();
-            getContext().addMessage(null, new FacesMessage(REGISTERED_SUCCESSFULLY));
-        }
-    }
-
     private void cadastrarFotos() throws Exception {
+        inativarFotos();
         for (TOFotoProduto to : toFotosSelecionadas) {
-            this.fotoProdutoDao.cadastrar(to);
+            this.fotoProdutoDao.salvar(to);
         }
         toFotosSelecionadas.clear();
     }
@@ -104,34 +100,12 @@ public class ProdutoBean extends AbstractBaseRegisterMBean<TOProduto> {
         toFotosSelecionadas.add(toFoto);
     }
 
-    private void efetuarAtualizacao() throws Exception {
-        if (this.validator.isValid()) {
-            this.produtoDao.atualizar(this.toProduto);
-            atualizarFotos();
-            getContext().addMessage(null, new FacesMessage(UPDATED_SUCCESSFULLY));
-        }
-    }
-
     public boolean getBotaoDesabilitado() {
         return toFotosSelecionadas.isEmpty();
     }
 
-    private void atualizarFotos() throws Exception {
-        inativarFotos();
-        for (TOFotoProduto to : toFotosSelecionadas) {
-            this.fotoProdutoDao.cadastrar(to);
-        }
-        toFotosSelecionadas.clear();
-    }
-
     private void inativarFotos() {
         this.fotoProdutoDao.inativarFotos(this.toProduto.getId());
-    }
-
-    private void atualizarTela() {
-        this.toProduto = new TOProduto();
-        this.validator.showMessages();
-        this.validator.clearMessages();
     }
 
     private void initReceitas() {
@@ -192,6 +166,21 @@ public class ProdutoBean extends AbstractBaseRegisterMBean<TOProduto> {
 
     public void setToFotosSelecionadas(List<TOFotoProduto> toFotosSelecionadas) {
         this.toFotosSelecionadas = toFotosSelecionadas;
+    }
+
+    @Override
+    protected AbstractBaseDao<TOProduto> getDao() {
+        return produtoDao;
+    }
+
+    @Override
+    protected TOProduto getNewInstaceTO() {
+        return new TOProduto();
+    }
+
+    @Override
+    protected String getBeanName() {
+        return BEAN_NAME;
     }
 
 }

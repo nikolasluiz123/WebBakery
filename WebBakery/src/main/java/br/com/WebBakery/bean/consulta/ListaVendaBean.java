@@ -10,13 +10,11 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import br.com.WebBakery.abstractClass.AbstractBaseListMBean;
-import br.com.WebBakery.bean.manutencao.VendaBean;
 import br.com.WebBakery.dao.ProdutoVendaDao;
 import br.com.WebBakery.dao.VendaDao;
 import br.com.WebBakery.interfaces.IBaseListMBean;
 import br.com.WebBakery.to.TOProdutoVenda;
 import br.com.WebBakery.to.TOVenda;
-import br.com.WebBakery.util.Faces_Util;
 import br.com.WebBakery.util.String_Util;
 
 @Named(ListaVendaBean.BEAN_NAME)
@@ -82,25 +80,12 @@ public class ListaVendaBean extends AbstractBaseListMBean implements IBaseListMB
     public void inativar(TOVenda to) {
         try {
             to.setAtivo(false);
-            this.vendaDao.atualizar(to);
+            this.vendaDao.salvar(to);
             getContext().addMessage(null, new FacesMessage(VENDA_INATIVATED_SUCCESSFULLY));
             initListVendas();
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    @Override
-    public void carregar(Integer id) throws Exception {
-        String keyAtribute = "VendaID";
-        String pageRedirect = "cadastroVenda.xhtml";
-        setObjetoSessao(id, keyAtribute, pageRedirect);
-        VendaBean registerBean = getRegisterBean();
-        registerBean.setToVenda(registerBean.getObjetoSessao(keyAtribute, vendaDao));
-    }
-    
-    private VendaBean getRegisterBean() {
-        return ((VendaBean) Faces_Util.getBean(VendaBean.BEAN_NAME));
     }
 
     public List<TOVenda> getVendas() {
@@ -149,6 +134,11 @@ public class ListaVendaBean extends AbstractBaseListMBean implements IBaseListMB
 
     public void setValorTotalPagoFormatado(String valorTotalPagoFormatado) {
         this.valorTotalPagoFormatado = valorTotalPagoFormatado;
+    }
+
+    @Override
+    protected String getBeanName() {
+        return BEAN_NAME;
     }
 
 }

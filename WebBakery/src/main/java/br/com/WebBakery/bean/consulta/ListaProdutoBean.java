@@ -11,7 +11,6 @@ import javax.inject.Named;
 import javax.transaction.Transactional;
 
 import br.com.WebBakery.abstractClass.AbstractBaseListMBean;
-import br.com.WebBakery.bean.manutencao.ProdutoBean;
 import br.com.WebBakery.dao.FotoProdutoDao;
 import br.com.WebBakery.dao.ProdutoDao;
 import br.com.WebBakery.interfaces.IBaseListMBean;
@@ -19,7 +18,6 @@ import br.com.WebBakery.to.TOFotoProduto;
 import br.com.WebBakery.to.TOProduto;
 import br.com.WebBakery.to.TOProdutoComFoto;
 import br.com.WebBakery.to.TOReceita;
-import br.com.WebBakery.util.Faces_Util;
 import br.com.WebBakery.util.File_Util;
 import br.com.WebBakery.util.String_Util;
 
@@ -102,21 +100,12 @@ public class ListaProdutoBean extends AbstractBaseListMBean implements IBaseList
     public void inativar(TOProduto produto) {
         try {
             produto.setAtivo(false);
-            this.produtoDao.atualizar(produto);
+            this.produtoDao.salvar(produto);
             initProdutos();
             getContext().addMessage(null, new FacesMessage(PRODUTO_INATIVATED_SUCCESSFULLY));
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    @Override
-    public void carregar(Integer produtoID) throws Exception {
-        String keyAtribute = "ProdutoID";
-        String pageRedirect = "cadastroProduto.xhtml";
-        setObjetoSessao(produtoID, keyAtribute, pageRedirect);
-        ProdutoBean registerBean = getRegisterBean();
-        registerBean.setToProduto(registerBean.getObjetoSessao(keyAtribute, produtoDao));
     }
 
     public String getPrecoFormatado(Double d) {
@@ -129,10 +118,6 @@ public class ListaProdutoBean extends AbstractBaseListMBean implements IBaseList
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    private ProdutoBean getRegisterBean() {
-        return ((ProdutoBean) Faces_Util.getBean(ProdutoBean.BEAN_NAME));
     }
 
     public List<TOProduto> getToProdutos() {
@@ -149,6 +134,11 @@ public class ListaProdutoBean extends AbstractBaseListMBean implements IBaseList
 
     public void setToProdutoSelecionado(TOProduto toProdutoSelecionado) {
         this.toProdutoSelecionado = toProdutoSelecionado;
+    }
+
+    @Override
+    protected String getBeanName() {
+        return BEAN_NAME;
     }
 
 }

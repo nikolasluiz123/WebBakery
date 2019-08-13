@@ -1,20 +1,36 @@
 package br.com.WebBakery.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
 
 import br.com.WebBakery.abstractClass.AbstractBaseModel;
 
-@Entity
+@Entity(name = Endereco.TABLE_NAME)
 public class Endereco extends AbstractBaseModel {
 
+    private static final String FK_LOGRADOURO_ENDERECO = Logradouro.FK_NAME + "_" + Endereco.TABLE_NAME;
+    private static final String FK_CIDADE_ENDERECO = Cidade.FK_NAME + "_" + Endereco.TABLE_NAME;
+    private static final String FK_ESTADO_ENDERECO = Estado.FK_NAME + "_" + Endereco.TABLE_NAME;
+    private static final String FK_PAIS_ENDERECO = Pais.FK_NAME + "_" + Endereco.TABLE_NAME;
+
+    public static final String TABLE_NAME = "enderecos";
+    public static final String FK_NAME = "fk_endereco";
+
     @OneToOne
+    @Column(name = FK_PAIS_ENDERECO)
     private Pais pais;
+
     @OneToOne
+    @Column(name = FK_ESTADO_ENDERECO)
     private Estado estado;
+
     @OneToOne
+    @Column(name = FK_CIDADE_ENDERECO)
     private Cidade cidade;
+
     @OneToOne
+    @Column(name = FK_LOGRADOURO_ENDERECO)
     private Logradouro logradouro;
 
     public Pais getPais() {

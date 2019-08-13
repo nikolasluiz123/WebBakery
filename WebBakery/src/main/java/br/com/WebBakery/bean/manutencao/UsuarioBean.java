@@ -1,13 +1,14 @@
 package br.com.WebBakery.bean.manutencao;
 
 import javax.annotation.PostConstruct;
-import javax.faces.application.FacesMessage;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.transaction.Transactional;
 
+import br.com.WebBakery.abstractClass.AbstractBaseDao;
 import br.com.WebBakery.abstractClass.AbstractBaseRegisterMBean;
+import br.com.WebBakery.abstractClass.AbstractValidator;
 import br.com.WebBakery.dao.UsuarioDao;
 import br.com.WebBakery.enums.TipoUsuario;
 import br.com.WebBakery.to.TOUsuario;
@@ -21,13 +22,8 @@ public class UsuarioBean extends AbstractBaseRegisterMBean<TOUsuario> {
 
     private static final long serialVersionUID = 2840219448696216244L;
 
-    private static final String USUARIO_UPDATED_SUCCESSFULLY = "Usuário atualizado com sucesso!";
-
-    private static final String USUARIO_REGISTERED_SUCCESSFULLY = "Usuário cadastrado com sucesso!";
-
     @Inject
     private UsuarioDao usuarioDao;
-    private TOUsuario toUsuario;
     private TipoUsuario tipoUsuario;
     private UsuarioValidator validator;
 
@@ -35,19 +31,23 @@ public class UsuarioBean extends AbstractBaseRegisterMBean<TOUsuario> {
 
     @PostConstruct
     private void init() {
-        this.toUsuario = new TOUsuario();
+        verificaObjetoSessao();
+
+        if (getTo() == null) {
+            resetTo();
+        }
     }
 
     @Transactional
     public void cadastrar() {
         try {
-            this.validator = new UsuarioValidator(this.toUsuario, this.senha, this.usuarioDao);
-            this.toUsuario.setTipo(tipoUsuario);
+            this.validator = new UsuarioValidator(this.getTo(), this.senha, this.usuarioDao);
+            this.getTo().setTipo(tipoUsuario);
 
-            if (this.toUsuario.getId() == null) {
-                efetuarCadastro();
-            } else {
-                efetuarAtualizacao();
+            if (getValidator().isValid()) {
+                this.getTo().setAtivo(true);
+                this.usuarioDao.salvar(this.getTo());
+                showMessageSuccess();
             }
             atualizarTela();
         } catch (Exception e) {
@@ -55,33 +55,19 @@ public class UsuarioBean extends AbstractBaseRegisterMBean<TOUsuario> {
         }
     }
 
-    private void efetuarCadastro() throws Exception {
-        if (validator.isValid()) {
-            this.toUsuario.setAtivo(true);
-            this.usuarioDao.cadastrar(this.toUsuario);
-            getContext().addMessage(null, new FacesMessage(USUARIO_REGISTERED_SUCCESSFULLY));
-        }
+    @Override
+    protected AbstractBaseDao<TOUsuario> getDao() {
+        return usuarioDao;
     }
 
-    private void efetuarAtualizacao() throws Exception {
-        if (this.validator.isValid()) {
-            this.usuarioDao.atualizar(this.toUsuario);
-            getContext().addMessage(null, new FacesMessage(USUARIO_UPDATED_SUCCESSFULLY));
-        }
+    @Override
+    public AbstractValidator getValidator() {
+        return validator;
     }
 
-    private void atualizarTela() {
-        this.toUsuario = new TOUsuario();
-        this.validator.showMessages();
-        this.validator.clearMessages();
-    }
-
-    public TOUsuario getToUsuario() {
-        return toUsuario;
-    }
-
-    public void setToUsuario(TOUsuario toUsuario) {
-        this.toUsuario = toUsuario;
+    @Override
+    protected TOUsuario getNewInstaceTO() {
+        return new TOUsuario();
     }
 
     public TipoUsuario getTipoUsuario() {
@@ -102,6 +88,12 @@ public class UsuarioBean extends AbstractBaseRegisterMBean<TOUsuario> {
 
     public void setSenha(String senha) {
         this.senha = senha;
+    }
+
+    @Override
+    protected String getBeanName() {
+        // TODO Auto-generated method stub
+        return null;
     }
 
 }

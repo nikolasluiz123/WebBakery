@@ -48,7 +48,7 @@ public class MenuBean {
         item4.setUrl("listaEstado.xhtml");
         itensMenu.add(item4);
 
-        DefaultMenuItem item5 = new DefaultMenuItem("TOCidade");
+        DefaultMenuItem item5 = new DefaultMenuItem("Cidade");
         item5.setUrl("cadastroCidade.xhtml");
         itensMenu.add(item5);
 
@@ -56,7 +56,7 @@ public class MenuBean {
         item6.setUrl("listaCidade.xhtml");
         itensMenu.add(item6);
 
-        DefaultMenuItem item7 = new DefaultMenuItem("TOCliente");
+        DefaultMenuItem item7 = new DefaultMenuItem("Cliente");
         item7.setUrl("cadastroCliente.xhtml");
         itensMenu.add(item7);
 
@@ -80,7 +80,7 @@ public class MenuBean {
         item12.setUrl("listaUsuario.xhtml");
         itensMenu.add(item12);
 
-        DefaultMenuItem item13 = new DefaultMenuItem("TOProduto");
+        DefaultMenuItem item13 = new DefaultMenuItem("Produto");
         item13.setUrl("cadastroProduto.xhtml");
         itensMenu.add(item13);
 
@@ -88,7 +88,7 @@ public class MenuBean {
         item14.setUrl("listaProduto.xhtml");
         itensMenu.add(item14);
 
-        DefaultMenuItem item15 = new DefaultMenuItem("TOReceita");
+        DefaultMenuItem item15 = new DefaultMenuItem("Receita");
         item15.setUrl("cadastroReceita.xhtml");
         itensMenu.add(item15);
 
@@ -96,7 +96,7 @@ public class MenuBean {
         item16.setUrl("listaReceita.xhtml");
         itensMenu.add(item16);
 
-        DefaultMenuItem item17 = new DefaultMenuItem("TOTarefa");
+        DefaultMenuItem item17 = new DefaultMenuItem("Tarefa");
         item17.setUrl("cadastroTarefa.xhtml");
         itensMenu.add(item17);
 
@@ -108,7 +108,7 @@ public class MenuBean {
         item19.setUrl("estoqueProduto.xhtml");
         itensMenu.add(item19);
 
-        DefaultMenuItem item20 = new DefaultMenuItem("TOVenda");
+        DefaultMenuItem item20 = new DefaultMenuItem("Venda");
         item20.setUrl("cadastroVenda.xhtml");
         itensMenu.add(item20);
 

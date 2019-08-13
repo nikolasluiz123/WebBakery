@@ -8,16 +8,13 @@ import javax.faces.application.FacesMessage;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.transaction.Transactional;
 
 import br.com.WebBakery.abstractClass.AbstractBaseListMBean;
-import br.com.WebBakery.bean.manutencao.FuncionarioBean;
 import br.com.WebBakery.dao.EnderecoDao;
 import br.com.WebBakery.dao.FuncionarioDao;
 import br.com.WebBakery.dao.LogradouroDao;
 import br.com.WebBakery.interfaces.IBaseListMBean;
 import br.com.WebBakery.to.TOFuncionario;
-import br.com.WebBakery.util.Faces_Util;
 
 @Named(ListaFuncionarioBean.BEAN_NAME)
 @ViewScoped
@@ -45,31 +42,20 @@ public class ListaFuncionarioBean extends AbstractBaseListMBean
         initListFuncionarios();
     }
 
-    @Transactional
     @Override
     public void inativar(TOFuncionario to) {
         try {
             to.setAtivo(false);
             to.getToEndereco().setAtivo(false);
             to.getToEndereco().getToLogradouro().setAtivo(false);
-            this.funcionarioDao.atualizar(to);
-            this.enderecoDao.atualizar(to.getToEndereco());
-            this.logradouroDao.atualizar(to.getToEndereco().getToLogradouro());
+            this.funcionarioDao.salvar(to);
+            this.enderecoDao.salvar(to.getToEndereco());
+            this.logradouroDao.salvar(to.getToEndereco().getToLogradouro());
             initListFuncionarios();
             getContext().addMessage(null, new FacesMessage(FUNCIONARIO_INATIVATED_SUCCESSFULLY));
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    @Transactional
-    @Override
-    public void carregar(Integer funcionarioID) throws Exception {
-        String keyAtribute = "FuncionarioID";
-        String pageRedirect = "cadastroFuncionario.xhtml";
-        setObjetoSessao(funcionarioID, keyAtribute, pageRedirect);
-        FuncionarioBean registerBean = getRegisterBean();
-        registerBean.setToFuncionario(registerBean.getObjetoSessao(keyAtribute, funcionarioDao));
     }
 
     private void initListFuncionarios() {
@@ -78,10 +64,6 @@ public class ListaFuncionarioBean extends AbstractBaseListMBean
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    private FuncionarioBean getRegisterBean() {
-        return ((FuncionarioBean) Faces_Util.getBean(FuncionarioBean.BEAN_NAME));
     }
 
     public List<TOFuncionario> getToFuncionarios() {
@@ -98,6 +80,11 @@ public class ListaFuncionarioBean extends AbstractBaseListMBean
 
     public void setToFuncionariosFiltrados(List<TOFuncionario> toFuncionariosFiltrados) {
         this.toFuncionariosFiltrados = toFuncionariosFiltrados;
+    }
+
+    @Override
+    protected String getBeanName() {
+        return BEAN_NAME;
     }
 
 }

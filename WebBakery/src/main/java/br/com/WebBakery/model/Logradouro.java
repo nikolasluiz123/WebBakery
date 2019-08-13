@@ -2,26 +2,37 @@ package br.com.WebBakery.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import br.com.WebBakery.abstractClass.AbstractBaseModel;
 
-@Entity
+@Entity(name = Logradouro.TABLE_NAME)
 public class Logradouro extends AbstractBaseModel {
 
+    static final String TABLE_NAME = "logradouros";
+    public static final String FK_NAME = "fk_logradouro";
+    
+    private static final String COMPLEMENTO_LOGRADOURO = "complemento" + "_" + Logradouro.TABLE_NAME;
+    private static final String RUA_LOGRADOURO = "rua" + "_" + Logradouro.TABLE_NAME;
+    private static final String CEP_LOGRADOURO = "cep" + "_" + Logradouro.TABLE_NAME;
+    private static final String BAIRRO_LOGRADOURO = "bairro" + "_" + Logradouro.TABLE_NAME;
+    private static final String FK_CIDADE_LOGRADOURO = Cidade.FK_NAME + "_" + Logradouro.TABLE_NAME;
+
     @ManyToOne
+    @JoinColumn(name = FK_CIDADE_LOGRADOURO)
     private Cidade cidade;
 
-    @Column(length = 40)
+    @Column(length = STRING_LENGTH_64C, name = BAIRRO_LOGRADOURO)
     private String bairro;
 
-    @Column(length = 12)
+    @Column(length = STRING_LENGTH_16C, name = CEP_LOGRADOURO)
     private String cep;
 
-    @Column(length = 30)
+    @Column(length = STRING_LENGTH_32C, name = RUA_LOGRADOURO)
     private String rua;
 
-    @Column(length = 20)
+    @Column(length = STRING_LENGTH_32C, name = COMPLEMENTO_LOGRADOURO)
     private String complemento;
 
     public String getBairro() {

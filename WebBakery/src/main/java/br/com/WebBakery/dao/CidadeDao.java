@@ -15,18 +15,17 @@ public class CidadeDao extends AbstractBaseDao<TOCidade> {
 
     private static final long serialVersionUID = -8347345341892955875L;
 
-    // @PersistenceContext
-    // transient private EntityManager entityManager;
-    //
-    // @Override
-    // protected EntityManager getEntityManager() {
-    // return this.entityManager;
-    // }
-
     @Override
-    public void cadastrar(TOCidade to) throws Exception {
-        Cidade c = new Cidade();
+    public void salvar(TOCidade to) throws Exception {
+        Cidade c = null;
+        if (to.getId() == null) {
+           c = new Cidade();
+        } else {
+            c = getEntityManager().find(Cidade.class, to.getId());
+        }
+        
         getConverter().getModelFromTO(to, c);
+        
         getEntityManager().persist(c);
     }
 
@@ -40,13 +39,6 @@ public class CidadeDao extends AbstractBaseDao<TOCidade> {
     }
 
     @Override
-    public void atualizar(TOCidade to) throws Exception {
-        Cidade c = new Cidade();
-        getConverter().getModelFromTO(to, c);
-        getEntityManager().merge(c);
-    }
-
-    @Override
     public List<TOCidade> listarTodos(Boolean ativo) throws Exception {
         List<Cidade> cidades = new ArrayList<>();
         List<TOCidade> toCidades = new ArrayList<>();
@@ -55,7 +47,8 @@ public class CidadeDao extends AbstractBaseDao<TOCidade> {
         sql
         .add("SELECT c")
         .add("FROM ".concat(Cidade.class.getName()).concat(" c "))
-        .add("WHERE c.ativo = :pAtivo");
+        .add("WHERE c.ativo = :pAtivo")
+        .add("ORDER BY c.nome");
         
         cidades = getEntityManager().createQuery(sql.toString(), Cidade.class)
                                     .setParameter("pAtivo", ativo)
@@ -80,7 +73,8 @@ public class CidadeDao extends AbstractBaseDao<TOCidade> {
         .add("FROM ".concat(Cidade.class.getName()).concat(" c "))
         .add("WHERE")
         .add("c.ativo = :pAtivo")
-        .add("AND c.estado.id = :pIdEstado");
+        .add("AND c.estado.id = :pIdEstado")
+        .add("ORDER BY c.nome");
         
         cidades = getEntityManager().createQuery(sql.toString(), Cidade.class)
                                     .setParameter("pAtivo", ativo)

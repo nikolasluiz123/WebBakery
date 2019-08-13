@@ -12,20 +12,14 @@ import br.com.WebBakery.to.TOReceita;
 
 @Stateless
 public class ReceitaDao extends AbstractBaseDao<TOReceita> {
-//    @PersistenceContext
-//    transient private EntityManager entityManager;
-//    
-//    @Override
-//    protected EntityManager getEntityManager() {
-//        return this.entityManager;
-//    }
+
     private static final long serialVersionUID = -6670901759193719186L;
 
     @Override
-    public void cadastrar(TOReceita to) throws Exception {
+    public void salvar(TOReceita to) throws Exception {
         Receita r = new Receita();
         getConverter().getModelFromTO(to, r);
-        getEntityManager().persist(r);
+        getEntityManager().merge(r);
     }
 
     @Override
@@ -37,13 +31,6 @@ public class ReceitaDao extends AbstractBaseDao<TOReceita> {
         return to;
     }
 
-    @Override
-    public void atualizar(TOReceita to) throws Exception {
-        Receita r = new Receita();
-        getConverter().getModelFromTO(to, r);
-        getEntityManager().merge(r);
-    }
-    
     public List<TOReceita> listarTodos(Boolean ativo) throws Exception {
         List<Receita> receitas = new ArrayList<>();
         List<TOReceita> toReceitas = new ArrayList<>();

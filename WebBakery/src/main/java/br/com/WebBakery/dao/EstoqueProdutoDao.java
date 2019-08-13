@@ -12,20 +12,14 @@ import br.com.WebBakery.to.TOEstoqueProduto;
 
 @Stateless
 public class EstoqueProdutoDao extends AbstractBaseDao<TOEstoqueProduto> {
-    // @PersistenceContext
-    // transient private EntityManager entityManager;
-    //
-    // @Override
-    // protected EntityManager getEntityManager() {
-    // return this.entityManager;
-    // }
+
     private static final long serialVersionUID = -2808765073810346192L;
 
     @Override
-    public void cadastrar(TOEstoqueProduto to) throws Exception {
+    public void salvar(TOEstoqueProduto to) throws Exception {
         EstoqueProduto estoqueProduto = new EstoqueProduto();
         getConverter().getModelFromTO(to, estoqueProduto);
-        getEntityManager().persist(estoqueProduto);
+        getEntityManager().merge(estoqueProduto);
     }
 
     @Override
@@ -34,13 +28,6 @@ public class EstoqueProdutoDao extends AbstractBaseDao<TOEstoqueProduto> {
         TOEstoqueProduto toEstoqueProduto = new TOEstoqueProduto();
         getConverter().getTOFromModel(estoqueProduto, toEstoqueProduto);
         return toEstoqueProduto;
-    }
-
-    @Override
-    public void atualizar(TOEstoqueProduto to) throws Exception {
-        EstoqueProduto estoque = new EstoqueProduto();
-        getConverter().getModelFromTO(to, estoque);
-        getEntityManager().merge(estoque);
     }
 
 //    public void atualizar(TOEstoqueProduto toEstoque, Integer qtd) throws Exception {

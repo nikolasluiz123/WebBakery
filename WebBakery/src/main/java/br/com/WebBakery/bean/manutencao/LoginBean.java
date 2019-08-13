@@ -7,10 +7,11 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import br.com.WebBakery.abstractClass.AbstractBaseDao;
 import br.com.WebBakery.abstractClass.AbstractBaseRegisterMBean;
+import br.com.WebBakery.abstractClass.AbstractValidator;
 import br.com.WebBakery.dao.ClienteDao;
 import br.com.WebBakery.dao.FuncionarioDao;
-import br.com.WebBakery.dao.PopulaBancoDao;
 import br.com.WebBakery.dao.UsuarioDao;
 import br.com.WebBakery.to.TOUsuario;
 import br.com.WebBakery.validator.LoginValidator;
@@ -27,11 +28,10 @@ public class LoginBean extends AbstractBaseRegisterMBean<TOUsuario> {
 
     private static final long serialVersionUID = 7192496569257226719L;
 
-    private TOUsuario toUsuario;
     @Inject
     private UsuarioDao usuarioDao;
-    @Inject
-    private PopulaBancoDao populaBancoDao;
+    // @Inject
+    // private PopulaBancoDao populaBancoDao;
     @Inject
     private FuncionarioDao funcionarioDao;
     @Inject
@@ -41,17 +41,19 @@ public class LoginBean extends AbstractBaseRegisterMBean<TOUsuario> {
 
     @PostConstruct
     private void init() {
-        this.toUsuario = new TOUsuario();
+        verificaObjetoSessao();
+
+        if (getTo() == null) {
+            resetTo();
+        }
+
     }
 
     public void login() {
         try {
-            this.toUsuario = returnUserIfExists();
-            this.validator = new LoginValidator(this.toUsuario,
-                                                this.senha,
-                                                this.usuarioDao,
-                                                this.funcionarioDao,
-                                                this.clienteDao);
+            setTo(returnUserIfExists());
+            this.validator = new LoginValidator(this
+                    .getTo(), this.senha, this.usuarioDao, this.funcionarioDao, this.clienteDao);
             redirectUser();
         } catch (Exception e) {
             e.printStackTrace();
@@ -77,12 +79,12 @@ public class LoginBean extends AbstractBaseRegisterMBean<TOUsuario> {
     }
 
     private TOUsuario returnUserIfExists() throws Exception {
-        return usuarioDao.usuarioExiste(this.toUsuario.getEmail());
+        return usuarioDao.usuarioExiste(this.getTo().getEmail());
     }
 
     private void setUserSession() {
         getContext().getExternalContext().getSessionMap().put(USER_IDENTIFIER_SESSION_KEY,
-                                                              this.toUsuario);
+                                                              this.getTo());
     }
 
     private void removeUserSession() {
@@ -97,16 +99,28 @@ public class LoginBean extends AbstractBaseRegisterMBean<TOUsuario> {
         this.senha = senha;
     }
 
-    public TOUsuario getToUsuario() {
-        return toUsuario;
-    }
-
-    public void setToUsuario(TOUsuario toUsuario) {
-        this.toUsuario = toUsuario;
-    }
-
     public void popularBanco() {
-        this.populaBancoDao.popularBanco();
+        // this.populaBancoDao.popularBanco();
+    }
+
+    @Override
+    protected AbstractBaseDao<TOUsuario> getDao() {
+        return usuarioDao;
+    }
+
+    @Override
+    public AbstractValidator getValidator() {
+        return validator;
+    }
+
+    @Override
+    protected TOUsuario getNewInstaceTO() {
+        return new TOUsuario();
+    }
+
+    @Override
+    protected String getBeanName() {
+        return BEAN_NAME;
     }
 
 }

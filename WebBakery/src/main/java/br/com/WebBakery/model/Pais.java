@@ -9,8 +9,10 @@ import br.com.WebBakery.abstractClass.AbstractBaseModel;
 public class Pais extends AbstractBaseModel {
 
     public static final String TABLE_NAME = "paises";
-    private static final String NOME_PAIS = "nome_pais";
-    private static final String SIGLA_PAIS = "sigla_pais";
+    public static final String FK_NAME = "fk_pais";
+    
+    private static final String NOME_PAIS = "nome" + "_" + Pais.TABLE_NAME;
+    private static final String SIGLA_PAIS = "sigla" + "_" + Pais.TABLE_NAME;
 
     @Column(length = STRING_LENGTH_32C, name = NOME_PAIS)
     private String nome;

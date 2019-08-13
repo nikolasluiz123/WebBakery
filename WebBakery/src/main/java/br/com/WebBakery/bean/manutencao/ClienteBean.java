@@ -3,13 +3,14 @@ package br.com.WebBakery.bean.manutencao;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
-import javax.faces.application.FacesMessage;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.transaction.Transactional;
 
+import br.com.WebBakery.abstractClass.AbstractBaseDao;
 import br.com.WebBakery.abstractClass.AbstractBaseRegisterMBean;
+import br.com.WebBakery.abstractClass.AbstractValidator;
 import br.com.WebBakery.dao.CidadeDao;
 import br.com.WebBakery.dao.ClienteDao;
 import br.com.WebBakery.dao.EnderecoDao;
@@ -27,17 +28,12 @@ import br.com.WebBakery.to.TOPais;
 import br.com.WebBakery.to.TOUsuario;
 import br.com.WebBakery.util.Hash_Util;
 import br.com.WebBakery.validator.ClienteValidator;
-import br.com.WebBakery.validator.EnderecoValidator;
 
 @Named(ClienteBean.BEAN_NAME)
 @ViewScoped
 public class ClienteBean extends AbstractBaseRegisterMBean<TOCliente> {
 
     private static final long serialVersionUID = -7615567443762847019L;
-
-    private static final String REGISTERED_SUCCESSFULLY = "Cliente cadastrado com sucesso!";
-
-    private static final String UPDATED_SUCCESSFULLY = "Cliente atualizado com sucesso!";
 
     public static final String BEAN_NAME = "clienteBean";
 
@@ -66,11 +62,16 @@ public class ClienteBean extends AbstractBaseRegisterMBean<TOCliente> {
     @Inject
     private UsuarioDao usuarioDao;
     private ClienteValidator clienteValidator;
-    private EnderecoValidator enderecoValidator;
     private String senha;
 
     @PostConstruct
     private void init() {
+        verificaObjetoSessao();
+
+        if (getTo() == null) {
+            resetTo();
+        }
+
         this.toCliente = new TOCliente();
 
         this.toCliente.setToEndereco(new TOEndereco());
@@ -93,11 +94,13 @@ public class ClienteBean extends AbstractBaseRegisterMBean<TOCliente> {
     public void cadastrar() {
         try {
             this.clienteValidator = new ClienteValidator(this.toCliente, this.senha);
-            this.enderecoValidator = new EnderecoValidator(this.toCliente.getToEndereco());
-            if (this.toCliente.getId() == null) {
-                efetuarCadastro();
-            } else {
-                efetuarAtualizacao();
+            if (getValidator().isValid()) {
+                cadastrarLogradouroCliente();
+                cadastrarEnderecoCliente();
+                cadastrarUsuarioCliente();
+                this.toCliente.setAtivo(true);
+                this.clienteDao.salvar(this.toCliente);
+                showMessageSuccess();
             }
             atualizarTela();
         } catch (Exception e) {
@@ -105,50 +108,22 @@ public class ClienteBean extends AbstractBaseRegisterMBean<TOCliente> {
         }
     }
 
-    private void efetuarCadastro() throws Exception {
-        if (clienteValidator.isValid() && enderecoValidator.isValid()) {
-            cadastrarLogradouroCliente();
-            cadastrarEnderecoCliente();
-            cadastrarUsuarioCliente();
-            this.toCliente.setAtivo(true);
-            this.clienteDao.cadastrar(this.toCliente);
-            getContext().addMessage(null, new FacesMessage(REGISTERED_SUCCESSFULLY));
-        }
-    }
-
     private void cadastrarUsuarioCliente() throws Exception {
         this.toCliente.getToUsuario().setAtivo(true);
         this.toCliente.getToUsuario().setTipo(TipoUsuario.CLIENTE);
         this.toCliente.getToUsuario().setSenha(Hash_Util.getHashCode(this.senha));
-        this.usuarioDao.cadastrar(this.toCliente.getToUsuario());
+        this.usuarioDao.salvar(this.toCliente.getToUsuario());
     }
 
     private void cadastrarEnderecoCliente() throws Exception {
         this.toCliente.getToEndereco().setAtivo(true);
-        this.enderecoDao.cadastrar(this.toCliente.getToEndereco());
+        this.enderecoDao.salvar(this.toCliente.getToEndereco());
     }
 
     private void cadastrarLogradouroCliente() throws Exception {
         this.toCliente.getToEndereco().getToLogradouro().setAtivo(true);
         this.toCliente.getToEndereco().getToLogradouro().setToCidade(toCidadeSelecionada);
-        this.logradouroDao.cadastrar(this.toCliente.getToEndereco().getToLogradouro());
-    }
-
-    private void efetuarAtualizacao() throws Exception {
-        if (clienteValidator.isValid() && enderecoValidator.isValid()) {
-            this.clienteDao.atualizar(this.toCliente);
-            this.toCliente.getToUsuario().setSenha(Hash_Util.getHashCode(this.senha));
-            this.usuarioDao.atualizar(this.toCliente.getToUsuario());
-            this.enderecoDao.atualizar(this.toCliente.getToEndereco());
-            this.logradouroDao.atualizar(this.toCliente.getToEndereco().getToLogradouro());
-            getContext().addMessage(null, new FacesMessage(UPDATED_SUCCESSFULLY));
-        }
-    }
-
-    private void atualizarTela() {
-        this.toCliente = new TOCliente();
-        this.clienteValidator.showMessages();
-        this.clienteValidator.clearMessages();
+        this.logradouroDao.salvar(this.toCliente.getToEndereco().getToLogradouro());
     }
 
     private void initListPaises() {
@@ -291,6 +266,26 @@ public class ClienteBean extends AbstractBaseRegisterMBean<TOCliente> {
 
     public void setSenha(String senha) {
         this.senha = senha;
+    }
+
+    @Override
+    protected AbstractBaseDao<TOCliente> getDao() {
+        return this.clienteDao;
+    }
+
+    @Override
+    public AbstractValidator getValidator() {
+        return this.clienteValidator;
+    }
+
+    @Override
+    protected TOCliente getNewInstaceTO() {
+        return new TOCliente();
+    }
+
+    @Override
+    protected String getBeanName() {
+        return BEAN_NAME;
     }
 
 }

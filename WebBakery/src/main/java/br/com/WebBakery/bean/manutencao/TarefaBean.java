@@ -4,13 +4,14 @@ import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
-import javax.faces.application.FacesMessage;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.transaction.Transactional;
 
+import br.com.WebBakery.abstractClass.AbstractBaseDao;
 import br.com.WebBakery.abstractClass.AbstractBaseRegisterMBean;
+import br.com.WebBakery.abstractClass.AbstractValidator;
 import br.com.WebBakery.dao.ProdutoDao;
 import br.com.WebBakery.dao.TarefaDao;
 import br.com.WebBakery.to.TOProduto;
@@ -26,11 +27,6 @@ public class TarefaBean extends AbstractBaseRegisterMBean<TOTarefa> {
 
     private static final long serialVersionUID = 2625499918546247472L;
 
-    private static final String UPDATED_SUCCESSFULLY = "TOTarefa atualizada com sucesso!";
-
-    private static final String REGISTERED_SUCCESSFULLY = "TOTarefa cadastrada com sucesso!";
-
-    private TOTarefa toTarefa;
     @Inject
     private TarefaDao tarefaDao;
 
@@ -44,46 +40,30 @@ public class TarefaBean extends AbstractBaseRegisterMBean<TOTarefa> {
 
     @PostConstruct
     private void init() {
-        this.toTarefa = new TOTarefa();
+        verificaObjetoSessao();
+
+        if (getTo() == null) {
+            resetTo();
+        }
+        
         initQuantidadeProdutoTarefa();
         initProdutos();
+
     }
 
     @Transactional
     public void cadastrar() {
         try {
-            this.validator = new TarefaValidator(this.toTarefa);
-            if (this.toTarefa.getId() == null) {
-                efetuarCadastro();
-            } else {
-                efetuarAtualizacao();
+            this.validator = new TarefaValidator(this.getTo());
+            if (getValidator().isValid()) {
+                this.getTo().setAtivo(true);
+                this.tarefaDao.salvar(this.getTo());
+                showMessageSuccess();
             }
             atualizarTela();
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    private void efetuarCadastro() throws Exception {
-        if (this.validator.isValid()) {
-            this.toTarefa.setAtivo(true);
-            this.tarefaDao.cadastrar(this.toTarefa);
-            getContext().addMessage(null, new FacesMessage(REGISTERED_SUCCESSFULLY));
-        }
-    }
-
-    private void efetuarAtualizacao() throws Exception {
-        if (this.validator.isValid()) {
-            this.tarefaDao.atualizar(this.toTarefa);
-            getContext().addMessage(null, new FacesMessage(UPDATED_SUCCESSFULLY));
-        }
-    }
-
-    private void atualizarTela() {
-        this.toTarefa = new TOTarefa();
-        this.validator.showMessages();
-        this.validator.clearMessages();
-        initQuantidadeProdutoTarefa();
     }
 
     private void initProdutos() {
@@ -95,23 +75,30 @@ public class TarefaBean extends AbstractBaseRegisterMBean<TOTarefa> {
     }
 
     private void initQuantidadeProdutoTarefa() {
-        this.toTarefa.setQuantidade(1);
+        this.getTo().setQuantidade(1);
     }
 
     public void setarProduto() {
-        this.toTarefa.setToProduto(this.toProdutoSelecionado);
+        this.getTo().setToProduto(this.toProdutoSelecionado);
     }
 
     public String dataFormatada(Date data) {
         return Date_Util.formatar("dd/MM/yyyy", data);
     }
 
-    public TOTarefa getToTarefa() {
-        return toTarefa;
+    @Override
+    protected AbstractBaseDao<TOTarefa> getDao() {
+        return tarefaDao;
     }
 
-    public void setToTarefa(TOTarefa toTarefa) {
-        this.toTarefa = toTarefa;
+    @Override
+    public AbstractValidator getValidator() {
+        return validator;
+    }
+
+    @Override
+    protected TOTarefa getNewInstaceTO() {
+        return new TOTarefa();
     }
 
     public List<TOProduto> getToProdutos() {
@@ -136,6 +123,11 @@ public class TarefaBean extends AbstractBaseRegisterMBean<TOTarefa> {
 
     public void setToProdutoSelecionado(TOProduto toProdutoSelecionado) {
         this.toProdutoSelecionado = toProdutoSelecionado;
+    }
+
+    @Override
+    protected String getBeanName() {
+        return BEAN_NAME;
     }
 
 }

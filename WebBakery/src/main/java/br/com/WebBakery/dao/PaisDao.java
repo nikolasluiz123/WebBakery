@@ -12,13 +12,20 @@ import br.com.WebBakery.to.TOPais;
 
 @Stateless
 public class PaisDao extends AbstractBaseDao<TOPais> {
-    
+
     private static final long serialVersionUID = 1904464340270603917L;
 
     @Override
-    public void cadastrar(TOPais to) throws Exception {
-        Pais p = new Pais();
-        getConverter().getModelFromTO(to, p);
+    public void salvar(TOPais to) throws Exception {
+        Pais p = null;
+        if (to.getId() == null) {
+            p = new Pais();
+        } else {
+            p = getEntityManager().find(Pais.class, to.getId());
+        }
+        
+        getConverter().getModelFromTO(to, p);            
+        
         getEntityManager().persist(p);
     }
 
@@ -31,26 +38,16 @@ public class PaisDao extends AbstractBaseDao<TOPais> {
     }
 
     @Override
-    public void atualizar(TOPais to) throws Exception {
-        Pais p = new Pais();
-        getConverter().getTOFromModel(p, to);
-        getEntityManager().merge(p);
-    }
-
-    @Override
     public List<TOPais> listarTodos(Boolean ativo) throws Exception {
         List<Pais> paises = new ArrayList<>();
         List<TOPais> tos = new ArrayList<>();
 
         StringJoiner sql = new StringJoiner(QR_NL);
-        sql
-        .add("SELECT p")
-        .add("FROM ".concat(Pais.class.getName().concat(" p ")))
-        .add("WHERE p.ativo = :pAtivo");
-        
+        sql.add("SELECT p").add("FROM ".concat(Pais.class.getName().concat(" p ")))
+                .add("WHERE p.ativo = :pAtivo").add("ORDER BY p.nome");
+
         paises = getEntityManager().createQuery(sql.toString(), Pais.class)
-                                   .setParameter("pAtivo", ativo)
-                                   .getResultList();
+                .setParameter("pAtivo", ativo).getResultList();
 
         for (Pais p : paises) {
             TOPais to = new TOPais();

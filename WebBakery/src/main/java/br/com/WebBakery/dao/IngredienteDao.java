@@ -18,19 +18,11 @@ public class IngredienteDao extends AbstractBaseDao<TOIngrediente> {
 
     private static final long serialVersionUID = -3222599814430071085L;
 
-//    @PersistenceContext
-//    transient private EntityManager entityManager;
-//
-//    @Override
-//    protected EntityManager getEntityManager() {
-//        return this.entityManager;
-//    }
-    
     @Override
-    public void cadastrar(TOIngrediente to) throws Exception {
+    public void salvar(TOIngrediente to) throws Exception {
         Ingrediente i = new Ingrediente();
         getConverter().getModelFromTO(to, i);
-        getEntityManager().persist(i);
+        getEntityManager().merge(i);
     }
 
     @Override
@@ -42,13 +34,6 @@ public class IngredienteDao extends AbstractBaseDao<TOIngrediente> {
         return to;
     }
 
-    @Override
-    public void atualizar(TOIngrediente to) throws Exception {
-        Ingrediente i = new Ingrediente();
-        getConverter().getModelFromTO(to, i);
-        getEntityManager().persist(i);
-    }
-    
     @Override
     public List<TOIngrediente> listarTodos(Boolean ativo) throws Exception {
         List<Ingrediente> ingredientes = new ArrayList<>();

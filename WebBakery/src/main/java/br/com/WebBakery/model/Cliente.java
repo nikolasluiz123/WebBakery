@@ -8,21 +8,33 @@ import javax.persistence.OneToOne;
 
 import br.com.WebBakery.abstractClass.AbstractBaseModel;
 
-@Entity
+@Entity(name = Cliente.TABLE_NAME)
 public class Cliente extends AbstractBaseModel {
 
-    @Column(length = 20)
+    public static final String TABLE_NAME = "clientes";
+    public static final String FK_NAME = "fk_cliente";
+
+    private static final String TELEFONE_CLIENTE = "telefone" + "_" + Cliente.TABLE_NAME;
+    private static final String CPF_CLIENTE = "cpf" + "_" + Cliente.TABLE_NAME;
+    private static final String FK_USUARIO_CLIENTE = Usuario.FK_NAME + "_" + Cliente.TABLE_NAME;
+    private static final String FK_ENDERECO_CLIENTE = Endereco.FK_NAME + "_" + Cliente.TABLE_NAME;
+    private static final String DATA_NASCIMENTO_CLIENTE = "data_nascimento" + "_" + Cliente.TABLE_NAME;
+
+    @Column(length = STRING_LENGTH_32C, name = CPF_CLIENTE)
     private String cpf;
 
-    @Column(length = 20)
+    @Column(length = STRING_LENGTH_32C, name = TELEFONE_CLIENTE)
     private String telefone;
 
+    @Column(name = DATA_NASCIMENTO_CLIENTE)
     private Date dataNascimento;
 
     @OneToOne
+    @Column(name = FK_ENDERECO_CLIENTE)
     private Endereco endereco;
 
     @OneToOne
+    @Column(name = FK_USUARIO_CLIENTE)
     private Usuario usuario;
 
     public String getCpf() {

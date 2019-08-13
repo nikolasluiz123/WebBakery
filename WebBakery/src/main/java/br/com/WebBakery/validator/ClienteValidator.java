@@ -27,11 +27,13 @@ public class ClienteValidator extends AbstractValidator {
     private TOCliente cliente;
     @Inject
     private ClienteDao clienteDao;
+    private EnderecoValidator enderecoValidator;
     private String senha;
 
-    public ClienteValidator(TOCliente cliente, String senha) {
-        this.cliente = cliente;
+    public ClienteValidator(TOCliente toCliente, String senha) {
+        this.cliente = toCliente;
         this.senha = senha;
+        this.enderecoValidator = new EnderecoValidator(toCliente.getToEndereco());
     }
 
     @Override
@@ -40,6 +42,7 @@ public class ClienteValidator extends AbstractValidator {
         validaCpf();
         validaTelefone();
         validaUsuario();
+        this.enderecoValidator.chamarValidacoes();
     }
 
     private void validaUsuario() {

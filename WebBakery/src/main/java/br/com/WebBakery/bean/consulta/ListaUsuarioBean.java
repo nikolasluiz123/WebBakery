@@ -11,11 +11,9 @@ import javax.inject.Named;
 import javax.transaction.Transactional;
 
 import br.com.WebBakery.abstractClass.AbstractBaseListMBean;
-import br.com.WebBakery.bean.manutencao.UsuarioBean;
 import br.com.WebBakery.dao.UsuarioDao;
 import br.com.WebBakery.interfaces.IBaseListMBean;
 import br.com.WebBakery.to.TOUsuario;
-import br.com.WebBakery.util.Faces_Util;
 
 @Named(ListaUsuarioBean.BEAN_NAME)
 @ViewScoped
@@ -43,7 +41,7 @@ public class ListaUsuarioBean extends AbstractBaseListMBean implements IBaseList
     public void inativar(TOUsuario usuario) {
         try {
             usuario.setAtivo(false);
-            this.usuarioDao.atualizar(usuario);
+            this.usuarioDao.salvar(usuario);
             getContext().addMessage(null, new FacesMessage(USUARIO_INATIVATED_SUCCESSFULLY));
             initListUsuarios();
         } catch (Exception e) {
@@ -57,20 +55,6 @@ public class ListaUsuarioBean extends AbstractBaseListMBean implements IBaseList
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    @Override
-    public void carregar(Integer usuarioID) throws Exception {
-        String keyAtribute = "UsuarioID";
-        String pageRedirect = "cadastroUsuario.xhtml";
-        setObjetoSessao(usuarioID, keyAtribute, pageRedirect);
-        UsuarioBean registerBean = getRegisterBean();
-        registerBean.setToUsuario(registerBean.getObjetoSessao(keyAtribute, usuarioDao));
-
-    }
-
-    private UsuarioBean getRegisterBean() {
-        return ((UsuarioBean) Faces_Util.getBean(UsuarioBean.BEAN_NAME));
     }
 
     public List<TOUsuario> getToUsuarios() {
@@ -87,6 +71,11 @@ public class ListaUsuarioBean extends AbstractBaseListMBean implements IBaseList
 
     public void setToUsuariosFiltrados(List<TOUsuario> toUsuariosFiltrados) {
         this.toUsuariosFiltrados = toUsuariosFiltrados;
+    }
+
+    @Override
+    protected String getBeanName() {
+        return BEAN_NAME;
     }
 
 }

@@ -12,21 +12,14 @@ import br.com.WebBakery.to.TOEndereco;
 
 @Stateless
 public class EnderecoDao extends AbstractBaseDao<TOEndereco> {
-//    @PersistenceContext
-//    transient private EntityManager entityManager;
-//    
-//    @Override
-//    protected EntityManager getEntityManager() {
-//        return this.entityManager;
-//    }
     
     private static final long serialVersionUID = -462049822493846497L;
     
     @Override
-    public void cadastrar(TOEndereco to) throws Exception {
+    public void salvar(TOEndereco to) throws Exception {
         Endereco e = new Endereco();
         getConverter().getModelFromTO(to, e);
-        getEntityManager().persist(e);
+        getEntityManager().merge(e);
     }
 
     @Override
@@ -36,13 +29,6 @@ public class EnderecoDao extends AbstractBaseDao<TOEndereco> {
         getConverter().getTOFromModel(e, to);
         
         return to;
-    }
-
-    @Override
-    public void atualizar(TOEndereco to) throws Exception {
-        Endereco e = new Endereco();
-        getConverter().getTOFromModel(e, to);
-        getEntityManager().merge(e);
     }
 
     public List<TOEndereco> listarTodos(Boolean ativo) throws Exception {

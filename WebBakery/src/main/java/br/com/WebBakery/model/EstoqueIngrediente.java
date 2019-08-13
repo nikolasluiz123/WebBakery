@@ -1,15 +1,24 @@
 package br.com.WebBakery.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
 
 import br.com.WebBakery.abstractClass.AbstractBaseModel;
 
-@Entity
+@Entity(name = EstoqueIngrediente.TABLE_NAME)
 public class EstoqueIngrediente extends AbstractBaseModel {
 
+    static final String TABLE_NAME = "estoque_ingredientes";
+
+    private static final String QUANTIDADE_ESTOQUE_INGREDIENTE = "quantidade" + "_" + EstoqueIngrediente.TABLE_NAME;
+    private static final String FK_INGREDIENTE_ESTOQUE_INGREDIENTE = Ingrediente.FK_NAME + "_" + EstoqueIngrediente.TABLE_NAME;
+    
     @OneToOne
+    @Column(name = FK_INGREDIENTE_ESTOQUE_INGREDIENTE)
     private Ingrediente ingrediente;
+    
+    @Column(name = QUANTIDADE_ESTOQUE_INGREDIENTE, precision = 2)
     private Double quantidade;
 
     public Ingrediente getIngrediente() {

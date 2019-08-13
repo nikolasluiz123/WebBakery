@@ -12,21 +12,14 @@ import br.com.WebBakery.to.TOProdutoVenda;
 
 @Stateless
 public class ProdutoVendaDao extends AbstractBaseDao<TOProdutoVenda> {
-//    @PersistenceContext
-//    transient private EntityManager entityManager;
-//    
-//    @Override
-//    protected EntityManager getEntityManager() {
-//        return this.entityManager;
-//    }
     
     private static final long serialVersionUID = -1109157795344801242L;
 
     @Override
-    public void cadastrar(TOProdutoVenda to) throws Exception {
+    public void salvar(TOProdutoVenda to) throws Exception {
         ProdutoVenda pv = new ProdutoVenda();
         getConverter().getModelFromTO(to, pv);
-        getEntityManager().persist(pv);
+        getEntityManager().merge(pv);
     }
 
     @Override
@@ -38,13 +31,6 @@ public class ProdutoVendaDao extends AbstractBaseDao<TOProdutoVenda> {
         return to;
     }
 
-    @Override
-    public void atualizar(TOProdutoVenda to) throws Exception {
-        ProdutoVenda pv = new ProdutoVenda();
-        getConverter().getModelFromTO(to, pv);
-        getEntityManager().merge(pv);
-    }
-    
     public List<TOProdutoVenda> buscarPorIdVenda(Integer IdVenda) throws Exception {
         List<ProdutoVenda> produtosVendas = new ArrayList<>();
         List<TOProdutoVenda> toProdutosVendas = new ArrayList<>();

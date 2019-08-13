@@ -11,7 +11,6 @@ import javax.inject.Named;
 import javax.transaction.Transactional;
 
 import br.com.WebBakery.abstractClass.AbstractBaseListMBean;
-import br.com.WebBakery.bean.manutencao.IngredienteBean;
 import br.com.WebBakery.dao.FotoIngredienteDao;
 import br.com.WebBakery.dao.IngredienteDao;
 import br.com.WebBakery.interfaces.IBaseListMBean;
@@ -19,7 +18,6 @@ import br.com.WebBakery.to.TOFotoIngrediente;
 import br.com.WebBakery.to.TOFotoProduto;
 import br.com.WebBakery.to.TOIngrediente;
 import br.com.WebBakery.to.TOIngredienteComFotos;
-import br.com.WebBakery.util.Faces_Util;
 import br.com.WebBakery.util.File_Util;
 import br.com.WebBakery.util.String_Util;
 
@@ -104,22 +102,12 @@ public class ListaIngredienteBean extends AbstractBaseListMBean
     public void inativar(TOIngrediente to) {
         try {
             to.setAtivo(false);
-            this.ingredienteDao.atualizar(to);
+            this.ingredienteDao.salvar(to);
             initIngredientes();
             getContext().addMessage(null, new FacesMessage(PRODUTO_INATIVATED_SUCCESSFULLY));
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    @Override
-    public void carregar(Integer produtoID) throws Exception {
-        String keyAtribute = "ProdutoID";
-        String pageRedirect = "cadastroProduto.xhtml";
-        setObjetoSessao(produtoID, keyAtribute, pageRedirect);
-        IngredienteBean registerBean = getRegisterBean();
-        TOIngrediente objetoSessao = registerBean.getObjetoSessao(keyAtribute, ingredienteDao);
-        registerBean.setToIngrediente(objetoSessao);
     }
 
     public String getPrecoFormatado(Double d) {
@@ -133,10 +121,6 @@ public class ListaIngredienteBean extends AbstractBaseListMBean
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    private IngredienteBean getRegisterBean() {
-        return ((IngredienteBean) Faces_Util.getBean(IngredienteBean.BEAN_NAME));
     }
 
     public List<TOIngrediente> getToIngredientes() {
@@ -153,6 +137,11 @@ public class ListaIngredienteBean extends AbstractBaseListMBean
 
     public void setToIngredienteSelecionado(TOIngrediente toIngredienteSelecionado) {
         this.toIngredienteSelecionado = toIngredienteSelecionado;
+    }
+
+    @Override
+    protected String getBeanName() {
+        return BEAN_NAME;
     }
 
 }

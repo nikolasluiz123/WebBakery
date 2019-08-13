@@ -35,7 +35,8 @@
 
 					<p:column headerText="Alterar">
 						<p:commandLink value="Alterar"
-							action="#{listaCidadeBean.carregar(toCidade.id)}" process="@this" />
+							action="#{listaCidadeBean.carregar(toCidade.id, 'CidadeID', 'cadastroCidade.xhtml')}"
+							process="@this" />
 					</p:column>
 
 					<p:column headerText="Inativar">

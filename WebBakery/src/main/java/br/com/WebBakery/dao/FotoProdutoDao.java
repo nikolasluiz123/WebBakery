@@ -16,19 +16,11 @@ public class FotoProdutoDao extends AbstractBaseDao<TOFotoProduto> {
 
     private static final long serialVersionUID = -8347345341892955875L;
 
-//    @PersistenceContext
-//    transient private EntityManager entityManager;
-//
-//    @Override
-//    protected EntityManager getEntityManager() {
-//        return this.entityManager;
-//    }
-    
     @Override
-    public void cadastrar(TOFotoProduto to) throws Exception {
+    public void salvar(TOFotoProduto to) throws Exception {
         FotoProduto fotoProduto = new FotoProduto();
         getConverter().getModelFromTO(to, fotoProduto);
-        getEntityManager().persist(fotoProduto);
+        getEntityManager().merge(fotoProduto);
     }
 
     @Override
@@ -38,13 +30,6 @@ public class FotoProdutoDao extends AbstractBaseDao<TOFotoProduto> {
         getConverter().getTOFromModel(fotoProduto, to);
         
         return to;
-    }
-
-    @Override
-    public void atualizar(TOFotoProduto to) throws Exception {
-        FotoProduto fotoProduto = new FotoProduto();
-        getConverter().getModelFromTO(to, fotoProduto);
-        getEntityManager().merge(fotoProduto);
     }
 
     public List<TOFotoProduto> listarTodos(Boolean ativo) throws Exception {

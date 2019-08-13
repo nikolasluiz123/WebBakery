@@ -33,12 +33,13 @@
 
 				<p:column headerText="Alterar">
 					<p:commandLink value="Alterar"
-						action="#{listaPaisBean.carregar(toPais.id)}" process="@this" />
+						action="#{listaPaisBean.carregar(toPais.id, 'PaisID', 'cadastroPais.xhtml')}"
+						process="@this" />
 				</p:column>
 
 				<p:column headerText="Inativar">
 					<p:commandLink value="Inativar"
-						action="#{listaPaisesBean.inativar(toPais)}"
+						action="#{listaPaisBean.inativar(toPais)}"
 						update="tabelaPaises, formMessages:messages" process="@this"
 						oncomplete="PF('TabelaPaises').filter();" />
 				</p:column>

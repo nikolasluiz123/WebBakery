@@ -9,25 +9,41 @@ import javax.persistence.OneToOne;
 
 import br.com.WebBakery.abstractClass.AbstractBaseModel;
 
-@Entity
+@Entity(name = Funcionario.TABLE_NAME)
 public class Funcionario extends AbstractBaseModel {
 
+    static final String TABLE_NAME = "funcionarios";
+    public static final String FK_NAME = "fk_funcionario";
+
+    private static final String TELEFONE_FUNCIONARIO = "telefone" + "_" + Funcionario.TABLE_NAME;
+    private static final String RG_FUNCIONARIO = "rg" + "_" + Funcionario.TABLE_NAME;
+    private static final String CPF_FUNCIONARIO = "cpf" + "_" + Funcionario.TABLE_NAME;
+    private static final String DATA_NASCIMENTO_FUNCIONARIO = "data_nascimento" + "_" + Funcionario.TABLE_NAME;
+    private static final String FK_USUARIO_FUNCIONARIO = Usuario.FK_NAME + "_" + Funcionario.TABLE_NAME;
+    private static final String FK_ENDERECO_FUNCIONARIO = Endereco.FK_NAME + "_" +Funcionario.TABLE_NAME;
+    private static final String SALARIO_FUNCIONARIO = "salario" + "_" + Funcionario.TABLE_NAME;
+
+    @Column(name = SALARIO_FUNCIONARIO)
     private BigDecimal salario;
+
     @OneToOne
+    @Column(name = FK_ENDERECO_FUNCIONARIO)
     private Endereco endereco;
 
     @OneToOne
+    @Column(name = FK_USUARIO_FUNCIONARIO)
     private Usuario usuario;
 
+    @Column(name = DATA_NASCIMENTO_FUNCIONARIO)
     private Date dataNascimento;
 
-    @Column(length = 20)
+    @Column(length = STRING_LENGTH_32C, name = CPF_FUNCIONARIO)
     private String cpf;
 
-    @Column(length = 20)
+    @Column(length = STRING_LENGTH_32C, name = RG_FUNCIONARIO)
     private String rg;
 
-    @Column(length = 20)
+    @Column(length = STRING_LENGTH_32C, name = TELEFONE_FUNCIONARIO)
     private String telefone;
 
     public BigDecimal getSalario() {

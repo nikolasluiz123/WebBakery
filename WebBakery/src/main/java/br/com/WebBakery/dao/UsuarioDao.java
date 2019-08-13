@@ -17,10 +17,10 @@ public class UsuarioDao extends AbstractBaseDao<TOUsuario> {
     private static final long serialVersionUID = -2545830489067942125L;
 
     @Override
-    public void cadastrar(TOUsuario to) throws Exception {
+    public void salvar(TOUsuario to) throws Exception {
         Usuario u = new Usuario();
         getConverter().getModelFromTO(to, u);
-        getEntityManager().persist(u);
+        getEntityManager().merge(u);
     }
 
     @Override
@@ -32,13 +32,6 @@ public class UsuarioDao extends AbstractBaseDao<TOUsuario> {
         return to;
     }
 
-    @Override
-    public void atualizar(TOUsuario to) throws Exception {
-        Usuario u = new Usuario();
-        getConverter().getModelFromTO(to, u);
-        getEntityManager().merge(u);
-    }    
-    
     @Override
     public List<TOUsuario> listarTodos(Boolean ativo) throws Exception {
         List<Usuario> usuarios = new ArrayList<>();

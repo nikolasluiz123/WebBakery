@@ -3,15 +3,17 @@ package br.com.WebBakery.bean.manutencao;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
-import javax.faces.application.FacesMessage;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.transaction.Transactional;
 
+import br.com.WebBakery.abstractClass.AbstractBaseDao;
 import br.com.WebBakery.abstractClass.AbstractBaseRegisterMBean;
+import br.com.WebBakery.abstractClass.AbstractValidator;
 import br.com.WebBakery.dao.EstoqueProdutoDao;
 import br.com.WebBakery.to.TOEstoqueProduto;
+import br.com.WebBakery.validator.EstoqueProdutoValidator;
 
 @Named(EstoqueProdutoBean.BEAN_NAME)
 @ViewScoped
@@ -19,12 +21,8 @@ public class EstoqueProdutoBean extends AbstractBaseRegisterMBean<TOEstoqueProdu
 
     public static final String BEAN_NAME = "estoqueProdutoBean";
 
-    private static final String UPDATED_SUCCESSFULLY = "Estoque de produto atualizado com sucesso!";
-    private static final String REGISTERED_SUCCESSFULLY = "Produto cadastrado no estoque com sucesso!";
-
     private static final long serialVersionUID = 579121007228763037L;
 
-    private TOEstoqueProduto toEstoqueProduto;
     private TOEstoqueProduto toEstoqueProdutoDoBanco;
 
     @Inject
@@ -35,33 +33,29 @@ public class EstoqueProdutoBean extends AbstractBaseRegisterMBean<TOEstoqueProdu
 
     @PostConstruct
     private void init() {
-        this.toEstoqueProduto = new TOEstoqueProduto();
+        verificaObjetoSessao();
+
+        if (getTo() == null) {
+            resetTo();
+        }
+
         initListaEstoqueProdutos();
+
     }
 
     @Transactional
     public void cadastrar() {
         try {
-            this.toEstoqueProdutoDoBanco = estoqueProdutoDao
-                    .existe(this.toEstoqueProduto.getToProduto().getId());
+            this.toEstoqueProdutoDoBanco = estoqueProdutoDao.existe(getTo().getToProduto().getId());
             if (this.toEstoqueProdutoDoBanco == null) {
-                efetuarCadastro();
-            } else {
-                efetuarAtualizacao();
+                getTo().setAtivo(true);
+                this.estoqueProdutoDao.salvar(getTo());
+                showMessageSuccess();
             }
+            atualizarTela();
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    private void efetuarCadastro() throws Exception {
-        this.estoqueProdutoDao.cadastrar(this.toEstoqueProduto);
-        getContext().addMessage(null, new FacesMessage(REGISTERED_SUCCESSFULLY));
-    }
-
-    private void efetuarAtualizacao() throws Exception {
-        this.estoqueProdutoDao.atualizar(this.toEstoqueProdutoDoBanco);
-        getContext().addMessage(null, new FacesMessage(UPDATED_SUCCESSFULLY));
     }
 
     private void initListaEstoqueProdutos() {
@@ -72,12 +66,21 @@ public class EstoqueProdutoBean extends AbstractBaseRegisterMBean<TOEstoqueProdu
         }
     }
 
-    public TOEstoqueProduto getToEstoqueProduto() {
-        return toEstoqueProduto;
+    @Override
+    protected AbstractBaseDao<TOEstoqueProduto> getDao() {
+        return estoqueProdutoDao;
     }
 
-    public void setToEstoqueProduto(TOEstoqueProduto toEstoqueProduto) {
-        this.toEstoqueProduto = toEstoqueProduto;
+    @Override
+    public AbstractValidator getValidator() {
+        // Só é feito assim pois o validator está vazio.
+        // Quando houver algo a ser validade, trocar pelo field.
+        return new EstoqueProdutoValidator(getTo());
+    }
+
+    @Override
+    protected TOEstoqueProduto getNewInstaceTO() {
+        return new TOEstoqueProduto();
     }
 
     public List<TOEstoqueProduto> getToEstoqueProdutos() {
@@ -94,6 +97,11 @@ public class EstoqueProdutoBean extends AbstractBaseRegisterMBean<TOEstoqueProdu
 
     public void setToEstoqueProdutosFiltrados(List<TOEstoqueProduto> toEstoqueProdutosFiltrados) {
         this.toEstoqueProdutosFiltrados = toEstoqueProdutosFiltrados;
+    }
+
+    @Override
+    protected String getBeanName() {
+        return BEAN_NAME;
     }
 
 }

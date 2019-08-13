@@ -15,18 +15,18 @@
 
 				<div class="ui-g-12">
 					<p:outputLabel value="Nome:" for="nome" />
-					<p:inputText id="nome" value="#{estadoBean.toEstado.nome}"
+					<p:inputText id="nome" value="#{estadoBean.to.nome}"
 						placeholder="Digite o nome..." />
 
 					<p:outputLabel value="Sigla:" for="sigla" />
-					<p:inputText id="sigla" value="#{estadoBean.toEstado.sigla}"
+					<p:inputText id="sigla" value="#{estadoBean.to.sigla}"
 						placeholder="Digite a sigla..." />
 				</div>
 
 				<div class="ui-g-12">
 					<p:outputLabel for="pais" value="País:" />
 					<p:inputText id="pais" onclick="PF('PaisesDialog').show();"
-						value="#{estadoBean.toEstado.toPais.nome}" readonly="true"
+						value="#{estadoBean.to.toPais.nome}" readonly="true"
 						placeholder="Selecione o país..." style="cursor: pointer;" />
 
 					<p:commandButton value="Cadastrar" process="@form"
@@ -39,7 +39,7 @@
 			<p:dialog header="Países" widgetVar="PaisesDialog" resizable="false"
 				width="700">
 
-				<p:dataTable id="tabelaPaises" value="#{estadoBean.toPaisesFiltrados}"
+				<p:dataTable id="tabelaPaises" value="#{estadoBean.toPaises}"
 					selectionMode="single" selection="#{estadoBean.toPaisSelecionado}"
 					var="toPais" rowKey="#{toPais.id}" rows="5" paginator="true"
 					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PageLinks} {PreviousPageLink} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"

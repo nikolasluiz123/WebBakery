@@ -2,17 +2,25 @@ package br.com.WebBakery.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import br.com.WebBakery.abstractClass.AbstractBaseModel;
 
-@Entity
+@Entity(name = Cidade.TABLE_NAME)
 public class Cidade extends AbstractBaseModel {
 
-    @Column(length = 30)
+    public static final String TABLE_NAME = "cidades";
+    public static final String FK_NAME = "fk_cidade";
+    
+    private static final String FK_ESTADO_PAIS = Estado.FK_NAME + "_" + Cidade.TABLE_NAME;
+    private static final String NOME_CIDADE = "nome" + "_" + Cidade.TABLE_NAME;
+
+    @Column(length = STRING_LENGTH_32C, name = NOME_CIDADE)
     private String nome;
 
     @ManyToOne
+    @JoinColumn(name = FK_ESTADO_PAIS)
     private Estado estado;
 
     public String getNome() {

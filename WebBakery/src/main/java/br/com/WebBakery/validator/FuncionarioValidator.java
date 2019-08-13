@@ -19,10 +19,12 @@ public class FuncionarioValidator extends AbstractValidator {
     private static final String FIELD_CPF_REQUIRED = "CPF é obrigatório!";
 
     private TOFuncionario toFuncionario;
+    private EnderecoValidator enderecoValidator;
 
     public FuncionarioValidator(TOFuncionario toFuncionario) {
         this.toFuncionario = toFuncionario;
         this.toFuncionario = toFuncionario;
+        this.enderecoValidator = new EnderecoValidator(toFuncionario.getToEndereco());
     }
 
     public void chamarValidacoes() {
@@ -32,6 +34,7 @@ public class FuncionarioValidator extends AbstractValidator {
         validaDataNascimento();
         validaSalario();
         validaUsuario();
+        this.enderecoValidator.chamarValidacoes();
     }
 
     private void validaCpf() {

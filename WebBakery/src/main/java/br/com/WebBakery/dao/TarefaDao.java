@@ -12,20 +12,14 @@ import br.com.WebBakery.to.TOTarefa;
 
 @Stateless
 public class TarefaDao extends AbstractBaseDao<TOTarefa> {
-//    @PersistenceContext
-//    transient private EntityManager entityManager;
-//    
-//    @Override
-//    protected EntityManager getEntityManager() {
-//        return this.entityManager;
-//    }
+
     private static final long serialVersionUID = -8579725218176379779L;
 
     @Override
-    public void cadastrar(TOTarefa to) throws Exception {
+    public void salvar(TOTarefa to) throws Exception {
         Tarefa t = new Tarefa();
         getConverter().getModelFromTO(to, t);
-        getEntityManager().persist(t);
+        getEntityManager().merge(t);
     }
 
     @Override
@@ -37,13 +31,6 @@ public class TarefaDao extends AbstractBaseDao<TOTarefa> {
         return to;
     }
 
-    @Override
-    public void atualizar(TOTarefa to) throws Exception {
-        Tarefa t = new Tarefa();
-        getConverter().getModelFromTO(to, t);
-        getEntityManager().merge(t);
-    }
-    
     public List<TOTarefa> listarTodos(Boolean ativo) throws Exception {
         List<Tarefa> tarefas = new ArrayList<>();
         List<TOTarefa> toTarefas = new ArrayList<>();

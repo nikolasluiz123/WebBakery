@@ -4,13 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
-import javax.faces.application.FacesMessage;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.transaction.Transactional;
 
+import br.com.WebBakery.abstractClass.AbstractBaseDao;
 import br.com.WebBakery.abstractClass.AbstractBaseRegisterMBean;
+import br.com.WebBakery.abstractClass.AbstractValidator;
 import br.com.WebBakery.dao.EstadoDao;
 import br.com.WebBakery.dao.PaisDao;
 import br.com.WebBakery.to.TOEstado;
@@ -23,14 +24,10 @@ public class EstadoBean extends AbstractBaseRegisterMBean<TOEstado> {
 
     public static final String BEAN_NAME = "estadoBean";
 
-    private static final String ESTADO_UPDATED_SUCCESSFULLY = "Estado atualizado com sucesso!";
-    private static final String ESTADO_REGISTRED_SUCCESSFULLY = "Estado cadastrado com sucesso!";
-
     private static final long serialVersionUID = -4701039486320007318L;
 
     @Inject
     private EstadoDao estadoDao;
-    private TOEstado toEstado;
     @Inject
     private PaisDao paisDao;
     private TOPais toPaisSelecionado;
@@ -41,22 +38,27 @@ public class EstadoBean extends AbstractBaseRegisterMBean<TOEstado> {
 
     @PostConstruct
     private void init() {
-        this.toEstado = new TOEstado();
+        verificaObjetoSessao();
+
+        if (getTo() == null) {
+            resetTo();
+        }
 
         this.toPaisSelecionado = new TOPais();
         this.toPaises = new ArrayList<>();
 
         initListPaises();
+
     }
 
     @Transactional
     public void cadastrar() {
         try {
-            this.validator = new EstadoValidator(this.toEstado);
-            if (this.toEstado.getId() == null) {
-                efetuarCadastro();
-            } else {
-                efetuarAtualizacao();
+            this.validator = new EstadoValidator(getTo());
+            if (getValidator().isValid()) {
+                this.getTo().setAtivo(true);
+                this.estadoDao.salvar(this.getTo());
+                showMessageSuccess();
             }
             atualizarTela();
         } catch (Exception e) {
@@ -64,29 +66,8 @@ public class EstadoBean extends AbstractBaseRegisterMBean<TOEstado> {
         }
     }
 
-    private void efetuarCadastro() throws Exception {
-        if (this.validator.isValid()) {
-            this.toEstado.setAtivo(true);
-            this.estadoDao.cadastrar(this.toEstado);
-            getContext().addMessage(null, new FacesMessage(ESTADO_REGISTRED_SUCCESSFULLY));
-        }
-    }
-
-    private void efetuarAtualizacao() throws Exception {
-        if (this.validator.isValid()) {
-            this.estadoDao.atualizar(this.toEstado);
-            getContext().addMessage(null, new FacesMessage(ESTADO_UPDATED_SUCCESSFULLY));
-        }
-    }
-
-    private void atualizarTela() {
-        this.toEstado = new TOEstado();
-        this.validator.showMessages();
-        this.validator.clearMessages();
-    }
-
     public void setarPais() {
-        this.toEstado.setToPais(this.toPaisSelecionado);
+        this.getTo().setToPais(this.toPaisSelecionado);
     }
 
     private void initListPaises() {
@@ -95,14 +76,6 @@ public class EstadoBean extends AbstractBaseRegisterMBean<TOEstado> {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    public TOEstado getToEstado() {
-        return toEstado;
-    }
-
-    public void setToEstado(TOEstado toEstado) {
-        this.toEstado = toEstado;
     }
 
     public TOPais getToPaisSelecionado() {
@@ -127,6 +100,26 @@ public class EstadoBean extends AbstractBaseRegisterMBean<TOEstado> {
 
     public void setToPaisesFiltrados(List<TOPais> toPaisesFiltrados) {
         this.toPaisesFiltrados = toPaisesFiltrados;
+    }
+
+    @Override
+    protected AbstractBaseDao<TOEstado> getDao() {
+        return estadoDao;
+    }
+
+    @Override
+    public AbstractValidator getValidator() {
+        return validator;
+    }
+
+    @Override
+    protected TOEstado getNewInstaceTO() {
+        return new TOEstado();
+    }
+
+    @Override
+    protected String getBeanName() {
+        return BEAN_NAME;
     }
 
 }
