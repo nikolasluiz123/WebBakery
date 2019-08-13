@@ -5,6 +5,7 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 
 import br.com.WebBakery.abstractClass.AbstractBaseModel;
@@ -27,11 +28,11 @@ public class Funcionario extends AbstractBaseModel {
     private BigDecimal salario;
 
     @OneToOne
-    @Column(name = FK_ENDERECO_FUNCIONARIO)
+    @JoinColumn(name = FK_ENDERECO_FUNCIONARIO)
     private Endereco endereco;
 
     @OneToOne
-    @Column(name = FK_USUARIO_FUNCIONARIO)
+    @JoinColumn(name = FK_USUARIO_FUNCIONARIO)
     private Usuario usuario;
 
     @Column(name = DATA_NASCIMENTO_FUNCIONARIO)

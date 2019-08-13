@@ -4,6 +4,7 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 
 import br.com.WebBakery.abstractClass.AbstractBaseModel;
@@ -26,7 +27,7 @@ public class Tarefa extends AbstractBaseModel {
     private Date dataFim;
 
     @OneToOne
-    @Column(name = FK_PRODUTO_TAREFA)
+    @JoinColumn(name = FK_PRODUTO_TAREFA)
     private Produto produto;
 
     @Column(name = QUANTIDADE_TAREFA)

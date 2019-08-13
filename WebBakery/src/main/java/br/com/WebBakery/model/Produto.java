@@ -17,7 +17,6 @@ public class Produto extends AbstractBaseModel {
     static final String TABLE_NAME = "produtos";
     public static final String FK_NAME = "fk_produto";
 
-    private static final String FK_FOTO_PRODUTO_PRODUTO = FotoProduto.FK_NAME + "_" + Produto.TABLE_NAME;
     private static final String FK_RECEITA_PRODUTO = Receita.FK_NAME + "_" + Produto.TABLE_NAME;
     private static final String PRECO_PRODUTO = "preco" + "_" + Produto.TABLE_NAME;
     private static final String TEMPO_VALIDO_PRODUTO = "tempo_valido" + "_" + Produto.TABLE_NAME;
@@ -33,14 +32,13 @@ public class Produto extends AbstractBaseModel {
     private Double preco;
 
     @OneToOne
-    @Column(name = FK_RECEITA_PRODUTO)
+    @JoinColumn(name = FK_RECEITA_PRODUTO)
     private Receita receita;
 
     @OneToMany(fetch = FetchType.LAZY,
                mappedBy = "produto",
                targetEntity = FotoProduto.class,
                orphanRemoval = false)
-    @JoinColumn(name = FK_FOTO_PRODUTO_PRODUTO)
     private List<FotoProduto> fotos;
 
     public String getDescricao() {

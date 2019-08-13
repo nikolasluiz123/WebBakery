@@ -1,7 +1,7 @@
 package br.com.WebBakery.model;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 
 import br.com.WebBakery.abstractClass.AbstractBaseModel;
@@ -18,19 +18,19 @@ public class Endereco extends AbstractBaseModel {
     public static final String FK_NAME = "fk_endereco";
 
     @OneToOne
-    @Column(name = FK_PAIS_ENDERECO)
+    @JoinColumn(name = FK_PAIS_ENDERECO)
     private Pais pais;
 
     @OneToOne
-    @Column(name = FK_ESTADO_ENDERECO)
+    @JoinColumn(name = FK_ESTADO_ENDERECO)
     private Estado estado;
 
     @OneToOne
-    @Column(name = FK_CIDADE_ENDERECO)
+    @JoinColumn(name = FK_CIDADE_ENDERECO)
     private Cidade cidade;
 
     @OneToOne
-    @Column(name = FK_LOGRADOURO_ENDERECO)
+    @JoinColumn(name = FK_LOGRADOURO_ENDERECO)
     private Logradouro logradouro;
 
     public Pais getPais() {

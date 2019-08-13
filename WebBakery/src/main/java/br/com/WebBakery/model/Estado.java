@@ -19,6 +19,7 @@ public class Estado extends AbstractBaseModel {
     
     @Column(length = STRING_LENGTH_32C, name = NOME_ESTADO)
     private String nome;
+    
     @Column(length = STRING_LENGTH_4C, name = SIGLA_ESTADO)
     private String sigla;
     

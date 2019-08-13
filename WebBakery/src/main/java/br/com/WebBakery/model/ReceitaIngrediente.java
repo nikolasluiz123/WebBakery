@@ -2,6 +2,7 @@ package br.com.WebBakery.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 
 import br.com.WebBakery.abstractClass.AbstractBaseModel;
@@ -18,11 +19,11 @@ public class ReceitaIngrediente extends AbstractBaseModel {
     private static final String FK_RECEITA_RECEITA_INGREDIENTE = Receita.FK_NAME + "_" + ReceitaIngrediente.TABLE_NAME;
 
     @OneToOne
-    @Column(name = FK_RECEITA_RECEITA_INGREDIENTE)
+    @JoinColumn(name = FK_RECEITA_RECEITA_INGREDIENTE)
     private Receita receita;
 
     @OneToOne
-    @Column(name = FK_INGREDIENTE_RECEITA_INGREDIENTE)
+    @JoinColumn(name = FK_INGREDIENTE_RECEITA_INGREDIENTE)
     private Ingrediente ingrediente;
 
     @Column(name = QUANTIDADE_INGREDIENTE_RECEITA_INGREDIENTE)

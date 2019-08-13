@@ -4,6 +4,7 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 
 import br.com.WebBakery.abstractClass.AbstractBaseModel;
@@ -22,11 +23,11 @@ public class Venda extends AbstractBaseModel {
     private Date data;
     
     @OneToOne
-    @Column(name = FK_CLIENTE_VENDA)
+    @JoinColumn(name = FK_CLIENTE_VENDA)
     private Cliente cliente;
     
     @OneToOne
-    @Column(name = FK_FUNCIONARIO_VENDA)
+    @JoinColumn(name = FK_FUNCIONARIO_VENDA)
     private Funcionario funcionario;
 
     public Date getData() {
