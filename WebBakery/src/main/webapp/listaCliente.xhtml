@@ -10,6 +10,21 @@
 	<ui:define name="conteudo">
 
 		<h:form id="formDataTableClientes">
+			<p:remoteCommand 
+				name="alterar"
+				process="@this"
+				action="#{listaClienteBean.onAlterar}"
+			/>
+			
+			<script type="text/javascript">
+				function callAlterar(idCliente, sessionKey, redirectPage) {
+					alterar([{name: 'idCliente', value: idCliente}, 
+							 {name: 'sessionKey', value: sessionKey}, 
+							 {name: 'redirectPage', value: redirectPage}
+						]);	
+				}
+			</script>
+		
 			<p:dataTable var="toCliente" value="#{listaClienteBean.toClientes}"
 				id="tabelaClientes" rows="10" paginator="true"
 				paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PageLinks} {PreviousPageLink} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
@@ -56,8 +71,7 @@
 
 				<p:column headerText="Alterar">
 					<p:commandLink value="Alterar"
-						action="#{listaClienteBean.carregar(toCliente.id, 'ClienteID', 'cadastroCliente.xhtml')}"
-						process="@this" />
+						oncomplete="callAlterar('#{toCliente.id}', 'ClienteID', 'cadastroCliente.xhtml')" />
 				</p:column>
 
 				<p:column headerText="Inativar">

@@ -1,5 +1,6 @@
 package br.com.WebBakery.bean.manutencao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -18,12 +19,11 @@ import br.com.WebBakery.dao.LogradouroDao;
 import br.com.WebBakery.dao.PaisDao;
 import br.com.WebBakery.dao.UsuarioDao;
 import br.com.WebBakery.to.TOCidade;
-import br.com.WebBakery.to.TOEndereco;
 import br.com.WebBakery.to.TOEstado;
 import br.com.WebBakery.to.TOFuncionario;
-import br.com.WebBakery.to.TOLogradouro;
 import br.com.WebBakery.to.TOPais;
 import br.com.WebBakery.to.TOUsuario;
+import br.com.WebBakery.validator.EnderecoValidator;
 import br.com.WebBakery.validator.FuncionarioValidator;
 
 @Named(FuncionarioBean.BEAN_NAME)
@@ -53,7 +53,7 @@ public class FuncionarioBean extends AbstractBaseRegisterMBean<TOFuncionario> {
     private List<TOEstado> toEstadosFiltrados;
     @Inject
     private CidadeDao cidadeDao;
-    private TOCidade toCcidadeSelecionada;
+    private TOCidade toCidadeSelecionada;
     private List<TOCidade> toCidades;
     private List<TOCidade> toCidadesFiltradas;
     @Inject
@@ -69,28 +69,10 @@ public class FuncionarioBean extends AbstractBaseRegisterMBean<TOFuncionario> {
             resetTo();
         }
 
-        this.funcionarioDao = new FuncionarioDao();
-
-        this.enderecoDao = new EnderecoDao();
-        this.getTo().setToEndereco(new TOEndereco());
-        this.getTo().getToEndereco().setToPais(new TOPais());
-        this.getTo().getToEndereco().setToEstado(new TOEstado());
-        this.getTo().getToEndereco().setToCidade(new TOCidade());
-        this.getTo().getToEndereco().setToLogradouro(new TOLogradouro());
-
-        this.logradouroDao = new LogradouroDao();
-
-        this.usuarioDao = new UsuarioDao();
         this.toUsuarioSelecionado = new TOUsuario();
-
-        this.paisDao = new PaisDao();
         this.toPaisSelecionado = new TOPais();
-
-        this.estadoDao = new EstadoDao();
         this.toEstadoSelecionado = new TOEstado();
-
-        this.cidadeDao = new CidadeDao();
-        this.toCcidadeSelecionada = new TOCidade();
+        this.toCidadeSelecionada = new TOCidade();
 
         initListPaises();
         initListEstados();
@@ -117,8 +99,11 @@ public class FuncionarioBean extends AbstractBaseRegisterMBean<TOFuncionario> {
     }
 
     private void addValidators() {
-        FuncionarioValidator funcionarioValidator = new FuncionarioValidator(this.getTo());
+        FuncionarioValidator funcionarioValidator = new FuncionarioValidator(getTo(),
+                                                                             this.funcionarioDao);
         addValidator(funcionarioValidator);
+        EnderecoValidator enderecoValidator = new EnderecoValidator(getTo().getToEndereco());
+        addValidator(enderecoValidator);
     }
 
     private void cadastrarEnderecoFuncionario() throws Exception {
@@ -127,13 +112,14 @@ public class FuncionarioBean extends AbstractBaseRegisterMBean<TOFuncionario> {
     }
 
     private void cadastrarLogradouroFuncionario() throws Exception {
-        this.getTo().getToEndereco().getToLogradouro().setAtivo(true);
-        this.getTo().getToEndereco().getToLogradouro()
-                .setToCidade(this.getTo().getToEndereco().getToCidade());
-        this.logradouroDao.salvar(this.getTo().getToEndereco().getToLogradouro());
+        getTo().getToEndereco().getToLogradouro().setAtivo(true);
+        getTo().getToEndereco().getToLogradouro()
+                .setToCidade(getTo().getToEndereco().getToCidade());
+        this.logradouroDao.salvar(getTo().getToEndereco().getToLogradouro());
     }
 
     private void initListUsuarios() {
+        this.toUsuarios = new ArrayList<>();
         try {
             this.toUsuarios = this.usuarioDao.listarTodos(true);
         } catch (Exception e) {
@@ -142,6 +128,7 @@ public class FuncionarioBean extends AbstractBaseRegisterMBean<TOFuncionario> {
     }
 
     private void initListCidades() {
+        this.toCidades = new ArrayList<>();
         try {
             this.toCidades = this.cidadeDao.listarTodos(true);
         } catch (Exception e) {
@@ -150,6 +137,7 @@ public class FuncionarioBean extends AbstractBaseRegisterMBean<TOFuncionario> {
     }
 
     private void initListEstados() {
+        this.toEstados = new ArrayList<>();
         try {
             this.toEstados = this.estadoDao.listarTodos(true);
         } catch (Exception e) {
@@ -158,6 +146,7 @@ public class FuncionarioBean extends AbstractBaseRegisterMBean<TOFuncionario> {
     }
 
     private void initListPaises() {
+        this.toPaises = new ArrayList<>();
         try {
             this.toPaises = this.paisDao.listarTodos(true);
         } catch (Exception e) {
@@ -176,7 +165,7 @@ public class FuncionarioBean extends AbstractBaseRegisterMBean<TOFuncionario> {
     }
 
     public void setarCidade() {
-        this.getTo().getToEndereco().setToCidade(this.toCcidadeSelecionada);
+        this.getTo().getToEndereco().setToCidade(this.toCidadeSelecionada);
     }
 
     public void setarUsuario() {
@@ -271,12 +260,12 @@ public class FuncionarioBean extends AbstractBaseRegisterMBean<TOFuncionario> {
         this.toEstadosFiltrados = toEstadosFiltrados;
     }
 
-    public TOCidade getToCcidadeSelecionada() {
-        return toCcidadeSelecionada;
+    public TOCidade getToCidadeSelecionada() {
+        return toCidadeSelecionada;
     }
 
-    public void setToCcidadeSelecionada(TOCidade toCcidadeSelecionada) {
-        this.toCcidadeSelecionada = toCcidadeSelecionada;
+    public void setToCidadeSelecionada(TOCidade toCidadeSelecionada) {
+        this.toCidadeSelecionada = toCidadeSelecionada;
     }
 
     public List<TOCidade> getToCidades() {

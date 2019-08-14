@@ -3,8 +3,10 @@ package br.com.WebBakery.validator;
 import java.math.BigDecimal;
 
 import br.com.WebBakery.abstractClass.AbstractValidator;
+import br.com.WebBakery.dao.FuncionarioDao;
 import br.com.WebBakery.to.TOFuncionario;
 import br.com.WebBakery.util.Cpf_Util;
+import br.com.WebBakery.util.String_Util;
 
 public class FuncionarioValidator extends AbstractValidator {
 
@@ -17,14 +19,15 @@ public class FuncionarioValidator extends AbstractValidator {
     private static final String FIELD_RG_REQUIRED = "RG é obrigatório!";
     private static final String FIELD_CPF_NOT_VALID = "CPF inválido!";
     private static final String FIELD_CPF_REQUIRED = "CPF é obrigatório!";
+    private static final String USER_ALREADY_USED = "Este usuário já foi utilizado!";
+    private static final String FIELD_SALARIO_REQUIRED = "Salário é Obrigatório!";
 
     private TOFuncionario toFuncionario;
-    private EnderecoValidator enderecoValidator;
+    private FuncionarioDao funcionarioDao;
 
-    public FuncionarioValidator(TOFuncionario toFuncionario) {
+    public FuncionarioValidator(TOFuncionario toFuncionario, FuncionarioDao funcionarioDao) {
         this.toFuncionario = toFuncionario;
-        this.toFuncionario = toFuncionario;
-        this.enderecoValidator = new EnderecoValidator(toFuncionario.getToEndereco());
+        this.funcionarioDao = funcionarioDao;
     }
 
     public void chamarValidacoes() {
@@ -34,16 +37,14 @@ public class FuncionarioValidator extends AbstractValidator {
         validaDataNascimento();
         validaSalario();
         validaUsuario();
-        this.enderecoValidator.chamarValidacoes();
     }
 
     private void validaCpf() {
         String cpf = this.toFuncionario.getCpf().trim();
 
-        if (cpf.isEmpty() || cpf == null) {
+        if (String_Util.isNullOrEmpty(cpf)) {
             this.messages.add(FIELD_CPF_REQUIRED);
-        }
-        if (!Cpf_Util.isValid(cpf)) {
+        } else if (!Cpf_Util.isValid(cpf)) {
             this.messages.add(FIELD_CPF_NOT_VALID);
         }
     }
@@ -51,10 +52,9 @@ public class FuncionarioValidator extends AbstractValidator {
     private void validaRg() {
         String rg = this.toFuncionario.getRg().trim().replace(".", "");
 
-        if (rg.isEmpty() || rg == null) {
+        if (String_Util.isNullOrEmpty(rg)) {
             this.messages.add(FIELD_RG_REQUIRED);
-        }
-        if (rg.length() != 7) {
+        } else if (rg.length() != 7) {
             this.messages.add(FIELD_RG_NOT_VALID);
         }
     }
@@ -63,10 +63,9 @@ public class FuncionarioValidator extends AbstractValidator {
         String telefone = this.toFuncionario.getTelefone().replace("(", "").replace(")", "")
                 .replace("-", "").replace(" ", "").trim();
 
-        if (telefone.isEmpty() || telefone == null) {
+        if (String_Util.isNullOrEmpty(telefone)) {
             this.messages.add(FIELD_TELEFONE_REQUIRED);
-        }
-        if (telefone.length() > 13) {
+        } else if (telefone.length() > 13) {
             this.messages.add(FIELD_TELEFONE_NOT_VALID);
         }
     }
@@ -78,14 +77,36 @@ public class FuncionarioValidator extends AbstractValidator {
     }
 
     private void validaSalario() {
-        if (this.toFuncionario.getSalario().equals(BigDecimal.ZERO)) {
+        if (this.toFuncionario.getSalario() == null) {
+            this.messages.add(FIELD_SALARIO_REQUIRED);
+        } else if (this.toFuncionario.getSalario().equals(BigDecimal.ZERO)) {
             this.messages.add(FIELD_SALARIO_NOT_VALID);
         }
     }
 
     private void validaUsuario() {
+        boolean existeVinculoComUsuario = existeVinculoComUsuario();
+
         if (this.toFuncionario.getToUsuario() == null) {
             this.messages.add(FIELD_USUARIO_REQUIRED);
+        } else if (existeVinculoComUsuario) {
+            this.messages.add(USER_ALREADY_USED);
         }
+    }
+
+    private Boolean existeVinculoComUsuario() {
+        TOFuncionario f = null;
+
+        try {
+            f = funcionarioDao.buscarPorIdUsuario(this.toFuncionario.getToUsuario().getId());
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+
+        if (f.getId() != null) {
+            return true;
+        }
+        return false;
     }
 }

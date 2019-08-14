@@ -15,72 +15,72 @@
 				<p:panelGrid columns="2">
 
 					<p:outputLabel value="CPF:" for="cpf" />
-					<p:inputMask id="cpf" value="#{funcionarioBean.toFuncionario.cpf}"
+					<p:inputMask id="cpf" value="#{funcionarioBean.to.cpf}"
 						placeholder="Digite o cpf..." mask="999.999.999-99" />
 
 					<p:outputLabel value="RG:" for="rg" />
-					<p:inputMask id="rg" value="#{funcionarioBean.toFuncionario.rg}"
+					<p:inputMask id="rg" value="#{funcionarioBean.to.rg}"
 						placeholder="Digite o rg..." mask="9.999.999" />
 
 					<p:outputLabel value="Telefone:" for="telefone" />
 					<p:inputMask id="telefone"
-						value="#{funcionarioBean.toFuncionario.telefone}"
+						value="#{funcionarioBean.to.telefone}"
 						placeholder="Digite o telefone..." mask="(99) 99999-9999" />
 
 					<p:outputLabel value="Data de Nascimento:" for="dataNascimento" />
 					<p:calendar id="dataNascimento"
-						value="#{funcionarioBean.toFuncionario.dataNascimento}"
+						value="#{funcionarioBean.to.dataNascimento}"
 						pattern="dd/MM/yyyy" mask="true"
 						placeholder="Digite data de nascimento..." />
 
 					<p:outputLabel value="Salário:" for="salario" />
 					<p:inputNumber id="salario"
-						value="#{funcionarioBean.toFuncionario.salario}" symbol="R$ "
+						value="#{funcionarioBean.to.salario}" symbol="R$ "
 						decimalSeparator="," thousandSeparator="."
 						placeholder="Digite o salário..." />
 
 					<p:outputLabel for="usuario" value="Usuário:" />
 					<p:inputText id="usuario" onclick="PF('UsuariosDialog').show();"
-						value="#{funcionarioBean.toFuncionario.toUsuario.email}"
+						value="#{funcionarioBean.to.toUsuario.email}"
 						readonly="true" placeholder="Selecione o usuário..."
 						style="cursor: pointer;" />
 
 					<p:outputLabel for="pais" value="País:" />
 					<p:inputText id="pais" onclick="PF('PaisesDialog').show();"
-						value="#{funcionarioBean.toFuncionario.toEndereco.toPais.nome}"
+						value="#{funcionarioBean.to.toEndereco.toPais.nome}"
 						readonly="true" placeholder="Selecione o país..."
 						style="cursor: pointer;" />
 
 					<p:outputLabel for="estado" value="Estado:" />
 					<p:inputText id="estado" onclick="PF('EstadosDialog').show();"
-						value="#{funcionarioBean.toFuncionario.toEndereco.toEstado.nome}"
+						value="#{funcionarioBean.to.toEndereco.toEstado.nome}"
 						readonly="true" placeholder="Selecione o estado..."
 						style="cursor: pointer;" />
 
 					<p:outputLabel for="cidade" value="Cidade:" />
 					<p:inputText id="cidade" onclick="PF('CidadesDialog').show();"
-						value="#{funcionarioBean.toFuncionario.toEndereco.toCidade.nome}"
+						value="#{funcionarioBean.to.toEndereco.toCidade.nome}"
 						readonly="true" placeholder="Selecione a cidade..."
 						style="cursor: pointer;" />
 
 					<p:outputLabel value="Bairro:" for="bairro" />
 					<p:inputText id="bairro"
-						value="#{funcionarioBean.toFuncionario.toEndereco.toLogradouro.bairro}"
+						value="#{funcionarioBean.to.toEndereco.toLogradouro.bairro}"
 						placeholder="Digite o bairro..." />
 
 					<p:outputLabel value="Cep:" for="cep" />
 					<p:inputMask id="cep"
-						value="#{funcionarioBean.toFuncionario.toEndereco.toLogradouro.cep}"
+						value="#{funcionarioBean.to.toEndereco.toLogradouro.cep}"
 						placeholder="Digite o cep..." mask="99999-999" />
 
 					<p:outputLabel value="Rua:" for="rua" />
 					<p:inputText id="rua"
-						value="#{funcionarioBean.toFuncionario.toEndereco.toLogradouro.rua}"
+						value="#{funcionarioBean.to.toEndereco.toLogradouro.rua}"
 						placeholder="Digite a rua..." />
 
 					<p:outputLabel value="Complemento:" for="complemento" />
 					<p:inputText id="complemento"
-						value="#{funcionarioBean.toFuncionario.toEndereco.toLogradouro.complemento}"
+						value="#{funcionarioBean.to.toEndereco.toLogradouro.complemento}"
 						placeholder="Digite o complemento..." />
 
 					<p:commandButton value="Cadastrar" process="@form"
@@ -127,7 +127,7 @@
 					filteredValue="#{funcionarioBean.toEstadosFiltrados}">
 
 					<p:column headerText="Nome" sortBy="#{toEstado.nome}"
-						filterBy="#{toEstados.nome}">
+						filterBy="#{toEstado.nome}">
 						<h:outputText value="#{toEstado.nome}" />
 					</p:column>
 					<p:column headerText="Sigla" filterBy="#{toEstado.sigla}"
@@ -135,8 +135,8 @@
 						<h:outputText value="#{toEstado.sigla}" />
 					</p:column>
 					<p:column headerText="País" filterBy="#{toEstado.toPais.nome}"
-						sortBy="#{estado.toPais.nome}">
-						<h:outputText value="#{estado.toPais.nome}" />
+						sortBy="#{toEstado.toPais.nome}">
+						<h:outputText value="#{toEstado.toPais.nome}" />
 					</p:column>
 				</p:dataTable>
 				<p:commandButton value="Selecionar" process="@form" update="@form"
@@ -150,7 +150,7 @@
 				<p:dataTable id="tabelaCidades" value="#{funcionarioBean.toCidades}"
 					selectionMode="single"
 					selection="#{funcionarioBean.toCidadeSelecionada}" var="toCidade"
-					rowKey="#{cidade.id}" rows="5" paginator="true"
+					rowKey="#{toCidade.id}" rows="5" paginator="true"
 					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PageLinks} {PreviousPageLink} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 					emptyMessage="Nenhuma cidade encontrada." widgetVar="TabelaCidades"
 					filteredValue="#{listaCidadeBean.toCidadesFiltradas}">
@@ -174,7 +174,7 @@
 
 				<p:dataTable var="toUsuario" value="#{funcionarioBean.toUsuarios}"
 					selectionMode="single"
-					selection="#{funcionarioBean.usuarioSelecionado}"
+					selection="#{funcionarioBean.toUsuarioSelecionado}"
 					id="tabelaUsuarios" rows="5" rowKey="#{toUsuario.id}"
 					paginator="true"
 					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PageLinks} {PreviousPageLink} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"

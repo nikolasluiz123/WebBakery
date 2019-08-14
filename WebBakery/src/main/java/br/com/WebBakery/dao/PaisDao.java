@@ -43,11 +43,15 @@ public class PaisDao extends AbstractBaseDao<TOPais> {
         List<TOPais> tos = new ArrayList<>();
 
         StringJoiner sql = new StringJoiner(QR_NL);
-        sql.add("SELECT p").add("FROM ".concat(Pais.class.getName().concat(" p ")))
-                .add("WHERE p.ativo = :pAtivo").add("ORDER BY p.nome");
+        sql
+        .add("SELECT p")
+        .add("FROM ".concat(Pais.class.getName().concat(" p ")))
+        .add("WHERE p.ativo = :pAtivo")
+        .add("ORDER BY p.nome");
 
         paises = getEntityManager().createQuery(sql.toString(), Pais.class)
-                .setParameter("pAtivo", ativo).getResultList();
+                                   .setParameter("pAtivo", ativo)
+                                   .getResultList();
 
         for (Pais p : paises) {
             TOPais to = new TOPais();

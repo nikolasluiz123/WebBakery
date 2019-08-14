@@ -35,10 +35,12 @@ public abstract class AbstractBaseRegisterMBean<T extends AbstractBaseTO>
     }
 
     protected void atualizarTela() {
-        boolean messagesIsEmpty = false;
+        boolean messagesIsEmpty = true;
 
         for (AbstractValidator validator : validatorChain) {
-            messagesIsEmpty = validator.messages.isEmpty();
+            if (!validator.messages.isEmpty()) {
+                messagesIsEmpty = false;
+            }
         }
 
         if (messagesIsEmpty) {
@@ -96,7 +98,9 @@ public abstract class AbstractBaseRegisterMBean<T extends AbstractBaseTO>
     protected boolean isValid() {
         boolean isValid = true;
         for (AbstractValidator validator : validatorChain) {
-            isValid = validator.isValid();
+            if (!validator.isValid()) {
+                isValid = false;
+            }
         }
         return isValid;
     }

@@ -10,7 +10,7 @@ public class TOFuncionario extends AbstractBaseTO {
 
     @TOEntity(fieldName = "salario")
     private BigDecimal salario;
-    @TOEntity(fieldName = "toEndereco")
+    @TOEntity(fieldName = "endereco")
     private TOEndereco toEndereco;
     @TOEntity(fieldName = "usuario")
     private TOUsuario toUsuario;
@@ -22,6 +22,15 @@ public class TOFuncionario extends AbstractBaseTO {
     private String rg;
     @TOEntity(fieldName = "telefone")
     private String telefone;
+
+    public TOFuncionario() {
+        setToEndereco(new TOEndereco());
+        getToEndereco().setToPais(new TOPais());
+        getToEndereco().setToEstado(new TOEstado());
+        getToEndereco().setToCidade(new TOCidade());
+        getToEndereco().setToLogradouro(new TOLogradouro());
+        setToUsuario(new TOUsuario());
+    }
 
     public BigDecimal getSalario() {
         return salario;

@@ -746,12 +746,12 @@ public class PopulaBancoDao implements Serializable {
                                        "padeiro".hashCode(),
                                        TipoUsuario.PADEIRO);
         
-        Funcionario fGerente = gerarFuncionario(BigDecimal.valueOf(3000.00), endereco1, gerente, new Date(), "111.666.444-88", "5.684.348", "(55) 65884789");
-        Funcionario fAdmEstoque = gerarFuncionario(BigDecimal.valueOf(2500.00), endereco2, admEstoque, new Date(), "777.345.444-88", "5.909.348", "(55) 68908989");
-        Funcionario fPadeiro = gerarFuncionario(BigDecimal.valueOf(1500.00), endereco3, padeiro, new Date(), "111.533.494-00", "5.684.300", "(55) 65881010");
-        Funcionario fCaixa = gerarFuncionario(BigDecimal.valueOf(1700.00), endereco4, caixa, new Date(), "111.555.1425-88", "5.444.348", "(55) 65555589");
+        Funcionario fGerente = gerarFuncionario(BigDecimal.valueOf(3000.00), endereco1, gerente, new Date(), "111.666.444-88", "5.684.348", "(55) 658847895");
+        Funcionario fAdmEstoque = gerarFuncionario(BigDecimal.valueOf(2500.00), endereco2, admEstoque, new Date(), "777.345.444-88", "5.909.348", "(55) 689089895");
+        Funcionario fPadeiro = gerarFuncionario(BigDecimal.valueOf(1500.00), endereco3, padeiro, new Date(), "111.533.494-00", "5.684.300", "(55) 658810105");
+        Funcionario fCaixa = gerarFuncionario(BigDecimal.valueOf(1700.00), endereco4, caixa, new Date(), "111.555.1425-88", "5.444.348", "(55) 655555895");
 
-        Cliente cCliente = gerarCliente("666.533.494-00", "(55) 65666689", new Date(), cliente, endereco5);
+        Cliente cCliente = gerarCliente("666.533.494-00", "(55) 656666896", new Date(), cliente, endereco5);
         
 
         em.persist(gerente);

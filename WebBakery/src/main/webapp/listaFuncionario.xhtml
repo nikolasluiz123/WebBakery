@@ -13,11 +13,11 @@
 			<div style="padding-top: 15px;">
 				<p:dataTable var="toFuncionario"
 					value="#{listaFuncionarioBean.toFuncionarios}"
-					id="tabelaTOFuncionarios" rows="5" paginator="true"
+					id="tabelaFuncionarios" rows="5" paginator="true"
 					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PageLinks} {PreviousPageLink} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 					rowsPerPageTemplate="5,10,15"
 					emptyMessage="Nenhum funcionário encontrado."
-					widgetVar="TabelaTOFuncionarios"
+					widgetVar="TabelaFuncionarios"
 					filteredValue="#{listatoFuncionarioBean.toFuncionariosFiltrados}">
 
 					<f:facet name="header" style="min-height: 35px; max-height: 35px">
@@ -26,13 +26,13 @@
 
 					<p:column headerText="Nome" filterBy="#{toFuncionario.nome}"
 						sortBy="#{toFuncionario.nome}">
-						<h:outputText value="#{toFuncionario.nome}" />
+						<h:outputText value="#{toFuncionario.toUsuario.nome}" />
 					</p:column>
 
 					<p:column headerText="Sobrenome"
 						filterBy="#{toFuncionario.sobrenome}"
 						sortBy="#{toFuncionario.sobrenome}">
-						<h:outputText value="#{toFuncionario.sobrenome}" />
+						<h:outputText value="#{toFuncionario.toUsuario.sobrenome}" />
 					</p:column>
 
 					<p:column headerText="CPF" filterBy="#{toFuncionario.cpf}"
@@ -45,7 +45,8 @@
 						<h:outputText value="#{toFuncionario.rg}" />
 					</p:column>
 
-					<p:column headerText="Telefone" filterBy="#{toFuncionario.telefone}"
+					<p:column headerText="Telefone"
+						filterBy="#{toFuncionario.telefone}"
 						sortBy="#{toFuncionario.telefone}">
 						<h:outputText value="#{toFuncionario.telefone}" />
 					</p:column>
@@ -64,19 +65,19 @@
 
 					<p:column headerText="Usuário" filterBy="#{toFuncionario.email}"
 						sortBy="#{toFuncionario.email}">
-						<h:outputText value="#{toFuncionario.usuario.email}" />
+						<h:outputText value="#{toFuncionario.toUsuario.email}" />
 					</p:column>
 
 					<p:column headerText="Alterar">
 						<p:commandLink value="Alterar"
-							action="#{listatoFuncionarioBean.carregar(toFuncionario.id)}"
+							action="#{listaFuncionarioBean.carregar(toFuncionario.id, 'FuncionarioID', 'cadastroFuncionario.xhtml')}"
 							process="@this" />
 					</p:column>
 
 					<p:column headerText="Inativar">
 						<p:commandLink value="Inativar"
 							action="#{listaFuncionarioBean.inativar(toFuncionario)}"
-							update="tabelaTOFuncionarios, formMessages:messages"
+							update="tabelaFuncionarios, formMessages:messages"
 							process="@this" />
 					</p:column>
 				</p:dataTable>

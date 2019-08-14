@@ -1,5 +1,6 @@
 package br.com.WebBakery.bean.manutencao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -73,7 +74,7 @@ public class ClienteBean extends AbstractBaseRegisterMBean<TOCliente> {
         this.toPaisSelecionado = new TOPais();
         this.toEstadoSelecionado = new TOEstado();
         this.toCidadeSelecionada = new TOCidade();
-
+        
         initListPaises();
         initListEstados();
         initListCidades();
@@ -127,6 +128,7 @@ public class ClienteBean extends AbstractBaseRegisterMBean<TOCliente> {
     }
 
     private void initListPaises() {
+        this.toPaises = new ArrayList<>();
         try {
             this.toPaises = this.paisDao.listarTodos(true);
         } catch (Exception e) {
@@ -135,6 +137,7 @@ public class ClienteBean extends AbstractBaseRegisterMBean<TOCliente> {
     }
 
     private void initListEstados() {
+        this.toEstados = new ArrayList<>();
         try {
             this.toEstados = this.estadoDao.listarTodos(true);
         } catch (Exception e) {
@@ -143,6 +146,7 @@ public class ClienteBean extends AbstractBaseRegisterMBean<TOCliente> {
     }
 
     private void initListCidades() {
+        this.toCidades = new ArrayList<>();
         try {
             this.toCidades = this.cidadeDao.listarTodos(true);
         } catch (Exception e) {
