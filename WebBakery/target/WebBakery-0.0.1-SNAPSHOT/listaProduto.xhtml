@@ -1,0 +1,87 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="_template.xhtml">
+
+	<ui:define name="conteudo">
+
+		<h:form id="formDataTableProdutos">
+
+			<p:remoteCommand name="abrirGaleria"
+				update="formDataTableProdutos:imagens, formDataTableProdutos:receita"
+				onstart="PF('DetalhesProduto').show()" />
+
+			<p:dataGrid var="p" value="#{listaProdutoBean.toProdutos}" columns="3"
+				layout="grid" rows="6" paginator="true" id="produtos"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				emptyMessage="Nenhum produto foi encontrado.">
+
+				<f:facet name="header">
+            		Produtos
+        		</f:facet>
+
+				<p:panel header="#{p.descricao}" style="text-align:center">
+					<div class="ui-g">
+						<div class="ui-g-12">
+							<img src="#{listaProdutoBean.getPathPrimeiraFoto(p.id)}"
+								height="100px" width="100px" />
+						</div>
+						<div class="ui-g-12">
+							<h:outputText
+								value="#{listaProdutoBean.getPrecoFormatado(p.preco)}" />
+						</div>
+						<div class="ui-g-12">
+							<div>
+								<p:commandLink styleClass="fa fa-search"
+									style="margin-right: 20px;" oncomplete="abrirGaleria()"
+									action="#{listaProdutoBean.getDadosProduto()}">
+									<f:setPropertyActionListener value="#{p}"
+										target="#{listaProdutoBean.produtoSelecionado}" />
+								</p:commandLink>
+
+								<p:commandLink styleClass="fa fa-pencil"
+									action="#{listaProdutoBean.carregar(p.id)}" />
+							</div>
+						</div>
+					</div>
+				</p:panel>
+
+			</p:dataGrid>
+
+			<p:dialog header="Detalhes do Produto" widgetVar="DetalhesProduto"
+				resizable="false" width="560" height="540" id="detalhesProduto">
+
+				<div id="conteudo" class="ui-g">
+
+					<div class="ui-g-12">
+						<p:galleria value="#{listaProdutoBean.produtoSelecionado.fotos}"
+							var="image" panelWidth="500" panelHeight="303" id="imagens"
+							autoPlay="false">
+
+							<p:graphicImage id="img" height="303" width="500"
+								value="#{listaProdutoBean.getPath(image)}" />
+
+						</p:galleria>
+					</div>
+
+					<div class="ui-g-12">
+						<p:outputLabel value="Receita" for="receita" />
+						<p:inputTextarea rows="6" cols="33" id="receita"
+							value="#{listaProdutoBean.produtoSelecionado.receita.descricao}"
+							readonly="true" />
+					</div>
+				</div>
+			</p:dialog>
+
+			<!-- 			<p:blockUI block="detalhesProduto" widgetVar="bui"> -->
+			<!-- 		        LOADING<br /> -->
+			<!-- 				<p:graphicImage name="/src/main/webapp/img/load2.gif" /> -->
+			<!-- 			</p:blockUI> -->
+		</h:form>
+	</ui:define>
+</ui:composition>
+</html>

@@ -1,0 +1,173 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="_template.xhtml">
+
+	<ui:define name="conteudo">
+
+		<h:form id="formCadastroCliente">
+
+			<p:fieldset legend="Dados do Cliente">
+				<p:panelGrid columns="2">
+
+					<p:outputLabel value="Nome:" for="nome" />
+					<p:inputText id="nome" value="#{clienteBean.toCliente.toUsuario.nome}"
+						placeholder="Digite o nome..." />
+
+					<p:outputLabel value="Sobrenome:" for="sobrenome" />
+					<p:inputText id="sobrenome"
+						value="#{clienteBean.toCliente.toUsuario.sobrenome}"
+						placeholder="Digite o sobrenome..." />
+
+					<p:outputLabel value="CPF:" for="cpf" />
+					<p:inputMask id="cpf" value="#{clienteBean.toCliente.cpf}"
+						placeholder="Digite o cpf..." mask="999.999.999-99" />
+
+					<p:outputLabel value="Telefone:" for="telefone" />
+					<p:inputMask id="telefone" value="#{clienteBean.toCliente.telefone}"
+						placeholder="Digite o telefone..." mask="(99) 99999-9999" />
+
+					<p:outputLabel value="Data de Nascimento:" for="dataNascimento" />
+					<p:calendar id="dataNascimento"
+						value="#{clienteBean.toCliente.dataNascimento}" pattern="dd/MM/yyyy"
+						mask="true" placeholder="Digite data de nascimento..."
+						converter="SimpleDateConverter" />
+
+					<p:outputLabel for="email" value="E-mail:" />
+					<p:inputText id="email"
+						value="#{clienteBean.toCliente.toUsuario.email}"
+						placeholder="Digite o e-mail..." />
+
+					<p:outputLabel for="senha" value="Senha:" />
+					<p:password id="senha" value="#{clienteBean.senha}"
+						placeholder="Digite a senha..." />
+
+					<p:outputLabel for="pais" value="País:" />
+					<p:inputText id="pais" onclick="PF('PaisesDialog').show();"
+						value="#{clienteBean.toCliente.toEndereco.toPais.nome}" readonly="true"
+						placeholder="Selecione o país..." style="cursor: pointer;" />
+
+					<p:outputLabel for="estado" value="Estado:" />
+					<p:inputText id="estado" onclick="PF('EstadosDialog').show();"
+						value="#{clienteBean.toCliente.toEndereco.toEstado.nome}"
+						readonly="true" placeholder="Selecione o estado..."
+						style="cursor: pointer;" />
+
+					<p:outputLabel for="cidade" value="Cidade:" />
+					<p:inputText id="cidade" onclick="PF('CidadesDialog').show();"
+						value="#{clienteBean.toCliente.toEndereco.toCidade.nome}"
+						readonly="true" placeholder="Selecione a cidade..."
+						style="cursor: pointer;" />
+
+					<p:outputLabel value="Bairro:" for="bairro" />
+					<p:inputText id="bairro"
+						value="#{clienteBean.toCliente.toEndereco.toLogradouro.bairro}"
+						placeholder="Digite o bairro..." />
+
+					<p:outputLabel value="Cep:" for="cep" />
+					<p:inputMask id="cep"
+						value="#{clienteBean.toCliente.toEndereco.toLogradouro.cep}"
+						placeholder="Digite o cep..." mask="99999-999" />
+
+					<p:outputLabel value="Rua:" for="rua" />
+					<p:inputText id="rua"
+						value="#{clienteBean.toCliente.toEndereco.toLogradouro.rua}"
+						placeholder="Digite a rua..." />
+
+					<p:outputLabel value="Complemento:" for="complemento" />
+					<p:inputText id="complemento"
+						value="#{clienteBean.toCliente.toEndereco.toLogradouro.complemento}"
+						placeholder="Digite o complemento..." />
+
+					<p:commandButton value="Cadastrar" process="@form"
+						update="@form, formMessages:messages" action="#{clienteBean.cadastrar}" />
+				</p:panelGrid>
+			</p:fieldset>
+
+			<p:dialog header="Países" widgetVar="PaisesDialog" resizable="false"
+				width="700">
+
+				<p:dataTable var="toPais" value="#{clienteBean.toPaises}"
+					selectionMode="single" selection="#{clienteBean.toPaisSelecionado}"
+					id="tabelaPaises" rowKey="#{toPais.id}" rows="5" paginator="true"
+					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PageLinks} {PreviousPageLink} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					rowsPerPageTemplate="5,10,15"
+					emptyMessage="Nenhum país encontrado." widgetVar="TabelaPaises"
+					filteredValue="#{clienteBean.toPaisesFiltrados}">
+
+					<p:column headerText="Nome" filterBy="#{toPais.nome}"
+						sortBy="#{toPais.nome}">
+						<h:outputText value="#{toPais.nome}" />
+					</p:column>
+					<p:column headerText="Sigla" filterBy="#{toPais.sigla}"
+						sortBy="#{toPais.sigla}">
+						<h:outputText value="#{toPais.sigla}" />
+					</p:column>
+				</p:dataTable>
+				<p:commandButton value="Selecionar" process="@form"
+					update="formCadastroCliente:pais, formCadastroCliente:tabelaEstados"
+					action="#{clienteBean.setarPais}"
+					oncomplete="PF('PaisesDialog').hide();" />
+			</p:dialog>
+
+			<p:dialog header="Estados" widgetVar="EstadosDialog"
+				resizable="false" width="700">
+
+				<p:dataTable id="tabelaEstados" value="#{clienteBean.toEstados}"
+					selectionMode="single" selection="#{clienteBean.toEstadoSelecionado}"
+					var="toEstado" rowKey="#{toEstado.id}" rows="5" paginator="true"
+					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PageLinks} {PreviousPageLink} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					emptyMessage="Nenhum estado encontrado." widgetVar="TabelaEstados"
+					filteredValue="#{clienteBean.toEstadosFiltrados}">
+
+					<p:column headerText="Nome" sortBy="#{toEstado.nome}"
+						filterBy="#{toEstado.nome}">
+						<h:outputText value="#{toEstado.nome}" />
+					</p:column>
+					<p:column headerText="Sigla" filterBy="#{toEstado.sigla}"
+						sortBy="#{toEstado.sigla}">
+						<h:outputText value="#{toEstado.sigla}" />
+					</p:column>
+					<p:column headerText="País" filterBy="#{toEstado.toPais.nome}"
+						sortBy="#{toEstado.pais.nome}">
+						<h:outputText value="#{toEstado.toPais.nome}" />
+					</p:column>
+				</p:dataTable>
+				<p:commandButton value="Selecionar" process="@form"
+					update="formCadastroCliente:estado, formCadastroCliente:tabelaCidades"
+					action="#{clienteBean.setarEstado}"
+					oncomplete="PF('EstadosDialog').hide();" />
+			</p:dialog>
+
+			<p:dialog header="Cidades" widgetVar="CidadesDialog"
+				resizable="false" width="700">
+
+				<p:dataTable id="tabelaCidades" value="#{clienteBean.toCidades}"
+					selectionMode="single" selection="#{clienteBean.toCidadeSelecionada}"
+					var="toCidade" rowKey="#{toCidade.id}" rows="5" paginator="true"
+					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PageLinks} {PreviousPageLink} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					emptyMessage="Nenhuma cidade encontrada." widgetVar="TabelaCidades"
+					filteredValue="#{listaCidadeBean.toCidadesFiltradas}">
+
+					<p:column headerText="Nome" filterBy="#{toCidade.nome}"
+						sortBy="#{toCidade.nome}">
+						<h:outputText value="#{toCidade.nome}" />
+					</p:column>
+					<p:column headerText="Estado" filterBy="#{toCidade.toEstado.nome}"
+						sortBy="#{toCidade.estado.nome}">
+						<h:outputText value="#{toCidade.toEstado.nome}" />
+					</p:column>
+				</p:dataTable>
+				<p:commandButton value="Selecionar" process="@form"
+					update="formCadastroCliente:cidade"
+					action="#{clienteBean.setarCidade}"
+					oncomplete="PF('CidadesDialog').hide();" />
+			</p:dialog>
+		</h:form>
+	</ui:define>
+</ui:composition>
+</html>

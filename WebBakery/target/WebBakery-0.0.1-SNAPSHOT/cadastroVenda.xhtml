@@ -1,0 +1,162 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" xmlns:jsf="http://xmlns.jcp.org/jsf">
+
+<ui:composition template="_template.xhtml">
+
+	<ui:define name="conteudo">
+
+		<h:form id="formCadastroVenda">
+			<p:dataTable id="tabelaEstoqueProdutos" var="toEstoqueProduto"
+				value="#{vendaBean.toEstoqueProdutos}"
+				selection="#{vendaBean.toEstoqueProdutosSelecionados}"
+				rowKey="#{toEstoqueProduto.id}" style="margin-bottom:0" rows="5"
+				paginator="true"
+				paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PageLinks} {PreviousPageLink} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rowsPerPageTemplate="5,10,15"
+				emptyMessage="Nenhum produto encontrado."
+				widgetVar="TabelaEstoqueProdutos"
+				filteredValue="#{vendaBean.toEstoqueProdutosFiltrados}">
+
+				<p:ajax event="rowSelectCheckbox"
+					update="formCadastroVenda:funcionalidades" />
+				<p:ajax event="rowUnselectCheckbox"
+					update="formCadastroVenda:funcionalidades" />
+				<p:ajax event="toggleSelect"
+					update="formCadastroVenda:funcionalidades" />
+
+				<f:facet name="header" style="min-height: 35px; max-height: 35px">
+					<div>Produtos</div>
+				</f:facet>
+
+				<p:column selectionMode="multiple"
+					style="width:16px;text-align:center" />
+
+				<p:column headerText="Nome"
+					filterBy="#{estoqueProduto.toProduto.descricao}">
+					<h:outputText value="#{estoqueProduto.toProduto.descricao}" />
+				</p:column>
+
+				<p:column headerText="Preço"
+					filterBy="#{estoqueProduto.toProduto.preco}">
+					<h:outputText value="#{estoqueProduto.toProduto.preco}" />
+				</p:column>
+
+				<p:column headerText="Quantidade em Estoque"
+					filterBy="#{estoqueProduto.quantidade}">
+					<h:outputText value="#{estoqueProduto.quantidade}" />
+				</p:column>
+			</p:dataTable>
+
+			<div jsf:id="funcionalidades">
+				<p:outputLabel for="cliente" value="Cliente:" />
+				<p:inputText id="cliente" onclick="PF('ClientesDialog').show();"
+					value="#{vendaBean.toVenda.toCliente.toUsuario.nome} #{vendaBean.toVenda.toCliente.toUsuario.sobrenome}"
+					readonly="true" placeholder="Selecione o cliente..."
+					style="cursor: pointer;"
+					disabled="#{empty vendaBean.toEstoqueProdutosSelecionados}" />
+
+				<p:outputLabel value="Forma de Pagamento:" for="formaPagamento" />
+				<p:selectOneMenu value="#{vendaBean.formaPagamento}"
+					id="formaPagamento"
+					disabled="#{empty vendaBean.toEstoqueProdutosSelecionados}">
+					<f:selectItems value="#{vendaBean.formasPagamento}" var="forma"
+						itemLabel="#{forma.nome}" itemValue="#{forma}" />
+				</p:selectOneMenu>
+
+				<p:commandButton value="Adicionar ao Carrinho" id="addCarrinho"
+					oncomplete="PF('ProdutosVendaDialog').show();"
+					action="#{vendaBean.adicionarCarrinho}"
+					disabled="#{empty vendaBean.toEstoqueProdutosSelecionados}"
+					update="tabelaProdutosVenda" />
+			</div>
+
+			<p:dialog header="Clientes" widgetVar="ClientesDialog"
+				resizable="false" width="700">
+
+				<p:dataTable var="toCliente" value="#{vendaBean.toClientes"
+					selectionMode="single" selection="#{vendaBean.toClienteSelecionado}"
+					id="tabelaVendas" rowKey="#{toCliente.id}" rows="5" paginator="true"
+					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PageLinks} {PreviousPageLink} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					rowsPerPageTemplate="5,10,15"
+					emptyMessage="Nenhum cliente encontrado."
+					widgetVar="TabelaClientes"
+					filteredValue="#{vendaBean.toClientesFiltrados}">
+
+					<p:column headerText="Nome" filterBy="#{toCliente.toUsuario.nome}"
+						sortBy="#{cliente.toUsuario.nome}">
+						<h:outputText value="#{toCliente.toUsuario.nome}" />
+					</p:column>
+
+					<p:column headerText="Sobrenome"
+						filterBy="#{toCliente.toUsuario.sobrenome}"
+						sortBy="#{toCliente.toUsuario.sobrenome}">
+						<h:outputText value="#{toCliente.toUsuario.sobrenome}" />
+					</p:column>
+
+					<p:column headerText="Cpf" filterBy="#{toCliente.cpf}"
+						sortBy="#{toCliente.cpf}">
+						<h:outputText value="#{toCliente.cpf}" />
+					</p:column>
+				</p:dataTable>
+				<p:commandButton value="Selecionar" process="@form"
+					update="formCadastroVenda:cliente"
+					action="#{vendaBean.setarCliente}"
+					oncomplete="PF('ClientesDialog').hide();" />
+			</p:dialog>
+
+			<p:dialog header="Produtos da Venda" id="lovProdutosVenda"
+				widgetVar="ProdutosVendaDialog" resizable="false" width="700">
+
+				<p:dataTable var="toProdutoVenda" value="#{vendaBean.toProdutosVenda}"
+					id="tabelaProdutosVenda" rowKey="#{toProdutoVenda.id}" rows="5"
+					paginator="true"
+					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PageLinks} {PreviousPageLink} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					rowsPerPageTemplate="5,10,15"
+					emptyMessage="Nenhum produto da venda encontrado."
+					widgetVar="TabelaProdutosVenda"
+					filteredValue="#{vendaBean.toProdutosVendaFiltrados}" editable="true"
+					editMode="cell">
+
+					<p:ajax event="cellEdit" listener="#{vendaBean.onCellEdit}"
+						update="formMessages:messages" />
+					<p:ajax event="cellEditInit"
+						listener="#{vendaBean.toProdutoVendaSendoEditado}" />
+
+					<p:column headerText="Nome"
+						filterBy="#{toProdutoVenda.toProduto.descricao}"
+						sortBy="#{toProdutoVenda.toProduto.descricao}">
+						<h:outputText value="#{toProdutoVenda.toProduto.descricao}" />
+					</p:column>
+
+					<p:column headerText="Quantidade">
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText id="outputQuantidade"
+									value="#{toProdutoVenda.quantidade}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputNumber id="inputQuantidade"
+									value="#{toProdutoVenda.quantidade}" decimalPlaces="0" />
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+
+					<p:column headerText="Remover">
+						<p:commandLink value="Remover"
+							action="#{vendaBean.removerCarrinho}"
+							update="tabelaProdutosVenda" />
+					</p:column>
+
+				</p:dataTable>
+				<p:commandButton value="Confirmar" action="#{vendaBean.cadastrar}"
+					update="formMessages:messages, formCadastroVenda:tabelaEstoqueProdutos"
+					oncomplete="PF('ProdutosVendaDialog').hide();" />
+			</p:dialog>
+		</h:form>
+	</ui:define>
+</ui:composition>
+</html>

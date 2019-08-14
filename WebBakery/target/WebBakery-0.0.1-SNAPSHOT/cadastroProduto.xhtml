@@ -1,0 +1,81 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="_template.xhtml">
+
+	<ui:define name="conteudo">
+
+		<h:form id="formCadastroReceita">
+
+			<p:fieldset legend="Dados do Produto">
+				<p:panelGrid columns="2">
+
+					<p:outputLabel value="Descrição" for="descricao" />
+					<p:inputText id="descricao"
+						value="#{produtoBean.toProduto.descricao}"
+						placeholder="Digite a descrição..." />
+
+					<p:outputLabel for="diasValido" value="Dias Válido" />
+					<h:panelGrid columns="1" style="margin-bottom: 10px">
+						<p:inputNumber id="diasValido"
+							value="#{produtoBean.toProduto.tempoValido}" decimalPlaces="0"
+							maxValue="180" minValue="0" placeholder="Digite os dias..." />
+						<p:slider for="diasValido" maxValue="180" />
+					</h:panelGrid>
+
+					<p:outputLabel value="Preço:" for="preco" />
+					<p:inputNumber id="preco" value="#{produtoBean.toProduto.preco}"
+						symbol="R$" decimalSeparator="," thousandSeparator="."
+						placeholder="Digite o preço..." minValue="0" />
+
+					<p:outputLabel for="receita" value="Receita:" />
+					<p:inputTextarea id="receita"
+						onclick="PF('ReceitasDialog').show();"
+						value="#{produtoBean.toProduto.toReceita.nome}" readonly="true"
+						placeholder="Selecione a receita..." style="cursor: pointer;" />
+
+					<p:fileUpload fileUploadListener="#{produtoBean.handleFileUpload}"
+						allowTypes="/(\.|\/)(jpe?g|png)$/"
+						invalidFileMessage="Tipo de arquivo é inválido!" multiple="true"
+						update="btnCadastrar" />
+
+					<p:commandButton value="Cadastrar" process="@form"
+						update="formMessages:messages, @form" id="btnCadastrar"
+						action="#{produtoBean.cadastrar}"
+						disabled="#{produtoBean.getBotaoDesabilitado()}" />
+
+				</p:panelGrid>
+			</p:fieldset>
+
+			<p:dialog header="Receitas" widgetVar="ReceitasDialog"
+				resizable="false" width="800">
+
+				<p:dataTable var="toReceita" value="#{produtoBean.toReceitas}"
+					selectionMode="single"
+					selection="#{produtoBean.toReceitaSelecionada}" id="tabelaReceitas"
+					rowKey="#{toReceita.id}" rows="5" paginator="true"
+					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PageLinks} {PreviousPageLink} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					rowsPerPageTemplate="5,10,15"
+					emptyMessage="Nenhuma receita encontrada."
+					widgetVar="TabelaReceitas"
+					filteredValue="#{produtoBean.toReceitasFiltradas}">
+
+					<p:column headerText="Descrição" filterBy="#{toReceita.nome}"
+						sortBy="#{toReceita.nome}">
+						<h:outputText value="#{toReceita.nome}" />
+					</p:column>
+
+				</p:dataTable>
+				<p:commandButton value="Selecionar" process="@form"
+					update="formCadastroReceita:receita"
+					action="#{produtoBean.setarReceita}"
+					oncomplete="PF('ReceitasDialog').hide();" />
+			</p:dialog>
+		</h:form>
+	</ui:define>
+</ui:composition>
+</html>

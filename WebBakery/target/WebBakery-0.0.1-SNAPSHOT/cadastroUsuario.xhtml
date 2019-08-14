@@ -1,0 +1,54 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="_template.xhtml">
+
+	<ui:define name="conteudo">
+
+		<h:form id="formCadastroUsuario">
+
+			<p:fieldset legend="Dados do Usuário">
+				<p:panelGrid columns="2">
+
+					<p:outputLabel value="Nome:" for="nome" />
+					<p:inputText id="nome" value="#{usuarioBean.toUsuario.nome}"
+						placeholder="Digite o nome..." />
+
+					<p:outputLabel value="Sobrenome:" for="sobrenome" />
+					<p:inputText id="sobrenome"
+						value="#{usuarioBean.toUsuario.sobrenome}"
+						placeholder="Digite o sobrenome..." />
+
+					<p:outputLabel value="E-mail:" for="email" />
+					<p:inputText id="email" value="#{usuarioBean.toUsuario.email}"
+						placeholder="Digite seu e-mail...">
+
+						<f:passThroughAttribute name="type" value="email" />
+
+					</p:inputText>
+
+					<p:outputLabel value="Senha:" for="senha" />
+					<p:password id="senha" value="#{usuarioBean.senha}"
+						feedback="true" placeholder="Digite sua senha..." />
+
+					<p:outputLabel value="Tipo de Usuário:" for="tipoUsuario" />
+					<p:selectOneMenu value="#{usuarioBean.tipoUsuario}"
+						id="tipoUsuario">
+						<f:selectItems value="#{usuarioBean.tiposUsuarios}" var="tipo"
+							itemLabel="#{tipo.nome}" itemValue="#{tipo}" />
+					</p:selectOneMenu>
+
+					<p:commandButton value="Cadastrar"
+						action="#{usuarioBean.cadastrar}" process="@form"
+						update="formMessages:messages, @form" />
+
+				</p:panelGrid>
+			</p:fieldset>
+		</h:form>
+	</ui:define>
+</ui:composition>
+</html>

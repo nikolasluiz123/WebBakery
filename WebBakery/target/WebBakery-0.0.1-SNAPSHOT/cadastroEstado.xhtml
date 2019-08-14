@@ -1,0 +1,66 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="_template.xhtml">
+
+	<ui:define name="conteudo">
+
+		<h:form id="formCadastroEstado">
+
+			<p:fieldset legend="Dados do Estado">
+
+				<div class="ui-g-12">
+					<p:outputLabel value="Nome:" for="nome" />
+					<p:inputText id="nome" value="#{estadoBean.to.nome}"
+						placeholder="Digite o nome..." />
+
+					<p:outputLabel value="Sigla:" for="sigla" />
+					<p:inputText id="sigla" value="#{estadoBean.to.sigla}"
+						placeholder="Digite a sigla..." />
+				</div>
+
+				<div class="ui-g-12">
+					<p:outputLabel for="pais" value="País:" />
+					<p:inputText id="pais" onclick="PF('PaisesDialog').show();"
+						value="#{estadoBean.to.toPais.nome}" readonly="true"
+						placeholder="Selecione o país..." style="cursor: pointer;" />
+
+					<p:commandButton value="Cadastrar" process="@form"
+						update="formMessages:messages, @form" action="#{estadoBean.cadastrar}" />
+				</div>
+
+
+			</p:fieldset>
+
+			<p:dialog header="Países" widgetVar="PaisesDialog" resizable="false"
+				width="700">
+
+				<p:dataTable id="tabelaPaises" value="#{estadoBean.toPaises}"
+					selectionMode="single" selection="#{estadoBean.toPaisSelecionado}"
+					var="toPais" rowKey="#{toPais.id}" rows="5" paginator="true"
+					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PageLinks} {PreviousPageLink} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					emptyMessage="Nenhum país encontrado." widgetVar="TabelaPaises"
+					filteredValue="#{estadoBean.toPaisesFiltrados}">
+
+					<p:column headerText="Nome" sortBy="#{toPais.nome}"
+						filterBy="#{toPais.nome}">
+						<h:outputText value="#{toPais.nome}" />
+					</p:column>
+					<p:column headerText="Sigla" sortBy="#{toPais.sigla}"
+						filterBy="#{toPais.sigla}">
+						<h:outputText value="#{toPais.sigla}" />
+					</p:column>
+				</p:dataTable>
+				<p:commandButton value="Selecionar" process="@form" update="@form"
+					action="#{estadoBean.setarPais}"
+					oncomplete="PF('PaisesDialog').hide();" />
+			</p:dialog>
+		</h:form>
+
+	</ui:define>
+</ui:composition>
+</html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="_template.xhtml">
+
+	<ui:define name="conteudo">
+
+		<h:form id="formCadastroReceita">
+			<p:fieldset legend="Dados da Tarefa">
+				<p:panelGrid columns="2">
+
+					<p:outputLabel for="produto" value="Produto:" />
+					<p:inputText id="produto" onclick="PF('ProdutosDialog').show();"
+						value="#{tarefaBean.toTarefa.toProduto.descricao}" readonly="true"
+						placeholder="Selecione o produto..." style="cursor: pointer;" />
+
+					<p:outputLabel value="Quantidade:" for="quantidade" />
+					<p:inputNumber id="quantidade"
+						value="#{tarefaBean.toTarefa.quantidade}"
+						placeholder="Digite a quantidade..." minValue="1"
+						maxValue="100000" decimalPlaces="0" />
+
+					<p:outputLabel for="dataInicio" value="Data de Início:" />
+					<p:calendar id="dataInicio" value="#{tarefaBean.toTarefa.dataInicio}"
+						pattern="dd/MM/yyyy HH:mm"
+						placeholder="Selecione a data do início..." />
+
+					<p:outputLabel for="dataFim" value="Data de Fim:" />
+					<p:calendar id="dataFim" value="#{tarefaBean.toTarefa.dataFim}"
+						pattern="dd/MM/yyyy HH:mm"
+						placeholder="Selecione a data do término..." />
+
+					<p:commandButton value="Cadastrar" process="@form"
+						update="@form, formMessages:messages"
+						action="#{tarefaBean.cadastrar}" />
+
+				</p:panelGrid>
+			</p:fieldset>
+
+			<p:dialog header="Produtos" widgetVar="ProdutosDialog"
+				resizable="false" width="800">
+
+				<p:dataTable id="tabelaProdutos" value="#{tarefaBean.toProdutos}"
+					selectionMode="single" selection="#{tarefaBean.toProdutoSelecionado}"
+					var="toProduto" rowKey="#{toProduto.id}" rows="5" paginator="true"
+					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PageLinks} {PreviousPageLink} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					emptyMessage="Nenhum produto encontrado."
+					widgetVar="TabelaProdutos"
+					filteredValue="#{tarefaBean.toProdutosFiltrados}">
+
+					<p:column headerText="Descrição" filterBy="#{toProduto.descricao}"
+						sortBy="#{toProduto.descricao}">
+						<h:outputText value="#{toProduto.descricao}" />
+					</p:column>
+
+					<p:column headerText="Preço Unitário" filterBy="#{toProduto.preco}"
+						sortBy="#{toProduto.preco}">
+						<h:outputText value="#{toProduto.preco}" />
+					</p:column>
+
+				</p:dataTable>
+				<p:commandButton value="Selecionar" process="@form"
+					update="formCadastroReceita:produto"
+					action="#{tarefaBean.setarProduto}"
+					oncomplete="PF('ProdutosDialog').hide();" />
+			</p:dialog>
+		</h:form>
+	</ui:define>
+</ui:composition>
+</html>
