@@ -15,16 +15,16 @@
 				<p:panelGrid columns="2">
 
 					<p:outputLabel value="Nome:" for="nome" />
-					<p:inputText id="nome" value="#{usuarioBean.toUsuario.nome}"
+					<p:inputText id="nome" value="#{usuarioBean.to.nome}"
 						placeholder="Digite o nome..." />
 
 					<p:outputLabel value="Sobrenome:" for="sobrenome" />
 					<p:inputText id="sobrenome"
-						value="#{usuarioBean.toUsuario.sobrenome}"
+						value="#{usuarioBean.to.sobrenome}"
 						placeholder="Digite o sobrenome..." />
 
 					<p:outputLabel value="E-mail:" for="email" />
-					<p:inputText id="email" value="#{usuarioBean.toUsuario.email}"
+					<p:inputText id="email" value="#{usuarioBean.to.email}"
 						placeholder="Digite seu e-mail...">
 
 						<f:passThroughAttribute name="type" value="email" />

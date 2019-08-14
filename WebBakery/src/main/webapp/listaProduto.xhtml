@@ -15,8 +15,8 @@
 				update="formDataTableProdutos:imagens, formDataTableProdutos:receita"
 				onstart="PF('DetalhesProduto').show()" />
 
-			<p:dataGrid var="p" value="#{listaProdutoBean.toProdutos}" columns="3"
-				layout="grid" rows="6" paginator="true" id="produtos"
+			<p:dataGrid var="p" value="#{listaProdutoBean.toProdutos}"
+				columns="3" layout="grid" rows="6" paginator="true" id="produtos"
 				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 				emptyMessage="Nenhum produto foi encontrado.">
 
@@ -40,11 +40,11 @@
 									style="margin-right: 20px;" oncomplete="abrirGaleria()"
 									action="#{listaProdutoBean.getDadosProduto()}">
 									<f:setPropertyActionListener value="#{p}"
-										target="#{listaProdutoBean.produtoSelecionado}" />
+										target="#{listaProdutoBean.toProdutoSelecionado}" />
 								</p:commandLink>
 
 								<p:commandLink styleClass="fa fa-pencil"
-									action="#{listaProdutoBean.carregar(p.id)}" />
+									action="#{listaProdutoBean.carregar(p.id, 'ProdutoID', 'cadastroProduto.xhtml')}" />
 							</div>
 						</div>
 					</div>
@@ -58,7 +58,7 @@
 				<div id="conteudo" class="ui-g">
 
 					<div class="ui-g-12">
-						<p:galleria value="#{listaProdutoBean.produtoSelecionado.fotos}"
+						<p:galleria value="#{listaProdutoBean.toProdutoSelecionado.toFotos}"
 							var="image" panelWidth="500" panelHeight="303" id="imagens"
 							autoPlay="false">
 
@@ -71,7 +71,7 @@
 					<div class="ui-g-12">
 						<p:outputLabel value="Receita" for="receita" />
 						<p:inputTextarea rows="6" cols="33" id="receita"
-							value="#{listaProdutoBean.produtoSelecionado.receita.descricao}"
+							value="#{listaProdutoBean.toProdutoSelecionado.toReceita.nome}"
 							readonly="true" />
 					</div>
 				</div>

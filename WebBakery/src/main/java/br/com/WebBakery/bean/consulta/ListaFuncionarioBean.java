@@ -8,6 +8,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.transaction.Transactional;
 
 import br.com.WebBakery.abstractClass.AbstractBaseListMBean;
 import br.com.WebBakery.dao.EnderecoDao;
@@ -43,6 +44,7 @@ public class ListaFuncionarioBean extends AbstractBaseListMBean
     }
 
     @Override
+    @Transactional
     public void inativar(TOFuncionario to) {
         try {
             to.setAtivo(false);

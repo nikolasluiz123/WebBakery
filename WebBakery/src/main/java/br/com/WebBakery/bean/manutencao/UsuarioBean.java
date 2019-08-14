@@ -30,9 +30,11 @@ public class UsuarioBean extends AbstractBaseRegisterMBean<TOUsuario> {
     @PostConstruct
     private void init() {
         verificaObjetoSessao();
-
+        
         if (getTo() == null) {
             resetTo();
+        } else {
+            this.tipoUsuario = getTo().getTipo();
         }
     }
 

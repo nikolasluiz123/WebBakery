@@ -2,11 +2,9 @@ package br.com.WebBakery.bean.consulta;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -42,6 +40,12 @@ public class ListaClienteBean extends AbstractBaseListMBean implements IBaseList
         carregar(Integer.parseInt(getRequestParameter("idCliente")),
                  getRequestParameter("sessionKey"),
                  getRequestParameter("redirectPage"));
+    }
+    
+    public void onInativar() throws Exception {
+        Integer idCliente = Integer.parseInt(getRequestParameter("idCliente"));
+        TOCliente to = this.clienteDao.buscarPorId(idCliente);
+        inativar(to);
     }
 
     @Override

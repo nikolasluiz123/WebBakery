@@ -66,19 +66,22 @@ public class ClienteDao extends AbstractBaseDao<TOCliente> {
         return toClientes;
     }
 
-    public boolean cpfExiste(String cpf, Boolean ativo) {
+    public boolean cpfExiste(TOCliente to, Boolean ativo) {
         StringJoiner sql = new StringJoiner(QR_NL);
         sql
         .add("SELECT c")
         .add("FROM ".concat(Cliente.class.getName()).concat(" c "))
         .add("WHERE")
         .add("c.ativo = :pAtivo")
-        .add("AND c.cpf = :pCpf");
+        .add("AND c.cpf = :pCpf")
+        .add("AND c.id != :pIdCliente");
         
         try {
             getEntityManager().createQuery(sql.toString(), Cliente.class)
-                              .setParameter("pCpf", cpf)
-                              .setParameter("pAtivo", ativo).getSingleResult();
+                              .setParameter("pCpf", to.getCpf())
+                              .setParameter("pAtivo", ativo)
+                              .setParameter("pIdCliente", to.getId())
+                              .getSingleResult();
 
         } catch (NoResultException e) {
             return false;

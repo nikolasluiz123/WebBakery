@@ -85,11 +85,9 @@ public class UsuarioValidator extends AbstractValidator {
     private void validaSenha() {
         if (String_Util.isNullOrEmpty(this.senha)) {
             messages.add(FIELD_SENHA_REQUIRED);
-        }
-        if (this.senha.length() > 80) {
+        } else if (this.senha.length() > 80) {
             messages.add(FIELD_SENHA_LIMIT_EXCEDDED);
-        }
-        if (this.senha.length() < 7) {
+        } else if (this.senha.length() < 7) {
             messages.add(FIELD_SENHA_VERY_WEAK);
         }
         Integer senhaHash = Hash_Util.getHashCode(this.senha);

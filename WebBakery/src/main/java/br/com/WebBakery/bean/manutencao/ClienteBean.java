@@ -99,7 +99,7 @@ public class ClienteBean extends AbstractBaseRegisterMBean<TOCliente> {
     }
 
     private void addValidators() {
-        ClienteValidator clienteValidator = new ClienteValidator(getTo(), senha, clienteDao);
+        ClienteValidator clienteValidator = new ClienteValidator(getTo(), clienteDao);
         addValidator(clienteValidator);
         EnderecoValidator enderecoValidator = new EnderecoValidator(getTo().getToEndereco());
         addValidator(enderecoValidator);

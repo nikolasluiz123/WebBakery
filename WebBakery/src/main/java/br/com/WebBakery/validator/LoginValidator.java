@@ -70,9 +70,9 @@ public class LoginValidator extends AbstractValidator {
     }
 
     private Boolean existeVinculoComUsuario() {
-        TOUsuario u = null;
-        TOCliente c = null;
-        TOFuncionario f = null;
+        TOUsuario u = new TOUsuario();
+        TOCliente c = new TOCliente();
+        TOFuncionario f = new TOFuncionario();
 
         try {
             u = this.usuarioDao.usuarioExiste(this.toUsuario.getEmail());
@@ -87,7 +87,7 @@ public class LoginValidator extends AbstractValidator {
             throw new RuntimeException(e);
         }
 
-        if (c != null || f != null) {
+        if (c.getId() != null || f.getId() != null) {
             return true;
         }
         return false;

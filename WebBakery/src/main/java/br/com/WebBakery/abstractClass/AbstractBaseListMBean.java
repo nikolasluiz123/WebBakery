@@ -2,7 +2,6 @@ package br.com.WebBakery.abstractClass;
 
 import java.io.IOException;
 
-import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
 
 import br.com.WebBakery.util.Faces_Util;
@@ -27,6 +26,6 @@ public abstract class AbstractBaseListMBean extends AbstractBaseMBean {
     }
     
     public String getRequestParameter(String key) {
-        return getContext().getExternalContext().getRequestParameterMap().get(key);
+        return Faces_Util.getExternalContext().getRequestParameterMap().get(key);
     }
 }

@@ -85,7 +85,7 @@ public class FuncionarioValidator extends AbstractValidator {
     }
 
     private void validaUsuario() {
-        boolean existeVinculoComUsuario = existeVinculoComUsuario();
+        boolean existeVinculoComUsuario = existeVinculoComUsuario(this.toFuncionario.getId());
 
         if (this.toFuncionario.getToUsuario() == null) {
             this.messages.add(FIELD_USUARIO_REQUIRED);
@@ -94,17 +94,17 @@ public class FuncionarioValidator extends AbstractValidator {
         }
     }
 
-    private Boolean existeVinculoComUsuario() {
+    private Boolean existeVinculoComUsuario(Integer idFuncionario) {
         TOFuncionario f = null;
 
         try {
-            f = funcionarioDao.buscarPorIdUsuario(this.toFuncionario.getToUsuario().getId());
+            f = funcionarioDao.buscarPorIdUsuario(this.toFuncionario.getToUsuario().getId(), idFuncionario);
         } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException(e);
         }
 
-        if (f.getId() != null) {
+        if (f != null) {
             return true;
         }
         return false;

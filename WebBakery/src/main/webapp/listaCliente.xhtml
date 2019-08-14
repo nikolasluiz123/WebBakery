@@ -10,12 +10,14 @@
 	<ui:define name="conteudo">
 
 		<h:form id="formDataTableClientes">
-			<p:remoteCommand 
-				name="alterar"
-				process="@this"
-				action="#{listaClienteBean.onAlterar}"
-			/>
-			
+
+			<p:remoteCommand name="alterar" process="@this"
+				action="#{listaClienteBean.onAlterar}" />
+
+			<p:remoteCommand name="inativar" process="@this"
+				update="tabelaClientes, formMessages:messages"
+				action="#{listaClienteBean.onInativar}" />
+
 			<script type="text/javascript">
 				function callAlterar(idCliente, sessionKey, redirectPage) {
 					alterar([{name: 'idCliente', value: idCliente}, 
@@ -23,8 +25,12 @@
 							 {name: 'redirectPage', value: redirectPage}
 						]);	
 				}
+
+				function callInativar(idCliente) {
+					inativar([{name: 'idCliente', value: idCliente}]);	
+				}
 			</script>
-		
+
 			<p:dataTable var="toCliente" value="#{listaClienteBean.toClientes}"
 				id="tabelaClientes" rows="10" paginator="true"
 				paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PageLinks} {PreviousPageLink} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
@@ -76,9 +82,7 @@
 
 				<p:column headerText="Inativar">
 					<p:commandLink value="Inativar"
-						action="#{listaClienteBean.inativar(toCliente)}"
-						update="tabelaClientes, formMessages:messages" process="@this"
-						oncomplete="PF('TabelaClientes').filter();" />
+						oncomplete="callInativar('#{toCliente.id}'); PF('TabelaClientes').filter();" />
 				</p:column>
 
 			</p:dataTable>

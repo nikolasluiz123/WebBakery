@@ -16,26 +16,26 @@
 
 					<p:outputLabel value="Descrição" for="descricao" />
 					<p:inputText id="descricao"
-						value="#{produtoBean.toProduto.descricao}"
+						value="#{produtoBean.to.descricao}"
 						placeholder="Digite a descrição..." />
 
 					<p:outputLabel for="diasValido" value="Dias Válido" />
 					<h:panelGrid columns="1" style="margin-bottom: 10px">
 						<p:inputNumber id="diasValido"
-							value="#{produtoBean.toProduto.tempoValido}" decimalPlaces="0"
+							value="#{produtoBean.to.tempoValido}" decimalPlaces="0"
 							maxValue="180" minValue="0" placeholder="Digite os dias..." />
 						<p:slider for="diasValido" maxValue="180" />
 					</h:panelGrid>
 
 					<p:outputLabel value="Preço:" for="preco" />
-					<p:inputNumber id="preco" value="#{produtoBean.toProduto.preco}"
+					<p:inputNumber id="preco" value="#{produtoBean.to.preco}"
 						symbol="R$" decimalSeparator="," thousandSeparator="."
 						placeholder="Digite o preço..." minValue="0" />
 
 					<p:outputLabel for="receita" value="Receita:" />
 					<p:inputTextarea id="receita"
 						onclick="PF('ReceitasDialog').show();"
-						value="#{produtoBean.toProduto.toReceita.nome}" readonly="true"
+						value="#{produtoBean.to.toReceita.nome}" readonly="true"
 						placeholder="Selecione a receita..." style="cursor: pointer;" />
 
 					<p:fileUpload fileUploadListener="#{produtoBean.handleFileUpload}"
