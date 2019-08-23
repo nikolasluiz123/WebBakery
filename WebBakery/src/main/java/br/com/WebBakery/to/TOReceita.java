@@ -1,6 +1,6 @@
 package br.com.WebBakery.to;
 
-import java.sql.Time;
+import java.util.Date;
 
 import br.com.WebBakery.abstractClass.AbstractBaseTO;
 import br.com.WebBakery.core.annotations.TOEntity;
@@ -12,7 +12,11 @@ public class TOReceita extends AbstractBaseTO {
     @TOEntity(fieldName = "quantidade")
     private Integer quantidade;
     @TOEntity(fieldName = "tempoPreparo")
-    private Time tempoPreparo;
+    private Date tempoPreparo;
+    
+    public TOReceita() {
+        this.quantidade = 1;
+    }
 
     public String getNome() {
         return nome;
@@ -30,11 +34,11 @@ public class TOReceita extends AbstractBaseTO {
         this.quantidade = quantidade;
     }
 
-    public Time getTempoPreparo() {
+    public Date getTempoPreparo() {
         return tempoPreparo;
     }
 
-    public void setTempoPreparo(Time tempoPreparo) {
+    public void setTempoPreparo(Date tempoPreparo) {
         this.tempoPreparo = tempoPreparo;
     }
 

@@ -27,6 +27,8 @@ public class ReceitaDao extends AbstractBaseDao<TOReceita> {
         getConverter().getModelFromTO(to, r);            
         
         getEntityManager().persist(r);
+        getEntityManager().flush();
+        to.setId(r.getId());
     }
 
     @Override

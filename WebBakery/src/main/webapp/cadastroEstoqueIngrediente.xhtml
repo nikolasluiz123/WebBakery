@@ -1,0 +1,74 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="_template.xhtml">
+
+	<ui:define name="conteudo">
+
+		<h:form id="formCadastroEstado">
+
+			<p:fieldset legend="Dados do Ingrediente para Estoque">
+
+				<div class="ui-g-6">
+					<p:outputLabel for="ingrediente" value="Ingrediente:" />
+					<p:inputText id="ingrediente"
+						onclick="PF('IngredientesDialog').show();"
+						value="#{estoqueIngredienteBean.to.toIngrediente.nome}"
+						readonly="true" placeholder="Selecione o ingrediente..."
+						style="cursor: pointer;" />
+				</div>
+
+				<div class="ui-g-6">
+					<p:outputLabel for="unidadeMedidaIngrendiete"
+						value="Unidade de Medida" />
+					<p:inputText id="unidadeMedidaIngrendiete"
+						value="#{estoqueIngredienteBean.to.toIngrediente.unidadeMedida.descricao}"
+						readonly="true" />
+
+				</div>
+
+				<div class="ui-g-6">
+					<p:inputNumber id="quantidade"
+						value="#{estoqueIngredienteBean.to.quantidade}" decimalPlaces="2"
+						minValue="0" placeholder="Digite a quantidade..." maxValue="10000" />
+
+					<p:commandButton value="Cadastrar" process="@form"
+						update="formMessages:messages, @form"
+						action="#{estoqueIngredienteBean.cadastrar}" />
+				</div>
+
+			</p:fieldset>
+
+			<p:dialog header="Ingredientes" widgetVar="IngredientesDialog"
+				resizable="false" width="700">
+
+				<p:dataTable id="tabelaIngredientes"
+					value="#{estoqueIngredienteBean.toIngredientes}"
+					selectionMode="single"
+					selection="#{estoqueIngredienteBean.toIngredienteSelecionado}"
+					var="toIngrediente" rowKey="#{toIngrediente.id}" rows="5"
+					paginator="true"
+					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PageLinks} {PreviousPageLink} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					emptyMessage="Nenhum ingrediente encontrado."
+					widgetVar="TabelaIngredientes"
+					filteredValue="#{estoqueIngredienteBean.toIngredientesFiltrados}">
+
+					<p:column headerText="Nome" sortBy="#{toIngrediente.nome}"
+						filterBy="#{toIngrediente.nome}">
+						<h:outputText value="#{toIngrediente.nome}" />
+					</p:column>
+
+				</p:dataTable>
+				<p:commandButton value="Selecionar" process="@form" update="@form"
+					action="#{estoqueIngredienteBean.setarIngrediente}"
+					oncomplete="PF('IngredientesDialog').hide();" />
+			</p:dialog>
+		</h:form>
+
+	</ui:define>
+</ui:composition>
+</html>

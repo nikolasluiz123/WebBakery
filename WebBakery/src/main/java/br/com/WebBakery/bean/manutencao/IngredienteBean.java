@@ -25,12 +25,21 @@ public class IngredienteBean extends AbstractBaseRegisterMBean<TOIngrediente> {
     private IngredienteDao ingredienteDao;
     private UnidadeMedida unidadeMedida;
 
+    @PostConstruct
+    private void init() {
+        verificaObjetoSessao();
+
+        if (getTo() == null) {
+            resetTo();
+        }
+
+    }
+    
     @Transactional
     public void cadastrar() {
         try {
             this.getTo().setUnidadeMedida(unidadeMedida);
             addValidators();
-
             if (isValid()) {
                 this.getTo().setAtivo(true);
                 this.ingredienteDao.salvar(getTo());
@@ -45,16 +54,6 @@ public class IngredienteBean extends AbstractBaseRegisterMBean<TOIngrediente> {
     private void addValidators() {
         IngredienteValidator ingredienteValidator = new IngredienteValidator(getTo());
         addValidator(ingredienteValidator);
-    }
-
-    @PostConstruct
-    private void init() {
-        verificaObjetoSessao();
-
-        if (getTo() == null) {
-            resetTo();
-        }
-
     }
 
     public UnidadeMedida getUnidadeMedida() {

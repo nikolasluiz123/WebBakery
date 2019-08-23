@@ -7,11 +7,8 @@ import java.util.StringJoiner;
 import javax.ejb.Stateless;
 
 import br.com.WebBakery.abstractClass.AbstractBaseDao;
-import br.com.WebBakery.model.FotoIngrediente;
 import br.com.WebBakery.model.Ingrediente;
-import br.com.WebBakery.to.TOFotoIngrediente;
 import br.com.WebBakery.to.TOIngrediente;
-import br.com.WebBakery.to.TOIngredienteComFotos;
 
 @Stateless
 public class IngredienteDao extends AbstractBaseDao<TOIngrediente> {
@@ -65,64 +62,4 @@ public class IngredienteDao extends AbstractBaseDao<TOIngrediente> {
         return toIngredientes;
     }
     
-    public List<TOIngredienteComFotos> listarTodosIngredienteComFotos() throws Exception {
-        List<Ingrediente> ingredientes = new ArrayList<>();
-        List<FotoIngrediente> fotosIngredientes = new ArrayList<>();
-        
-        List<TOIngrediente> toIngredientes = new ArrayList<>();
-        List<TOFotoIngrediente> toFotosIngrediete = new ArrayList<>();
-        
-        List<TOIngredienteComFotos> toIngredienteComFotos = new ArrayList<>();
-        
-        StringJoiner sqlIngredientes = new StringJoiner(QR_NL);
-        sqlIngredientes
-        .add("SELECT i")
-        .add("FROM ".concat(Ingrediente.class.getName()).concat(" i "))
-        .add("WHERE i.ativo = :pAtivo");
-        
-        StringJoiner sqlFotos = new StringJoiner(QR_NL);
-        sqlFotos
-        .add("SELECT fi")
-        .add("FROM ".concat(FotoIngrediente.class.getName()).concat(" fi "))
-        .add("WHERE")
-        .add("fi.ativo = :pAtivo");
-        
-        ingredientes = getEntityManager().createQuery(sqlIngredientes.toString(), Ingrediente.class)
-                                     .setParameter("pAtivo", true)
-                                     .getResultList();
-        
-        fotosIngredientes = getEntityManager().createQuery(sqlFotos.toString(), FotoIngrediente.class)
-                                          .setParameter("pAtivo", true)
-                                          .getResultList();            
-        
-        for (Ingrediente i : ingredientes) {
-            TOIngrediente to = new TOIngrediente();
-            getConverter().getTOFromModel(i, to);
-            toIngredientes.add(to);
-        }
-        
-        for (FotoIngrediente fi : fotosIngredientes) {
-            TOFotoIngrediente to = new TOFotoIngrediente();
-            getConverter().getTOFromModel(fi, to);
-            toFotosIngrediete.add(to);
-        }
-        
-        List<TOFotoIngrediente> toFotos = new ArrayList<>();
-        for (TOIngrediente to : toIngredientes) {
-            TOIngredienteComFotos toIngredienteComFoto = new TOIngredienteComFotos();
-            toIngredienteComFoto.setToIngrediente(to);
-
-            for (TOFotoIngrediente toFotoIngrediente : toFotosIngrediete) {
-                if (toFotoIngrediente.getToIngrediente().getId() == to.getId()) {
-                    toFotos.add(toFotoIngrediente);
-                }
-            }
-            
-            toIngredienteComFoto.setToFotos(toFotos);
-            toIngredienteComFotos.add(toIngredienteComFoto);
-        }
-        
-        return toIngredienteComFotos;
-    }
-
 }

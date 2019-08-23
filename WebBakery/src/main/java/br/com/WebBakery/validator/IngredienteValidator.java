@@ -25,12 +25,8 @@ public class IngredienteValidator extends AbstractValidator {
 
         if (String_Util.isNullOrEmpty(nome)) {
             messages.add(FIELD_NOME_REQUIRED);
-        }
-
-        if (nome.length() > 32) {
+        } else if (nome.length() > 32) {
             messages.add(FIELD_NOME_LIMIT_EXCEEDED);
         }
-
     }
-
 }

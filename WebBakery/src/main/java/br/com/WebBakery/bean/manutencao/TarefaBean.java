@@ -85,7 +85,7 @@ public class TarefaBean extends AbstractBaseRegisterMBean<TOTarefa> {
     }
 
     public String dataFormatada(Date data) {
-        return Date_Util.formatar("dd/MM/yyyy", data);
+        return Date_Util.formatToString("dd/MM/yyyy", data);
     }
 
     @Override

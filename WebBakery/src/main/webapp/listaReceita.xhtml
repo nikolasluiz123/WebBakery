@@ -13,36 +13,38 @@
 			<div style="padding-top: 15px;">
 
 				<p:dataTable id="tabelaReceitas"
-					value="#{listaReceitaBean.receitas}" var="receita"
-					rowKey="#{receita.id}" rows="5" paginator="true"
+					value="#{listaReceitaBean.toReceitas}" var="toReceita"
+					rowKey="#{toReceita.id}" rows="5" paginator="true"
 					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PageLinks} {PreviousPageLink} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 					emptyMessage="Nenhuma receita encontrada."
 					widgetVar="TabelaReceitas"
-					filteredValue="#{listaReceitaBean.receitasFiltradas}">
+					filteredValue="#{listaReceitaBean.toReceitasFiltradas}">
 
 					<f:facet name="header" style="min-height: 35px; max-height: 35px">
 						<div>Receitas</div>
 
 					</f:facet>
 
-					<p:column headerText="Descrição" filterBy="#{receita.descricao}"
-						sortBy="#{receita.descricao}">
-						<h:outputText value="#{receita.descricao}" />
+					<p:column headerText="Nome" filterBy="#{toReceita.nome}"
+						sortBy="#{toReceita.nome}">
+						<h:outputText value="#{toReceita.nome}" />
 					</p:column>
 
-					<p:column headerText="Quantidade" filterBy="#{receita.quantidade}"
-						sortBy="#{receita.quantidade}">
-						<h:outputText value="#{receita.quantidade}" />
+					<p:column headerText="Quantidade"
+						filterBy="#{toReceita.quantidade}"
+						sortBy="#{toReceita.quantidade}">
+						<h:outputText value="#{toReceita.quantidade}" />
 					</p:column>
 
 					<p:column headerText="Alterar">
 						<p:commandLink value="Alterar"
-							action="#{listaReceitaBean.carregar(receita.id)}" process="@this" />
+							action="#{listaReceitaBean.carregar(toReceita.id, 'ReceitaID', 'cadastroReceita.xhtml')}"
+							process="@this" />
 					</p:column>
 
 					<p:column headerText="Inativar">
 						<p:commandLink value="Inativar"
-							action="#{listaReceitaBean.inativar(receita)}"
+							action="#{listaReceitaBean.inativar(toReceita)}"
 							update="tabelaReceitas, formMessages:messages" process="@this"
 							oncomplete="PF('TabelaReceitas').filter();" />
 					</p:column>

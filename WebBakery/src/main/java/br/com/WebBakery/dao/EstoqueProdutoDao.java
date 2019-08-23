@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.StringJoiner;
 
 import javax.ejb.Stateless;
+import javax.persistence.NoResultException;
 
 import br.com.WebBakery.abstractClass.AbstractBaseDao;
 import br.com.WebBakery.model.EstoqueProduto;
@@ -17,16 +18,19 @@ public class EstoqueProdutoDao extends AbstractBaseDao<TOEstoqueProduto> {
 
     @Override
     public void salvar(TOEstoqueProduto to) throws Exception {
-        EstoqueProduto ep = null;
-        if (to.getId() == null) {
-            ep = new EstoqueProduto();
+        EstoqueProduto estoqueProdutoDoBanco = existe(to.getToProduto().getId());
+        
+        if (estoqueProdutoDoBanco != null) {
+            Integer quantidadeRegistrada = to.getQuantidade();
+            Integer quantidadeDoBanco = estoqueProdutoDoBanco.getQuantidade();
+            estoqueProdutoDoBanco.setQuantidade(quantidadeRegistrada + quantidadeDoBanco);
+            
+            getEntityManager().persist(estoqueProdutoDoBanco);
         } else {
-            ep = getEntityManager().find(EstoqueProduto.class, to.getId());
+            EstoqueProduto estoqueProduto = new EstoqueProduto();
+            getConverter().getModelFromTO(to, estoqueProduto);
+            getEntityManager().persist(estoqueProduto);
         }
-        
-        getConverter().getModelFromTO(to, ep);            
-        
-        getEntityManager().persist(ep);
     }
 
     @Override
@@ -44,8 +48,8 @@ public class EstoqueProdutoDao extends AbstractBaseDao<TOEstoqueProduto> {
 //        getEntityManager().merge(estoque);
 //    }
 
-    public TOEstoqueProduto existe(Integer produtoId) throws Exception {
-        TOEstoqueProduto toEstoqueProduto = new TOEstoqueProduto();  
+    private EstoqueProduto existe(Integer produtoId) {
+        EstoqueProduto ep = new EstoqueProduto();
         
         StringJoiner sql = new StringJoiner(QR_NL);
         sql
@@ -55,14 +59,17 @@ public class EstoqueProdutoDao extends AbstractBaseDao<TOEstoqueProduto> {
         .add("ep.ativo = :pAtivo")
         .add("AND ep.produto.id = :pProdutoId");
         
-        EstoqueProduto estoqueProduto = getEntityManager().createQuery(sql.toString(), EstoqueProduto.class)
-                                                          .setParameter("pAtivo", true)
-                                                          .setParameter("pId", produtoId)
-                                                          .getSingleResult();
+        try {
+            
+        ep = getEntityManager().createQuery(sql.toString(), EstoqueProduto.class)
+                               .setParameter("pAtivo", true)
+                               .setParameter("pProdutoId", produtoId)
+                               .getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
        
-        getConverter().getTOFromModel(estoqueProduto, toEstoqueProduto);
-        
-        return toEstoqueProduto;
+        return ep;
     }
 
     public TOEstoqueProduto buscarPorIdProduto(Integer produtoId) throws Exception {

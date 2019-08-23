@@ -115,6 +115,18 @@ public class MenuBean {
         DefaultMenuItem item21 = new DefaultMenuItem("Vendas");
         item21.setUrl("listaVenda.xhtml");
         itensMenu.add(item21);
+        
+        DefaultMenuItem item22 = new DefaultMenuItem("Ingrediente");
+        item22.setUrl("cadastroIngrediente.xhtml");
+        itensMenu.add(item22);
+        
+        DefaultMenuItem item23 = new DefaultMenuItem("Registrar Estoque de Ingrediente");
+        item23.setUrl("cadastroEstoqueIngrediente.xhtml");
+        itensMenu.add(item23);
+        
+        DefaultMenuItem item24 = new DefaultMenuItem("Estoque Ingrediente");
+        item24.setUrl("listaEstoqueIngrediente.xhtml");
+        itensMenu.add(item24);
 
         ManipuladorPermissao manipulador = new ManipuladorPermissao(itensMenu);
         manipulador.esconderItensMenuPara(usuarioLogado.getTipo());
@@ -142,6 +154,9 @@ public class MenuBean {
         terceiroSubmenu.addElement(item17);
         terceiroSubmenu.addElement(item18);
         terceiroSubmenu.addElement(item19);
+        terceiroSubmenu.addElement(item22);
+        terceiroSubmenu.addElement(item23);
+        terceiroSubmenu.addElement(item24);
         model.addElement(terceiroSubmenu);
 
         quartoSubmenu.addElement(item20);

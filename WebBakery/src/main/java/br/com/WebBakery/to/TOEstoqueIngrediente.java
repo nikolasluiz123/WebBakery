@@ -2,6 +2,7 @@ package br.com.WebBakery.to;
 
 import br.com.WebBakery.abstractClass.AbstractBaseTO;
 import br.com.WebBakery.core.annotations.TOEntity;
+import br.com.WebBakery.util.String_Util;
 
 public class TOEstoqueIngrediente extends AbstractBaseTO {
 
@@ -24,6 +25,10 @@ public class TOEstoqueIngrediente extends AbstractBaseTO {
 
     public void setQuantidade(Double quantidade) {
         this.quantidade = quantidade;
+    }
+
+    public String getQuantidadeFormatada() {
+        return String_Util.formatDoubleToValueDecimalBR(this.quantidade);
     }
 
 }

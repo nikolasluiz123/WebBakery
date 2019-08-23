@@ -26,12 +26,12 @@ public class ListaReceitaBean extends AbstractBaseListMBean implements IBaseList
 
     @Inject
     private ReceitaDao receitaDao;
-    private List<TOReceita> receitas;
-    private List<TOReceita> receitasFiltradas;
+    private List<TOReceita> toReceitas;
+    private List<TOReceita> toReceitasFiltradas;
 
     @PostConstruct
     private void init() {
-        this.receitas = new ArrayList<>();
+        this.toReceitas = new ArrayList<>();
         initReceitas();
     }
 
@@ -49,26 +49,26 @@ public class ListaReceitaBean extends AbstractBaseListMBean implements IBaseList
 
     private void initReceitas() {
         try {
-            this.receitas = this.receitaDao.listarTodos(true);
+            this.toReceitas = this.receitaDao.listarTodos(true);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-    
-    public List<TOReceita> getReceitas() {
-        return receitas;
+
+    public List<TOReceita> getToReceitas() {
+        return toReceitas;
     }
 
-    public void setReceitas(List<TOReceita> receitas) {
-        this.receitas = receitas;
+    public void setToReceitas(List<TOReceita> toReceitas) {
+        this.toReceitas = toReceitas;
     }
 
-    public List<TOReceita> getReceitasFiltradas() {
-        return receitasFiltradas;
+    public List<TOReceita> getToReceitasFiltradas() {
+        return toReceitasFiltradas;
     }
 
-    public void setReceitasFiltradas(List<TOReceita> receitasFiltradas) {
-        this.receitasFiltradas = receitasFiltradas;
+    public void setToReceitasFiltradas(List<TOReceita> toReceitasFiltradas) {
+        this.toReceitasFiltradas = toReceitasFiltradas;
     }
 
     @Override

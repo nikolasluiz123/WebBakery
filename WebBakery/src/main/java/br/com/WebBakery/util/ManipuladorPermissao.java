@@ -53,6 +53,9 @@ public class ManipuladorPermissao {
         permissoesGerente.add("Estoque Produtos");
         permissoesGerente.add("Venda");
         permissoesGerente.add("Vendas");
+        permissoesGerente.add("Ingrediente");
+        permissoesGerente.add("Registrar Estoque de Ingrediente");
+        permissoesGerente.add("Estoque Ingrediente");
     }
 
     private void initListPermissoesCliente() {
@@ -68,6 +71,9 @@ public class ManipuladorPermissao {
         permissoesAdministradorEstoque.add("Tarefa");
         permissoesAdministradorEstoque.add("Tarefas");
         permissoesAdministradorEstoque.add("Estoque Produtos");
+        permissoesGerente.add("Ingrediente");
+        permissoesGerente.add("Registrar Estoque de Ingrediente");
+        permissoesGerente.add("Estoque Ingrediente");
     }
 
     private void initListPermissoesPadeiro() {

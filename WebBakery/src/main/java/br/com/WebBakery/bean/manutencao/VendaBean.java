@@ -139,7 +139,7 @@ public class VendaBean extends AbstractBaseRegisterMBean<TOVenda> {
     public void onCellEdit(CellEditEvent event) {
         Integer oldValue = (Integer) event.getOldValue();
         Integer newValue = (Integer) event.getNewValue();
-
+        
         if (newValue != null && !newValue.equals(oldValue)) {
             for (TOProdutoVenda to : toProdutosVenda) {
                 this.quantidadeEhValida = QuantidadeProdutoVendaEhValida(to,

@@ -78,8 +78,9 @@
 				resizable="false" width="700">
 
 				<p:dataTable var="toCliente" value="#{vendaBean.toClientes"
-					selectionMode="single" selection="#{vendaBean.toClienteSelecionado}"
-					id="tabelaVendas" rowKey="#{toCliente.id}" rows="5" paginator="true"
+					selectionMode="single"
+					selection="#{vendaBean.toClienteSelecionado}" id="tabelaVendas"
+					rowKey="#{toCliente.id}" rows="5" paginator="true"
 					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PageLinks} {PreviousPageLink} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 					rowsPerPageTemplate="5,10,15"
 					emptyMessage="Nenhum cliente encontrado."
@@ -111,15 +112,15 @@
 			<p:dialog header="Produtos da Venda" id="lovProdutosVenda"
 				widgetVar="ProdutosVendaDialog" resizable="false" width="700">
 
-				<p:dataTable var="toProdutoVenda" value="#{vendaBean.toProdutosVenda}"
-					id="tabelaProdutosVenda" rowKey="#{toProdutoVenda.id}" rows="5"
-					paginator="true"
+				<p:dataTable var="toProdutoVenda"
+					value="#{vendaBean.toProdutosVenda}" id="tabelaProdutosVenda"
+					rowKey="#{toProdutoVenda.id}" rows="5" paginator="true"
 					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PageLinks} {PreviousPageLink} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 					rowsPerPageTemplate="5,10,15"
 					emptyMessage="Nenhum produto da venda encontrado."
 					widgetVar="TabelaProdutosVenda"
-					filteredValue="#{vendaBean.toProdutosVendaFiltrados}" editable="true"
-					editMode="cell">
+					filteredValue="#{vendaBean.toProdutosVendaFiltrados}"
+					editable="true" editMode="cell">
 
 					<p:ajax event="cellEdit" listener="#{vendaBean.onCellEdit}"
 						update="formMessages:messages" />
@@ -147,7 +148,7 @@
 
 					<p:column headerText="Remover">
 						<p:commandLink value="Remover"
-							action="#{vendaBean.removerCarrinho}"
+							action="#{vendaBean.removerCarrinho(toProdutoVenda)}"
 							update="tabelaProdutosVenda" />
 					</p:column>
 

@@ -45,9 +45,9 @@ public abstract class AbstractBaseRegisterMBean<T extends AbstractBaseTO>
 
         if (messagesIsEmpty) {
             resetTo();
+        } else {
+            showMessagesValidatorChain();
         }
-
-        showMessagesValidatorChain();
     }
 
     public T getObjetoSessao(String keyAtribute, AbstractBaseDao<T> dao) throws Exception {
@@ -65,6 +65,10 @@ public abstract class AbstractBaseRegisterMBean<T extends AbstractBaseTO>
         } else {
             getContext().addMessage(null, new FacesMessage(RECORD_UPDATED_SUCCESSFULLY));
         }
+    }
+
+    protected void showMessage(String message) {
+        getContext().addMessage(null, new FacesMessage(message));
     }
 
     public T getTo() {

@@ -109,7 +109,7 @@ public class ListaProdutoBean extends AbstractBaseListMBean implements IBaseList
     }
 
     public String getPrecoFormatado(Double d) {
-        return String_Util.formatarDoubleParaValorMonetario(d);
+        return String_Util.formatDoubleToValueMonetary(d);
     }
 
     private void initProdutos() {

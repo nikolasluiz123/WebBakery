@@ -16,11 +16,12 @@
 
 					<div class="ui-g-4">
 						<p:outputLabel value="Nome:" for="nome" />
-						<p:inputText id="nome" value="#{ingredienteBean.toIngrediente.nome}"
+						<p:inputText id="nome" value="#{ingredienteBean.to.nome}"
 							placeholder="Digite o nome..." />
 					</div>
 
 					<div class="ui-g-4">
+
 						<p:outputLabel value="Unidade de Medida:" for="unidadeMedida" />
 						<p:selectOneMenu value="#{ingredienteBean.unidadeMedida}"
 							id="unidadeMedida">
@@ -28,6 +29,7 @@
 								var="unidade" itemLabel="#{unidade.descricao}"
 								itemValue="#{unidade}" />
 						</p:selectOneMenu>
+
 					</div>
 
 					<div class="ui-g-4">
