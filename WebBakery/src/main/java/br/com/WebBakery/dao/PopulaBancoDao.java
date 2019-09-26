@@ -17,6 +17,8 @@ import br.com.WebBakery.model.Funcionario;
 import br.com.WebBakery.model.Logradouro;
 import br.com.WebBakery.model.Pais;
 import br.com.WebBakery.model.Usuario;
+import br.com.WebBakery.util.HashTypeEnum;
+import br.com.WebBakery.util.Hash_Util;
 
 @Stateless
 public class PopulaBancoDao implements Serializable {
@@ -34,7 +36,6 @@ public class PopulaBancoDao implements Serializable {
     }
 
     public void popularBanco() {
-
         Pais pais1 = gerarPais("Afeganistão", "AF");
         Pais pais2 = gerarPais("África Do Sul", "ZA");
         Pais pais3 = gerarPais("Albânia", "AL");
@@ -718,41 +719,77 @@ public class PopulaBancoDao implements Serializable {
                                                   "Rua Adolfo Schmalz",
                                                   "casa",
                                                   cidade37);
-        
+
         Endereco endereco1 = gerarEndereco(pais30, estado24, cidade37, logradouro1);
         Endereco endereco2 = gerarEndereco(pais30, estado24, cidade37, logradouro2);
         Endereco endereco3 = gerarEndereco(pais30, estado24, cidade37, logradouro3);
         Endereco endereco4 = gerarEndereco(pais30, estado24, cidade37, logradouro4);
         Endereco endereco5 = gerarEndereco(pais30, estado24, cidade37, logradouro5);
-        
 
-        Usuario gerente = gerarUsuario("Gerente", "da Silva","gerente@webbakery.com",
-                                       "gerente".hashCode(),
+        Usuario gerente = gerarUsuario("Gerente",
+                                       "da Silva",
+                                       "gerente@webbakery.com",
+                                       "gerente",
                                        TipoUsuario.GERENTE);
-        
-        Usuario cliente = gerarUsuario("TOCliente", "da Silva","cliente@gmail.com",
-                                       "cliente".hashCode(),
-                                       TipoUsuario.CLIENTE);
-        
-        Usuario admEstoque = gerarUsuario("Administrador de Estoque", "da Silva","admEstoque@webbakery.com",
-                                          "admEstoque".hashCode(),
-                                          TipoUsuario.ADMINISTRADOR_ESTOQUE);
-        
-        Usuario caixa = gerarUsuario("Caixa", "da Silva","caixa@webbakery.com", 
-                                     "caixa".hashCode(), 
-                                     TipoUsuario.CAIXA);
-        
-        Usuario padeiro = gerarUsuario("Padeiro", "da Silva","padeiro@webbakery.com",
-                                       "padeiro".hashCode(),
-                                       TipoUsuario.PADEIRO);
-        
-        Funcionario fGerente = gerarFuncionario(BigDecimal.valueOf(3000.00), endereco1, gerente, new Date(), "111.666.444-88", "5.684.348", "(55) 658847895");
-        Funcionario fAdmEstoque = gerarFuncionario(BigDecimal.valueOf(2500.00), endereco2, admEstoque, new Date(), "777.345.444-88", "5.909.348", "(55) 689089895");
-        Funcionario fPadeiro = gerarFuncionario(BigDecimal.valueOf(1500.00), endereco3, padeiro, new Date(), "111.533.494-00", "5.684.300", "(55) 658810105");
-        Funcionario fCaixa = gerarFuncionario(BigDecimal.valueOf(1700.00), endereco4, caixa, new Date(), "111.555.1425-88", "5.444.348", "(55) 655555895");
 
-        Cliente cCliente = gerarCliente("666.533.494-00", "(55) 656666896", new Date(), cliente, endereco5);
-        
+        Usuario cliente = gerarUsuario("TOCliente",
+                                       "da Silva",
+                                       "cliente@gmail.com",
+                                       "cliente",
+                                       TipoUsuario.CLIENTE);
+
+        Usuario admEstoque = gerarUsuario("Administrador de Estoque",
+                                          "da Silva",
+                                          "admEstoque@webbakery.com",
+                                          "admEstoque",
+                                          TipoUsuario.ADMINISTRADOR_ESTOQUE);
+
+        Usuario caixa = gerarUsuario("Caixa",
+                                     "da Silva",
+                                     "caixa@webbakery.com",
+                                     "caixa",
+                                     TipoUsuario.CAIXA);
+
+        Usuario padeiro = gerarUsuario("Padeiro",
+                                       "da Silva",
+                                       "padeiro@webbakery.com",
+                                       "padeiro",
+                                       TipoUsuario.PADEIRO);
+
+        Funcionario fGerente = gerarFuncionario(BigDecimal.valueOf(3000.00),
+                                                endereco1,
+                                                gerente,
+                                                new Date(),
+                                                "111.666.444-88",
+                                                "5.684.348",
+                                                "(55) 658847895");
+        Funcionario fAdmEstoque = gerarFuncionario(BigDecimal.valueOf(2500.00),
+                                                   endereco2,
+                                                   admEstoque,
+                                                   new Date(),
+                                                   "777.345.444-88",
+                                                   "5.909.348",
+                                                   "(55) 689089895");
+        Funcionario fPadeiro = gerarFuncionario(BigDecimal.valueOf(1500.00),
+                                                endereco3,
+                                                padeiro,
+                                                new Date(),
+                                                "111.533.494-00",
+                                                "5.684.300",
+                                                "(55) 658810105");
+        Funcionario fCaixa = gerarFuncionario(BigDecimal.valueOf(1700.00),
+                                              endereco4,
+                                              caixa,
+                                              new Date(),
+                                              "111.555.1425-88",
+                                              "5.444.348",
+                                              "(55) 655555895");
+
+        Cliente cCliente = gerarCliente("666.533.494-00",
+                                        "(55) 656666896",
+                                        new Date(),
+                                        cliente,
+                                        endereco5);
 
         em.persist(gerente);
         em.persist(cliente);
@@ -1305,28 +1342,32 @@ public class PopulaBancoDao implements Serializable {
         em.persist(logradouro33);
         em.persist(logradouro34);
         em.persist(logradouro35);
-        
+
         em.persist(endereco1);
         em.persist(endereco2);
         em.persist(endereco3);
         em.persist(endereco4);
         em.persist(endereco5);
-        
+
         em.persist(fCaixa);
         em.persist(fPadeiro);
         em.persist(fAdmEstoque);
         em.persist(fGerente);
-        
+
         em.persist(cCliente);
 
     }
 
-    private static Usuario gerarUsuario(String nome, String sobrenome, String email, Integer senha, TipoUsuario tipo) {
+    private static Usuario gerarUsuario(String nome,
+                                        String sobrenome,
+                                        String email,
+                                        String senha,
+                                        TipoUsuario tipo) {
         Usuario usuario = new Usuario();
         usuario.setNome(nome);
         usuario.setSobrenome(sobrenome);
         usuario.setEmail(email);
-        usuario.setSenha(senha);
+        usuario.setSenha(Hash_Util.generateHash(senha, HashTypeEnum.SAH1));
         usuario.setTipo(tipo);
         usuario.setAtivo(true);
         return usuario;
@@ -1392,7 +1433,7 @@ public class PopulaBancoDao implements Serializable {
 
         return f;
     }
-    
+
     private static Cliente gerarCliente(String cpf,
                                         String telefone,
                                         Date dataNascimento,
@@ -1409,7 +1450,7 @@ public class PopulaBancoDao implements Serializable {
 
         return c;
     }
-    
+
     private static Endereco gerarEndereco(Pais pais,
                                           Estado estado,
                                           Cidade cidade,
@@ -1420,7 +1461,7 @@ public class PopulaBancoDao implements Serializable {
         e.setEstado(estado);
         e.setCidade(cidade);
         e.setLogradouro(logradouro);
-        
+
         return e;
     }
 }

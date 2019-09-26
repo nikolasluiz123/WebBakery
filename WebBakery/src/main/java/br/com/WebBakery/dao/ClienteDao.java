@@ -104,10 +104,14 @@ public class ClienteDao extends AbstractBaseDao<TOCliente> {
         .add("c.ativo = :pAtivo")
         .add("AND c.usuario.id = :pIdUsuario");
         
-        c = getEntityManager().createQuery(sql.toString(), Cliente.class)
-                              .setParameter("pIdUsuario", idUsuario)
-                              .setParameter("pAtivo", true)
-                              .getSingleResult();
+        try {
+            c = getEntityManager().createQuery(sql.toString(), Cliente.class)
+                                  .setParameter("pIdUsuario", idUsuario)
+                                  .setParameter("pAtivo", true)
+                                  .getSingleResult();
+        } catch (NoResultException e) {
+            return to;
+        }
         
         getConverter().getTOFromModel(c, to);
         return to;

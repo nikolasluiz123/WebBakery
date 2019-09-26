@@ -13,7 +13,7 @@ public class TOUsuario extends AbstractBaseTO {
     @TOEntity(fieldName = "email")
     private String email;
     @TOEntity(fieldName = "senha")
-    private Integer senha;
+    private String senha;
     @TOEntity(fieldName = "tipo")
     private TipoUsuario tipo;
 
@@ -41,11 +41,11 @@ public class TOUsuario extends AbstractBaseTO {
         this.email = email;
     }
 
-    public Integer getSenha() {
+    public String getSenha() {
         return senha;
     }
 
-    public void setSenha(Integer senha) {
+    public void setSenha(String senha) {
         this.senha = senha;
     }
 

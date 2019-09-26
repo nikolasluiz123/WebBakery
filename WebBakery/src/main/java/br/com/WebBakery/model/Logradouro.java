@@ -29,7 +29,7 @@ public class Logradouro extends AbstractBaseModel {
     @Column(length = STRING_LENGTH_16C, name = CEP_LOGRADOURO)
     private String cep;
 
-    @Column(length = STRING_LENGTH_32C, name = RUA_LOGRADOURO)
+    @Column(length = STRING_LENGTH_64C, name = RUA_LOGRADOURO)
     private String rua;
 
     @Column(length = STRING_LENGTH_32C, name = COMPLEMENTO_LOGRADOURO)

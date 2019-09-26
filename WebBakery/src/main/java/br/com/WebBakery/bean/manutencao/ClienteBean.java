@@ -23,6 +23,7 @@ import br.com.WebBakery.to.TOCidade;
 import br.com.WebBakery.to.TOCliente;
 import br.com.WebBakery.to.TOEstado;
 import br.com.WebBakery.to.TOPais;
+import br.com.WebBakery.util.HashTypeEnum;
 import br.com.WebBakery.util.Hash_Util;
 import br.com.WebBakery.validator.ClienteValidator;
 import br.com.WebBakery.validator.EnderecoValidator;
@@ -112,7 +113,7 @@ public class ClienteBean extends AbstractBaseRegisterMBean<TOCliente> {
     private void cadastrarUsuarioCliente() throws Exception {
         getTo().getToUsuario().setAtivo(true);
         getTo().getToUsuario().setTipo(TipoUsuario.CLIENTE);
-        getTo().getToUsuario().setSenha(Hash_Util.getHashCode(this.senha));
+        getTo().getToUsuario().setSenha(Hash_Util.generateHashMaxSecurity(this.senha));
         this.usuarioDao.salvar(this.getTo().getToUsuario());
     }
 

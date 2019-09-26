@@ -3,6 +3,7 @@ package br.com.WebBakery.util;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -14,7 +15,7 @@ public class SimpleDateConverter implements Converter {
 
     @Override
     public Object getAsObject(FacesContext context, UIComponent component, String value) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
         try {
             return dateFormat.parse(value);
         } catch (ParseException e) {

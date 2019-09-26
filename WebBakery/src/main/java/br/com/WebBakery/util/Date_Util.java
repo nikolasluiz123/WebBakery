@@ -3,6 +3,7 @@ package br.com.WebBakery.util;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
@@ -23,6 +24,19 @@ public class Date_Util {
         }
 
         return null;
+    }
+    
+    public static Date sum(Date data1, Date data2) throws ParseException {
+        Calendar dataInicio = Calendar.getInstance(Locale.getDefault());
+        dataInicio.setTime(data1);
+        
+        Calendar dataFim = Calendar.getInstance(Locale.getDefault());
+        dataFim.setTime(data2);
+        
+        dataInicio.add(Calendar.HOUR, dataFim.get(Calendar.HOUR));
+        dataInicio.add(Calendar.MINUTE, dataFim.get(Calendar.MINUTE));
+        
+        return dataInicio.getTime();
     }
 
 }

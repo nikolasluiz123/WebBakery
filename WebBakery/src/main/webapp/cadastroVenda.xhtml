@@ -36,25 +36,25 @@
 					style="width:16px;text-align:center" />
 
 				<p:column headerText="Nome"
-					filterBy="#{estoqueProduto.toProduto.descricao}">
+					filterBy="#{toEstoqueProduto.toProduto.descricao}">
 					<h:outputText value="#{estoqueProduto.toProduto.descricao}" />
 				</p:column>
 
 				<p:column headerText="Preço"
-					filterBy="#{estoqueProduto.toProduto.preco}">
-					<h:outputText value="#{estoqueProduto.toProduto.preco}" />
+					filterBy="#{toEstoqueProduto.toProduto.preco}">
+					<h:outputText value="#{toEstoqueProduto.toProduto.preco}" />
 				</p:column>
 
 				<p:column headerText="Quantidade em Estoque"
-					filterBy="#{estoqueProduto.quantidade}">
-					<h:outputText value="#{estoqueProduto.quantidade}" />
+					filterBy="#{toEstoqueProduto.quantidade}">
+					<h:outputText value="#{toEstoqueProduto.quantidade}" />
 				</p:column>
 			</p:dataTable>
 
 			<div jsf:id="funcionalidades">
 				<p:outputLabel for="cliente" value="Cliente:" />
 				<p:inputText id="cliente" onclick="PF('ClientesDialog').show();"
-					value="#{vendaBean.toVenda.toCliente.toUsuario.nome} #{vendaBean.toVenda.toCliente.toUsuario.sobrenome}"
+					value="#{vendaBean.to.toCliente.toUsuario.nome} #{vendaBean.to.toCliente.toUsuario.sobrenome}"
 					readonly="true" placeholder="Selecione o cliente..."
 					style="cursor: pointer;"
 					disabled="#{empty vendaBean.toEstoqueProdutosSelecionados}" />
@@ -63,7 +63,7 @@
 				<p:selectOneMenu value="#{vendaBean.formaPagamento}"
 					id="formaPagamento"
 					disabled="#{empty vendaBean.toEstoqueProdutosSelecionados}">
-					<f:selectItems value="#{vendaBean.formasPagamento}" var="forma"
+					<f:selectItems value="#{vendaBean.formasPagamentos}" var="forma"
 						itemLabel="#{forma.nome}" itemValue="#{forma}" />
 				</p:selectOneMenu>
 
@@ -77,7 +77,7 @@
 			<p:dialog header="Clientes" widgetVar="ClientesDialog"
 				resizable="false" width="700">
 
-				<p:dataTable var="toCliente" value="#{vendaBean.toClientes"
+				<p:dataTable var="toCliente" value="#{vendaBean.toClientes}"
 					selectionMode="single"
 					selection="#{vendaBean.toClienteSelecionado}" id="tabelaVendas"
 					rowKey="#{toCliente.id}" rows="5" paginator="true"
@@ -88,7 +88,7 @@
 					filteredValue="#{vendaBean.toClientesFiltrados}">
 
 					<p:column headerText="Nome" filterBy="#{toCliente.toUsuario.nome}"
-						sortBy="#{cliente.toUsuario.nome}">
+						sortBy="#{toCliente.toUsuario.nome}">
 						<h:outputText value="#{toCliente.toUsuario.nome}" />
 					</p:column>
 

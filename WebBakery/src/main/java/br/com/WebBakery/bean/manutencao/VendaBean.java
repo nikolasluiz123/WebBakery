@@ -256,6 +256,10 @@ public class VendaBean extends AbstractBaseRegisterMBean<TOVenda> {
     public FormaPagamento getFormaPagamento() {
         return formaPagamento;
     }
+    
+    public FormaPagamento[] getFormasPagamentos() {
+        return FormaPagamento.values();
+    }
 
     public void setFormaPagamento(FormaPagamento formaPagamento) {
         this.formaPagamento = formaPagamento;

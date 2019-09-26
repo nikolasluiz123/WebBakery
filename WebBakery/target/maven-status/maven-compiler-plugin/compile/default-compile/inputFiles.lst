@@ -18,10 +18,12 @@ C:\WebBakery\WebBakery\src\main\java\br\com\WebBakery\abstractClass\AbstractArqu
 C:\WebBakery\WebBakery\src\main\java\br\com\WebBakery\abstractClass\AbstractArquivo.java
 C:\WebBakery\WebBakery\src\main\java\br\com\WebBakery\util\LogPhaseListener.java
 C:\WebBakery\WebBakery\src\main\java\br\com\WebBakery\to\TOVenda.java
+C:\WebBakery\WebBakery\src\main\java\br\com\WebBakery\util\HashTypeEnum.java
 C:\WebBakery\WebBakery\src\main\java\br\com\WebBakery\bean\manutencao\LoginBean.java
 C:\WebBakery\WebBakery\src\main\java\br\com\WebBakery\bean\manutencao\UsuarioBean.java
 C:\WebBakery\WebBakery\src\main\java\br\com\WebBakery\validator\CidadeValidator.java
 C:\WebBakery\WebBakery\src\main\java\br\com\WebBakery\bean\manutencao\VendaBean.java
+C:\WebBakery\WebBakery\src\main\java\br\com\WebBakery\validator\EstoqueIngredienteValidator.java
 C:\WebBakery\WebBakery\src\main\java\br\com\WebBakery\enums\TipoUsuario.java
 C:\WebBakery\WebBakery\src\main\java\br\com\WebBakery\bean\manutencao\CidadeBean.java
 C:\WebBakery\WebBakery\src\main\java\br\com\WebBakery\to\TOCidade.java
@@ -30,16 +32,17 @@ C:\WebBakery\WebBakery\src\main\java\br\com\WebBakery\to\TOEstado.java
 C:\WebBakery\WebBakery\src\main\java\br\com\WebBakery\to\TOUsuario.java
 C:\WebBakery\WebBakery\src\main\java\br\com\WebBakery\model\EstoqueProduto.java
 C:\WebBakery\WebBakery\src\main\java\br\com\WebBakery\bean\consulta\ListaPaisBean.java
+C:\WebBakery\WebBakery\src\main\java\br\com\WebBakery\util\Primefaces_Util.java
 C:\WebBakery\WebBakery\src\main\java\br\com\WebBakery\to\TOIngredienteComFotos.java
 C:\WebBakery\WebBakery\src\main\java\br\com\WebBakery\to\TOReceita.java
 C:\WebBakery\WebBakery\src\main\java\br\com\WebBakery\dao\ClienteDao.java
 C:\WebBakery\WebBakery\src\main\java\br\com\WebBakery\model\Cliente.java
+C:\WebBakery\WebBakery\src\main\java\br\com\WebBakery\util\PrimeFacesPickListConverter.java
 C:\WebBakery\WebBakery\src\main\java\br\com\WebBakery\util\SimpleDateConverter.java
 C:\WebBakery\WebBakery\src\main\java\br\com\WebBakery\validator\EstadoValidator.java
 C:\WebBakery\WebBakery\src\main\java\br\com\WebBakery\interfaces\IBaseMBean.java
 C:\WebBakery\WebBakery\src\main\java\br\com\WebBakery\to\TOCliente.java
 C:\WebBakery\WebBakery\src\main\java\br\com\WebBakery\to\TOEndereco.java
-C:\WebBakery\WebBakery\src\main\java\br\com\WebBakery\bean\consulta\ListaIngredienteBean.java
 C:\WebBakery\WebBakery\src\main\java\br\com\WebBakery\core\util\ObjectManipulatorUtil.java
 C:\WebBakery\WebBakery\src\main\java\br\com\WebBakery\to\TOPais.java
 C:\WebBakery\WebBakery\src\main\java\br\com\WebBakery\abstractClass\AbstractBaseDao.java
@@ -51,6 +54,7 @@ C:\WebBakery\WebBakery\src\main\java\br\com\WebBakery\model\Receita.java
 C:\WebBakery\WebBakery\src\main\java\br\com\WebBakery\to\TOLogradouro.java
 C:\WebBakery\WebBakery\src\main\java\br\com\WebBakery\interfaces\IBaseDao.java
 C:\WebBakery\WebBakery\src\main\java\br\com\WebBakery\bean\consulta\ListaVendaBean.java
+C:\WebBakery\WebBakery\src\main\java\br\com\WebBakery\dao\ReceitaIngredienteDao.java
 C:\WebBakery\WebBakery\src\main\java\br\com\WebBakery\abstractClass\AbstractBaseListMBean.java
 C:\WebBakery\WebBakery\src\main\java\br\com\WebBakery\interfaces\IBaseListMBean.java
 C:\WebBakery\WebBakery\src\main\java\br\com\WebBakery\to\TOEstoqueIngrediente.java
@@ -67,6 +71,7 @@ C:\WebBakery\WebBakery\src\main\java\br\com\WebBakery\validator\FotoValidator.ja
 C:\WebBakery\WebBakery\src\main\java\br\com\WebBakery\model\Ingrediente.java
 C:\WebBakery\WebBakery\src\main\java\br\com\WebBakery\interfaces\IBaseValidator.java
 C:\WebBakery\WebBakery\src\main\java\br\com\WebBakery\model\EstoqueIngrediente.java
+C:\WebBakery\WebBakery\src\main\java\br\com\WebBakery\bean\manutencao\EstoqueIngredienteBean.java
 C:\WebBakery\WebBakery\src\main\java\br\com\WebBakery\dao\EstadoDao.java
 C:\WebBakery\WebBakery\src\main\java\br\com\WebBakery\model\Logradouro.java
 C:\WebBakery\WebBakery\src\main\java\br\com\WebBakery\bean\manutencao\ReceitaBean.java
@@ -75,6 +80,7 @@ C:\WebBakery\WebBakery\src\main\java\br\com\WebBakery\to\TOFotoProduto.java
 C:\WebBakery\WebBakery\src\main\java\br\com\WebBakery\bean\manutencao\FuncionarioBean.java
 C:\WebBakery\WebBakery\src\main\java\br\com\WebBakery\core\annotations\TOEntity.java
 C:\WebBakery\WebBakery\src\main\java\br\com\WebBakery\util\String_Util.java
+C:\WebBakery\WebBakery\src\main\java\br\com\WebBakery\dao\EstoqueIngredienteDao.java
 C:\WebBakery\WebBakery\src\main\java\br\com\WebBakery\to\TOEstoqueProduto.java
 C:\WebBakery\WebBakery\src\main\java\br\com\WebBakery\core\tests\NestedTO.java
 C:\WebBakery\WebBakery\src\main\java\br\com\WebBakery\bean\manutencao\MenuBean.java
@@ -101,7 +107,6 @@ C:\WebBakery\WebBakery\src\main\java\br\com\WebBakery\bean\consulta\ListaFuncion
 C:\WebBakery\WebBakery\src\main\java\br\com\WebBakery\util\Faces_Util.java
 C:\WebBakery\WebBakery\src\main\java\br\com\WebBakery\bean\consulta\ListaProdutoBean.java
 C:\WebBakery\WebBakery\src\main\java\br\com\WebBakery\core\tests\TOExample.java
-C:\WebBakery\WebBakery\src\main\java\br\com\WebBakery\enums\Unidade.java
 C:\WebBakery\WebBakery\src\main\java\br\com\WebBakery\to\TOFotoPerfil.java
 C:\WebBakery\WebBakery\src\main\java\br\com\WebBakery\to\TOReceitaIngrediente.java
 C:\WebBakery\WebBakery\src\main\java\br\com\WebBakery\bean\manutencao\IngredienteBean.java
@@ -120,6 +125,7 @@ C:\WebBakery\WebBakery\src\main\java\br\com\WebBakery\dao\ReceitaDao.java
 C:\WebBakery\WebBakery\src\main\java\br\com\WebBakery\validator\LoginValidator.java
 C:\WebBakery\WebBakery\src\main\java\br\com\WebBakery\dao\FotoProdutoDao.java
 C:\WebBakery\WebBakery\src\main\java\br\com\WebBakery\bean\manutencao\FotoPerfilUploadBean.java
+C:\WebBakery\WebBakery\src\main\java\br\com\WebBakery\bean\consulta\ListaEstoqueIngredienteBean.java
 C:\WebBakery\WebBakery\src\main\java\br\com\WebBakery\core\tests\ModelExample.java
 C:\WebBakery\WebBakery\src\main\java\br\com\WebBakery\dao\FuncionarioDao.java
 C:\WebBakery\WebBakery\src\main\java\br\com\WebBakery\validator\EnderecoValidator.java

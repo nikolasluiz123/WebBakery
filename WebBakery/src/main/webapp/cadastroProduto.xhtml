@@ -15,8 +15,7 @@
 				<p:panelGrid columns="2">
 
 					<p:outputLabel value="Descrição" for="descricao" />
-					<p:inputText id="descricao"
-						value="#{produtoBean.to.descricao}"
+					<p:inputText id="descricao" value="#{produtoBean.to.descricao}"
 						placeholder="Digite a descrição..." />
 
 					<p:outputLabel for="diasValido" value="Dias Válido" />
@@ -67,6 +66,11 @@
 					<p:column headerText="Descrição" filterBy="#{toReceita.nome}"
 						sortBy="#{toReceita.nome}">
 						<h:outputText value="#{toReceita.nome}" />
+					</p:column>
+
+					<p:column headerText="Quantidade Feita" filterBy="#{toReceita.quantidade}"
+						sortBy="#{toReceita.quantidade}">
+						<h:outputText value="#{toReceita.quantidade}" />
 					</p:column>
 
 				</p:dataTable>

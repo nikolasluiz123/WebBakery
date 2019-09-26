@@ -1,7 +1,6 @@
 package br.com.WebBakery.bean.manutencao;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -19,6 +18,7 @@ import br.com.WebBakery.enums.UnidadeMedida;
 import br.com.WebBakery.to.TOIngrediente;
 import br.com.WebBakery.to.TOReceita;
 import br.com.WebBakery.to.TOReceitaIngrediente;
+import br.com.WebBakery.util.Primefaces_Util;
 import br.com.WebBakery.validator.ReceitaValidator;
 
 @Named(ReceitaBean.BEAN_NAME)
@@ -43,11 +43,7 @@ public class ReceitaBean extends AbstractBaseRegisterMBean<TOReceita> {
     private List<TOReceitaIngrediente> toReceitaIngredientes;
     private List<TOReceitaIngrediente> toReceitaIngredientesFiltrados;
 
-    private boolean listaIngredientesIsVisible;
-
     private boolean isCadastro;
-
-    private Date teste;
 
     @PostConstruct
     private void init() {
@@ -62,58 +58,15 @@ public class ReceitaBean extends AbstractBaseRegisterMBean<TOReceita> {
         initListIngredientes();
     }
 
-    @Transactional
     public void salvar() {
         try {
             addValidators();
             if (isValid()) {
                 getTo().setAtivo(true);
                 this.isCadastro = getTo().getId() == null;
-                this.receitaDao.salvar(getTo());
-                this.listaIngredientesIsVisible = true;
+                Primefaces_Util.executeScriptShowDialog("IngredienteDialog");
             } else {
                 showMessagesValidatorChain();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Transactional
-    public void finalizarReceita() {
-        try {
-            for (TOReceitaIngrediente to : toReceitaIngredientes) {
-                this.receitaIngredienteDao.salvar(to);
-            }
-
-            if (isCadastro) {
-                showMessage(RECORD_REGISTERED_SUCCESSFULLY);
-            } else {
-                showMessage(RECORD_UPDATED_SUCCESSFULLY);
-            }
-
-            this.listaIngredientesIsVisible = false;
-            resetTo();
-            this.toIngredientesSelecionados = new ArrayList<>();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void carregarReceitaIngrediente() {
-        try {
-            if (getTo() != null) {
-                this.listaIngredientesIsVisible = true;
-                this.toReceitaIngredientes = this.receitaIngredienteDao
-                        .listarTodos(true, getTo().getId());
-                this.toIngredientesSelecionados = new ArrayList<>();
-
-                for (TOReceitaIngrediente to : toReceitaIngredientes) {
-                    this.toIngredientesSelecionados.add(to.getToIngrediente());
-                }
-            } else {
-                this.toReceitaIngredientes = new ArrayList<>();
-                this.toIngredientesSelecionados = new ArrayList<>();
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -132,6 +85,76 @@ public class ReceitaBean extends AbstractBaseRegisterMBean<TOReceita> {
         }
     }
 
+    public void removerReceita() {
+        try {
+            resetTo();
+            this.toIngredientesSelecionados = new ArrayList<>();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Transactional
+    public void finalizarReceita() {
+        try {
+            this.receitaDao.salvar(getTo());
+
+            for (TOReceitaIngrediente to : toReceitaIngredientes) {
+                this.receitaIngredienteDao.salvar(to);
+            }
+
+            if (isCadastro) {
+                showMessage(RECORD_REGISTERED_SUCCESSFULLY);
+            } else {
+                showMessage(RECORD_UPDATED_SUCCESSFULLY);
+            }
+
+            resetTo();
+            this.toIngredientesSelecionados = new ArrayList<>();
+            this.toReceitaIngredientes = new ArrayList<>();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void removerReceitaIngrediente() {
+        try {
+            resetTo();
+            this.toReceitaIngredientes = new ArrayList<>();
+            this.toIngredientesSelecionados = new ArrayList<>();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Transactional
+    private void carregarReceitaIngrediente() {
+        try {
+            if (getTo() != null) {
+                this.toReceitaIngredientes = getReceitaIngrediente(getTo());
+                this.toIngredientesSelecionados = new ArrayList<>();
+                selecionarIngredientes();
+            } else {
+                this.toReceitaIngredientes = new ArrayList<>();
+                this.toIngredientesSelecionados = new ArrayList<>();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void selecionarIngredientes() {
+        for (TOReceitaIngrediente to : toReceitaIngredientes) {
+            this.toIngredientesSelecionados.add(to.getToIngrediente());
+        }
+    }
+
+    private List<TOReceitaIngrediente> getReceitaIngrediente(TOReceita to) throws Exception {
+        List<TOReceitaIngrediente> toReceitaIngredientes = this.receitaIngredienteDao
+                .listarTodos(true, to.getId());
+        return toReceitaIngredientes;
+    }
+
     private void addValidators() {
         ReceitaValidator validator = new ReceitaValidator(getTo());
         addValidator(validator);
@@ -142,14 +165,6 @@ public class ReceitaBean extends AbstractBaseRegisterMBean<TOReceita> {
             this.toIngredientes = this.ingredienteDao.listarTodos(true);
         } catch (Exception e) {
             e.printStackTrace();
-        }
-    }
-
-    public String getVisibility() {
-        if (!listaIngredientesIsVisible) {
-            return "collapse";
-        } else {
-            return "unset";
         }
     }
 
@@ -195,14 +210,6 @@ public class ReceitaBean extends AbstractBaseRegisterMBean<TOReceita> {
 
     public void setToReceitaIngredientesFiltrados(List<TOReceitaIngrediente> toReceitaIngredientesFiltrados) {
         this.toReceitaIngredientesFiltrados = toReceitaIngredientesFiltrados;
-    }
-
-    public Date getTeste() {
-        return teste;
-    }
-
-    public void setTeste(Date teste) {
-        this.teste = teste;
     }
 
     @Override

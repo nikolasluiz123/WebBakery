@@ -2,6 +2,7 @@ package br.com.WebBakery.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Lob;
 
 import br.com.WebBakery.abstractClass.AbstractBaseModel;
 import br.com.WebBakery.enums.TipoUsuario;
@@ -27,8 +28,8 @@ public class Usuario extends AbstractBaseModel {
     @Column(length = STRING_LENGTH_32C, name = EMAIL_USUARIO)
     private String email;
 
-    @Column(name = SENHA_USUARIO)
-    private Integer senha;
+    @Column(name = SENHA_USUARIO, columnDefinition="TEXT")
+    private String senha;
 
     @Column(name = TIPO_USUARIO_USUARIO)
     private TipoUsuario tipo;
@@ -41,11 +42,11 @@ public class Usuario extends AbstractBaseModel {
         this.email = email;
     }
 
-    public Integer getSenha() {
+    public String getSenha() {
         return senha;
     }
 
-    public void setSenha(Integer senha) {
+    public void setSenha(String senha) {
         this.senha = senha;
     }
 

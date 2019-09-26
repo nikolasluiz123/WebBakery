@@ -8,6 +8,8 @@ import br.com.WebBakery.enums.TipoUsuario;
 import br.com.WebBakery.to.TOCliente;
 import br.com.WebBakery.to.TOFuncionario;
 import br.com.WebBakery.to.TOUsuario;
+import br.com.WebBakery.util.HashTypeEnum;
+import br.com.WebBakery.util.Hash_Util;
 import br.com.WebBakery.util.String_Util;
 
 public class LoginValidator extends AbstractValidator {
@@ -43,19 +45,23 @@ public class LoginValidator extends AbstractValidator {
         boolean existe = verificaUsuarioExiste();
         if (existe) {
             validaSenha();
-            verificaUsuarioVinculadoFuncionario();
+            verificaUsuarioVinculadoAlguem();
         }
     }
 
     private void validaSenha() {
+        String generateHash = Hash_Util.generateHashMaxSecurity(this.senha);
+        String senhaUsuarioBanco = this.toUsuario.getSenha();
+
         if (String_Util.isNullOrEmpty(this.senha)) {
             messages.add(FIELD_SENHA_REQUIRED);
-        } else if (this.toUsuario.getSenha() != this.senha.hashCode()) {
+        } else if (!senhaUsuarioBanco.equals(generateHash)) {
             messages.add(FIELD_SENHA_OR_EMAIL_NOT_VALID);
         }
+
     }
 
-    private void verificaUsuarioVinculadoFuncionario() {
+    private void verificaUsuarioVinculadoAlguem() {
         if (!existeVinculoComUsuario()) {
             messages.add(NO_RELATION_EMPLOYEE);
         }
@@ -70,17 +76,16 @@ public class LoginValidator extends AbstractValidator {
     }
 
     private Boolean existeVinculoComUsuario() {
-        TOUsuario u = new TOUsuario();
+        //TOUsuario u = new TOUsuario();
         TOCliente c = new TOCliente();
         TOFuncionario f = new TOFuncionario();
 
         try {
-            u = this.usuarioDao.usuarioExiste(this.toUsuario.getEmail());
-
+            //u = this.usuarioDao.usuarioExiste(this.toUsuario.getEmail());
             if (this.toUsuario.getTipo() == TipoUsuario.CLIENTE) {
-                c = clienteDao.buscarPorIdUsuario(u.getId());
+                c = clienteDao.buscarPorIdUsuario(toUsuario.getId());
             } else {
-                f = funcionarioDao.buscarPorIdUsuario(u.getId());
+                f = funcionarioDao.buscarPorIdUsuario(toUsuario.getId());
             }
         } catch (Exception e) {
             e.printStackTrace();

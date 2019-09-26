@@ -30,6 +30,8 @@ public class ProdutoDao extends AbstractBaseDao<TOProduto> {
         getConverter().getModelFromTO(to, p);            
         
         getEntityManager().persist(p);
+        getEntityManager().flush();
+        to.setId(p.getId());
     }
 
     @Override

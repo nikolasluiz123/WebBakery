@@ -1,6 +1,6 @@
 package br.com.WebBakery.model;
 
-import java.util.Date;
+import java.sql.Time;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -24,7 +24,7 @@ public class Receita extends AbstractBaseModel {
     private Integer quantidade;
 
     @Column(name = TEMPO_PREPARO_RECEITA)
-    private Date tempoPreparo;
+    private Time tempoPreparo;
 
     public String getNome() {
         return nome;
@@ -34,11 +34,11 @@ public class Receita extends AbstractBaseModel {
         this.nome = nome;
     }
 
-    public Date getTempoPreparo() {
+    public Time getTempoPreparo() {
         return tempoPreparo;
     }
 
-    public void setTempoPreparo(Date tempoPreparo) {
+    public void setTempoPreparo(Time tempoPreparo) {
         this.tempoPreparo = tempoPreparo;
     }
 

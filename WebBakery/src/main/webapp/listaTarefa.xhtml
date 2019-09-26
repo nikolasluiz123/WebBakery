@@ -10,7 +10,7 @@
 	<ui:define name="conteudo">
 
 		<h:form id="formDataTableTarefasPendentes">
-			<p:dataTable var="tarefa"
+			<p:dataTable var="toTarefa"
 				value="#{listaTarefaBean.tarefasPendentes}"
 				id="tabelaTarefasPendentes" rows="10" paginator="true"
 				paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PageLinks} {PreviousPageLink} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
@@ -23,36 +23,39 @@
 					<div>Tarefas Pendetes</div>
 				</f:facet>
 
-				<p:column headerText="Produto" sortBy="#{tarefa.produto.descricao}"
-					filterBy="#{tarefa.produto.descricao}">
-					<h:outputText value="#{tarefa.produto.descricao}" />
+				<p:column headerText="Produto"
+					sortBy="#{toTarefa.toProduto.descricao}"
+					filterBy="#{toTarefa.toProduto.descricao}">
+					<h:outputText value="#{toTarefa.toProduto.descricao}" />
 				</p:column>
 
-				<p:column headerText="Quantidade" sortBy="#{tarefa.quantidade}"
-					filterBy="#{tarefa.quantidade}">
-					<h:outputText value="#{tarefa.quantidade}" />
+				<p:column headerText="Quantidade" sortBy="#{toTarefa.quantidade}"
+					filterBy="#{toTarefa.quantidade}">
+					<h:outputText value="#{toTarefa.quantidade}" />
 				</p:column>
 
-				<p:column headerText="Data de Início" sortBy="#{tarefa.dataInicio}"
-					filterBy="#{tarefaBean.dataFormatada(tarefa.dataInicio)}">
-					<h:outputText value="#{tarefa.dataInicio}"
+				<p:column headerText="Data de Início"
+					sortBy="#{toTarefa.dataInicio}"
+					filterBy="#{toTarefa.dataFormatada(toTarefa.dataInicio)}">
+					<h:outputText value="#{toTarefa.dataInicio}"
 						converter="SimpleDateConverter" />
 				</p:column>
 
-				<p:column headerText="Data de Fim" sortBy="#{tarefa.dataFim}"
-					filterBy="#{tarefaBean.dataFormatada(tarefa.dataFim)}">
-					<h:outputText value="#{tarefa.dataFim}"
+				<p:column headerText="Data de Fim" sortBy="#{toTarefa.dataFim}"
+					filterBy="#{toTarefa.dataFormatada(toTarefa.dataFim)}">
+					<h:outputText value="#{toTarefa.dataFim}"
 						converter="SimpleDateConverter" />
 				</p:column>
 
 				<p:column headerText="Alterar">
 					<p:commandLink value="Alterar"
-						action="#{listaTarefaBean.carregar(tarefa.id)}" process="@this" />
+						action="#{listaTarefaBean.carregar(toTarefa.id, 'TarefaID', 'cadastroTarefa.xhtml')}"
+						process="@this" />
 				</p:column>
 
 				<p:column headerText="Concuir">
 					<p:commandLink value="Concuir"
-						action="#{listaTarefaBean.inativar(tarefa)}" process="@this"
+						action="#{listaTarefaBean.inativar(toTarefa)}" process="@this"
 						update="formDataTableTarefasPendentes, formDataTableTarefasConcluidas"
 						oncomplete="PF('TabelaTarefasPendentes').filter();" />
 				</p:column>

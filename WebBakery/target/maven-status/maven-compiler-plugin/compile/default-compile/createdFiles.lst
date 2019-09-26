@@ -4,7 +4,6 @@ br\com\WebBakery\validator\FotoValidator.class
 br\com\WebBakery\validator\FuncionarioValidator.class
 br\com\WebBakery\dao\FotoProdutoDao.class
 br\com\WebBakery\to\TOEndereco.class
-br\com\WebBakery\enums\Unidade.class
 br\com\WebBakery\bean\consulta\ListaLogradouroBean.class
 br\com\WebBakery\bean\consulta\GraficosBean.class
 br\com\WebBakery\to\TOFotoPerfil.class
@@ -13,7 +12,9 @@ br\com\WebBakery\model\Ingrediente.class
 br\com\WebBakery\util\Cpf_Util.class
 br\com\WebBakery\dao\ProdutoDao.class
 br\com\WebBakery\dao\UsuarioDao.class
+br\com\WebBakery\dao\ReceitaIngredienteDao.class
 br\com\WebBakery\dao\ProdutoVendaDao.class
+br\com\WebBakery\bean\consulta\ListaEstoqueIngredienteBean.class
 br\com\WebBakery\bean\manutencao\LoginBean.class
 br\com\WebBakery\enums\UnidadeMedida.class
 br\com\WebBakery\bean\consulta\ListaCidadeBean.class
@@ -34,6 +35,7 @@ br\com\WebBakery\interfaces\IBaseDao.class
 br\com\WebBakery\core\tests\NestedModel.class
 br\com\WebBakery\dao\LogradouroDao.class
 br\com\WebBakery\util\SimpleDateConverter.class
+br\com\WebBakery\util\PrimeFacesPickListConverter.class
 br\com\WebBakery\bean\consulta\ListaUsuarioBean.class
 br\com\WebBakery\model\EstoqueIngrediente.class
 br\com\WebBakery\util\Autorizador.class
@@ -45,6 +47,7 @@ br\com\WebBakery\to\TOCidade.class
 br\com\WebBakery\bean\manutencao\EstadoBean.class
 br\com\WebBakery\core\TransferObjectConverter.class
 br\com\WebBakery\model\Venda.class
+br\com\WebBakery\util\Primefaces_Util.class
 br\com\WebBakery\validator\UsuarioValidator.class
 br\com\WebBakery\dao\VendaDao.class
 br\com\WebBakery\validator\ProdutoVendaValidator.class
@@ -53,6 +56,7 @@ br\com\WebBakery\bean\consulta\ListaFuncionarioBean.class
 br\com\WebBakery\to\TOReceita.class
 br\com\WebBakery\core\tests\NestedTO.class
 br\com\WebBakery\abstractClass\AbstractArquivo.class
+br\com\WebBakery\dao\EstoqueIngredienteDao.class
 br\com\WebBakery\dao\ReceitaDao.class
 br\com\WebBakery\model\Produto.class
 br\com\WebBakery\interfaces\IBaseModel.class
@@ -123,10 +127,11 @@ br\com\WebBakery\model\Endereco.class
 br\com\WebBakery\dao\EstoqueProdutoDao.class
 br\com\WebBakery\bean\manutencao\ProdutoBean.class
 br\com\WebBakery\model\Estado.class
-br\com\WebBakery\bean\consulta\ListaIngredienteBean.class
 br\com\WebBakery\to\TOPais.class
 br\com\WebBakery\dao\FotoPerfilUsuarioDao.class
 br\com\WebBakery\model\FotoPerfil.class
+br\com\WebBakery\bean\manutencao\EstoqueIngredienteBean.class
+br\com\WebBakery\util\HashTypeEnum.class
 br\com\WebBakery\to\TOLogradouro.class
 br\com\WebBakery\validator\ClienteValidator.class
 br\com\WebBakery\bean\consulta\ListaReceitaBean.class
@@ -138,6 +143,7 @@ br\com\WebBakery\util\ManipuladorPermissao.class
 br\com\WebBakery\dao\PopulaBancoDao.class
 br\com\WebBakery\core\tests\TOExample.class
 br\com\WebBakery\to\TOUsuario.class
+br\com\WebBakery\validator\EstoqueIngredienteValidator.class
 br\com\WebBakery\util\File_Util.class
 br\com\WebBakery\validator\PaisValidator.class
 br\com\WebBakery\interfaces\IBaseListMBean.class

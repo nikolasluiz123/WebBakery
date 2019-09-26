@@ -4,6 +4,7 @@ import java.util.Date;
 
 import br.com.WebBakery.abstractClass.AbstractBaseTO;
 import br.com.WebBakery.core.annotations.TOEntity;
+import br.com.WebBakery.util.Date_Util;
 
 public class TOTarefa extends AbstractBaseTO {
 
@@ -46,6 +47,10 @@ public class TOTarefa extends AbstractBaseTO {
 
     public void setQuantidade(Integer quantidade) {
         this.quantidade = quantidade;
+    }
+    
+    public String dataFormatada(Date data) {
+        return Date_Util.formatToString("dd/MM/yyyy", data);
     }
 
 }

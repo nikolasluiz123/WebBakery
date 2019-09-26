@@ -1,5 +1,6 @@
 package br.com.WebBakery.bean.manutencao;
 
+import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 
@@ -11,11 +12,14 @@ import javax.transaction.Transactional;
 
 import br.com.WebBakery.abstractClass.AbstractBaseDao;
 import br.com.WebBakery.abstractClass.AbstractBaseRegisterMBean;
+import br.com.WebBakery.dao.EstoqueIngredienteDao;
 import br.com.WebBakery.dao.ProdutoDao;
+import br.com.WebBakery.dao.ReceitaIngredienteDao;
 import br.com.WebBakery.dao.TarefaDao;
 import br.com.WebBakery.to.TOProduto;
 import br.com.WebBakery.to.TOTarefa;
 import br.com.WebBakery.util.Date_Util;
+import br.com.WebBakery.util.Primefaces_Util;
 import br.com.WebBakery.validator.TarefaValidator;
 
 @Named(TarefaBean.BEAN_NAME)
@@ -28,9 +32,12 @@ public class TarefaBean extends AbstractBaseRegisterMBean<TOTarefa> {
 
     @Inject
     private TarefaDao tarefaDao;
-
     @Inject
     private ProdutoDao produtoDao;
+    @Inject
+    private ReceitaIngredienteDao receitaIngredienteDao;
+    @Inject
+    private EstoqueIngredienteDao estoqueIngredienteDao;
     private List<TOProduto> toProdutos;
     private List<TOProduto> toProdutosFiltrados;
     private TOProduto toProdutoSelecionado;
@@ -45,7 +52,6 @@ public class TarefaBean extends AbstractBaseRegisterMBean<TOTarefa> {
 
         initQuantidadeProdutoTarefa();
         initProdutos();
-
     }
 
     @Transactional
@@ -64,8 +70,22 @@ public class TarefaBean extends AbstractBaseRegisterMBean<TOTarefa> {
     }
 
     private void addValidators() {
-        TarefaValidator tarefaValidator = new TarefaValidator(this.getTo());
+        TarefaValidator tarefaValidator = new TarefaValidator(this.getTo(),
+                                                              receitaIngredienteDao,
+                                                              estoqueIngredienteDao);
         addValidator(tarefaValidator);
+    }
+
+    public void calcularFim() {
+        try {
+            Date tempoPreparo = new Date(getTo().getToProduto().getToReceita().getTempoPreparo()
+                    .getTime());
+            Date dataFim = Date_Util.sum(getTo().getDataInicio(), tempoPreparo);
+            getTo().setDataFim(dataFim);
+            Primefaces_Util.update("formCadastroReceita:dataFim");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 
     private void initProdutos() {
@@ -82,10 +102,7 @@ public class TarefaBean extends AbstractBaseRegisterMBean<TOTarefa> {
 
     public void setarProduto() {
         this.getTo().setToProduto(this.toProdutoSelecionado);
-    }
-
-    public String dataFormatada(Date data) {
-        return Date_Util.formatToString("dd/MM/yyyy", data);
+        Primefaces_Util.update("formCadastroReceita:dataInicio");
     }
 
     @Override

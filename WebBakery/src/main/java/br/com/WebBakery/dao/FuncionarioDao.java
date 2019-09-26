@@ -94,7 +94,8 @@ public class FuncionarioDao extends AbstractBaseDao<TOFuncionario> {
     }
     
     public TOFuncionario buscarPorIdUsuario(Integer idUsuario) throws Exception {
-        TOFuncionario to = new TOFuncionario();
+         Funcionario f = new Funcionario();
+         TOFuncionario to = new TOFuncionario();
          
          StringJoiner sql = new StringJoiner(QR_NL);
          sql
@@ -105,14 +106,17 @@ public class FuncionarioDao extends AbstractBaseDao<TOFuncionario> {
          .add("AND f.usuario.id = :pIdUsuario");
          
          if (idUsuario != null) {
-             Funcionario f = getEntityManager().createQuery(sql.toString(), Funcionario.class)
-                     .setParameter("pIdUsuario", idUsuario)
-                     .setParameter("pAtivo", true)
-                     .getSingleResult();
-             
-             getConverter().getTOFromModel(f, to);
+             try {
+                 f = getEntityManager().createQuery(sql.toString(), Funcionario.class)
+                                       .setParameter("pIdUsuario", idUsuario)
+                                       .setParameter("pAtivo", true)
+                                       .getSingleResult();
+            } catch (NoResultException e) {
+                return to;
+            }
          }
 
+         getConverter().getTOFromModel(f, to);
          return to;
      }
 

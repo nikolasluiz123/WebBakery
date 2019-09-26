@@ -11,7 +11,6 @@ import br.com.WebBakery.abstractClass.AbstractBaseDao;
 import br.com.WebBakery.abstractClass.AbstractBaseRegisterMBean;
 import br.com.WebBakery.dao.ClienteDao;
 import br.com.WebBakery.dao.FuncionarioDao;
-import br.com.WebBakery.dao.PopulaBancoDao;
 import br.com.WebBakery.dao.UsuarioDao;
 import br.com.WebBakery.to.TOUsuario;
 import br.com.WebBakery.validator.LoginValidator;

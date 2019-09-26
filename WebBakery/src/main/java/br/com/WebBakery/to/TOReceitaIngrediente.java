@@ -2,7 +2,6 @@ package br.com.WebBakery.to;
 
 import br.com.WebBakery.abstractClass.AbstractBaseTO;
 import br.com.WebBakery.core.annotations.TOEntity;
-import br.com.WebBakery.enums.UnidadeMedida;
 import br.com.WebBakery.util.String_Util;
 
 public class TOReceitaIngrediente extends AbstractBaseTO {
@@ -13,8 +12,6 @@ public class TOReceitaIngrediente extends AbstractBaseTO {
     private TOIngrediente toIngrediente;
     @TOEntity(fieldName = "quantidadeIngrediente")
     private Double quantidadeIngrediente;
-    @TOEntity(fieldName = "unidadeMedida")
-    private UnidadeMedida unidadeMedida;
 
     public String getQuantidadeIngredienteFormatada() {
         return String_Util.formatDoubleToValueDecimalBR(quantidadeIngrediente);
@@ -42,14 +39,6 @@ public class TOReceitaIngrediente extends AbstractBaseTO {
 
     public void setQuantidadeIngrediente(Double quantidadeIngrediente) {
         this.quantidadeIngrediente = quantidadeIngrediente;
-    }
-
-    public UnidadeMedida getUnidadeMedida() {
-        return unidadeMedida;
-    }
-
-    public void setUnidadeMedida(UnidadeMedida unidadeMedida) {
-        this.unidadeMedida = unidadeMedida;
     }
 
 }

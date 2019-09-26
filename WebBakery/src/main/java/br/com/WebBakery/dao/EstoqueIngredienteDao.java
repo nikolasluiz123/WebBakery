@@ -8,7 +8,9 @@ import javax.persistence.NoResultException;
 
 import br.com.WebBakery.abstractClass.AbstractBaseDao;
 import br.com.WebBakery.model.EstoqueIngrediente;
+import br.com.WebBakery.model.Ingrediente;
 import br.com.WebBakery.to.TOEstoqueIngrediente;
+import br.com.WebBakery.to.TOReceitaIngrediente;
 
 public class EstoqueIngredienteDao extends AbstractBaseDao<TOEstoqueIngrediente> {
 
@@ -28,6 +30,16 @@ public class EstoqueIngredienteDao extends AbstractBaseDao<TOEstoqueIngrediente>
             EstoqueIngrediente estoqueIngrediente = new EstoqueIngrediente();
             getConverter().getModelFromTO(to, estoqueIngrediente);
             getEntityManager().persist(estoqueIngrediente);
+        }
+    }
+    
+    public void descontarEstoque(TOEstoqueIngrediente to, Double quantidadeIngredienteReceita) throws Exception {
+        EstoqueIngrediente ei = null;
+        if (to != null) {
+            to.setQuantidade(to.getQuantidade() - quantidadeIngredienteReceita);
+            ei = getEntityManager().find(EstoqueIngrediente.class, to.getId());
+            getConverter().getModelFromTO(to, ei);
+            getEntityManager().persist(ei);
         }
     }
 
@@ -87,6 +99,40 @@ public class EstoqueIngredienteDao extends AbstractBaseDao<TOEstoqueIngrediente>
         }
        
         return ep;
+    }
+
+    public List<TOEstoqueIngrediente> listarTodos(boolean ativo,
+                                                  List<TOReceitaIngrediente> toReceitaIngredientes) throws Exception {
+        List<EstoqueIngrediente> estoqueIngredientes = new ArrayList<>();
+        List<TOEstoqueIngrediente> toEstoqueIngredientes = new ArrayList<>();
+        List<Ingrediente> ingredientes = new ArrayList<>();
+        
+        for (TOReceitaIngrediente toReceitaIngrediente : toReceitaIngredientes) {
+            Ingrediente ingrediente = new Ingrediente();
+            getConverter().getModelFromTO(toReceitaIngrediente.getToIngrediente(), ingrediente);
+            ingredientes.add(ingrediente);
+        }
+        
+        StringJoiner sql = new StringJoiner(QR_NL);
+        sql
+        .add("SELECT ei")
+        .add("FROM ".concat(EstoqueIngrediente.class.getName()).concat(" ei "))
+        .add("WHERE")
+        .add("ei.ativo = :pAtivo")
+        .add("AND ei.ingrediente IN (:pIngredientes)");
+        
+        estoqueIngredientes = getEntityManager().createQuery(sql.toString(), EstoqueIngrediente.class)
+                                                .setParameter("pAtivo", ativo)
+                                                .setParameter("pIngredientes", ingredientes)
+                                                .getResultList();
+        
+        for (EstoqueIngrediente ei : estoqueIngredientes) {
+            TOEstoqueIngrediente to = new TOEstoqueIngrediente();
+            getConverter().getTOFromModel(ei, to);
+            toEstoqueIngredientes.add(to);
+        }
+        
+        return toEstoqueIngredientes;
     }
 
 }

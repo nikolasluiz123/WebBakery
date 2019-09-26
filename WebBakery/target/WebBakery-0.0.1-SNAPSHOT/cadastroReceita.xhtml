@@ -12,24 +12,137 @@
 		<h:form id="formCadastroReceita">
 
 			<p:fieldset legend="Dados da Receita">
-				<p:panelGrid columns="2">
-					<p:outputLabel value="Receita:" for="receita" />
-					<p:inputTextarea id="receita" rows="6" cols="33" maxlength="255"
-						value="#{receitaBean.receita.descricao}"
-						placeholder="Digite a receita..." />
 
-					<p:outputLabel value="Quantidade:" for="quantidade" />
-					<p:inputNumber id="quantidade"
-						value="#{receitaBean.receita.quantidade}"
-						placeholder="Digite a quantidade..." thousandSeparator="."
-						decimalPlaces="0" maxValue="100000" />
+				<div class="ui-g">
 
+					<div class="ui-g-12">
+						<p:outputLabel value="Receita:" for="receita" />
+						<p:inputText id="receita" value="#{receitaBean.to.nome}"
+							placeholder="Digite o nome da receita..." />
+					</div>
 
-					<p:commandButton value="Cadastrar" process="@form"
-						update="formMessages:messages, @form" action="#{receitaBean.cadastrar}" />
+					<div class="ui-g-12">
+						<p:outputLabel value="Quantidade:" for="quantidade" />
+						<p:inputNumber id="quantidade"
+							value="#{receitaBean.to.quantidade}"
+							placeholder="Digite a quantidade..." thousandSeparator="."
+							decimalPlaces="0" maxValue="100000" minValue="1" />
+					</div>
 
-				</p:panelGrid>
+					<div class="ui-g-12">
+						<p:outputLabel for="tempoPreparo" value="Tempo:" />
+						<p:calendar id="tempoPreparo"
+							value="#{receitaBean.to.tempoPreparo}" pattern="HH:mm"
+							timeOnly="true" readonlyInput="true"
+							placeholder="Digite o tempo de preparo..." />
+					</div>
+
+					<div class="ui-g-12">
+						<p:commandButton value="Definir Ingredientes" process="@form"
+							update="formMessages:messages, @form"
+							action="#{receitaBean.salvar}" />
+					</div>
+				</div>
+
 			</p:fieldset>
+
+		</h:form>
+
+		<h:form id="formDialogIngredientes">
+			<p:dialog header="Ingredientes" widgetVar="IngredienteDialog"
+				resizable="false" width="700" closable="false">
+
+				<p:dataTable id="tabelaIngredientes" var="toIngrediente"
+					value="#{receitaBean.toIngredientes}"
+					selection="#{receitaBean.toIngredientesSelecionados}"
+					rowKey="#{toIngrediente.id}" style="margin-bottom:0" rows="5"
+					paginator="true"
+					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PageLinks} {PreviousPageLink} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					rowsPerPageTemplate="5,10,15"
+					emptyMessage="Nenhum ingrediente encontrado."
+					widgetVar="TabelaIngredientes"
+					filteredValue="#{receitaBean.toIngredientesFiltrados}">
+
+					<f:facet name="header" style="min-height: 35px; max-height: 35px">
+						<div>Ingredientes</div>
+					</f:facet>
+
+					<p:column selectionMode="multiple"
+						style="width:16px;text-align:center" />
+
+					<p:column headerText="Nome" filterBy="#{toIngrediente.nome}">
+						<h:outputText value="#{toIngrediente.nome}" />
+					</p:column>
+
+				</p:dataTable>
+
+				<p:commandButton value="Definir Quantidades"
+					update="formDialogReceitaIngredientes:tabelaReceitaIngredientes"
+					oncomplete="PF('ReceitaIngredienteDialog').show();"
+					action="#{receitaBean.criarReceitaIngrediente}" />
+
+				<p:commandButton value="Cancelar"
+					update="formCadastroReceita, formDialogIngredientes, formDialogReceitaIngredientes"
+					oncomplete="PF('IngredienteDialog').hide();"
+					action="#{receitaBean.removerReceita()}" />
+
+			</p:dialog>
+		</h:form>
+
+		<h:form id="formDialogReceitaIngredientes">
+
+			<p:dialog header="Ingredientes da Receita"
+				widgetVar="ReceitaIngredienteDialog" resizable="false" width="700"
+				closable="false" modal="true">
+
+				<p:dataTable var="toReceitaIngrediente"
+					id="tabelaReceitaIngredientes" rowKey="#{toReceitaIngrediente.id}"
+					value="#{receitaBean.toReceitaIngredientes}" rows="5"
+					paginator="true"
+					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PageLinks} {PreviousPageLink} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					rowsPerPageTemplate="5,10,15"
+					emptyMessage="Nenhum ingrediente da receita foi encontrado."
+					widgetVar="TabelaReceitaIngredientes"
+					filteredValue="#{receitaBean.toReceitaIngredientesFiltrados}"
+					editable="true" editMode="cell">
+
+					<p:column headerText="Ingrediente"
+						filterBy="#{toReceitaIngrediente.toIngrediente.nome}"
+						sortBy="#{toReceitaIngrediente.toIngrediente.nome}">
+						<h:outputText value="#{toReceitaIngrediente.toIngrediente.nome}" />
+					</p:column>
+
+					<p:column headerText="Quantidade">
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText id="outputQuantidade"
+									value="#{toReceitaIngrediente.quantidadeIngredienteFormatada}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputNumber id="inputQuantidade"
+									value="#{toReceitaIngrediente.quantidadeIngrediente}"
+									decimalPlaces="6" minValue="0" />
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+
+					<p:column headerText="Unidade de Medida">
+						<h:outputText
+							value="#{toReceitaIngrediente.toIngrediente.unidadeMedida}" />
+					</p:column>
+
+				</p:dataTable>
+
+				<p:commandButton value="Cadastrar"
+					update="formMessages:messages, formCadastroReceita, formDialogIngredientes, formDialogReceitaIngredientes"
+					action="#{receitaBean.finalizarReceita}"
+					oncomplete="PF('ReceitaIngredienteDialog').hide(); PF('IngredienteDialog').hide();" />
+
+				<p:commandButton value="Cancelar"
+					update="formCadastroReceita, formDialogIngredientes, formDialogReceitaIngredientes"
+					oncomplete="PF('ReceitaIngredienteDialog').hide(); PF('IngredienteDialog').hide();"
+					action="#{receitaBean.removerReceitaIngrediente()}" />
+			</p:dialog>
 		</h:form>
 	</ui:define>
 </ui:composition>

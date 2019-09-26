@@ -62,5 +62,5 @@ public class ReceitaDao extends AbstractBaseDao<TOReceita> {
 
         return toReceitas;
     }
-
+    
 }

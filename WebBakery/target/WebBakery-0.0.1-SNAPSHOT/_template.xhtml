@@ -71,10 +71,11 @@ html, body {
 
 <h:body>
 	<div id="cabecalho"
-		style="position: fixed; left: 0; top: 72px; bottom: 0; z-index: 100; padding: 20px;">
+		style="position: fixed; left: 0; top: 72px; bottom: 0; padding: 20px;">
+<!-- 		z-index: 100; -->
 
 		<h:form id="formMessages">
-			<p:growl id="messages" life="10000" />
+			<p:growl id="messages" life="20000" />
 		</h:form>
 
 		<h:form id="formMenuLateral" rendered="#{usuarioLogado != null}"
@@ -87,7 +88,8 @@ html, body {
 
 	<div class="ui-g">
 		<div id="conteudo" class="ui-g-10"
-			style="margin-left: 240px; z-index: 99; margin-right: 6px;">
+			style="margin-left: 240px; margin-right: 6px;">
+<!-- 			z-index: 99; -->
 			<ui:insert name="conteudo">
 			</ui:insert>
 		</div>

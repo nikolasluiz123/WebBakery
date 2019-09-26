@@ -10,6 +10,27 @@
 	<ui:define name="conteudo">
 
 		<h:form id="formDataTableClientes">
+
+			<p:remoteCommand name="alterar" process="@this"
+				action="#{listaClienteBean.onAlterar}" />
+
+			<p:remoteCommand name="inativar" process="@this"
+				update="tabelaClientes, formMessages:messages"
+				action="#{listaClienteBean.onInativar}" />
+
+			<script type="text/javascript">
+				function callAlterar(idCliente, sessionKey, redirectPage) {
+					alterar([{name: 'idCliente', value: idCliente}, 
+							 {name: 'sessionKey', value: sessionKey}, 
+							 {name: 'redirectPage', value: redirectPage}
+						]);	
+				}
+
+				function callInativar(idCliente) {
+					inativar([{name: 'idCliente', value: idCliente}]);	
+				}
+			</script>
+
 			<p:dataTable var="toCliente" value="#{listaClienteBean.toClientes}"
 				id="tabelaClientes" rows="10" paginator="true"
 				paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PageLinks} {PreviousPageLink} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
@@ -21,14 +42,15 @@
 					<div>Clientes</div>
 				</f:facet>
 
-				<p:column headerText="Nome" sortBy="#{toCliente.nome}"
-					filterBy="#{toCliente.nome}">
-					<h:outputText value="#{toCliente.nome}" />
+				<p:column headerText="Nome" sortBy="#{toCliente.toUsuario.nome}"
+					filterBy="#{toCliente.toUsuario.nome}">
+					<h:outputText value="#{toCliente.toUsuario.nome}" />
 				</p:column>
 
-				<p:column headerText="Sobrenome" sortBy="#{toCliente.sobrenome}"
-					filterBy="#{toCliente.sobrenome}">
-					<h:outputText value="#{toCliente.sobrenome}" />
+				<p:column headerText="Sobrenome"
+					sortBy="#{toCliente.toUsuario.sobrenome}"
+					filterBy="#{toCliente.toUsuario.sobrenome}">
+					<h:outputText value="#{toCliente.toUsuario.sobrenome}" />
 				</p:column>
 
 				<p:column headerText="CPF" sortBy="#{toCliente.cpf}"
@@ -48,9 +70,19 @@
 						converter="SimpleDateConverter" />
 				</p:column>
 
-				<p:column headerText="Usuário" sortBy="#{toCliente.usuario.email}"
-					filterBy="#{toCliente.usuario.email}">
-					<h:outputText value="#{toCliente.usuario.email}" />
+				<p:column headerText="Usuário" sortBy="#{toCliente.toUsuario.email}"
+					filterBy="#{toCliente.toUsuario.email}">
+					<h:outputText value="#{toCliente.toUsuario.email}" />
+				</p:column>
+
+				<p:column headerText="Alterar">
+					<p:commandLink value="Alterar"
+						oncomplete="callAlterar('#{toCliente.id}', 'ClienteID', 'cadastroCliente.xhtml')" />
+				</p:column>
+
+				<p:column headerText="Inativar">
+					<p:commandLink value="Inativar"
+						oncomplete="callInativar('#{toCliente.id}'); PF('TabelaClientes').filter();" />
 				</p:column>
 
 			</p:dataTable>

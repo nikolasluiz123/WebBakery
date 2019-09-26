@@ -90,7 +90,8 @@ public class UsuarioValidator extends AbstractValidator {
         } else if (this.senha.length() < 7) {
             messages.add(FIELD_SENHA_VERY_WEAK);
         }
-        Integer senhaHash = Hash_Util.getHashCode(this.senha);
+
+        String senhaHash = Hash_Util.generateHashMaxSecurity(this.senha);
         this.toUsuario.setSenha(senhaHash);
     }
 }

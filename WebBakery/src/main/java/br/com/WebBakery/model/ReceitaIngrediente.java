@@ -6,14 +6,12 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 
 import br.com.WebBakery.abstractClass.AbstractBaseModel;
-import br.com.WebBakery.enums.UnidadeMedida;
 
 @Entity(name = ReceitaIngrediente.TABLE_NAME)
 public class ReceitaIngrediente extends AbstractBaseModel {
 
     public static final String TABLE_NAME = "receita_ingrediente";
 
-    private static final String UNIDADE_MEDIDA_RECEITA_INGREDIENTE = "unidade_medida" + "_" + ReceitaIngrediente.TABLE_NAME;
     private static final String QUANTIDADE_INGREDIENTE_RECEITA_INGREDIENTE = "quantidade_ingrediente" + "_" + ReceitaIngrediente.TABLE_NAME;
     private static final String FK_INGREDIENTE_RECEITA_INGREDIENTE = Ingrediente.FK_NAME + "_" + ReceitaIngrediente.TABLE_NAME;
     private static final String FK_RECEITA_RECEITA_INGREDIENTE = Receita.FK_NAME + "_" + ReceitaIngrediente.TABLE_NAME;
@@ -28,9 +26,6 @@ public class ReceitaIngrediente extends AbstractBaseModel {
 
     @Column(name = QUANTIDADE_INGREDIENTE_RECEITA_INGREDIENTE)
     private Double quantidadeIngrediente;
-
-    @Column(name = UNIDADE_MEDIDA_RECEITA_INGREDIENTE)
-    private UnidadeMedida unidadeMedida;
 
     public Receita getReceita() {
         return receita;
@@ -54,14 +49,6 @@ public class ReceitaIngrediente extends AbstractBaseModel {
 
     public void setQuantidadeIngrediente(Double quantidadeIngrediente) {
         this.quantidadeIngrediente = quantidadeIngrediente;
-    }
-
-    public UnidadeMedida getUnidadeMedida() {
-        return unidadeMedida;
-    }
-
-    public void setUnidadeMedida(UnidadeMedida unidadeMedida) {
-        this.unidadeMedida = unidadeMedida;
     }
 
 }
