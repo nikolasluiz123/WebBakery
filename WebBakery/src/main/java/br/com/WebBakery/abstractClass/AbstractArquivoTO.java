@@ -2,15 +2,21 @@ package br.com.WebBakery.abstractClass;
 
 import javax.persistence.MappedSuperclass;
 
+import br.com.WebBakery.core.annotations.TOEntity;
+
 @MappedSuperclass
 public abstract class AbstractArquivoTO extends AbstractBaseTO {
 
+    @TOEntity(fieldName = "bytes")
     private byte[] bytes;
 
+    @TOEntity(fieldName = "extensao")
     private String extensao;
 
+    @TOEntity(fieldName = "tamanho")
     private Long tamanho;
 
+    @TOEntity(fieldName = "nome")
     private String nome;
 
     public byte[] getBytes() {

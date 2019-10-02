@@ -82,6 +82,7 @@ public class ProdutoBean extends AbstractBaseRegisterMBean<TOProduto> {
     private void cadastrarFotos() throws Exception {
         inativarFotos();
         for (TOFotoProduto to : toFotosSelecionadas) {
+            to.setAtivo(true);
             this.fotoProdutoDao.salvar(to);
         }
         toFotosSelecionadas.clear();

@@ -27,7 +27,7 @@ public class ProdutoDao extends AbstractBaseDao<TOProduto> {
             p = getEntityManager().find(Produto.class, to.getId());
         }
         
-        getConverter().getModelFromTO(to, p);            
+        getConverter().getModelFromTO(to, p);   
         
         getEntityManager().persist(p);
         getEntityManager().flush();

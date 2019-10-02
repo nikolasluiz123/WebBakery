@@ -14,7 +14,6 @@ public class FotoProduto extends AbstractArquivo {
 
     private static final String FK_PRODUTO_FOTO_PRODUTO = Produto.FK_NAME + FotoProduto.TABLE_NAME;
 
-    
     @ManyToOne
     @JoinColumn(name = FK_PRODUTO_FOTO_PRODUTO)
     private Produto produto;
