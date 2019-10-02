@@ -9,6 +9,7 @@ import javax.ejb.Stateless;
 import br.com.WebBakery.abstractClass.AbstractBaseDao;
 import br.com.WebBakery.model.Receita;
 import br.com.WebBakery.to.TOReceita;
+import br.com.WebBakery.util.Date_Util;
 
 @Stateless
 public class ReceitaDao extends AbstractBaseDao<TOReceita> {
@@ -24,6 +25,7 @@ public class ReceitaDao extends AbstractBaseDao<TOReceita> {
             r = getEntityManager().find(Receita.class, to.getId());
         }
         
+        r.setTempoPreparo(Date_Util.getTime(to.getTempoPreparo()));
         getConverter().getModelFromTO(to, r);            
         
         getEntityManager().persist(r);

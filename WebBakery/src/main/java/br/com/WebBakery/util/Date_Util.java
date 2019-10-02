@@ -1,8 +1,10 @@
 package br.com.WebBakery.util;
 
+import java.sql.Time;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalTime;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -37,6 +39,14 @@ public class Date_Util {
         dataInicio.add(Calendar.MINUTE, dataFim.get(Calendar.MINUTE));
         
         return dataInicio.getTime();
+    }
+    
+    public static Time getTime(Date date) {
+        if (date != null) {
+            SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
+            return Time.valueOf(LocalTime.parse(formatter.format(date)));
+        }
+        return null;
     }
 
 }

@@ -40,7 +40,7 @@
 					<div class="ui-g-12">
 						<p:commandButton value="Definir Ingredientes" process="@form"
 							update="formMessages:messages, @form"
-							action="#{receitaBean.salvar}" />
+							action="#{receitaBean.definirIngredientes}" />
 					</div>
 				</div>
 
@@ -49,7 +49,7 @@
 		</h:form>
 
 		<h:form id="formDialogIngredientes">
-			<p:dialog header="Ingredientes" widgetVar="IngredienteDialog"
+			<p:dialog id="ingredienteDialog" header="Ingredientes" widgetVar="IngredienteDialog"
 				resizable="false" width="700" closable="false">
 
 				<p:dataTable id="tabelaIngredientes" var="toIngrediente"
@@ -128,7 +128,7 @@
 
 					<p:column headerText="Unidade de Medida">
 						<h:outputText
-							value="#{toReceitaIngrediente.toIngrediente.unidadeMedida}" />
+							value="#{toReceitaIngrediente.toIngrediente.unidadeMedida.descricao}" />
 					</p:column>
 
 				</p:dataTable>
@@ -139,8 +139,8 @@
 					oncomplete="PF('ReceitaIngredienteDialog').hide(); PF('IngredienteDialog').hide();" />
 
 				<p:commandButton value="Cancelar"
-					update="formCadastroReceita, formDialogIngredientes, formDialogReceitaIngredientes"
-					oncomplete="PF('ReceitaIngredienteDialog').hide(); PF('IngredienteDialog').hide();"
+					oncomplete="PF('ReceitaIngredienteDialog').hide();"
+					update="formDialogIngredientes:tabelaIngredientes"
 					action="#{receitaBean.removerReceitaIngrediente()}" />
 			</p:dialog>
 		</h:form>

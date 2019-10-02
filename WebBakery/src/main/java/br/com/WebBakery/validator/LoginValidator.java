@@ -8,7 +8,6 @@ import br.com.WebBakery.enums.TipoUsuario;
 import br.com.WebBakery.to.TOCliente;
 import br.com.WebBakery.to.TOFuncionario;
 import br.com.WebBakery.to.TOUsuario;
-import br.com.WebBakery.util.HashTypeEnum;
 import br.com.WebBakery.util.Hash_Util;
 import br.com.WebBakery.util.String_Util;
 
@@ -76,12 +75,10 @@ public class LoginValidator extends AbstractValidator {
     }
 
     private Boolean existeVinculoComUsuario() {
-        //TOUsuario u = new TOUsuario();
         TOCliente c = new TOCliente();
         TOFuncionario f = new TOFuncionario();
 
         try {
-            //u = this.usuarioDao.usuarioExiste(this.toUsuario.getEmail());
             if (this.toUsuario.getTipo() == TipoUsuario.CLIENTE) {
                 c = clienteDao.buscarPorIdUsuario(toUsuario.getId());
             } else {

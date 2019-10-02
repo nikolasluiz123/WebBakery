@@ -58,7 +58,7 @@ public class ReceitaBean extends AbstractBaseRegisterMBean<TOReceita> {
         initListIngredientes();
     }
 
-    public void salvar() {
+    public void definirIngredientes() {
         try {
             addValidators();
             if (isValid()) {
@@ -86,32 +86,31 @@ public class ReceitaBean extends AbstractBaseRegisterMBean<TOReceita> {
     }
 
     public void removerReceita() {
-        try {
-            resetTo();
-            this.toIngredientesSelecionados = new ArrayList<>();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        resetTo();
+        this.toIngredientesSelecionados = new ArrayList<>();
     }
 
     @Transactional
     public void finalizarReceita() {
         try {
-            this.receitaDao.salvar(getTo());
+            addValidator(new ReceitaIngredienteValidator(toReceitaIngredientes));
 
-            for (TOReceitaIngrediente to : toReceitaIngredientes) {
-                this.receitaIngredienteDao.salvar(to);
+            if (isValid()) {
+                this.receitaDao.salvar(getTo());
+
+                for (TOReceitaIngrediente to : toReceitaIngredientes) {
+                    this.receitaIngredienteDao.salvar(to);
+                }
+
+                if (isCadastro) {
+                    showMessage(RECORD_REGISTERED_SUCCESSFULLY);
+                } else {
+                    showMessage(RECORD_UPDATED_SUCCESSFULLY);
+                }
+                this.toIngredientesSelecionados = new ArrayList<>();
+                this.toReceitaIngredientes = new ArrayList<>();
             }
-
-            if (isCadastro) {
-                showMessage(RECORD_REGISTERED_SUCCESSFULLY);
-            } else {
-                showMessage(RECORD_UPDATED_SUCCESSFULLY);
-            }
-
-            resetTo();
-            this.toIngredientesSelecionados = new ArrayList<>();
-            this.toReceitaIngredientes = new ArrayList<>();
+            atualizarTela();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -119,7 +118,6 @@ public class ReceitaBean extends AbstractBaseRegisterMBean<TOReceita> {
 
     public void removerReceitaIngrediente() {
         try {
-            resetTo();
             this.toReceitaIngredientes = new ArrayList<>();
             this.toIngredientesSelecionados = new ArrayList<>();
         } catch (Exception e) {
