@@ -49,18 +49,11 @@ public class ListaProdutoBean extends AbstractBaseListMBean implements IBaseList
     public String getPathPrimeiraFoto(Integer idProduto) {
         String path = null;
         try {
-            List<TOProdutoComFoto> produtosComFotos = new ArrayList<>();
-            produtosComFotos = this.produtoDao.listarTodosProdutoComFotos();
-            TOProdutoComFoto produtoComFotos = new TOProdutoComFoto();
-
-            for (TOProdutoComFoto pfs : produtosComFotos) {
-                if (pfs.getToProduto().getId().equals(idProduto)) {
-                    produtoComFotos = pfs;
-                }
-            }
+            List<TOFotoProduto> toFotosProduto = new ArrayList<>();
+            toFotosProduto = this.produtoDao.buscarProdutoComFotosPorIdProduto(idProduto);
 
             String pathCompleto = File_Util
-                    .criarFotoPastaTemporaria(produtoComFotos.getToFotos().get(0));
+                    .criarFotoPastaTemporaria(toFotosProduto.get(0));
             String nomeArquivo = File_Util.getNomeArquivo(pathCompleto);
             path = File_Util.getPath(nomeArquivo);
 

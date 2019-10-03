@@ -54,7 +54,7 @@ public class ProdutoBean extends AbstractBaseRegisterMBean<TOProduto> {
         this.toReceitaSelecionada = new TOReceita();
         this.toReceitas = new ArrayList<>();
         initReceitas();
-
+        buscaFotosParaAlterar();
     }
 
     @Transactional
@@ -121,6 +121,16 @@ public class ProdutoBean extends AbstractBaseRegisterMBean<TOProduto> {
 
     public void setarReceita() {
         this.getTo().setToReceita(this.toReceitaSelecionada);
+    }
+
+    private void buscaFotosParaAlterar() {
+        try {
+            if (getTo().getId() != null) {
+                this.toFotosSelecionadas = this.fotoProdutoDao.listarFotosProduto(getTo().getId());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public TOReceita getToReceitaSelecionada() {

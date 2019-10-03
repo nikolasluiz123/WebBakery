@@ -65,63 +65,29 @@ public class ProdutoDao extends AbstractBaseDao<TOProduto> {
         return toProdutos;
     }
 
-    public List<TOProdutoComFoto> listarTodosProdutoComFotos() throws Exception {
-        List<Produto> produtos = new ArrayList<>();
-        List<FotoProduto> fotosProdutos = new ArrayList<>();
-        
-        List<TOProduto> toProdutos = new ArrayList<>();
-        List<TOFotoProduto> toFotosProduto = new ArrayList<>();
-        
-        List<TOProdutoComFoto> toProdutosComFotos = new ArrayList<>();
-        
-        StringJoiner sqlProdutos = new StringJoiner(QR_NL);
-        sqlProdutos
-        .add("SELECT p")
-        .add("FROM ".concat(Produto.class.getName()).concat(" p "))
-        .add("WHERE p.ativo = :pAtivo");
+    public List<TOFotoProduto> buscarProdutoComFotosPorIdProduto(Integer idProduto)
+            throws Exception {
         
         StringJoiner sqlFotos = new StringJoiner(QR_NL);
         sqlFotos
         .add("SELECT fp")
         .add("FROM ".concat(FotoProduto.class.getName()).concat(" fp "))
         .add("WHERE")
-        .add("fp.ativo = :pAtivo");
+        .add("fp.ativo = :pAtivo AND fp.produto.id = :pIdProduto");
         
-        produtos = getEntityManager().createQuery(sqlProdutos.toString(), Produto.class)
-                                     .setParameter("pAtivo", true)
-                                     .getResultList();
+        List<FotoProduto> fotosProduto = new ArrayList<>();
+        fotosProduto = getEntityManager().createQuery(sqlFotos.toString(), FotoProduto.class)
+                                         .setParameter("pAtivo", true)
+                                         .setParameter("pIdProduto", idProduto)
+                                         .getResultList();        
         
-        fotosProdutos = getEntityManager().createQuery(sqlFotos.toString(), FotoProduto.class)
-                                          .setParameter("pAtivo", true)
-                                          .getResultList();            
-        
-        for (Produto p : produtos) {
-            TOProduto to = new TOProduto();
-            getConverter().getTOFromModel(p, to);
-            toProdutos.add(to);
-        }
-        
-        for (FotoProduto fp : fotosProdutos) {
+        List<TOFotoProduto> toFotosProduto = new ArrayList<>();
+        for (FotoProduto fotoProduto : fotosProduto) {
             TOFotoProduto to = new TOFotoProduto();
-            getConverter().getTOFromModel(fp, to);
+            getConverter().getTOFromModel(fotoProduto, to);
             toFotosProduto.add(to);
         }
-        
-        List<TOFotoProduto> toFotos = new ArrayList<>();
-        for (TOProduto toProduto : toProdutos) {
-            TOProdutoComFoto toProdutoComFoto = new TOProdutoComFoto();
-            toProdutoComFoto.setToProduto(toProduto);
 
-            for (TOFotoProduto toFotoProduto : toFotosProduto) {
-                if (toFotoProduto.getToProduto().getId() == toProduto.getId()) {
-                    toFotos.add(toFotoProduto);
-                }
-            }
-            
-            toProdutoComFoto.setToFotos(toFotos);
-            toProdutosComFotos.add(toProdutoComFoto);
-        }
-        
-        return toProdutosComFotos;
+        return toFotosProduto;
     }
 }

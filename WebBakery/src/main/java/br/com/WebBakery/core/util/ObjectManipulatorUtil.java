@@ -30,12 +30,14 @@ public class ObjectManipulatorUtil {
             try {
                 return instance.getClass().getSuperclass().getDeclaredMethod(methodName);
             } catch (NoSuchMethodException | SecurityException e1) {
-                e1.printStackTrace();
-                throw new RuntimeException(e1);
+                try {
+                    return instance.getClass().getSuperclass().getSuperclass()
+                            .getDeclaredMethod(methodName);
+                } catch (NoSuchMethodException | SecurityException e2) {
+                    e1.printStackTrace();
+                    throw new RuntimeException(e1);
+                }
             }
-        } catch (SecurityException e) {
-            e.printStackTrace();
-            throw new RuntimeException(e);
         }
     }
 
@@ -66,10 +68,18 @@ public class ObjectManipulatorUtil {
 
         Field[] declaredFields = instanceClass.getDeclaredFields();
         Field[] declaredFieldsSuperClass = instanceClass.getSuperclass().getDeclaredFields();
-
-        Field[] allDeclaredFields = ArrayUtils.addAll(declaredFields, declaredFieldsSuperClass);
-
-        return allDeclaredFields;
+        Field[] declaredFieldsSuperSuperClass = instanceClass.getSuperclass().getSuperclass()
+                .getDeclaredFields();
+        Field[] allDeclaredFields = null;
+        Field[] fullGambiarra = null;
+        if (instanceClass.getSuperclass().getSuperclass() != Object.class) {
+            allDeclaredFields = ArrayUtils.addAll(declaredFields, declaredFieldsSuperClass);
+            fullGambiarra = ArrayUtils.addAll(allDeclaredFields, declaredFieldsSuperSuperClass);
+            return fullGambiarra;
+        } else {
+            allDeclaredFields = ArrayUtils.addAll(declaredFields, declaredFieldsSuperClass);
+            return allDeclaredFields;
+        }
     }
 
     public Object getInstance() {
