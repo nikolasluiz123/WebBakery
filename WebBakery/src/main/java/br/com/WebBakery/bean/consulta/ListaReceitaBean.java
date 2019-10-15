@@ -22,8 +22,6 @@ public class ListaReceitaBean extends AbstractBaseListMBean implements IBaseList
 
     private static final long serialVersionUID = -187265901878598052L;
 
-    private static final String RECEITA_INATIVATED_SUCCESSFULLY = "TOReceita atualizada com sucesso!";
-
     @Inject
     private ReceitaDao receitaDao;
     private List<TOReceita> toReceitas;
@@ -41,7 +39,7 @@ public class ListaReceitaBean extends AbstractBaseListMBean implements IBaseList
             receita.setAtivo(false);
             this.receitaDao.salvar(receita);
             initReceitas();
-            getContext().addMessage(null, new FacesMessage(RECEITA_INATIVATED_SUCCESSFULLY));
+            getContext().addMessage(null, new FacesMessage(RECORD_INATIVATED_SUCCESSFULLY));
         } catch (Exception e) {
             e.printStackTrace();
         }

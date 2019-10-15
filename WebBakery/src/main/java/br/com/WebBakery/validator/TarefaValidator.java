@@ -5,6 +5,7 @@ import java.util.List;
 
 import br.com.WebBakery.abstractClass.AbstractValidator;
 import br.com.WebBakery.dao.TarefaDao;
+import br.com.WebBakery.enums.UnidadeMedida;
 import br.com.WebBakery.to.TOProduto;
 import br.com.WebBakery.to.TOTarefa;
 
@@ -65,10 +66,9 @@ public class TarefaValidator extends AbstractValidator {
             
             for (Object[] obj : result) {
                 Double quantidadeNovoEstoque = Double.parseDouble(obj[2].toString());
-                Integer idEstoqueIngrediente = Integer.parseInt(obj[0].toString());
                 
                 if (quantidadeNovoEstoque < 0) {
-                    String unidadeMedidaIngrediente = this.tarefaDao.getUnidadeMedidaIngrediente(idEstoqueIngrediente, quantidadeNovoEstoque);
+                    UnidadeMedida unidadeMedidaIngrediente = UnidadeMedida.values()[Integer.parseInt(obj[3].toString())];
                     String nomeIngrediente = obj[1].toString();
                     messages.add("Não há " + nomeIngrediente + " suficiente no estoque. Faltam " + quantidadeNovoEstoque * -1 + " " + unidadeMedidaIngrediente);
                 }

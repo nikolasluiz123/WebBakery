@@ -66,15 +66,16 @@ public class TarefaDao extends AbstractBaseDao<TOTarefa> {
     public List<Object[]> getNovoEstoque(Integer idReceita, Integer quantidadeProdutoTarefa) {
         StringBuilder sqlNovoEstoque = new StringBuilder(QR_NL);
         sqlNovoEstoque
-        .append("select                                                                                                                                                     ")
-        .append("ei.id as idEstoque,                                                                                                                                        ")
-        .append("i.nome_ingrediente as nomeIngrediente,                                                                                                                     ")
-        .append("(select ei.quantidade_estoque_ingrediente) - ((select r.quantidade_receita) * (:pQuantidadeProdutoTarefa / (select r.quantidade_receita))) as novoEstoque  ")
-        .append("from estoque_ingrediente ei                                                                                                                                ")
-        .append("inner join ingrediente i on i.id = ei.id_ingrediente_estoque_ingrediente                                                                                   ")
-        .append("inner join receita_ingrediente ri on ri.id_ingrediente_receita_ingrediente = i.id                                                                          ")
-        .append("inner join receita r on r.id = ri.id_receita_receita_ingrediente                                                                                           ")
-        .append("where ri.id_receita_receita_ingrediente = :pIdReceita and r.id = :pIdReceita                                                                               ");
+        .append("select                                                                                                                                                                              ")
+        .append("ei.id as idEstoque,                                                                                                                                                                 ")
+        .append("i.nome_ingrediente as nomeIngrediente,                                                                                                                                              ")
+        .append("(select ei.quantidade_estoque_ingrediente) - ((select ri.quantidade_ingrediente_receita_ingrediente) * (:pQuantidadeProdutoTarefa / (select r.quantidade_receita))) as novoEstoque, ")
+        .append("i.unidade_medida_ingrediente                                                                                                                                                        ")
+        .append("from estoque_ingrediente ei                                                                                                                                                         ")
+        .append("inner join ingrediente i on i.id = ei.id_ingrediente_estoque_ingrediente                                                                                                            ")
+        .append("inner join receita_ingrediente ri on ri.id_ingrediente_receita_ingrediente = i.id                                                                                                   ")
+        .append("inner join receita r on r.id = ri.id_receita_receita_ingrediente                                                                                                                    ")
+        .append("where ri.id_receita_receita_ingrediente = :pIdReceita and r.id = :pIdReceita                                                                                                        ");
         
         Query queryNovoEstoque = getEntityManager().createNativeQuery(sqlNovoEstoque.toString());
         
@@ -147,5 +148,6 @@ public class TarefaDao extends AbstractBaseDao<TOTarefa> {
         
         return unidade;
     }
+
 
 }

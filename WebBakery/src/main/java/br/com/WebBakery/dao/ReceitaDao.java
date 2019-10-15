@@ -37,7 +37,9 @@ public class ReceitaDao extends AbstractBaseDao<TOReceita> {
     public TOReceita buscarPorId(Integer id) throws Exception {
         Receita r = getEntityManager().find(Receita.class, id);
         TOReceita to = new TOReceita();
+        
         getConverter().getTOFromModel(r, to);
+        to.setTempoPreparo(r.getTempoPreparo());
         
         return to;
     }
@@ -50,7 +52,8 @@ public class ReceitaDao extends AbstractBaseDao<TOReceita> {
         sql
         .add("SELECT r")
         .add("FROM ".concat(Receita.class.getName()).concat(" r "))
-        .add("WHERE r.ativo = :pAtivo");
+        .add("WHERE r.ativo = :pAtivo")
+        .add("ORDER BY r.nome");
 
         receitas = getEntityManager().createQuery(sql.toString(), Receita.class)
                                      .setParameter("pAtivo", ativo)

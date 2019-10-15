@@ -7,12 +7,7 @@ public enum UnidadeMedida {
                            MG("Miligrama"),
                            L("Litro"),
                            ML("Mililitro"),
-                           XICARA("Xícara"),
-                           COLHER_SOPA("Colher de Sopa"),
-                           COLHER_CHA("Colher de Chá"),
-                           COLHER_SOBREMESA("Colher de Sobremesa"),
-                           PITADA("Pitada"),
-                           UNIDADE("Unidade");
+                           UN("Unidade");
 
     private String descricao;
 
