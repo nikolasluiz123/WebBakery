@@ -59,6 +59,7 @@ public class ProdutoDao extends AbstractBaseDao<TOProduto> {
         for (Produto p : produtos) {
             TOProduto to = new TOProduto();
             getConverter().getTOFromModel(p, to);
+            to.getToReceita().setTempoPreparo(p.getReceita().getTempoPreparo());
             toProdutos.add(to);
         }
 

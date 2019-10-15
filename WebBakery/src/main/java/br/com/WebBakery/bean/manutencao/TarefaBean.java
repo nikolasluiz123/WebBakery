@@ -12,9 +12,7 @@ import javax.transaction.Transactional;
 
 import br.com.WebBakery.abstractClass.AbstractBaseDao;
 import br.com.WebBakery.abstractClass.AbstractBaseRegisterMBean;
-import br.com.WebBakery.dao.EstoqueIngredienteDao;
 import br.com.WebBakery.dao.ProdutoDao;
-import br.com.WebBakery.dao.ReceitaIngredienteDao;
 import br.com.WebBakery.dao.TarefaDao;
 import br.com.WebBakery.to.TOProduto;
 import br.com.WebBakery.to.TOTarefa;
@@ -34,10 +32,6 @@ public class TarefaBean extends AbstractBaseRegisterMBean<TOTarefa> {
     private TarefaDao tarefaDao;
     @Inject
     private ProdutoDao produtoDao;
-    @Inject
-    private ReceitaIngredienteDao receitaIngredienteDao;
-    @Inject
-    private EstoqueIngredienteDao estoqueIngredienteDao;
     private List<TOProduto> toProdutos;
     private List<TOProduto> toProdutosFiltrados;
     private TOProduto toProdutoSelecionado;
@@ -71,8 +65,7 @@ public class TarefaBean extends AbstractBaseRegisterMBean<TOTarefa> {
 
     private void addValidators() {
         TarefaValidator tarefaValidator = new TarefaValidator(this.getTo(),
-                                                              receitaIngredienteDao,
-                                                              estoqueIngredienteDao);
+                                                              tarefaDao);
         addValidator(tarefaValidator);
     }
 

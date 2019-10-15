@@ -45,17 +45,22 @@ public class ListaTarefaBean extends AbstractBaseListMBean implements IBaseListM
     }
 
     @Override
-    public void inativar(TOTarefa tarefa) {
+    public void inativar(TOTarefa toTarefa) {
         try {
-            cadastrarProdutoEstoque(tarefa);
-            tarefa.setAtivo(false);
-            this.tarefaDao.salvar(tarefa);
-            this.tarefasPendentes.remove(tarefa);
-            this.tarefasConcluidas.add(tarefa);
+            cadastrarProdutoEstoque(toTarefa);
+            descontarEstoqueIngrediente(toTarefa);
+            toTarefa.setAtivo(false);
+            this.tarefaDao.salvar(toTarefa);
+            this.tarefasPendentes.remove(toTarefa);
+            this.tarefasConcluidas.add(toTarefa);
             getContext().addMessage(null, new FacesMessage(COMPLETE_SUCCESSFULLY));
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void descontarEstoqueIngrediente(TOTarefa toTarefa) {
+        this.tarefaDao.descontarEstoque(toTarefa.getToProduto().getToReceita().getId(), toTarefa.getQuantidade());
     }
 
     private void cadastrarProdutoEstoque(TOTarefa tarefa) {

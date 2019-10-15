@@ -19,6 +19,7 @@ import br.com.WebBakery.to.TOIngrediente;
 import br.com.WebBakery.to.TOReceita;
 import br.com.WebBakery.to.TOReceitaIngrediente;
 import br.com.WebBakery.util.Primefaces_Util;
+import br.com.WebBakery.validator.ReceitaIngredienteValidator;
 import br.com.WebBakery.validator.ReceitaValidator;
 
 @Named(ReceitaBean.BEAN_NAME)
