@@ -55,7 +55,7 @@ public class ListaVendaBean extends AbstractBaseListMBean implements IBaseListMB
             Integer quantidade = produtoVenda.getQuantidade();
             valorTotalPago += preco * quantidade;
         }
-        this.valorTotalPagoFormatado = String_Util.formatDoubleToValueMonetary(valorTotalPago);
+        this.valorTotalPagoFormatado = String_Util.formatDoubleToMonetaryValue(valorTotalPago);
         return valorTotalPago;
     }
 

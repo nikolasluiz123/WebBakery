@@ -21,11 +21,13 @@ public class LoginBean extends AbstractBaseRegisterMBean<TOUsuario> {
 
     private static final String USER_IDENTIFIER_SESSION_KEY = "usuarioLogado";
 
-    private static final String PAGE_WELCOME_REDIRECT = "cadastroPais.xhtml";
+    private static final String PAGE_WELCOME_REDIRECT = "dashboard.xhtml";
 
     public static final String BEAN_NAME = "loginBean";
 
     private static final long serialVersionUID = 7192496569257226719L;
+
+    private static final String PAGE_REGISTER_CLIENTE = "cadastroCliente.xhtml";
 
     @Inject
     private UsuarioDao usuarioDao;
@@ -51,7 +53,7 @@ public class LoginBean extends AbstractBaseRegisterMBean<TOUsuario> {
         try {
             setTo(returnUserIfExists());
             addValidators();
-            redirectUser();
+            redirectUserDashBoard();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -75,12 +77,20 @@ public class LoginBean extends AbstractBaseRegisterMBean<TOUsuario> {
         addValidator(loginValidator);
     }
 
-    private void redirectUser() throws IOException {
+    private void redirectUserDashBoard() throws IOException {
         if (isValid()) {
             setUserSession();
             getContext().getExternalContext().redirect(PAGE_WELCOME_REDIRECT);
         } else {
             showMessagesValidatorChain();
+        }
+    }
+    
+    public void redirectCadastro() {
+        try {
+            getContext().getExternalContext().redirect(PAGE_REGISTER_CLIENTE);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 

@@ -28,6 +28,8 @@ public class TarefaDao extends AbstractBaseDao<TOTarefa> {
         getConverter().getModelFromTO(to, t);            
         
         getEntityManager().persist(t);
+        getEntityManager().flush();
+        to.setId(t.getId());
     }
 
     @Override
@@ -91,63 +93,20 @@ public class TarefaDao extends AbstractBaseDao<TOTarefa> {
         List<Object[]> resultList = getNovoEstoque(idReceita, quantidadeProdutoTarefa);
         
         for (Object[] obj : resultList) {
-            updateEstoque((Integer) obj[0], (Integer) obj[2]);
+            updateEstoque((Integer) obj[0], (Double) obj[2]);
         }
     }
 
-    private void updateEstoque(Integer idEstoqueIngrediente, Integer novaQuantidadeEstoque) {
+    private void updateEstoque(Integer idEstoqueIngrediente, Double novaQuantidadenstoque) {
         StringBuilder sqlUpdateEstoque = new StringBuilder(QR_NL);
         sqlUpdateEstoque
-        .append("update estoque_ingrediente ei")
-        .append("set :pNovaQuantidadeEstoque = :pNovaQuantidadeEstoque")
-        .append("where ei.id = :pIdEstoqueIngrediente");
+        .append("update estoque_ingrediente                                         ")
+        .append("set quantidade_estoque_ingrediente = :pNovaQuantidadeEstoque       ")
+        .append("where id = :pIdEstoqueIngrediente                                  ");
         
-        Query queryUpdateEstoque = getEntityManager().createNativeQuery(sqlUpdateEstoque.toString());
-        queryUpdateEstoque.setParameter("pNovaQuantidadeEstoque", novaQuantidadeEstoque)
+        getEntityManager().createNativeQuery(sqlUpdateEstoque.toString())
+                          .setParameter("pNovaQuantidadeEstoque", novaQuantidadenstoque)
                           .setParameter("pIdEstoqueIngrediente", idEstoqueIngrediente)
                           .executeUpdate();
     }
-    
-
-    public String getUnidadeMedidaIngrediente(Integer idEstoque, Double quantidadeNovoEstoque) {
-        StringBuilder sqlGetUnidadeMedidaExtenso = new StringBuilder(QR_NL);
-        
-        sqlGetUnidadeMedidaExtenso
-        .append("select                                                                                                                                                                               ")
-        .append("case                                                                                                                                                                                 ")
-        .append("when i.unidade_medida_ingrediente = 0 and (:pNovaQuantidadeEstoque > 1 or (:pNovaQuantidadeEstoque <= 0 and :pNovaQuantidadeEstoque != -1)) then 'Quilogramas'                       ")
-        .append("when i.unidade_medida_ingrediente = 0 and :pNovaQuantidadeEstoque = 1 or :pNovaQuantidadeEstoque = -1 then 'Quilograma'                                                              ")
-        .append("when i.unidade_medida_ingrediente = 1 and (:pNovaQuantidadeEstoque > 1 or (:pNovaQuantidadeEstoque <= 0 and :pNovaQuantidadeEstoque != -1)) then 'Gramas'                            ")
-        .append("when i.unidade_medida_ingrediente = 1 and :pNovaQuantidadeEstoque = 1 or :pNovaQuantidadeEstoque = -1 then 'Grama'                                                                   ")
-        .append("when i.unidade_medida_ingrediente = 2 and (:pNovaQuantidadeEstoque > 1 or (:pNovaQuantidadeEstoque <= 0 and :pNovaQuantidadeEstoque != -1)) then 'Miligramas'                        ")
-        .append("when i.unidade_medida_ingrediente = 2 and :pNovaQuantidadeEstoque = 1 or :pNovaQuantidadeEstoque = -1 then 'Miligrama'                                                               ")
-        .append("when i.unidade_medida_ingrediente = 3 and (:pNovaQuantidadeEstoque > 1 or (:pNovaQuantidadeEstoque <= 0 and :pNovaQuantidadeEstoque != -1)) then 'Litros'                            ")
-        .append("when i.unidade_medida_ingrediente = 3 and :pNovaQuantidadeEstoque = 1 or :pNovaQuantidadeEstoque = -1 then 'Litro'                                                                   ")
-        .append("when i.unidade_medida_ingrediente = 4 and (:pNovaQuantidadeEstoque > 1 or (:pNovaQuantidadeEstoque <= 0 and :pNovaQuantidadeEstoque != -1)) then 'Mililitros'                        ")
-        .append("when i.unidade_medida_ingrediente = 4 and :pNovaQuantidadeEstoque = 1 or :pNovaQuantidadeEstoque = -1 then 'Mililitro'                                                               ")
-        .append("when i.unidade_medida_ingrediente = 5 and (:pNovaQuantidadeEstoque > 1 or (:pNovaQuantidadeEstoque <= 0 and :pNovaQuantidadeEstoque != -1)) then 'Xícaras'                           ")
-        .append("when i.unidade_medida_ingrediente = 5 and :pNovaQuantidadeEstoque = 1 or :pNovaQuantidadeEstoque = -1 then 'Xícara'                                                                  ")
-        .append("when i.unidade_medida_ingrediente = 6 and (:pNovaQuantidadeEstoque > 1 or (:pNovaQuantidadeEstoque <= 0 and :pNovaQuantidadeEstoque != -1)) then 'Colheres de Sopa'                  ")
-        .append("when i.unidade_medida_ingrediente = 6 and :pNovaQuantidadeEstoque = 1 or :pNovaQuantidadeEstoque = -1 then 'Colher de Sopa'                                                          ")
-        .append("when i.unidade_medida_ingrediente = 7 and (:pNovaQuantidadeEstoque > 1 or (:pNovaQuantidadeEstoque <= 0 and :pNovaQuantidadeEstoque != -1)) then 'Colheres de Chá'                   ")
-        .append("when i.unidade_medida_ingrediente = 7 and :pNovaQuantidadeEstoque = 1 or :pNovaQuantidadeEstoque = -1 then 'Colher de Chá'                                                           ")
-        .append("when i.unidade_medida_ingrediente = 8 and (:pNovaQuantidadeEstoque > 1 or (:pNovaQuantidadeEstoque <= 0 and :pNovaQuantidadeEstoque != -1)) then 'Colheres de Sobremesa'             ")
-        .append("when i.unidade_medida_ingrediente = 8 and :pNovaQuantidadeEstoque = 1 or :pNovaQuantidadeEstoque = -1 then 'Colher de Sobremesa'                                                     ")
-        .append("when i.unidade_medida_ingrediente = 9 and (:pNovaQuantidadeEstoque > 1 or (:pNovaQuantidadeEstoque <= 0 and :pNovaQuantidadeEstoque != -1)) then 'Pitadas'                           ")
-        .append("when i.unidade_medida_ingrediente = 9 and :pNovaQuantidadeEstoque = 1 or :pNovaQuantidadeEstoque = -1 then 'Pitada'                                                                  ")
-        .append("when i.unidade_medida_ingrediente = 10 and (:pNovaQuantidadeEstoque > 1 or (:pNovaQuantidadeEstoque <= 0 and :pNovaQuantidadeEstoque != -1)) then 'Unidades'                         ")
-        .append("when i.unidade_medida_ingrediente = 10 and :pNovaQuantidadeEstoque = 1 or :pNovaQuantidadeEstoque = -1 then 'Unidade' end as unidade_de_medida                                       ")
-        .append("from estoque_ingrediente ei                                                                                                                                                          ")
-        .append("inner join ingrediente i on i.id = ei.id_ingrediente_estoque_ingrediente                                                                                                             ")
-        .append("where ei.id = :pIdEstoqueIngrediente                                                                                                                                                 ");
-        
-        String unidade = (String) getEntityManager().createNativeQuery(sqlGetUnidadeMedidaExtenso.toString())
-                                                    .setParameter("pIdEstoqueIngrediente", idEstoque)
-                                                    .setParameter("pNovaQuantidadeEstoque", quantidadeNovoEstoque)
-                                                    .getSingleResult();
-        
-        return unidade;
-    }
-
-
 }

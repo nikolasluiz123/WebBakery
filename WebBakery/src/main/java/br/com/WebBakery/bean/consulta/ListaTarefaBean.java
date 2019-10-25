@@ -32,7 +32,7 @@ public class ListaTarefaBean extends AbstractBaseListMBean implements IBaseListM
     private List<TOTarefa> tarefasPendentesFiltradas;
     private List<TOTarefa> tarefasConcluidas;
     private List<TOTarefa> tarefasConcuidasFiltradas;
-
+    
     private EstoqueProdutoBean estoqueProdutoBean;
 
     @PostConstruct
@@ -48,7 +48,6 @@ public class ListaTarefaBean extends AbstractBaseListMBean implements IBaseListM
     public void inativar(TOTarefa toTarefa) {
         try {
             cadastrarProdutoEstoque(toTarefa);
-            descontarEstoqueIngrediente(toTarefa);
             toTarefa.setAtivo(false);
             this.tarefaDao.salvar(toTarefa);
             this.tarefasPendentes.remove(toTarefa);
@@ -57,10 +56,6 @@ public class ListaTarefaBean extends AbstractBaseListMBean implements IBaseListM
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    private void descontarEstoqueIngrediente(TOTarefa toTarefa) {
-        this.tarefaDao.descontarEstoque(toTarefa.getToProduto().getToReceita().getId(), toTarefa.getQuantidade());
     }
 
     private void cadastrarProdutoEstoque(TOTarefa tarefa) {

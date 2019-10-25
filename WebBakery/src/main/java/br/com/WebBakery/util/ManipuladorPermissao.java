@@ -59,7 +59,7 @@ public class ManipuladorPermissao {
     }
 
     private void initListPermissoesCliente() {
-        // TODO Auto-generated method stub
+        permissoesCliente.add("Cliente");
     }
 
     private void initListPermissoesCaixa() {
@@ -89,7 +89,7 @@ public class ManipuladorPermissao {
             lerPermissoes(this.permissoesCliente);
         } else if (tipo.equals(TipoUsuario.GERENTE)) {
             lerPermissoes(this.permissoesGerente);
-        } else {
+        } else if (tipo.equals(TipoUsuario.PADEIRO)) {
             lerPermissoes(this.permissoesPadeiro);
         }
     }

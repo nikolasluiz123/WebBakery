@@ -54,7 +54,8 @@ public class TarefaBean extends AbstractBaseRegisterMBean<TOTarefa> {
             addValidators();
             if (isValid()) {
                 this.getTo().setAtivo(true);
-                this.tarefaDao.salvar(this.getTo());
+                descontarEstoqueIngrediente(getTo());
+                this.tarefaDao.salvar(getTo());
                 showMessageSuccess();
             }
             atualizarTela();
@@ -63,6 +64,10 @@ public class TarefaBean extends AbstractBaseRegisterMBean<TOTarefa> {
         }
     }
 
+    private void descontarEstoqueIngrediente(TOTarefa toTarefa) {
+        this.tarefaDao.descontarEstoque(toTarefa.getToProduto().getToReceita().getId(), toTarefa.getQuantidade());
+    }
+    
     private void addValidators() {
         TarefaValidator tarefaValidator = new TarefaValidator(this.getTo(),
                                                               tarefaDao);

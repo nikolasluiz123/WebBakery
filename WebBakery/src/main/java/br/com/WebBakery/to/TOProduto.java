@@ -4,6 +4,7 @@ import java.util.List;
 
 import br.com.WebBakery.abstractClass.AbstractBaseTO;
 import br.com.WebBakery.core.annotations.TOEntity;
+import br.com.WebBakery.util.String_Util;
 
 public class TOProduto extends AbstractBaseTO {
 
@@ -16,6 +17,7 @@ public class TOProduto extends AbstractBaseTO {
     @TOEntity(fieldName = "receita")
     private TOReceita toReceita;
     private List<TOFotoProduto> toFotos;
+    private String precoFormatado;
 
     public String getDescricao() {
         return descricao;
@@ -62,4 +64,9 @@ public class TOProduto extends AbstractBaseTO {
         TOProduto p = (TOProduto) obj;
         return p.getDescricao().equals(this.descricao);
     }
+
+    public String getPrecoFormatado() {
+        return String_Util.formatDoubleToMonetaryValue(preco);
+    }
+
 }

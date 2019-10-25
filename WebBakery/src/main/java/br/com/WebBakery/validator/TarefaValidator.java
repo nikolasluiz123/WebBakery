@@ -8,6 +8,7 @@ import br.com.WebBakery.dao.TarefaDao;
 import br.com.WebBakery.enums.UnidadeMedida;
 import br.com.WebBakery.to.TOProduto;
 import br.com.WebBakery.to.TOTarefa;
+import br.com.WebBakery.util.String_Util;
 
 public class TarefaValidator extends AbstractValidator {
 
@@ -70,7 +71,8 @@ public class TarefaValidator extends AbstractValidator {
                 if (quantidadeNovoEstoque < 0) {
                     UnidadeMedida unidadeMedidaIngrediente = UnidadeMedida.values()[Integer.parseInt(obj[3].toString())];
                     String nomeIngrediente = obj[1].toString();
-                    messages.add("Não há " + nomeIngrediente + " suficiente no estoque. Faltam " + quantidadeNovoEstoque * -1 + " " + unidadeMedidaIngrediente);
+                    String quantidadeNovoEstoqueFormatada = String_Util.formatDoubleToValueDecimalBR(quantidadeNovoEstoque * -1);
+                    messages.add("Não há " + nomeIngrediente + " suficiente no estoque. Faltam " + quantidadeNovoEstoqueFormatada  + " " + unidadeMedidaIngrediente);
                 }
             }
         }

@@ -2,7 +2,6 @@ package br.com.WebBakery.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.Lob;
 
 import br.com.WebBakery.abstractClass.AbstractBaseModel;
 import br.com.WebBakery.enums.TipoUsuario;

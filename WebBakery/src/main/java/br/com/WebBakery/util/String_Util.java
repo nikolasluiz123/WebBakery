@@ -1,11 +1,15 @@
 package br.com.WebBakery.util;
 
+import java.text.NumberFormat;
+import java.util.Locale;
+
 public class String_Util {
 
-    public static String formatDoubleToValueMonetary(Double value) {
+    public static String formatDoubleToMonetaryValue(Double value) {
+        NumberFormat formater = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
+
         if (value != null) {
-            String s = value.toString().replace(".", ",");
-            return "R$ ".concat(s);
+            return formater.format(value);
         }
         return "";
     }
@@ -19,6 +23,6 @@ public class String_Util {
     }
 
     public static boolean isNullOrEmpty(String value) {
-        return value == null || value.trim().isEmpty();
+        return value == null || value.trim().length() == 0;
     }
 }
