@@ -1,7 +1,7 @@
 package br.com.WebBakery.validator;
 
 import br.com.WebBakery.abstractClass.AbstractValidator;
-import br.com.WebBakery.model.Logradouro;
+import br.com.WebBakery.model.entitys.Logradouro;
 import br.com.WebBakery.util.Cep_Util;
 import br.com.WebBakery.util.String_Util;
 

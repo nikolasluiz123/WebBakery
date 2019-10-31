@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.StringJoiner;
 
 import br.com.WebBakery.abstractClass.AbstractBaseDao;
-import br.com.WebBakery.model.ReceitaIngrediente;
+import br.com.WebBakery.model.entitys.ReceitaIngrediente;
 import br.com.WebBakery.to.TOReceitaIngrediente;
 
 public class ReceitaIngredienteDao extends AbstractBaseDao<TOReceitaIngrediente> {

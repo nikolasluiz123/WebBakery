@@ -7,8 +7,8 @@ import java.util.StringJoiner;
 import javax.persistence.NoResultException;
 
 import br.com.WebBakery.abstractClass.AbstractBaseDao;
-import br.com.WebBakery.model.EstoqueIngrediente;
-import br.com.WebBakery.model.Ingrediente;
+import br.com.WebBakery.model.entitys.EstoqueIngrediente;
+import br.com.WebBakery.model.entitys.Ingrediente;
 import br.com.WebBakery.to.TOEstoqueIngrediente;
 import br.com.WebBakery.to.TOReceitaIngrediente;
 

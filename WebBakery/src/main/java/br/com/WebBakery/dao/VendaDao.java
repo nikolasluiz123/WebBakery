@@ -7,7 +7,7 @@ import java.util.StringJoiner;
 import javax.ejb.Stateless;
 
 import br.com.WebBakery.abstractClass.AbstractBaseDao;
-import br.com.WebBakery.model.Venda;
+import br.com.WebBakery.model.entitys.Venda;
 import br.com.WebBakery.to.TOVenda;
 
 @Stateless
@@ -27,6 +27,8 @@ public class VendaDao extends AbstractBaseDao<TOVenda> {
         getConverter().getModelFromTO(to, v);            
         
         getEntityManager().persist(v);
+        getEntityManager().flush();
+        to.setId(v.getId());
     }
 
     @Override

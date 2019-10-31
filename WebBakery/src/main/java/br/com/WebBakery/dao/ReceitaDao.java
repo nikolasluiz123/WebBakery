@@ -7,7 +7,7 @@ import java.util.StringJoiner;
 import javax.ejb.Stateless;
 
 import br.com.WebBakery.abstractClass.AbstractBaseDao;
-import br.com.WebBakery.model.Receita;
+import br.com.WebBakery.model.entitys.Receita;
 import br.com.WebBakery.to.TOReceita;
 import br.com.WebBakery.util.Date_Util;
 

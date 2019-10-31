@@ -9,30 +9,30 @@
 
 		<jta-data-source>java:/WebBakery-ds</jta-data-source>
 
-		<class>br.com.WebBakery.model.Usuario</class>
+		<class>br.com.WebBakery.model.entitys.Usuario</class>
 
-		<class>br.com.WebBakery.model.Funcionario</class>
+		<class>br.com.WebBakery.model.entitys.Funcionario</class>
 
-		<class>br.com.WebBakery.model.Endereco</class>
-		<class>br.com.WebBakery.model.Pais</class>
-		<class>br.com.WebBakery.model.Estado</class>
-		<class>br.com.WebBakery.model.Cidade</class>
-		<class>br.com.WebBakery.model.Logradouro</class>
+		<class>br.com.WebBakery.model.entitys.Endereco</class>
+		<class>br.com.WebBakery.model.entitys.Pais</class>
+		<class>br.com.WebBakery.model.entitys.Estado</class>
+		<class>br.com.WebBakery.model.entitys.Cidade</class>
+		<class>br.com.WebBakery.model.entitys.Logradouro</class>
 
-		<class>br.com.WebBakery.model.Produto</class>
-		<class>br.com.WebBakery.model.Receita</class>
-		<class>br.com.WebBakery.model.Tarefa</class>
-		<class>br.com.WebBakery.model.EstoqueProduto</class>
-		<class>br.com.WebBakery.model.Cliente</class>
-		<class>br.com.WebBakery.model.FotoPerfil</class>
-		<class>br.com.WebBakery.model.Ingrediente</class>
-		<class>br.com.WebBakery.model.ReceitaIngrediente</class>
-		<class>br.com.WebBakery.model.EstoqueIngrediente</class>
-		<class>br.com.WebBakery.model.FotoIngrediente</class>
+		<class>br.com.WebBakery.model.entitys.Produto</class>
+		<class>br.com.WebBakery.model.entitys.Receita</class>
+		<class>br.com.WebBakery.model.entitys.Tarefa</class>
+		<class>br.com.WebBakery.model.entitys.EstoqueProduto</class>
+		<class>br.com.WebBakery.model.entitys.Cliente</class>
+		<class>br.com.WebBakery.model.entitys.FotoPerfil</class>
+		<class>br.com.WebBakery.model.entitys.Ingrediente</class>
+		<class>br.com.WebBakery.model.entitys.ReceitaIngrediente</class>
+		<class>br.com.WebBakery.model.entitys.EstoqueIngrediente</class>
+		<class>br.com.WebBakery.model.entitys.FotoIngrediente</class>
 
 		<properties>
 			<property name="hibernate.hbm2ddl.auto" value="update" />
-			<property name="hibernate.show_sql" value="false" />
+			<property name="hibernate.show_sql" value="true" />
 			<property name="hibernate.dialect"
 				value="org.hibernate.dialect.PostgreSQLDialect" />
 			<property

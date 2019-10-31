@@ -21,6 +21,8 @@
 				widgetVar="TabelaEstoqueProdutos"
 				filteredValue="#{vendaBean.toEstoqueProdutosFiltrados}">
 
+				<p:ajax event="rowSelect"
+					update="formCadastroVenda:funcionalidades" />
 				<p:ajax event="rowSelectCheckbox"
 					update="formCadastroVenda:funcionalidades" />
 				<p:ajax event="rowUnselectCheckbox"
@@ -37,7 +39,7 @@
 
 				<p:column headerText="Nome"
 					filterBy="#{toEstoqueProduto.toProduto.descricao}">
-					<h:outputText value="#{estoqueProduto.toProduto.descricao}" />
+					<h:outputText value="#{toEstoqueProduto.toProduto.descricao}" />
 				</p:column>
 
 				<p:column headerText="Preço"

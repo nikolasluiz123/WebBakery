@@ -14,7 +14,7 @@ public class TOReceitaIngrediente extends AbstractBaseTO {
     private Double quantidadeIngrediente;
 
     public String getQuantidadeIngredienteFormatada() {
-        return String_Util.formatDoubleToValueDecimalBR(quantidadeIngrediente);
+        return String_Util.formatTwoDecimalPlaces(quantidadeIngrediente);
     }
 
     public TOReceita getToReceita() {

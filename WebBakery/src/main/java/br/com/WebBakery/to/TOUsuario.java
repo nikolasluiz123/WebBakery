@@ -16,6 +16,8 @@ public class TOUsuario extends AbstractBaseTO {
     private String senha;
     @TOEntity(fieldName = "tipo")
     private TipoUsuario tipo;
+    @TOEntity(fieldName = "funcionario")
+    private TOFuncionario toFuncionario;
 
     public String getNome() {
         return nome;
@@ -55,6 +57,18 @@ public class TOUsuario extends AbstractBaseTO {
 
     public void setTipo(TipoUsuario tipo) {
         this.tipo = tipo;
+    }
+
+    public String getNomeCompleto() {
+        return nome + " " + sobrenome;
+    }
+
+    public TOFuncionario getToFuncionario() {
+        return toFuncionario;
+    }
+
+    public void setToFuncionario(TOFuncionario toFuncionario) {
+        this.toFuncionario = toFuncionario;
     }
 
 }

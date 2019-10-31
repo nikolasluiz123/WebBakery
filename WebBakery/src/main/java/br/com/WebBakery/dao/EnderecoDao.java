@@ -7,7 +7,7 @@ import java.util.StringJoiner;
 import javax.ejb.Stateless;
 
 import br.com.WebBakery.abstractClass.AbstractBaseDao;
-import br.com.WebBakery.model.Endereco;
+import br.com.WebBakery.model.entitys.Endereco;
 import br.com.WebBakery.to.TOEndereco;
 
 @Stateless

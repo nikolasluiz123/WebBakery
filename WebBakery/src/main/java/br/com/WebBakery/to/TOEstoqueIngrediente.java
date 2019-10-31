@@ -28,7 +28,7 @@ public class TOEstoqueIngrediente extends AbstractBaseTO {
     }
 
     public String getQuantidadeFormatada() {
-        return String_Util.formatDoubleToValueDecimalBR(this.quantidade);
+        return String_Util.formatTwoDecimalPlaces(this.quantidade);
     }
 
 }

@@ -66,7 +66,7 @@ public class TOProduto extends AbstractBaseTO {
     }
 
     public String getPrecoFormatado() {
-        return String_Util.formatDoubleToMonetaryValue(preco);
+        return String_Util.formatToMonetaryValue(preco);
     }
 
 }

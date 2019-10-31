@@ -9,14 +9,14 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import br.com.WebBakery.enums.TipoUsuario;
-import br.com.WebBakery.model.Cidade;
-import br.com.WebBakery.model.Cliente;
-import br.com.WebBakery.model.Endereco;
-import br.com.WebBakery.model.Estado;
-import br.com.WebBakery.model.Funcionario;
-import br.com.WebBakery.model.Logradouro;
-import br.com.WebBakery.model.Pais;
-import br.com.WebBakery.model.Usuario;
+import br.com.WebBakery.model.entitys.Cidade;
+import br.com.WebBakery.model.entitys.Cliente;
+import br.com.WebBakery.model.entitys.Endereco;
+import br.com.WebBakery.model.entitys.Estado;
+import br.com.WebBakery.model.entitys.Funcionario;
+import br.com.WebBakery.model.entitys.Logradouro;
+import br.com.WebBakery.model.entitys.Pais;
+import br.com.WebBakery.model.entitys.Usuario;
 import br.com.WebBakery.util.HashTypeEnum;
 import br.com.WebBakery.util.Hash_Util;
 

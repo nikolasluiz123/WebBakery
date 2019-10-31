@@ -8,7 +8,7 @@ import javax.ejb.Stateless;
 import javax.persistence.NoResultException;
 
 import br.com.WebBakery.abstractClass.AbstractBaseDao;
-import br.com.WebBakery.model.EstoqueProduto;
+import br.com.WebBakery.model.entitys.EstoqueProduto;
 import br.com.WebBakery.to.TOEstoqueProduto;
 
 @Stateless
@@ -32,6 +32,16 @@ public class EstoqueProdutoDao extends AbstractBaseDao<TOEstoqueProduto> {
             getEntityManager().persist(estoqueProduto);
         }
     }
+    
+    public void descontarEstoque(TOEstoqueProduto to) {
+        EstoqueProduto estoqueProdutoDoBanco = existe(to.getToProduto().getId());
+        
+        if (estoqueProdutoDoBanco != null) {
+            Integer quantidadeRegistrada = to.getQuantidade();
+            estoqueProdutoDoBanco.setQuantidade(quantidadeRegistrada);
+            getEntityManager().persist(estoqueProdutoDoBanco);
+        } 
+    }
 
     @Override
     public TOEstoqueProduto buscarPorId(Integer id) throws Exception {
@@ -41,23 +51,16 @@ public class EstoqueProdutoDao extends AbstractBaseDao<TOEstoqueProduto> {
         return toEstoqueProduto;
     }
 
-//    public void atualizar(TOEstoqueProduto toEstoque, Integer qtd) throws Exception {
-//        EstoqueProduto estoque = new EstoqueProduto();
-//        getConverter().getModelFromTO(toEstoque, estoque);
-//        estoque.setQuantidade(estoque.getQuantidade() + qtd);
-//        getEntityManager().merge(estoque);
-//    }
-
     private EstoqueProduto existe(Integer produtoId) {
         EstoqueProduto ep = new EstoqueProduto();
         
         StringJoiner sql = new StringJoiner(QR_NL);
         sql
-        .add("SELECT ep")
+        .add("SELECT ep                                                 ")
         .add("FROM ".concat(EstoqueProduto.class.getName()).concat(" ep "))
-        .add("WHERE")
-        .add("ep.ativo = :pAtivo")
-        .add("AND ep.produto.id = :pProdutoId");
+        .add("WHERE                                                     ")
+        .add("ep.ativo = :pAtivo                                        ")
+        .add("AND ep.produto.id = :pProdutoId                           ");
         
         try {
             
@@ -77,11 +80,11 @@ public class EstoqueProdutoDao extends AbstractBaseDao<TOEstoqueProduto> {
                 
         StringJoiner sql = new StringJoiner(QR_NL);
         sql
-        .add("SELECT ep")
-        .add("FROM ".concat(EstoqueProduto.class.getName()).concat(" ep "))
-        .add("WHERE")
-        .add("ep.ativo = :pAtivo")
-        .add("ep.produto.id = :pProdutoId");
+        .add("SELECT ep                                                     ")
+        .add("FROM ".concat(EstoqueProduto.class.getName()).concat(" ep     "))
+        .add("WHERE                                                         ")
+        .add("ep.ativo = :pAtivo                                            ")
+        .add("and ep.produto.id = :pProdutoId                               ");
         
         EstoqueProduto estoque = getEntityManager().createQuery(sql.toString(), EstoqueProduto.class)
                                                    .setParameter("pAtivo", true)
@@ -100,11 +103,11 @@ public class EstoqueProdutoDao extends AbstractBaseDao<TOEstoqueProduto> {
         
         StringJoiner sql = new StringJoiner(QR_NL);
         sql
-        .add("SELECT ep")
+        .add("SELECT ep                                                 ")
         .add("FROM ".concat(EstoqueProduto.class.getName()).concat(" ep "))
-        .add("WHERE")
-        .add("ep.ativo = :pAtivo")
-        .add("ORDER BY ep.produto.descricao");
+        .add("WHERE                                                     ")
+        .add("ep.ativo = :pAtivo                                        ")
+        .add("ORDER BY ep.produto.descricao                             ");
         
         estoquesProdutos = getEntityManager().createQuery(sql.toString(), EstoqueProduto.class)
                                              .setParameter("pAtivo", true)

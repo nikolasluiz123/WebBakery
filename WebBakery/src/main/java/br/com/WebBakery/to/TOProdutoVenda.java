@@ -5,12 +5,15 @@ import br.com.WebBakery.core.annotations.TOEntity;
 
 public class TOProdutoVenda extends AbstractBaseTO {
 
-    @TOEntity(fieldName = "produti")
+    @TOEntity(fieldName = "produto")
     private TOProduto toProduto;
     @TOEntity(fieldName = "venda")
     private TOVenda toVenda;
     @TOEntity(fieldName = "quantidade")
     private Integer quantidade;
+
+    private Double valorTotalPago;
+    private String valorTotalPagoFormatado;
 
     public TOProduto getToProduto() {
         return toProduto;
@@ -34,6 +37,22 @@ public class TOProdutoVenda extends AbstractBaseTO {
 
     public void setQuantidade(Integer quantidade) {
         this.quantidade = quantidade;
+    }
+
+    public Double getValorTotalPago() {
+        return valorTotalPago;
+    }
+
+    public void setValorTotalPago(Double valorTotalPago) {
+        this.valorTotalPago = valorTotalPago;
+    }
+
+    public String getValorTotalPagoFormatado() {
+        return valorTotalPagoFormatado;
+    }
+
+    public void setValorTotalPagoFormatado(String valorTotalPagoFormatado) {
+        this.valorTotalPagoFormatado = valorTotalPagoFormatado;
     }
 
 }

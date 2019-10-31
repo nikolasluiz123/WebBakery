@@ -10,15 +10,19 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import br.com.WebBakery.abstractClass.AbstractBaseListMBean;
-import br.com.WebBakery.bean.manutencao.EstoqueProdutoBean;
+import br.com.WebBakery.dao.EstoqueProdutoDao;
 import br.com.WebBakery.dao.TarefaDao;
+import br.com.WebBakery.enums.TipoUsuario;
 import br.com.WebBakery.interfaces.IBaseListMBean;
 import br.com.WebBakery.to.TOEstoqueProduto;
 import br.com.WebBakery.to.TOTarefa;
+import br.com.WebBakery.to.TOUsuario;
 
 @Named(ListaTarefaBean.BEAN_NAME)
 @ViewScoped
 public class ListaTarefaBean extends AbstractBaseListMBean implements IBaseListMBean<TOTarefa> {
+
+    private static final String USER_NOT_AUTORIZED = "Você não tem autorização para completar tarefas.";
 
     public static final String BEAN_NAME = "listaTarefaBean";
 
@@ -32,8 +36,9 @@ public class ListaTarefaBean extends AbstractBaseListMBean implements IBaseListM
     private List<TOTarefa> tarefasPendentesFiltradas;
     private List<TOTarefa> tarefasConcluidas;
     private List<TOTarefa> tarefasConcuidasFiltradas;
-    
-    private EstoqueProdutoBean estoqueProdutoBean;
+
+    @Inject
+    private EstoqueProdutoDao estoqueProdutoDao;
 
     @PostConstruct
     private void init() {
@@ -41,29 +46,43 @@ public class ListaTarefaBean extends AbstractBaseListMBean implements IBaseListM
         this.tarefasConcluidas = new ArrayList<>();
         initTarefasPendentes();
         initTarefasConcluidas();
-        this.estoqueProdutoBean = new EstoqueProdutoBean();
     }
 
     @Override
     public void inativar(TOTarefa toTarefa) {
         try {
-            cadastrarProdutoEstoque(toTarefa);
-            toTarefa.setAtivo(false);
-            this.tarefaDao.salvar(toTarefa);
-            this.tarefasPendentes.remove(toTarefa);
-            this.tarefasConcluidas.add(toTarefa);
-            getContext().addMessage(null, new FacesMessage(COMPLETE_SUCCESSFULLY));
+            TOUsuario user = getUserSession();
+            if (isAutorized(user)) {
+                cadastrarProdutoEstoque(toTarefa);
+                toTarefa.setAtivo(false);
+                this.tarefaDao.salvar(toTarefa);
+                this.tarefasPendentes.remove(toTarefa);
+                this.tarefasConcluidas.add(toTarefa);
+                getContext().addMessage(null, new FacesMessage(COMPLETE_SUCCESSFULLY));
+            } else {
+                getContext().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, USER_NOT_AUTORIZED, USER_NOT_AUTORIZED));
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
+    private boolean isAutorized(TOUsuario user) {
+        TipoUsuario tipo = user.getTipo();
+        
+        return tipo == TipoUsuario.PADEIRO || tipo == TipoUsuario.GERENTE;
+    }
+
     private void cadastrarProdutoEstoque(TOTarefa tarefa) {
-        TOEstoqueProduto estoqueProduto = new TOEstoqueProduto();
-        estoqueProduto.setToProduto(tarefa.getToProduto());
-        estoqueProduto.setQuantidade(tarefa.getQuantidade());
-        this.estoqueProdutoBean.setTo(estoqueProduto);
-        this.estoqueProdutoBean.cadastrar();
+        try {
+            TOEstoqueProduto toEstoqueProduto = new TOEstoqueProduto();
+            toEstoqueProduto.setAtivo(true);
+            toEstoqueProduto.setToProduto(tarefa.getToProduto());
+            toEstoqueProduto.setQuantidade(tarefa.getQuantidade());
+            this.estoqueProdutoDao.salvar(toEstoqueProduto);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void initTarefasPendentes() {

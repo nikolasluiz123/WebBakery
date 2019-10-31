@@ -1,6 +1,8 @@
 package br.com.WebBakery.dao;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.StringJoiner;
 
@@ -8,7 +10,8 @@ import javax.ejb.Stateless;
 import javax.persistence.NoResultException;
 
 import br.com.WebBakery.abstractClass.AbstractBaseDao;
-import br.com.WebBakery.model.Funcionario;
+import br.com.WebBakery.model.entitys.Funcionario;
+import br.com.WebBakery.model.graphics.FuncionarioGraphicValues;
 import br.com.WebBakery.to.TOFuncionario;
 
 @Stateless
@@ -119,5 +122,35 @@ public class FuncionarioDao extends AbstractBaseDao<TOFuncionario> {
          getConverter().getTOFromModel(f, to);
          return to;
      }
+
+    public List<FuncionarioGraphicValues> getCincoFuncionariosQueMaisVendem(Calendar dataInicial, Calendar dataFinal) {
+        List<FuncionarioGraphicValues> listGraphicValues = new ArrayList<>();
+        
+        StringBuilder sql  = new StringBuilder(QR_NL);
+        sql
+        .append("select                                                                                                 ")
+        .append("u.nome_usuario || u.sobrenome_usuario as nomeCompleto,                                                 ")
+        .append("count(v.id) as quantidadeVendas                                                                        ")
+        .append("from venda v                                                                                           ")
+        .append("inner join funcionario f on f.id = v.id_funcionario_venda                                              ")
+        .append("inner join usuario u on u.id = f.id_usuario_funcionario                                                ")
+        .append("where u.ativo and f.ativo and v.ativo and v.data_venda between :pDataInicial and :pDataFinal           ")
+        .append("group by u.id                                                                                          ")
+        .append("order by quantidadeVendas desc                                                                         ")
+        .append("limit 5                                                                                                ");
+        
+        @SuppressWarnings("unchecked")
+        List<Object[]> resultList = getEntityManager().createNativeQuery(sql.toString())
+                                                      .setParameter("pDataInicial", dataInicial.getTime())
+                                                      .setParameter("pDataFinal", dataFinal.getTime())
+                                                      .getResultList();
+        
+        for (Object[] obj : resultList) {
+            FuncionarioGraphicValues graphicValues = new FuncionarioGraphicValues((String) obj[0], (BigInteger) obj[1]);
+            listGraphicValues.add(graphicValues);
+        }
+        
+        return listGraphicValues;
+    }
 
 }

@@ -8,7 +8,7 @@ import javax.ejb.Stateless;
 import javax.persistence.NoResultException;
 
 import br.com.WebBakery.abstractClass.AbstractBaseDao;
-import br.com.WebBakery.model.Usuario;
+import br.com.WebBakery.model.entitys.Usuario;
 import br.com.WebBakery.to.TOUsuario;
 
 @Stateless

@@ -37,26 +37,23 @@ public class ListaVendaBean extends AbstractBaseListMBean implements IBaseListMB
     private List<TOProdutoVenda> produtosVenda;
     private List<TOProdutoVenda> produtosVendaFiltradas;
 
-    private Double valorTotalPago;
     private String valorTotalPagoFormatado;
 
     @PostConstruct
     private void init() {
         this.vendas = new ArrayList<>();
         this.produtosVenda = new ArrayList<>();
-        this.valorTotalPago = 0.0;
         initListVendas();
     }
 
-    private Double calculaValorTotalPago() {
-        Double valorTotalPago = 0.0;
-        for (TOProdutoVenda produtoVenda : produtosVenda) {
-            Double preco = produtoVenda.getToProduto().getPreco();
-            Integer quantidade = produtoVenda.getQuantidade();
-            valorTotalPago += preco * quantidade;
+    private void calculaValorTotalPago() {
+        for (TOProdutoVenda to : produtosVenda) {
+            Double preco = to.getToProduto().getPreco();
+            Integer quantidade = to.getQuantidade();
+            double valorTotalPago = preco * quantidade;
+            to.setValorTotalPago(valorTotalPago);
+            to.setValorTotalPagoFormatado(String_Util.formatToMonetaryValue(valorTotalPago));
         }
-        this.valorTotalPagoFormatado = String_Util.formatDoubleToMonetaryValue(valorTotalPago);
-        return valorTotalPago;
     }
 
     private void initListVendas() {
@@ -118,14 +115,6 @@ public class ListaVendaBean extends AbstractBaseListMBean implements IBaseListMB
 
     public void setProdutosVendaFiltradas(List<TOProdutoVenda> produtosVendaFiltradas) {
         this.produtosVendaFiltradas = produtosVendaFiltradas;
-    }
-
-    public Double getValorTotalPago() {
-        return valorTotalPago;
-    }
-
-    public void setValorTotalPago(Double valorTotalPago) {
-        this.valorTotalPago = valorTotalPago;
     }
 
     public String getValorTotalPagoFormatado() {

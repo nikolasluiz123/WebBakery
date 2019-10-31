@@ -71,7 +71,7 @@ public class TarefaValidator extends AbstractValidator {
                 if (quantidadeNovoEstoque < 0) {
                     UnidadeMedida unidadeMedidaIngrediente = UnidadeMedida.values()[Integer.parseInt(obj[3].toString())];
                     String nomeIngrediente = obj[1].toString();
-                    String quantidadeNovoEstoqueFormatada = String_Util.formatDoubleToValueDecimalBR(quantidadeNovoEstoque * -1);
+                    String quantidadeNovoEstoqueFormatada = String_Util.formatTwoDecimalPlaces(quantidadeNovoEstoque * -1);
                     messages.add("Não há " + nomeIngrediente + " suficiente no estoque. Faltam " + quantidadeNovoEstoqueFormatada  + " " + unidadeMedidaIngrediente);
                 }
             }

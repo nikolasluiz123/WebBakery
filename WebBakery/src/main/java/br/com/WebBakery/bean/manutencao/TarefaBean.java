@@ -59,6 +59,7 @@ public class TarefaBean extends AbstractBaseRegisterMBean<TOTarefa> {
                 showMessageSuccess();
             }
             atualizarTela();
+            this.toProdutoSelecionado = new TOProduto();
         } catch (Exception e) {
             e.printStackTrace();
         }

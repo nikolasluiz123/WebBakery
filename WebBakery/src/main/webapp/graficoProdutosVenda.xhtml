@@ -10,8 +10,8 @@
 	<ui:define name="conteudo">
 
 		<div style="overflow: auto; width: 1000px;">
-			<p:barChart model="#{graficosBean.graficoProdutosVenda}">
-				<p:ajax event="itemSelect" listener="#{graficosBean.itemSelect}"
+			<p:barChart model="#{graficoProdutoVendaBean.graficoProdutosVenda}">
+				<p:ajax event="itemSelect" listener="#{graficoProdutoVendaBean.itemSelect}"
 					update="formMessages:messages" />
 			</p:barChart>
 		</div>

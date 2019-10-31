@@ -7,7 +7,7 @@ import java.util.StringJoiner;
 import javax.ejb.Stateless;
 
 import br.com.WebBakery.abstractClass.AbstractBaseDao;
-import br.com.WebBakery.model.FotoPerfil;
+import br.com.WebBakery.model.entitys.FotoPerfil;
 import br.com.WebBakery.to.TOFotoPerfil;
 
 @Stateless

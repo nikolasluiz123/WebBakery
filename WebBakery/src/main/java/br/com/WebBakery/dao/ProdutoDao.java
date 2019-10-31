@@ -7,8 +7,8 @@ import java.util.StringJoiner;
 import javax.ejb.Stateless;
 
 import br.com.WebBakery.abstractClass.AbstractBaseDao;
-import br.com.WebBakery.model.FotoProduto;
-import br.com.WebBakery.model.Produto;
+import br.com.WebBakery.model.entitys.FotoProduto;
+import br.com.WebBakery.model.entitys.Produto;
 import br.com.WebBakery.to.TOFotoProduto;
 import br.com.WebBakery.to.TOProduto;
 import br.com.WebBakery.to.TOProdutoComFoto;

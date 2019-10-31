@@ -19,6 +19,12 @@ public abstract class AbstractBaseDao<T> implements IBaseDao<T> {
     public AbstractBaseDao() {
         this.converter = new TransferObjectConverter();
     }
+    
+    public AbstractBaseDao(EntityManager entityManger) {
+        this.converter = new TransferObjectConverter();
+        this.entityManager = entityManger;
+    }
+
 
     protected EntityManager getEntityManager() {
         return entityManager;

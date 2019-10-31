@@ -47,7 +47,7 @@ public class EstoqueProdutoBean extends AbstractBaseRegisterMBean<TOEstoqueProdu
             // estoqueProdutoDao.existe(getTo().getToProduto().getId());
             // if (this.toEstoqueProdutoDoBanco == null) {
             getTo().setAtivo(true);
-            this.estoqueProdutoDao.salvar(getTo());
+            this.getEstoqueProdutoDao().salvar(getTo());
             showMessageSuccess();
             // }
             atualizarTela();
@@ -58,7 +58,7 @@ public class EstoqueProdutoBean extends AbstractBaseRegisterMBean<TOEstoqueProdu
 
     private void initListaEstoqueProdutos() {
         try {
-            this.toEstoqueProdutos = this.estoqueProdutoDao.listarTodos(true);
+            this.toEstoqueProdutos = this.getEstoqueProdutoDao().listarTodos(true);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -66,7 +66,7 @@ public class EstoqueProdutoBean extends AbstractBaseRegisterMBean<TOEstoqueProdu
 
     @Override
     protected AbstractBaseDao<TOEstoqueProduto> getDao() {
-        return estoqueProdutoDao;
+        return getEstoqueProdutoDao();
     }
 
     @Override
@@ -93,6 +93,14 @@ public class EstoqueProdutoBean extends AbstractBaseRegisterMBean<TOEstoqueProdu
     @Override
     protected String getBeanName() {
         return BEAN_NAME;
+    }
+
+    public EstoqueProdutoDao getEstoqueProdutoDao() {
+        return estoqueProdutoDao;
+    }
+
+    public void setEstoqueProdutoDao(EstoqueProdutoDao estoqueProdutoDao) {
+        this.estoqueProdutoDao = estoqueProdutoDao;
     }
 
 }

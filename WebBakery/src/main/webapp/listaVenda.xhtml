@@ -27,15 +27,15 @@
 				</p:column>
 
 				<p:column headerText="Cliente"
-					sortBy="#{venda.cliente.usuario.nome}"
-					filterBy="#{venda.cliente.usuario.nome}">
-					<h:outputText value="#{venda.cliente.usuario.nome}" />
+					sortBy="#{venda.toCliente.toUsuario.nome}"
+					filterBy="#{venda.toCliente.toUsuario.nome}">
+					<h:outputText value="#{venda.toCliente.toUsuario.nome}" />
 				</p:column>
 
 				<p:column headerText="Funcionário"
-					sortBy="#{venda.funcionario.usuario.nome}"
-					filterBy="#{venda.funcionario.usuario.nome}">
-					<h:outputText value="#{venda.funcionario.usuario.nome}" />
+					sortBy="#{venda.toFuncionario.toUsuario.nomeCompleto}"
+					filterBy="#{venda.toFuncionario.toUsuario.nomeCompleto}">
+					<h:outputText value="#{venda.toFuncionario.toUsuario.nomeCompleto}" />
 				</p:column>
 
 				<p:column headerText="Produtos">
@@ -59,9 +59,9 @@
 					filteredValue="#{listaVendaBean.produtosVendaFiltradas}">
 
 					<p:column headerText="Produto"
-						filterBy="#{produtoVenda.produto.descricao}"
-						sortBy="#{produtoVenda.produto.descricao}">
-						<h:outputText value="#{produtoVenda.produto.descricao}" />
+						filterBy="#{produtoVenda.toProduto.descricao}"
+						sortBy="#{produtoVenda.toProduto.descricao}">
+						<h:outputText value="#{produtoVenda.toProduto.descricao}" />
 					</p:column>
 
 					<p:column headerText="Quantidade"
@@ -71,9 +71,9 @@
 					</p:column>
 
 					<p:column headerText="Valor Total"
-						filterBy="#{listaVendaBean.valorTotalPago}"
-						sortBy="#{listaVendaBean.valorTotalPago}">
-						<h:outputText value="#{listaVendaBean.valorTotalPagoFormatado}" />
+						filterBy="#{produtoVenda.valorTotalPago}"
+						sortBy="#{produtoVenda.valorTotalPago}">
+						<h:outputText value="#{produtoVenda.valorTotalPagoFormatado}" />
 					</p:column>
 				</p:dataTable>
 			</p:dialog>

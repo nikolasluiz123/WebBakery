@@ -8,7 +8,7 @@ import javax.ejb.Stateless;
 import javax.persistence.Query;
 
 import br.com.WebBakery.abstractClass.AbstractBaseDao;
-import br.com.WebBakery.model.FotoProduto;
+import br.com.WebBakery.model.entitys.FotoProduto;
 import br.com.WebBakery.to.TOFotoProduto;
 
 @Stateless
