@@ -129,7 +129,7 @@ public class FuncionarioDao extends AbstractBaseDao<TOFuncionario> {
         StringBuilder sql  = new StringBuilder(QR_NL);
         sql
         .append("select                                                                                                 ")
-        .append("u.nome_usuario || u.sobrenome_usuario as nomeCompleto,                                                 ")
+        .append("u.nome_usuario ||' '|| u.sobrenome_usuario as nomeCompleto,                                            ")
         .append("count(v.id) as quantidadeVendas                                                                        ")
         .append("from venda v                                                                                           ")
         .append("inner join funcionario f on f.id = v.id_funcionario_venda                                              ")

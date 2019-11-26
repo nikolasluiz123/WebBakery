@@ -5,17 +5,12 @@
 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui">
 
-<ui:composition template="_template.xhtml">
+<div>
+	<p:barChart model="#{graficoFuncionariosBean.graficoFuncionarios}">
+		<p:ajax event="itemSelect"
+			listener="#{graficoFuncionarioBean.itemSelect}"
+			update="formMessages:messages" />
+	</p:barChart>
+</div>
 
-	<ui:define name="conteudo">
-
-		<div style="overflow: auto; width: 1000px;">
-			<p:barChart model="#{graficoFuncionariosBean.graficoFuncionarios}">
-				<p:ajax event="itemSelect" listener="#{graficoFuncionarioBean.itemSelect}"
-					update="formMessages:messages" />
-			</p:barChart>
-		</div>
-
-	</ui:define>
-</ui:composition>
 </html>

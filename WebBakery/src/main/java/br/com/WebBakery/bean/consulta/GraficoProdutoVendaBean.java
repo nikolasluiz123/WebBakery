@@ -22,7 +22,6 @@ import org.primefaces.model.charts.bar.BarChartModel;
 import org.primefaces.model.charts.bar.BarChartOptions;
 import org.primefaces.model.charts.optionconfig.legend.Legend;
 import org.primefaces.model.charts.optionconfig.legend.LegendLabel;
-import org.primefaces.model.charts.optionconfig.title.Title;
 
 import br.com.WebBakery.dao.ProdutoVendaDao;
 import br.com.WebBakery.model.graphics.ProdutoVendaGraphicValues;
@@ -31,8 +30,6 @@ import br.com.WebBakery.util.String_Util;
 @Named
 @ViewScoped
 public class GraficoProdutoVendaBean implements Serializable {
-
-    private static final String DEFAULT_TITTLE_GRAPHICS = "WebBakery Graphics";
 
     private static final long serialVersionUID = -4632166949324098113L;
 
@@ -95,11 +92,6 @@ public class GraficoProdutoVendaBean implements Serializable {
         cScales.addYAxesData(linearAxes);
         options.setScales(cScales);
 
-        Title title = new Title();
-        title.setDisplay(true);
-        title.setText(DEFAULT_TITTLE_GRAPHICS);
-        options.setTitle(title);
-
         Legend legend = new Legend();
         legend.setDisplay(true);
         legend.setPosition("top");
@@ -110,7 +102,7 @@ public class GraficoProdutoVendaBean implements Serializable {
         legendLabels.setFontSize(24);
         legend.setLabels(legendLabels);
         options.setLegend(legend);
-
+        
         graficoProdutosVenda.setOptions(options);
     }
 

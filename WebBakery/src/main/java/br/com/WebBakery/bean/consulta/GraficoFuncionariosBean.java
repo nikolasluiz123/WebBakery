@@ -20,7 +20,6 @@ import org.primefaces.model.charts.bar.BarChartModel;
 import org.primefaces.model.charts.bar.BarChartOptions;
 import org.primefaces.model.charts.optionconfig.legend.Legend;
 import org.primefaces.model.charts.optionconfig.legend.LegendLabel;
-import org.primefaces.model.charts.optionconfig.title.Title;
 
 import br.com.WebBakery.dao.FuncionarioDao;
 import br.com.WebBakery.model.graphics.FuncionarioGraphicValues;
@@ -30,8 +29,6 @@ import br.com.WebBakery.model.graphics.FuncionarioGraphicValues;
 public class GraficoFuncionariosBean implements Serializable {
 
     private static final long serialVersionUID = -969025153573931483L;
-
-    private static final String DEFAULT_TITTLE_GRAPHICS = "WebBakery Graphics";
 
     private BarChartModel graficoFuncionarios;
 
@@ -44,15 +41,15 @@ public class GraficoFuncionariosBean implements Serializable {
     private void init() {
         Calendar dataInicial = Calendar.getInstance(new Locale("pt", "BR"));
         dataInicial.set(2019, 9, 26);
-        
+
         Calendar dataFinal = Calendar.getInstance(new Locale("pt", "BR"));
-        
+
         maisVendidos = dao.getCincoFuncionariosQueMaisVendem(dataInicial, dataFinal);
         graficoFuncionarios = new BarChartModel();
         ChartData data = new ChartData();
 
         BarChartDataSet barDataSet = new BarChartDataSet();
-        barDataSet.setLabel("Produtos mais Vendidos");
+        barDataSet.setLabel("Caixas que mais Realizam Vendas");
 
         List<Number> values = new ArrayList<>();
         List<String> labels = new ArrayList<>();
@@ -66,16 +63,16 @@ public class GraficoFuncionariosBean implements Serializable {
         data.setLabels(labels);
 
         List<String> bgColor = new ArrayList<>();
-        bgColor.add("rgb(2, 205, 178, 0.2)");
-        bgColor.add("rgb(0, 139, 84, 0.2)");
-        bgColor.add("rgb(100, 4, 84, 0.2)");
-        bgColor.add("rgb(251, 4, 134, 0.2)");
-        bgColor.add("rgb(100, 166, 0, 0.2)");
+        bgColor.add("rgb(247, 137, 12, 0.4)");
+        bgColor.add("rgb(232, 12, 12, 0.4)");
+        bgColor.add("rgb(100, 4, 84, 0.4)");
+        bgColor.add("rgb(251, 4, 134, 0.4)");
+        bgColor.add("rgb(100, 166, 0, 0.4)");
         barDataSet.setBackgroundColor(bgColor);
 
         List<String> borderColor = new ArrayList<>();
-        borderColor.add("rgb(2, 205, 178)");
-        borderColor.add("rgb(0, 139, 84)");
+        borderColor.add("rgb(247, 137, 12)");
+        borderColor.add("rgb(232, 12, 12)");
         borderColor.add("rgb(100, 4, 84)");
         borderColor.add("rgb(251, 4, 134)");
         borderColor.add("rgb(100, 166, 0)");
@@ -96,11 +93,6 @@ public class GraficoFuncionariosBean implements Serializable {
         linearAxes.setTicks(ticks);
         cScales.addYAxesData(linearAxes);
         options.setScales(cScales);
-
-        Title title = new Title();
-        title.setDisplay(true);
-        title.setText(DEFAULT_TITTLE_GRAPHICS);
-        options.setTitle(title);
 
         Legend legend = new Legend();
         legend.setDisplay(true);

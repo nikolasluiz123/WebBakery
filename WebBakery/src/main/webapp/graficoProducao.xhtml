@@ -5,12 +5,7 @@
 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui">
 
-<ui:composition template="_template.xhtml">
-
-	<ui:define name="conteudo">
-		<div style="width: 1000px;">
-			<p:chart type="bar" model="#{graficoProducaoBean.horizontalBarModel}" />
-		</div>
-	</ui:define>
-</ui:composition>
+<div>
+	<p:chart type="bar" model="#{graficoProducaoBean.horizontalBarModel}" />
+</div>
 </html>
