@@ -12,8 +12,11 @@ import javax.transaction.Transactional;
 
 import br.com.WebBakery.abstractClass.AbstractBaseDao;
 import br.com.WebBakery.abstractClass.AbstractBaseRegisterMBean;
+import br.com.WebBakery.dao.FuncionarioDao;
 import br.com.WebBakery.dao.ProdutoDao;
 import br.com.WebBakery.dao.TarefaDao;
+import br.com.WebBakery.enums.TipoUsuario;
+import br.com.WebBakery.to.TOFuncionario;
 import br.com.WebBakery.to.TOProduto;
 import br.com.WebBakery.to.TOTarefa;
 import br.com.WebBakery.util.Date_Util;
@@ -30,11 +33,18 @@ public class TarefaBean extends AbstractBaseRegisterMBean<TOTarefa> {
 
     @Inject
     private TarefaDao tarefaDao;
+
     @Inject
     private ProdutoDao produtoDao;
     private List<TOProduto> toProdutos;
     private List<TOProduto> toProdutosFiltrados;
     private TOProduto toProdutoSelecionado;
+
+    @Inject
+    private FuncionarioDao funcionarioDao;
+    private List<TOFuncionario> toPadeiros;
+    private List<TOFuncionario> toPadeirosFiltrados;
+    private TOFuncionario toPadeiroSelecionado;
 
     @PostConstruct
     private void init() {
@@ -46,6 +56,7 @@ public class TarefaBean extends AbstractBaseRegisterMBean<TOTarefa> {
 
         initQuantidadeProdutoTarefa();
         initProdutos();
+        initFucnionarios();
     }
 
     @Transactional
@@ -66,12 +77,12 @@ public class TarefaBean extends AbstractBaseRegisterMBean<TOTarefa> {
     }
 
     private void descontarEstoqueIngrediente(TOTarefa toTarefa) {
-        this.tarefaDao.descontarEstoque(toTarefa.getToProduto().getToReceita().getId(), toTarefa.getQuantidade());
+        this.tarefaDao.descontarEstoque(toTarefa.getToProduto().getToReceita().getId(),
+                                        toTarefa.getQuantidade());
     }
-    
+
     private void addValidators() {
-        TarefaValidator tarefaValidator = new TarefaValidator(this.getTo(),
-                                                              tarefaDao);
+        TarefaValidator tarefaValidator = new TarefaValidator(this.getTo(), tarefaDao);
         addValidator(tarefaValidator);
     }
 
@@ -81,7 +92,7 @@ public class TarefaBean extends AbstractBaseRegisterMBean<TOTarefa> {
                     .getTime());
             Date dataFim = Date_Util.sum(getTo().getDataInicio(), tempoPreparo);
             getTo().setDataFim(dataFim);
-            Primefaces_Util.update("formCadastroReceita:dataFim");
+            Primefaces_Util.update("formCadastroTarefa:dataFim");
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -95,18 +106,35 @@ public class TarefaBean extends AbstractBaseRegisterMBean<TOTarefa> {
         }
     }
 
+    private void initFucnionarios() {
+        try {
+            this.toPadeiros = this.funcionarioDao.listarTodos(TipoUsuario.PADEIRO);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     private void initQuantidadeProdutoTarefa() {
         this.getTo().setQuantidade(1);
     }
 
     public void setarProduto() {
         this.getTo().setToProduto(this.toProdutoSelecionado);
-        Primefaces_Util.update("formCadastroReceita:dataInicio");
+        Primefaces_Util.update("formCadastroTarefa:dataInicio");
+    }
+
+    public void setarPadeiro() {
+        this.getTo().setToPadeiro(this.getToPadeiroSelecionado());
     }
 
     @Override
     protected AbstractBaseDao<TOTarefa> getDao() {
         return tarefaDao;
+    }
+
+    @Override
+    protected String getBeanName() {
+        return BEAN_NAME;
     }
 
     @Override
@@ -138,9 +166,27 @@ public class TarefaBean extends AbstractBaseRegisterMBean<TOTarefa> {
         this.toProdutoSelecionado = toProdutoSelecionado;
     }
 
-    @Override
-    protected String getBeanName() {
-        return BEAN_NAME;
+    public List<TOFuncionario> getToPadeiros() {
+        return toPadeiros;
     }
 
+    public void setToPadeiros(List<TOFuncionario> toPadeiros) {
+        this.toPadeiros = toPadeiros;
+    }
+
+    public List<TOFuncionario> getToPadeirosFiltrados() {
+        return toPadeirosFiltrados;
+    }
+
+    public void setToPadeirosFiltrados(List<TOFuncionario> toPadeirosFiltrados) {
+        this.toPadeirosFiltrados = toPadeirosFiltrados;
+    }
+
+    public TOFuncionario getToPadeiroSelecionado() {
+        return toPadeiroSelecionado;
+    }
+
+    public void setToPadeiroSelecionado(TOFuncionario toPadeiroSelecionado) {
+        this.toPadeiroSelecionado = toPadeiroSelecionado;
+    }
 }

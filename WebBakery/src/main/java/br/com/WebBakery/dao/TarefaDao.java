@@ -13,6 +13,8 @@ import br.com.WebBakery.abstractClass.AbstractBaseDao;
 import br.com.WebBakery.model.entitys.Tarefa;
 import br.com.WebBakery.model.graphics.ProducaoGraphicValues;
 import br.com.WebBakery.to.TOTarefa;
+import br.com.WebBakery.to.TOUsuario;
+import br.com.WebBakery.util.Faces_Util;
 
 @Stateless
 public class TarefaDao extends AbstractBaseDao<TOTarefa> {
@@ -46,6 +48,8 @@ public class TarefaDao extends AbstractBaseDao<TOTarefa> {
 
     @Override
     public List<TOTarefa> listarTodos(Boolean ativo) throws Exception {
+        TOUsuario user = (TOUsuario) Faces_Util.getAttributeFromSession("usuarioLogado");
+        
         List<Tarefa> tarefas = new ArrayList<>();
         List<TOTarefa> toTarefas = new ArrayList<>();
         
@@ -53,10 +57,13 @@ public class TarefaDao extends AbstractBaseDao<TOTarefa> {
         sql
         .add("SELECT t")
         .add("FROM ".concat(Tarefa.class.getName()).concat(" t "))
-        .add("WHERE t.ativo = :pAtivo");
+        .add("INNER JOIN t.padeiro p")
+        .add("INNER JOIN p.usuario u")
+        .add("WHERE t.ativo = :pAtivo and u.id = :pIdUsuario");
 
         tarefas = getEntityManager().createQuery(sql.toString(), Tarefa.class)
                                     .setParameter("pAtivo", ativo)
+                                    .setParameter("pIdUsuario", user.getId())
                                     .getResultList();
         
         for (Tarefa t : tarefas) {
@@ -140,5 +147,22 @@ public class TarefaDao extends AbstractBaseDao<TOTarefa> {
         }
         
         return listGraphicValues;
+    }
+    
+    public Long getTarefasPendentes(TOUsuario usuarioLogado){
+        StringBuilder sql = new StringBuilder(QR_NL);
+        sql
+        .append("select count(t.id)                                 ")
+        .append("from ".concat(Tarefa.class.getName().concat(" t    ")))
+        .append("inner join t.padeiro p                             ")
+        .append("inner join p.usuario u                             ")
+        .append("where t.ativo = true                               ")
+        .append("and u.id = :pIdUsuario                             ");
+        
+        Long result = getEntityManager().createQuery(sql.toString(), Long.class)
+                                        .setParameter("pIdUsuario", usuarioLogado.getId())
+                                        .getSingleResult();
+        
+        return result;
     }
 }

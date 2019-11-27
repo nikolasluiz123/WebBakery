@@ -17,6 +17,16 @@ public class Faces_Util {
         }
         return null;
     }
+    
+    public static Object getAttributeFromSession(String key) {
+        FacesContext context = getFacesContext();
+        
+        if (context != null && !String_Util.isNullOrEmpty(key)) {
+            return context.getExternalContext().getSessionMap().get(key);
+        }
+        
+        return null;
+    }
 
     public static FacesContext getFacesContext() {
         return FacesContext.getCurrentInstance();

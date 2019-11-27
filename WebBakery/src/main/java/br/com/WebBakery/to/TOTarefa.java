@@ -16,6 +16,8 @@ public class TOTarefa extends AbstractBaseTO {
     private TOProduto toProduto;
     @TOEntity(fieldName = "quantidade")
     private Integer quantidade;
+    @TOEntity(fieldName = "padeiro")
+    private TOFuncionario toPadeiro;
 
     public Date getDataInicio() {
         return dataInicio;
@@ -48,9 +50,17 @@ public class TOTarefa extends AbstractBaseTO {
     public void setQuantidade(Integer quantidade) {
         this.quantidade = quantidade;
     }
-    
+
     public String dataFormatada(Date data) {
         return Date_Util.formatToString("dd/MM/yyyy", data);
+    }
+
+    public TOFuncionario getToPadeiro() {
+        return toPadeiro;
+    }
+
+    public void setToPadeiro(TOFuncionario toPadeiro) {
+        this.toPadeiro = toPadeiro;
     }
 
 }

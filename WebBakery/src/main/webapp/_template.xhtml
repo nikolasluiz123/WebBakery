@@ -28,6 +28,11 @@ html, body {
 .menuLateral .ui-menu {
 	border: none;
 }
+
+.ui-growl.ui-widget {
+	z-index: 999999 !important;
+}
+
 /* .toolBar { */
 /* 	padding: 10px; */
 /* 	position: fixed; */
@@ -49,7 +54,7 @@ html, body {
 
 <h:head>
 	<p:toolbar rendered="#{usuarioLogado != null}"
-		style="padding: 10px; position: fixed; left: 0; right: 0; top: 0;"
+		style="padding: 10px; position: fixed; left: 0; right: 0; top: 0;z-index: 999999;"
 		id="toolBar">
 		<f:facet name="left">
 			<img src="#{fotoPerfilUploadBean.pathFoto}" width="50" height="50"
@@ -72,7 +77,7 @@ html, body {
 <h:body>
 	<div id="cabecalho"
 		style="position: fixed; left: 0; top: 72px; bottom: 0; padding: 20px;">
-<!-- 		z-index: 100; -->
+		<!-- 		z-index: 100; -->
 
 		<h:form id="formMessages">
 			<p:growl id="messages" life="20000" />
@@ -89,7 +94,7 @@ html, body {
 	<div class="ui-g">
 		<div id="conteudo" class="ui-g-10"
 			style="margin-left: 240px; margin-right: 6px;">
-<!-- 			z-index: 99; -->
+			<!-- 			z-index: 99; -->
 			<ui:insert name="conteudo">
 			</ui:insert>
 		</div>

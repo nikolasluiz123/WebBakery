@@ -9,6 +9,8 @@
 
 	<ui:define name="conteudo">
 
+		<ui:include src="/graficoTarefas.xhtml" />
+
 		<h:form id="formDataTableTarefasPendentes">
 			<p:dataTable var="toTarefa"
 				value="#{listaTarefaBean.tarefasPendentes}"
@@ -38,13 +40,13 @@
 					sortBy="#{toTarefa.dataInicio}"
 					filterBy="#{toTarefa.dataFormatada(toTarefa.dataInicio)}">
 					<h:outputText value="#{toTarefa.dataInicio}"
-						converter="SimpleDateConverter" />
+						converter="SimpleDateHourConverter" />
 				</p:column>
 
 				<p:column headerText="Data de Fim" sortBy="#{toTarefa.dataFim}"
 					filterBy="#{toTarefa.dataFormatada(toTarefa.dataFim)}">
 					<h:outputText value="#{toTarefa.dataFim}"
-						converter="SimpleDateConverter" />
+						converter="SimpleDateHourConverter" />
 				</p:column>
 
 				<p:column headerText="Alterar">
@@ -91,16 +93,17 @@
 				<p:column headerText="Data de Início" sortBy="#{tarefa.dataInicio}"
 					filterBy="#{tarefaBean.dataFormatada(tarefa.dataInicio)}">
 					<h:outputText value="#{tarefa.dataInicio}"
-						converter="SimpleDateConverter" />
+						converter="SimpleDateHourConverter" />
 				</p:column>
 
 				<p:column headerText="Data de Fim" sortBy="#{tarefa.dataFim}"
 					filterBy="#{tarefaBean.dataFormatada(tarefa.dataFim)}">
 					<h:outputText value="#{tarefa.dataFim}"
-						converter="SimpleDateConverter" />
+						converter="SimpleDateHourConverter" />
 				</p:column>
 			</p:dataTable>
 		</h:form>
+
 	</ui:define>
 </ui:composition>
 </html>

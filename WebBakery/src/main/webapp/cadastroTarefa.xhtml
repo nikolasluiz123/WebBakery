@@ -9,7 +9,7 @@
 
 	<ui:define name="conteudo">
 
-		<h:form id="formCadastroReceita">
+		<h:form id="formCadastroTarefa">
 			<p:fieldset legend="Dados da Tarefa">
 				<p:panelGrid columns="2">
 
@@ -29,12 +29,17 @@
 						placeholder="Selecione a data do início..."
 						disabled="#{tarefaBean.toProdutoSelecionado == null}">
 						<p:ajax event="change" listener="#{tarefaBean.calcularFim()}" />
-
 					</p:calendar>
 
 					<p:outputLabel for="dataFim" value="Data de Fim:" />
 					<p:calendar id="dataFim" value="#{tarefaBean.to.dataFim}"
 						pattern="dd/MM/yyyy HH:mm" disabled="true" />
+
+					<p:outputLabel for="padeiro" value="Padeiro:" />
+					<p:inputText id="padeiro" onclick="PF('PadeirosDialog').show();"
+						value="#{tarefaBean.to.toPadeiro.toUsuario.nome} #{tarefaBean.to.toPadeiro.toUsuario.sobrenome}"
+						readonly="true" placeholder="Selecione o padeiro..."
+						style="cursor: pointer;" />
 
 					<p:commandButton value="Cadastrar" process="@form"
 						update="@form, formMessages:messages"
@@ -67,9 +72,35 @@
 
 				</p:dataTable>
 				<p:commandButton value="Selecionar" process="@form"
-					update="formCadastroReceita:produto"
+					update="formCadastroTarefa:produto"
 					action="#{tarefaBean.setarProduto}"
 					oncomplete="PF('ProdutosDialog').hide();" />
+			</p:dialog>
+
+			<p:dialog header="Padeiros" widgetVar="PadeirosDialog"
+				resizable="false" width="800">
+
+				<p:dataTable id="tabelaPadeiros" value="#{tarefaBean.toPadeiros}"
+					selectionMode="single"
+					selection="#{tarefaBean.toPadeiroSelecionado}" var="toPadeiro"
+					rowKey="#{toPadeiro.id}" rows="5" paginator="true"
+					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PageLinks} {PreviousPageLink} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					emptyMessage="Nenhum padeiro encontrado."
+					widgetVar="TabelaPadeiros"
+					filteredValue="#{tarefaBean.toPadeirosFiltrados}">
+
+					<p:column headerText="Nome"
+						filterBy="#{toPadeiro.toUsuario.nome} #{toPadeiro.toUsuario.sobrenome}"
+						sortBy="#{toPadeiro.toUsuario.nome} #{toPadeiro.toUsuario.sobrenome}">
+						<h:outputText
+							value="#{toPadeiro.toUsuario.nome} #{toPadeiro.toUsuario.sobrenome}" />
+					</p:column>
+
+				</p:dataTable>
+				<p:commandButton value="Selecionar" process="@form"
+					update="formCadastroTarefa:padeiro"
+					action="#{tarefaBean.setarPadeiro}"
+					oncomplete="PF('PadeirosDialog').hide();" />
 			</p:dialog>
 		</h:form>
 	</ui:define>

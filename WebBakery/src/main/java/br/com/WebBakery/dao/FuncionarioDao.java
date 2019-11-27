@@ -10,6 +10,7 @@ import javax.ejb.Stateless;
 import javax.persistence.NoResultException;
 
 import br.com.WebBakery.abstractClass.AbstractBaseDao;
+import br.com.WebBakery.enums.TipoUsuario;
 import br.com.WebBakery.model.entitys.Funcionario;
 import br.com.WebBakery.model.graphics.FuncionarioGraphicValues;
 import br.com.WebBakery.to.TOFuncionario;
@@ -65,7 +66,7 @@ public class FuncionarioDao extends AbstractBaseDao<TOFuncionario> {
         
         return toFuncionarios;
     }
-
+    
     public TOFuncionario buscarPorIdUsuario(Integer idUsuario, Integer idFuncionario) throws Exception {
        TOFuncionario to = new TOFuncionario();
        Funcionario f = new Funcionario();
@@ -151,6 +152,31 @@ public class FuncionarioDao extends AbstractBaseDao<TOFuncionario> {
         }
         
         return listGraphicValues;
+    }
+
+    public List<TOFuncionario> listarTodos(TipoUsuario padeiro) throws Exception {
+        List<Funcionario> funcionarios = new ArrayList<>();
+        List<TOFuncionario> toFuncionarios = new ArrayList<>();
+        
+        StringJoiner sql = new StringJoiner(QR_NL);
+        sql
+        .add("SELECT f")
+        .add("FROM ".concat(Funcionario.class.getName()).concat(" f "))
+        .add("inner join f.usuario u")
+        .add("WHERE f.ativo = :pAtivo and u.tipo = :pTipoUsuario");
+
+        funcionarios = getEntityManager().createQuery(sql.toString(), Funcionario.class)
+                                         .setParameter("pAtivo", true)
+                                         .setParameter("pTipoUsuario", padeiro)
+                                         .getResultList();
+
+        for (Funcionario f : funcionarios) {
+            TOFuncionario to = new TOFuncionario();
+            getConverter().getTOFromModel(f, to);
+            toFuncionarios.add(to);
+        }
+        
+        return toFuncionarios;
     }
 
 }
