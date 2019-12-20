@@ -1,0 +1,127 @@
+/* Geral */
+@import
+	url(http://fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300ita‌​lic,400italic,500,500italic,700,700italic,900italic,900)
+	;
+
+html, body {
+	margin: 0px !important;
+	padding-top: 45px;
+	overflow-x: hidden;
+}
+
+body {
+	background: rgba(0, 0, 0, 0.2);
+	color: white;
+}
+/* Geral */
+
+/* Toolbar */
+.toolbar {
+	padding-top: 13px !important;
+	height: 55px;
+	position: fixed;
+	left: 0;
+	right: 0;
+	top: 0;
+	z-index: 999999;
+	background: rgba(0, 0, 0, 0.7) !important;
+	border: none !important;
+	border-radius: 0px !important;
+}
+
+/* Toolbar */
+
+/* Menu lateral*/
+.menuLateral {
+	padding: 0px !important;
+	overflow-y: auto;
+	position: absolute;
+	height: 100% ! important;
+	top: 0px;
+	left: 0px;
+}
+
+.menuLateral .ui-menu {
+	border-radius: 0px !important;
+	border: none;
+	background: rgba(0, 0, 0, 0.45) !important;
+}
+
+li.ui-widget-header.ui-corner-all {
+	background: rgba(0, 0, 0, 0.45) !important;
+	color: white;
+}
+/* Menu lateral*/
+
+/* Growl de mensagens de erro e sucesso */
+.ui-growl.ui-widget, .ui-menu.ui-menu-dynamic.ui-widget.ui-widget-content.ui-corner-all.ui-helper-clearfix.ui-shadow
+	{
+	z-index: 999999 !important;
+}
+/* Growl de mensagens de erro e sucesso */
+
+/*botão do menu de configurações*/
+.ui-button.ui-widget.ui-state-default.ui-corner-all.ui-button-icon-only
+	{
+	color: white;
+	background-color: rgba(0, 0, 0, 0.7) !important;
+	border: none;
+}
+
+.ui-button.ui-widget.ui-state-default.ui-corner-all.ui-button-icon-only:hover
+	{
+	box-shadow: none;
+}
+
+.ui-button.ui-widget.ui-state-default.ui-corner-all.ui-button-icon-only:focus
+	{
+	box-shadow: none !important;
+	border: none !important;
+}
+
+.ui-button.ui-widget.ui-state-default.ui-corner-all.ui-button-icon-only:active
+	{
+	box-shadow: none !important;
+	border: none !important;
+}
+
+.ui-menu.ui-menu-dynamic.ui-widget.ui-widget-content.ui-corner-all.ui-helper-clearfix.ui-shadow,
+	.ui-menu-list.ui-helper-reset {
+	background: rgba(0, 0, 0, 0.7) !important;
+}
+
+.ui-menuitem-link.ui-corner-all {
+	color: white !important;
+}
+
+.ui-menu.ui-menu-dynamic.ui-widget.ui-widget-content.ui-corner-all.ui-helper-clearfix.ui-shadow
+	{
+	top: 70.5313px !important;
+}
+
+.ui-menuitem-link.ui-corner-all:hover {
+	background: rgba(0, 0, 0, 0.7) !important;
+	border: none !important;
+	box-shadow: none !important;
+}
+
+.ui-menuitem-link.ui-corner-all:focus {
+	background: #000000;
+	border: none;
+	box-shadow: none !important;
+}
+
+.menu-botao {
+	vertical-align: middle;
+	margin: 8px;
+	border: none !important;
+}
+/*botão do menu de configurações*/
+
+/* botões */
+.button {
+	font-weight: normal;
+	background: #000000;
+	color: white;
+}
+/* botões */

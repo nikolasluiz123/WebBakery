@@ -1,0 +1,57 @@
+/* Cabeçalho da tabela, parte onde fica o nome da mesma */
+.ui-datatable-header.ui-widget-header.ui-corner-top, .ui-state-default.ui-sortable-column.ui-filter-column,
+	th.ui-state-default {
+	font-weight: inherit;
+}
+/* Cabeçalho da tabela, parte onde fica o nome da mesma */
+
+/* Deixando o backgraund da tabela preto */
+.ui-datatable-header.ui-widget-header.ui-corner-top, .ui-paginator-page.ui-state-default.ui-corner-all,
+	.ui-paginator-next.ui-state-default.ui-corner-all, .ui-paginator.ui-paginator-top.ui-widget-header,
+	.ui-paginator-rpp-options.ui-widget.ui-state-default.ui-corner-left,
+	.ui-state-default.ui-sortable-column.ui-filter-column, th.ui-state-default,
+	.ui-paginator.ui-paginator-bottom.ui-widget-header.ui-corner-bottom {
+	background: #333333;
+	color: white;
+}
+
+tr.ui-widget-content.ui-datatable-even, tr.ui-widget-content.ui-datatable-odd
+	{
+	background: #666666;
+	color: white;
+}
+
+a.ui-commandlink.ui-widget {
+	color: white;
+	text-decoration: none;
+}
+
+.ui-datatable-header.ui-widget-header.ui-corner-top, .ui-paginator-last.ui-state-default.ui-corner-all,
+	.ui-paginator-first.ui-state-default.ui-corner-all, .ui-paginator-prev.ui-state-default.ui-corner-all
+	{
+	background: #333333;
+}
+
+.ui-paginator-prev.ui-state-default.ui-corner-all.ui-state-disabled,
+	.ui-paginator-first.ui-state-default.ui-corner-all.ui-state-disabled {
+	background: rgba(0, 0, 0, 0.4);
+}
+/* Deixando o backgraund da tabela preto */
+
+/* Centralizando todo o conteúdo dos tds da table */
+.ui-datatable tbody td {
+	text-align: center !important;
+}
+/* Centralizando todo o conteúdo dos tds da table */
+
+/* Remover a sombra azul dos componentes ao passar o mouse sobre os mesmos */
+.ui-paginator-page.ui-state-default.ui-corner-all:hover,
+	.ui-paginator-last.ui-state-default.ui-corner-all:hover,
+	.ui-paginator-next.ui-state-default.ui-corner-all:hover,
+	.ui-paginator-prev.ui-state-default.ui-corner-all:hover,
+	.ui-paginator-first.ui-state-default.ui-corner-all:hover,
+	.ui-paginator-rpp-options.ui-widget.ui-state-default.ui-corner-left:hover
+	{
+	box-shadow: none;
+}
+/* Remover a sombra azul dos componentes ao passar o mouse sobre os mesmos */

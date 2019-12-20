@@ -8,45 +8,42 @@
 <ui:composition template="_template.xhtml">
 
 	<ui:define name="conteudo">
-
+		<link rel="stylesheet" type="text/css" href="css/table/table.css" />
 		<h:form id="formDataTableCidades">
-			<div style="padding-top: 15px;">
+			<p:dataTable id="tabelaCidades" value="#{listaCidadeBean.toCidades}"
+				var="toCidade" rowKey="#{toCidade.id}" rows="5" paginator="true"
+				paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PageLinks} {PreviousPageLink} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				emptyMessage="Nenhum cidade encontrado." widgetVar="TabelaCidades"
+				filteredValue="#{listaCidadeBean.toCidadesFiltradas}">
 
-				<p:dataTable id="tabelaCidades" value="#{listaCidadeBean.toCidades}"
-					var="toCidade" rowKey="#{toCidade.id}" rows="5" paginator="true"
-					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PageLinks} {PreviousPageLink} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-					emptyMessage="Nenhum cidade encontrado." widgetVar="TabelaCidades"
-					filteredValue="#{listaCidadeBean.toCidadesFiltradas}">
+				<f:facet name="header" style="min-height: 35px; max-height: 35px">
+					<div>Cidades</div>
 
-					<f:facet name="header" style="min-height: 35px; max-height: 35px">
-						<div>Cidades</div>
+				</f:facet>
 
-					</f:facet>
+				<p:column headerText="Nome" sortBy="#{toCidade.nome}"
+					filterBy="#{toCidade.nome}">
+					<h:outputText value="#{toCidade.nome}" />
+				</p:column>
 
-					<p:column headerText="Nome" sortBy="#{toCidade.nome}"
-						filterBy="#{toCidade.nome}">
-						<h:outputText value="#{toCidade.nome}" />
-					</p:column>
+				<p:column headerText="Estado" sortBy="#{toCidade.toEstado.nome}"
+					filterBy="#{toCidade.toEstado.nome}">
+					<h:outputText value="#{toCidade.toEstado.nome}" />
+				</p:column>
 
-					<p:column headerText="Estado" sortBy="#{toCidade.toEstado.nome}"
-						filterBy="#{toCidade.toEstado.nome}">
-						<h:outputText value="#{toCidade.toEstado.nome}" />
-					</p:column>
+				<p:column headerText="Alterar">
+					<p:commandLink value="Alterar"
+						action="#{listaCidadeBean.carregar(toCidade.id, 'CidadeID', 'cadastroCidade.xhtml')}"
+						process="@this" />
+				</p:column>
 
-					<p:column headerText="Alterar">
-						<p:commandLink value="Alterar"
-							action="#{listaCidadeBean.carregar(toCidade.id, 'CidadeID', 'cadastroCidade.xhtml')}"
-							process="@this" />
-					</p:column>
-
-					<p:column headerText="Inativar">
-						<p:commandLink value="Inativar"
-							action="#{listaCidadeBean.inativar(toCidade)}"
-							update="tabelaCidades, formMessages:messages" process="@this"
-							oncomplete="PF('TabelaCidades').filter();" />
-					</p:column>
-				</p:dataTable>
-			</div>
+				<p:column headerText="Inativar">
+					<p:commandLink value="Inativar"
+						action="#{listaCidadeBean.inativar(toCidade)}"
+						update="tabelaCidades, formMessages:messages" process="@this"
+						oncomplete="PF('TabelaCidades').filter();" />
+				</p:column>
+			</p:dataTable>
 		</h:form>
 	</ui:define>
 </ui:composition>

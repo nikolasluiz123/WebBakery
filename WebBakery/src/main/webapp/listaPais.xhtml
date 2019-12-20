@@ -6,9 +6,10 @@
 	xmlns:p="http://primefaces.org/ui">
 
 <ui:composition template="_template.xhtml">
-
+	
 	<ui:define name="conteudo">
-
+		<link rel="stylesheet" type="text/css" href="css/table/table.css"/>
+		
 		<h:form id="formDataTablePaises">
 			<p:dataTable var="toPais" value="#{listaPaisBean.toPaises}"
 				id="tabelaPaises" rows="5" paginator="true"

@@ -24,7 +24,7 @@ public class FotoPerfilUploadBean extends AbstractBaseRegisterMBean<TOFotoPerfil
 
     static final String BEAN_NAME = "fotoPerfilUploadBean";
 
-    private static final String PATH_IMG_DEFAULT = "img/anonimo.png";
+    private static final String PATH_IMG_DEFAULT = "img/icon_user.png";
 
     private static final long serialVersionUID = 9124846392202100854L;
 

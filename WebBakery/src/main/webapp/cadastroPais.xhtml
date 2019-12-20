@@ -6,32 +6,29 @@
 	xmlns:p="http://primefaces.org/ui">
 
 <ui:composition template="_template.xhtml">
-
 	<ui:define name="conteudo">
-
 		<h:form id="formCadastroPais">
 
-			<p:fieldset legend="Dados do País">
-				<div class="ui-g">
+			<div class="ui-g">
 
-					<div class="ui-g-4">
-						<p:outputLabel value="Nome:" for="nome" />
-						<p:inputText id="nome" value="#{paisBean.to.nome}"
-							placeholder="Digite o nome..." />
-					</div>
-
-					<div class="ui-g-4">
-						<p:outputLabel value="Sigla:" for="sigla" />
-						<p:inputText id="sigla" value="#{paisBean.to.sigla}"
-							placeholder="Digite a sigla..." />
-					</div>
-
-					<div class="ui-g-4">
-						<p:commandButton value="Cadastrar" process="@form"
-							update="formMessages:messages, @form" action="#{paisBean.salvar}" />
-					</div>
+				<div class="ui-g-3">
+					<p:outputLabel value="Nome" for="nome" style="display: block;" />
+					<p:inputText id="nome" value="#{paisBean.to.nome}"
+						placeholder="Digite o nome..." />
 				</div>
-			</p:fieldset>
+
+				<div class="ui-g-3">
+					<p:outputLabel value="Sigla" for="sigla" style="display: block;" />
+					<p:inputText id="sigla" value="#{paisBean.to.sigla}"
+						placeholder="Digite a sigla..." />
+				</div>
+
+				<div class="ui-g-6"
+					style="align-self: flex-end;">
+					<p:commandButton value="Salvar" process="@form"
+						update="formMessages:messages, @form" action="#{paisBean.salvar}" styleClass="button" />
+				</div>
+			</div>
 		</h:form>
 	</ui:define>
 </ui:composition>
