@@ -8,85 +8,122 @@
 <ui:composition template="_template.xhtml">
 
 	<ui:define name="conteudo">
+		<link rel="stylesheet" type="text/css" href="css/form.css" />
+		<link rel="stylesheet" type="text/css" href="css/dialog-lov.css" />
+		<link rel="stylesheet" type="text/css" href="css/table.css" />
 
 		<h:form id="formCadastroCliente">
 
-			<p:fieldset legend="Dados do Cliente">
-				<p:panelGrid columns="2">
+			<div class="ui-g">
 
-					<p:outputLabel value="Nome:" for="nome" />
-					<p:inputText id="nome" value="#{clienteBean.to.toUsuario.nome}"
-						placeholder="Digite o nome..." />
+				<p:fieldset class="group">
+					<div class="ui-g-3">
+						<p:outputLabel value="Nome" for="nome" class="label" />
+						<p:inputText id="nome" value="#{clienteBean.to.toUsuario.nome}"
+							placeholder="Digite o nome..." />
+					</div>
 
-					<p:outputLabel value="Sobrenome:" for="sobrenome" />
-					<p:inputText id="sobrenome"
-						value="#{clienteBean.to.toUsuario.sobrenome}"
-						placeholder="Digite o sobrenome..." />
+					<div class="ui-g-3">
+						<p:outputLabel value="Sobrenome" for="sobrenome" class="label" />
+						<p:inputText id="sobrenome"
+							value="#{clienteBean.to.toUsuario.sobrenome}"
+							placeholder="Digite o sobrenome..." />
+					</div>
 
-					<p:outputLabel value="CPF:" for="cpf" />
-					<p:inputMask id="cpf" value="#{clienteBean.to.cpf}"
-						placeholder="Digite o cpf..." mask="999.999.999-99" />
+					<div class="ui-g-3">
+						<p:outputLabel value="CPF" for="cpf" class="label" />
+						<p:inputMask id="cpf" value="#{clienteBean.to.cpf}"
+							placeholder="Digite o cpf..." mask="999.999.999-99" />
+					</div>
 
-					<p:outputLabel value="Telefone:" for="telefone" />
-					<p:inputMask id="telefone" value="#{clienteBean.to.telefone}"
-						placeholder="Digite o telefone..." mask="(99) 99999-9999" />
+					<div class="ui-g-3">
+						<p:outputLabel value="Data de Nascimento" for="dataNascimento"
+							class="label" />
+						<p:calendar id="dataNascimento"
+							value="#{clienteBean.to.dataNascimento}" pattern="dd/MM/yyyy"
+							mask="true" placeholder="Digite data de nascimento..."
+							converter="SimpleDateConverter" />
+					</div>
 
-					<p:outputLabel value="Data de Nascimento:" for="dataNascimento" />
-					<p:calendar id="dataNascimento"
-						value="#{clienteBean.to.dataNascimento}" pattern="dd/MM/yyyy"
-						mask="true" placeholder="Digite data de nascimento..."
-						converter="SimpleDateConverter" />
+					<div class="ui-g-3">
+						<p:outputLabel value="Telefone" for="telefone" class="label" />
+						<p:inputMask id="telefone" value="#{clienteBean.to.telefone}"
+							placeholder="Digite o telefone..." mask="(99) 99999-9999" />
+					</div>
 
-					<p:outputLabel for="email" value="E-mail:" />
-					<p:inputText id="email"
-						value="#{clienteBean.to.toUsuario.email}"
-						placeholder="Digite o e-mail..." />
+					<div class="ui-g-3">
+						<p:outputLabel for="email" value="E-mail" class="label" />
+						<p:inputText id="email" value="#{clienteBean.to.toUsuario.email}"
+							placeholder="Digite o e-mail..." />
+					</div>
 
-					<p:outputLabel for="senha" value="Senha:" />
-					<p:password id="senha" value="#{clienteBean.senha}"
-						placeholder="Digite a senha..." />
+					<div class="ui-g-3">
+						<p:outputLabel for="senha" value="Senha" class="label" />
+						<p:password id="senha" value="#{clienteBean.senha}"
+							placeholder="Digite a senha..." />
+					</div>
 
-					<p:outputLabel for="pais" value="País:" />
-					<p:inputText id="pais" onclick="PF('PaisesDialog').show();"
-						value="#{clienteBean.to.toEndereco.toPais.nome}" readonly="true"
-						placeholder="Selecione o país..." style="cursor: pointer;" />
+				</p:fieldset>
 
-					<p:outputLabel for="estado" value="Estado:" />
-					<p:inputText id="estado" onclick="PF('EstadosDialog').show();"
-						value="#{clienteBean.to.toEndereco.toEstado.nome}"
-						readonly="true" placeholder="Selecione o estado..."
-						style="cursor: pointer;" />
+				<p:fieldset class="group margin-top">
 
-					<p:outputLabel for="cidade" value="Cidade:" />
-					<p:inputText id="cidade" onclick="PF('CidadesDialog').show();"
-						value="#{clienteBean.to.toEndereco.toCidade.nome}"
-						readonly="true" placeholder="Selecione a cidade..."
-						style="cursor: pointer;" />
+					<div class="ui-g-3">
+						<p:outputLabel for="pais" value="País" class="label" />
+						<p:inputText id="pais" onclick="PF('PaisesDialog').show();"
+							value="#{clienteBean.to.toEndereco.toPais.nome}" readonly="true"
+							placeholder="Selecione o país..." style="cursor: pointer;" />
+					</div>
 
-					<p:outputLabel value="Bairro:" for="bairro" />
-					<p:inputText id="bairro"
-						value="#{clienteBean.to.toEndereco.toLogradouro.bairro}"
-						placeholder="Digite o bairro..." />
+					<div class="ui-g-3">
+						<p:outputLabel for="estado" value="Estado" class="label" />
+						<p:inputText id="estado" onclick="PF('EstadosDialog').show();"
+							value="#{clienteBean.to.toEndereco.toEstado.nome}"
+							readonly="true" placeholder="Selecione o estado..."
+							style="cursor: pointer;" />
+					</div>
 
-					<p:outputLabel value="Cep:" for="cep" />
-					<p:inputMask id="cep"
-						value="#{clienteBean.to.toEndereco.toLogradouro.cep}"
-						placeholder="Digite o cep..." mask="99999-999" />
+					<div class="ui-g-3">
+						<p:outputLabel for="cidade" value="Cidade" class="label" />
+						<p:inputText id="cidade" onclick="PF('CidadesDialog').show();"
+							value="#{clienteBean.to.toEndereco.toCidade.nome}"
+							readonly="true" placeholder="Selecione a cidade..."
+							style="cursor: pointer;" />
+					</div>
 
-					<p:outputLabel value="Rua:" for="rua" />
-					<p:inputText id="rua"
-						value="#{clienteBean.to.toEndereco.toLogradouro.rua}"
-						placeholder="Digite a rua..." />
+					<div class="ui-g-3">
+						<p:outputLabel value="Bairro" for="bairro" class="label" />
+						<p:inputText id="bairro"
+							value="#{clienteBean.to.toEndereco.toLogradouro.bairro}"
+							placeholder="Digite o bairro..." />
+					</div>
 
-					<p:outputLabel value="Complemento:" for="complemento" />
-					<p:inputText id="complemento"
-						value="#{clienteBean.to.toEndereco.toLogradouro.complemento}"
-						placeholder="Digite o complemento..." />
+					<div class="ui-g-3">
+						<p:outputLabel value="Cep" for="cep" class="label" />
+						<p:inputMask id="cep"
+							value="#{clienteBean.to.toEndereco.toLogradouro.cep}"
+							placeholder="Digite o cep..." mask="99999-999" />
+					</div>
 
-					<p:commandButton value="Cadastrar" process="@form"
-						update="@form, formMessages:messages" action="#{clienteBean.cadastrar}" />
-				</p:panelGrid>
-			</p:fieldset>
+					<div class="ui-g-3">
+						<p:outputLabel value="Rua" for="rua" class="label" />
+						<p:inputText id="rua"
+							value="#{clienteBean.to.toEndereco.toLogradouro.rua}"
+							placeholder="Digite a rua..." />
+					</div>
+
+					<div class="ui-g-3">
+						<p:outputLabel value="Complemento" for="complemento" class="label" />
+						<p:inputText id="complemento"
+							value="#{clienteBean.to.toEndereco.toLogradouro.complemento}"
+							placeholder="Digite o complemento..." />
+					</div>
+				</p:fieldset>
+
+				<p:commandButton value="Salvar" process="@form" class="button margin-top"
+					update="@form, formMessages:messages"
+					action="#{clienteBean.cadastrar}" />
+
+			</div>
 
 			<p:dialog header="Países" widgetVar="PaisesDialog" resizable="false"
 				width="700">
@@ -118,8 +155,9 @@
 				resizable="false" width="700">
 
 				<p:dataTable id="tabelaEstados" value="#{clienteBean.toEstados}"
-					selectionMode="single" selection="#{clienteBean.toEstadoSelecionado}"
-					var="toEstado" rowKey="#{toEstado.id}" rows="5" paginator="true"
+					selectionMode="single"
+					selection="#{clienteBean.toEstadoSelecionado}" var="toEstado"
+					rowKey="#{toEstado.id}" rows="5" paginator="true"
 					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PageLinks} {PreviousPageLink} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 					emptyMessage="Nenhum estado encontrado." widgetVar="TabelaEstados"
 					filteredValue="#{clienteBean.toEstadosFiltrados}">
@@ -147,8 +185,9 @@
 				resizable="false" width="700">
 
 				<p:dataTable id="tabelaCidades" value="#{clienteBean.toCidades}"
-					selectionMode="single" selection="#{clienteBean.toCidadeSelecionada}"
-					var="toCidade" rowKey="#{toCidade.id}" rows="5" paginator="true"
+					selectionMode="single"
+					selection="#{clienteBean.toCidadeSelecionada}" var="toCidade"
+					rowKey="#{toCidade.id}" rows="5" paginator="true"
 					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PageLinks} {PreviousPageLink} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 					emptyMessage="Nenhuma cidade encontrada." widgetVar="TabelaCidades"
 					filteredValue="#{listaCidadeBean.toCidadesFiltradas}">
