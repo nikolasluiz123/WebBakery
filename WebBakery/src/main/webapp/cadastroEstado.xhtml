@@ -8,36 +8,43 @@
 <ui:composition template="_template.xhtml">
 
 	<ui:define name="conteudo">
+		<link rel="stylesheet" type="text/css" href="css/form.css" />
+		<link rel="stylesheet" type="text/css" href="css/dialog-lov.css" />
+		<link rel="stylesheet" type="text/css" href="css/table.css" />
+		<link rel="stylesheet" type="text/css" href="css/table-lov.css" />
 
 		<h:form id="formCadastroEstado">
 
-			<p:fieldset legend="Dados do Estado">
+			<div class="ui-g">
 
-				<div class="ui-g-12">
-					<p:outputLabel value="Nome:" for="nome" />
+				<div class="ui-g-3">
+					<p:outputLabel value="Nome" for="nome" class="label" />
 					<p:inputText id="nome" value="#{estadoBean.to.nome}"
 						placeholder="Digite o nome..." />
+				</div>
 
-					<p:outputLabel value="Sigla:" for="sigla" />
+				<div class="ui-g-3">
+					<p:outputLabel value="Sigla" for="sigla" class="label" />
 					<p:inputText id="sigla" value="#{estadoBean.to.sigla}"
 						placeholder="Digite a sigla..." />
 				</div>
 
-				<div class="ui-g-12">
-					<p:outputLabel for="pais" value="País:" />
+				<div class="ui-g-3">
+					<p:outputLabel for="pais" value="País" class="label" />
 					<p:inputText id="pais" onclick="PF('PaisesDialog').show();"
 						value="#{estadoBean.to.toPais.nome}" readonly="true"
-						placeholder="Selecione o país..." style="cursor: pointer;" />
-
-					<p:commandButton value="Cadastrar" process="@form"
-						update="formMessages:messages, @form" action="#{estadoBean.cadastrar}" />
+						placeholder="Selecione o país..." class="input-lov" />
 				</div>
 
+				<div class="ui-g-3" style="align-self: flex-end;">
+					<p:commandButton value="Salvar" process="@form"
+						update="formMessages:messages, @form"
+						action="#{estadoBean.cadastrar}" styleClass="button" />
+				</div>
+			</div>
 
-			</p:fieldset>
-
-			<p:dialog header="Países" widgetVar="PaisesDialog" resizable="false"
-				width="700">
+			<p:dialog header="Países" widgetVar="PaisesDialog"
+				resizable="false" width="700">
 
 				<p:dataTable id="tabelaPaises" value="#{estadoBean.toPaises}"
 					selectionMode="single" selection="#{estadoBean.toPaisSelecionado}"
@@ -55,9 +62,9 @@
 						<h:outputText value="#{toPais.sigla}" />
 					</p:column>
 				</p:dataTable>
-				<p:commandButton value="Selecionar" process="@form" update="@form"
+				<p:commandButton value="Confirmar" process="@form" update="@form"
 					action="#{estadoBean.setarPais}"
-					oncomplete="PF('PaisesDialog').hide();" />
+					oncomplete="PF('PaisesDialog').hide();" styleClass="button button-dialog" />
 			</p:dialog>
 		</h:form>
 

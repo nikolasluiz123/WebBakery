@@ -7,26 +7,28 @@
 
 <ui:composition template="_template.xhtml">
 	<ui:define name="conteudo">
+		<link rel="stylesheet" type="text/css" href="css/form.css" />
+
 		<h:form id="formCadastroPais">
 
 			<div class="ui-g">
 
 				<div class="ui-g-3">
-					<p:outputLabel value="Nome" for="nome" style="display: block;" />
+					<p:outputLabel value="Nome" for="nome" class="label" />
 					<p:inputText id="nome" value="#{paisBean.to.nome}"
 						placeholder="Digite o nome..." />
 				</div>
 
 				<div class="ui-g-3">
-					<p:outputLabel value="Sigla" for="sigla" style="display: block;" />
+					<p:outputLabel value="Sigla" for="sigla" class="label" />
 					<p:inputText id="sigla" value="#{paisBean.to.sigla}"
 						placeholder="Digite a sigla..." />
 				</div>
 
-				<div class="ui-g-6"
-					style="align-self: flex-end;">
+				<div class="ui-g-6" style="align-self: flex-end;">
 					<p:commandButton value="Salvar" process="@form"
-						update="formMessages:messages, @form" action="#{paisBean.salvar}" styleClass="button" />
+						update="formMessages:messages, @form" action="#{paisBean.salvar}"
+						styleClass="button" />
 				</div>
 			</div>
 		</h:form>

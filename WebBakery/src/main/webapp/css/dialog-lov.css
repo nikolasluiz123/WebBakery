@@ -1,0 +1,57 @@
+/* Input usado para clicar na lov */
+.input-lov {
+	cursor: pointer;
+}
+/* Input usado para clicar na lov */
+
+/* Background do header da dialog */
+.ui-dialog-titlebar.ui-widget-header.ui-helper-clearfix.ui-corner-top.ui-draggable-handle
+	{
+	background: #000000;
+}
+/* Background do header da dialog */
+
+/* Background do corpo da dialog */
+.ui-dialog-content.ui-widget-content {
+	background: #333333;
+}
+/* Background do corpo da dialog */
+
+/* Texto do header da dialog */
+.ui-dialog-titlebar.ui-widget-header.ui-helper-clearfix.ui-corner-top.ui-draggable-handle
+	{
+	color: white;
+	font-weight: unset;
+}
+/* Texto do header da dialog */
+
+/* botão de confirmar seleção da dialog */
+.ui-button.ui-widget.ui-state-default.ui-corner-all.ui-button-text-only.button.button-dialog{
+	background: #000000;
+	color: white;
+	margin-top: 10px;
+	border: none;
+	float: right;
+	font-weight: unset;
+}
+/* botão de confirmar seleção da dialog */
+
+/* css para quando a linha da tabela for selecionada */
+.ui-widget-content.ui-datatable-even.ui-datatable-selectable.ui-state-highlight,
+.ui-widget-content.ui-datatable-odd.ui-datatable-selectable.ui-state-highlight{
+	background: #000000;
+}
+/* css para quando a linha da tabela for selecionada */
+
+
+
+
+
+
+
+
+
+
+
+
+
