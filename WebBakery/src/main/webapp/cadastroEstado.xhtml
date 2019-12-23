@@ -11,7 +11,6 @@
 		<link rel="stylesheet" type="text/css" href="css/form.css" />
 		<link rel="stylesheet" type="text/css" href="css/dialog-lov.css" />
 		<link rel="stylesheet" type="text/css" href="css/table.css" />
-		<link rel="stylesheet" type="text/css" href="css/table-lov.css" />
 
 		<h:form id="formCadastroEstado">
 
@@ -36,10 +35,10 @@
 						placeholder="Selecione o país..." class="input-lov" />
 				</div>
 
-				<div class="ui-g-3" style="align-self: flex-end;">
+				<div class="ui-g-12">
 					<p:commandButton value="Salvar" process="@form"
 						update="formMessages:messages, @form"
-						action="#{estadoBean.cadastrar}" styleClass="button" />
+						action="#{estadoBean.cadastrar}" class="button" />
 				</div>
 			</div>
 

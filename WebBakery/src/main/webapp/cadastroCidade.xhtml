@@ -8,33 +8,41 @@
 <ui:composition template="_template.xhtml">
 
 	<ui:define name="conteudo">
+		<link rel="stylesheet" type="text/css" href="css/form.css" />
+		<link rel="stylesheet" type="text/css" href="css/dialog-lov.css" />
+		<link rel="stylesheet" type="text/css" href="css/table.css" />
 
 		<h:form id="formCadastroCidade">
+			<div class="ui-g">
 
-			<p:fieldset legend="Dados da Cidade">
-				<p:panelGrid columns="2">
-
-					<p:outputLabel value="Nome:" for="nome" />
+				<div class="ui-g-3">
+					<p:outputLabel value="Nome:" for="nome" class="label" />
 					<p:inputText id="nome" value="#{cidadeBean.to.nome}"
 						placeholder="Digite o nome..." />
+				</div>
 
-					<p:outputLabel for="estado" value="Estado:" />
+				<div class="ui-g-3">
+					<p:outputLabel for="estado" value="Estado:" class="label" />
 					<p:inputText id="estado" onclick="PF('EstadosDialog').show();"
 						value="#{cidadeBean.to.toEstado.nome}" readonly="true"
 						placeholder="Selecione o estado..." style="cursor: pointer;" />
+				</div>
 
-					<p:commandButton value="Cadastrar" process="@form"
-						update="formMessages:messages, @form" action="#{cidadeBean.salvar}" />
+				<div class="ui-g-12">
+					<p:commandButton value="Salvar" process="@form" class="button"
+						update="formMessages:messages, @form"
+						action="#{cidadeBean.salvar}" />
+				</div>
 
-				</p:panelGrid>
-			</p:fieldset>
+			</div>
 
 			<p:dialog header="Estados" widgetVar="EstadosDialog"
 				resizable="false" width="700">
 
 				<p:dataTable id="tabelaEstados" value="#{cidadeBean.toEstados}"
-					selectionMode="single" selection="#{cidadeBean.toEstadoSelecionado}"
-					var="toEstado" rowKey="#{toEstado.id}" rows="5" paginator="true"
+					selectionMode="single"
+					selection="#{cidadeBean.toEstadoSelecionado}" var="toEstado"
+					rowKey="#{toEstado.id}" rows="5" paginator="true"
 					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PageLinks} {PreviousPageLink} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 					emptyMessage="Nenhum estado encontrado." widgetVar="TabelaEstados"
 					filteredValue="#{estadoBean.toPaisesFiltrados}">
