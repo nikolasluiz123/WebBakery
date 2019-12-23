@@ -16,13 +16,13 @@
 			<div class="ui-g">
 
 				<div class="ui-g-3">
-					<p:outputLabel value="Nome:" for="nome" class="label" />
+					<p:outputLabel value="Nome" for="nome" class="label" />
 					<p:inputText id="nome" value="#{cidadeBean.to.nome}"
 						placeholder="Digite o nome..." />
 				</div>
 
 				<div class="ui-g-3">
-					<p:outputLabel for="estado" value="Estado:" class="label" />
+					<p:outputLabel for="estado" value="Estado" class="label" />
 					<p:inputText id="estado" onclick="PF('EstadosDialog').show();"
 						value="#{cidadeBean.to.toEstado.nome}" readonly="true"
 						placeholder="Selecione o estado..." style="cursor: pointer;" />
