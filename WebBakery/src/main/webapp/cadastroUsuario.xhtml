@@ -8,46 +8,56 @@
 <ui:composition template="_template.xhtml">
 
 	<ui:define name="conteudo">
+		<link rel="stylesheet" type="text/css" href="css/form.css" />
 
 		<h:form id="formCadastroUsuario">
 
-			<p:fieldset legend="Dados do Usuário">
-				<p:panelGrid columns="2">
-
-					<p:outputLabel value="Nome:" for="nome" />
+			<div class="ui-g">
+				<div class="ui-g-3">
+					<p:outputLabel value="Nome" for="nome" class="label" />
 					<p:inputText id="nome" value="#{usuarioBean.to.nome}"
 						placeholder="Digite o nome..." />
+				</div>
 
-					<p:outputLabel value="Sobrenome:" for="sobrenome" />
-					<p:inputText id="sobrenome"
-						value="#{usuarioBean.to.sobrenome}"
+				<div class="ui-g-3">
+					<p:outputLabel value="Sobrenome" for="sobrenome" class="label" />
+					<p:inputText id="sobrenome" value="#{usuarioBean.to.sobrenome}"
 						placeholder="Digite o sobrenome..." />
+				</div>
 
-					<p:outputLabel value="E-mail:" for="email" />
-					<p:inputText id="email" value="#{usuarioBean.to.email}"
-						placeholder="Digite seu e-mail...">
 
-						<f:passThroughAttribute name="type" value="email" />
-
-					</p:inputText>
-
-					<p:outputLabel value="Senha:" for="senha" />
-					<p:password id="senha" value="#{usuarioBean.senha}"
-						feedback="true" placeholder="Digite sua senha..." />
-
-					<p:outputLabel value="Tipo de Usuário:" for="tipoUsuario" />
+				<div class="ui-g-4">
+					<p:outputLabel value="Tipo de Usuário" for="tipoUsuario"
+						class="label" />
 					<p:selectOneMenu value="#{usuarioBean.tipoUsuario}"
 						id="tipoUsuario">
 						<f:selectItems value="#{usuarioBean.tiposUsuarios}" var="tipo"
 							itemLabel="#{tipo.nome}" itemValue="#{tipo}" />
 					</p:selectOneMenu>
+				</div>
 
-					<p:commandButton value="Cadastrar"
-						action="#{usuarioBean.salvar}" process="@form"
+				<div class="ui-g-3">
+					<p:outputLabel value="E-mail" for="email" class="label" />
+					<p:inputText id="email" value="#{usuarioBean.to.email}"
+						placeholder="Digite seu e-mail...">
+						<f:passThroughAttribute name="type" value="email" />
+					</p:inputText>
+				</div>
+				
+				<div class="ui-g-3">
+					<p:outputLabel value="Senha" for="senha" class="label" />
+					<p:password id="senha" value="#{usuarioBean.senha}" feedback="true"
+						placeholder="Digite sua senha..." />
+				</div>
+
+				<div class="ui-g-12">
+					<p:commandButton value="Salvar" action="#{usuarioBean.salvar}"
+						class="button" process="@form"
 						update="formMessages:messages, @form" />
+				</div>
 
-				</p:panelGrid>
-			</p:fieldset>
+			</div>
+
 		</h:form>
 	</ui:define>
 </ui:composition>

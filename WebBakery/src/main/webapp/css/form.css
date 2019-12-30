@@ -13,12 +13,47 @@
 /* labels de inputs */
 
 /* classes que podem ser utilizadas em fieldsets */
-.group{
+.group {
 	background: rgba(0, 0, 0, 0.2);
 	color: white;
 }
-/* classe que podem ser utilizadas em fieldsets */
-
-.margin-top{
+/* classes que podem ser utilizadas em fieldsets */
+.margin-top {
 	margin-top: 10px;
 }
+
+.ui-selectonemenu.ui-widget.ui-state-default.ui-corner-all {
+	min-width: 203px !important;
+}
+/* classes que podem ser utilizadas em fieldsets */
+
+/* combobox */
+.ui-selectonemenu-items.ui-selectonemenu-list.ui-widget-content.ui-widget.ui-corner-all.ui-helper-reset {
+	background: #666666;
+}
+
+.ui-selectonemenu-item.ui-selectonemenu-list-item.ui-corner-all.ui-state-hover,
+.ui-selectonemenu-items.ui-selectonemenu-list.ui-widget-content.ui-widget.ui-corner-all.ui-helper-reset{
+	color: white;
+}
+
+.ui-selectonemenu-item.ui-selectonemenu-list-item.ui-corner-all:hover,
+.ui-selectonemenu-item.ui-selectonemenu-list-item.ui-corner-all.ui-state-highlight:hover,
+.ui-selectonemenu-item.ui-selectonemenu-list-item.ui-corner-all:active{
+	background: rgba(0, 0, 0, 0.9) !important;
+	box-shadow: none;
+}
+
+.ui-state-highlight{
+	background:  #666666 !important;
+}
+/* combobox */
+
+
+
+
+
+
+
+
+
