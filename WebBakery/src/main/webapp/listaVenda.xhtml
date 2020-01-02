@@ -8,7 +8,10 @@
 <ui:composition template="_template.xhtml">
 
 	<ui:define name="conteudo">
-		<link rel="stylesheet" type="text/css" href="css/table.css"/>
+		<link rel="stylesheet" type="text/css" href="css/dialog-lov.css" />
+		<link rel="stylesheet" type="text/css" href="css/table.css" />
+		<link rel="stylesheet" type="text/css" href="css/table-lov.css" />
+		
 		<h:form id="formDataTableVendas">
 			<p:dataTable var="venda" value="#{listaVendaBean.vendas}"
 				id="tabelaVendas" rows="10" paginator="true"

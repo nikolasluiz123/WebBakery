@@ -59,7 +59,7 @@
 			<div jsf:id="funcionalidades" class="margin-top-10">
 
 				<div class="ui-g">
-					<div class="ui-g-3">
+					<div class="ui-g-12 ui-md-12 ui-lg-3">
 						<p:outputLabel for="cliente" value="Cliente" class="label" />
 						<p:inputText id="cliente" onclick="PF('ClientesDialog').show();"
 							value="#{vendaBean.to.toCliente.toUsuario.nome} #{vendaBean.to.toCliente.toUsuario.sobrenome}"
@@ -68,7 +68,7 @@
 							disabled="#{empty vendaBean.toEstoqueProdutosSelecionados}" />
 					</div>
 
-					<div class="ui-g-3">
+					<div class="ui-g-12 ui-md-12 ui-lg-3">
 						<p:outputLabel value="Forma de Pagamento" for="formaPagamento"
 							class="label" />
 						<p:selectOneMenu value="#{vendaBean.formaPagamento}"

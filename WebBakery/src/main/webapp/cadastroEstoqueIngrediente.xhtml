@@ -12,7 +12,7 @@
 
 		<h:form id="formCadastroEstado">
 
-			<div class="ui-g-3">
+			<div class="ui-g-12 ui-md-6 ui-lg-3">
 				<p:outputLabel for="ingrediente" value="Ingrediente" class="label" />
 				<p:inputText id="ingrediente"
 					onclick="PF('IngredientesDialog').show();"
@@ -21,7 +21,7 @@
 					style="cursor: pointer;" />
 			</div>
 
-			<div class="ui-g-3">
+			<div class="ui-g-12 ui-md-6 ui-lg-3">
 				<p:outputLabel for="unidadeMedidaIngrendiete"
 					value="Unidade de Medida" class="label" />
 				<p:inputText id="unidadeMedidaIngrendiete"
@@ -29,7 +29,7 @@
 					readonly="true" />
 			</div>
 
-			<div class="ui-g-3">
+			<div class="ui-g-12 ui-md-6 ui-lg-3">
 				<p:outputLabel for="quantidade" value="Quantidade" class="label" />
 				<p:inputNumber id="quantidade"
 					value="#{estoqueIngredienteBean.to.quantidade}" decimalPlaces="2"

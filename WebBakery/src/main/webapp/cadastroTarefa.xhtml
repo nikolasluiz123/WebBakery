@@ -17,29 +17,28 @@
 		<h:form id="formCadastroTarefa">
 			<div class="ui-g">
 
-				<div class="ui-g-3">
+				<div class="ui-g-12 ui-md-6 ui-lg-3">
 					<p:outputLabel for="produto" value="Produto" class="label" />
 					<p:inputText id="produto" onclick="PF('ProdutosDialog').show();"
 						value="#{tarefaBean.to.toProduto.descricao}" readonly="true"
 						placeholder="Selecione o produto..." style="cursor: pointer;" />
 				</div>
 
-				<div class="ui-g-3">
+				<div class="ui-g-12 ui-md-6 ui-lg-3">
 					<p:outputLabel value="Quantidade:" for="quantidade" class="label" />
 					<p:inputNumber id="quantidade" value="#{tarefaBean.to.quantidade}"
 						placeholder="Digite a quantidade..." maxValue="100000"
 						decimalPlaces="0" />
 				</div>
 
-				<div class="ui-g-6">
+				<div class="ui-g-12 ui-md-6 ui-lg-3">
 					<p:outputLabel for="padeiro" value="Padeiro" class="label" />
 					<p:inputText id="padeiro" onclick="PF('PadeirosDialog').show();"
 						value="#{tarefaBean.to.toPadeiro.toUsuario.nome} #{tarefaBean.to.toPadeiro.toUsuario.sobrenome}"
-						readonly="true" placeholder="Teste"
-						style="cursor: pointer;" />
+						readonly="true" placeholder="Teste" style="cursor: pointer;" />
 				</div>
 
-				<div class="ui-g-3">
+				<div class="ui-g-12 ui-md-6 ui-lg-3">
 					<p:outputLabel for="dataInicio" value="Data de Início"
 						class="label" />
 					<p:calendar id="dataInicio" value="#{tarefaBean.to.dataInicio}"
@@ -50,7 +49,7 @@
 					</p:calendar>
 				</div>
 
-				<div class="ui-g-3">
+				<div class="ui-g-12 ui-md-6 ui-lg-3">
 					<p:outputLabel for="dataFim" value="Data de Fim" class="label" />
 					<p:calendar id="dataFim" value="#{tarefaBean.to.dataFim}"
 						pattern="dd/MM/yyyy HH:mm" disabled="true" />

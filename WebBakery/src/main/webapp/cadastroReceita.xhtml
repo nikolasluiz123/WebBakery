@@ -17,20 +17,20 @@
 
 			<div class="ui-g">
 
-				<div class="ui-g-3">
+				<div class="ui-g-12 ui-md-6 ui-lg-3">
 					<p:outputLabel value="Receita" for="receita" class="label" />
 					<p:inputText id="receita" value="#{receitaBean.to.nome}"
 						placeholder="Digite o nome da receita..." />
 				</div>
 
-				<div class="ui-g-3">
+				<div class="ui-g-12 ui-md-6 ui-lg-3">
 					<p:outputLabel value="Quantidade" for="quantidade" class="label" />
 					<p:inputNumber id="quantidade" value="#{receitaBean.to.quantidade}"
 						placeholder="Digite a quantidade..." thousandSeparator="."
 						decimalPlaces="0" maxValue="100000" minValue="1" />
 				</div>
 
-				<div class="ui-g-3">
+				<div class="ui-g-12 ui-md-6 ui-lg-3">
 					<p:outputLabel for="tempoPreparo" value="Tempo" class="label" />
 					<p:calendar id="tempoPreparo"
 						value="#{receitaBean.to.tempoPreparo}" pattern="HH:mm"
@@ -72,12 +72,14 @@
 
 				</p:dataTable>
 
-				<p:commandButton value="Definir Quantidades" class="button margin-top-10"
+				<p:commandButton value="Definir Quantidades"
+					class="button margin-top-10"
 					update="formDialogReceitaIngredientes:tabelaReceitaIngredientes"
 					oncomplete="PF('ReceitaIngredienteDialog').show();"
 					action="#{receitaBean.criarReceitaIngrediente}" />
 
-				<p:commandButton value="Cancelar" class="button margin-top-10 secondary-button"
+				<p:commandButton value="Cancelar"
+					class="button margin-top-10 secondary-button"
 					update="formCadastroReceita, formDialogIngredientes, formDialogReceitaIngredientes"
 					oncomplete="PF('IngredienteDialog').hide();"
 					action="#{receitaBean.removerReceita()}" />
@@ -134,7 +136,8 @@
 					action="#{receitaBean.finalizarReceita}"
 					oncomplete="PF('ReceitaIngredienteDialog').hide(); PF('IngredienteDialog').hide();" />
 
-				<p:commandButton value="Cancelar" class="button margin-top-10 secondary-button"
+				<p:commandButton value="Cancelar"
+					class="button margin-top-10 secondary-button"
 					oncomplete="PF('ReceitaIngredienteDialog').hide();"
 					update="formDialogIngredientes:tabelaIngredientes"
 					action="#{receitaBean.removerReceitaIngrediente()}" />
