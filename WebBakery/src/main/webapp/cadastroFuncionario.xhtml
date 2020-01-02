@@ -9,6 +9,7 @@
 
 	<ui:define name="conteudo">
 		<link rel="stylesheet" type="text/css" href="css/form.css" />
+		<link rel="stylesheet" type="text/css" href="css/form-group.css" />
 		<link rel="stylesheet" type="text/css" href="css/dialog-lov.css" />
 		<link rel="stylesheet" type="text/css" href="css/table.css" />
 		<link rel="stylesheet" type="text/css" href="css/table-lov.css" />
@@ -17,105 +18,114 @@
 
 			<div class="ui-g">
 
-				<p:fieldset class="group">
-					<div class="ui-g-3">
-						<p:outputLabel value="CPF" for="cpf" />
-						<p:inputMask id="cpf" value="#{funcionarioBean.to.cpf}"
-							placeholder="Digite o cpf..." mask="999.999.999-99" />
-					</div>
+				<div class="ui-g-12 ui-md-12 ui-lg-12">
+					<p:fieldset class="group" legend="Informações Pessoais">
+						<div class="ui-g-12 ui-md-6 ui-lg-3">
+							<p:outputLabel value="CPF" for="cpf" class="label" />
+							<p:inputMask id="cpf" value="#{funcionarioBean.to.cpf}"
+								placeholder="Digite o cpf..." mask="999.999.999-99" />
+						</div>
 
-					<div class="ui-g-3">
-						<p:outputLabel value="RG" for="rg" />
-						<p:inputMask id="rg" value="#{funcionarioBean.to.rg}"
-							placeholder="Digite o rg..." mask="9.999.999" />
-					</div>
+						<div class="ui-g-12 ui-md-6 ui-lg-3">
+							<p:outputLabel value="RG" for="rg" class="label" />
+							<p:inputMask id="rg" value="#{funcionarioBean.to.rg}"
+								placeholder="Digite o rg..." mask="9.999.999" />
+						</div>
 
-					<div class="ui-g-3">
-						<p:outputLabel value="Telefone" for="telefone" />
-						<p:inputMask id="telefone" value="#{funcionarioBean.to.telefone}"
-							placeholder="Digite o telefone..." mask="(99) 99999-9999" />
-					</div>
+						<div class="ui-g-12 ui-md-6 ui-lg-3">
+							<p:outputLabel value="Telefone" for="telefone" class="label" />
+							<p:inputMask id="telefone" value="#{funcionarioBean.to.telefone}"
+								placeholder="Digite o telefone..." mask="(99) 99999-9999" />
+						</div>
 
-					<div class="ui-g-3">
-						<p:outputLabel value="Data de Nascimento" for="dataNascimento" />
-						<p:calendar id="dataNascimento"
-							value="#{funcionarioBean.to.dataNascimento}" pattern="dd/MM/yyyy"
-							mask="true" placeholder="Digite data de nascimento..." />
-					</div>
+						<div class="ui-g-12 ui-md-6 ui-lg-3">
+							<p:outputLabel value="Data de Nascimento" for="dataNascimento"
+								class="label" />
+							<p:calendar id="dataNascimento"
+								value="#{funcionarioBean.to.dataNascimento}"
+								pattern="dd/MM/yyyy" mask="true"
+								placeholder="Digite data de nascimento..." />
+						</div>
 
-					<div class="ui-g-3">
-						<p:outputLabel value="Salário" for="salario" />
-						<p:inputNumber id="salario" value="#{funcionarioBean.to.salario}"
-							symbol="R$ " decimalSeparator="," thousandSeparator="."
-							placeholder="Digite o salário..." />
-					</div>
+						<div class="ui-g-12 ui-md-6 ui-lg-3">
+							<p:outputLabel value="Salário" for="salario" class="label" />
+							<p:inputNumber id="salario" value="#{funcionarioBean.to.salario}"
+								symbol="R$ " decimalSeparator="," thousandSeparator="."
+								placeholder="Digite o salário..." />
+						</div>
 
-					<div class="ui-g-3">
-						<p:outputLabel for="usuario" value="Usuário:" />
-						<p:inputText id="usuario" onclick="PF('UsuariosDialog').show();"
-							value="#{funcionarioBean.to.toUsuario.email}" readonly="true"
-							placeholder="Selecione o usuário..." style="cursor: pointer;" />
-					</div>
-				</p:fieldset>
+						<div class="ui-g-12 ui-md-6 ui-lg-3">
+							<p:outputLabel for="usuario" value="Usuário" class="label" />
+							<p:inputText id="usuario" onclick="PF('UsuariosDialog').show();"
+								value="#{funcionarioBean.to.toUsuario.email}" readonly="true"
+								placeholder="Selecione o usuário..." style="cursor: pointer;" />
+						</div>
+					</p:fieldset>
+				</div>
 
-				<p:fieldset class="group margin-top-10">
-					<div class="ui-g-3">
-						<p:outputLabel for="pais" value="País" />
-						<p:inputText id="pais" onclick="PF('PaisesDialog').show();"
-							value="#{funcionarioBean.to.toEndereco.toPais.nome}"
-							readonly="true" placeholder="Selecione o país..."
-							style="cursor: pointer;" />
-					</div>
+				<div class="ui-g-12 ui-md-12 ui-lg-12">
+					<p:fieldset class="group margin-top-10" legend="Localização">
+						<div class="ui-g-12 ui-md-6 ui-lg-3">
+							<p:outputLabel for="pais" value="País" class="label" />
+							<p:inputText id="pais" onclick="PF('PaisesDialog').show();"
+								value="#{funcionarioBean.to.toEndereco.toPais.nome}"
+								readonly="true" placeholder="Selecione o país..."
+								style="cursor: pointer;" />
+						</div>
 
-					<div class="ui-g-3">
-						<p:outputLabel for="estado" value="Estado" />
-						<p:inputText id="estado" onclick="PF('EstadosDialog').show();"
-							value="#{funcionarioBean.to.toEndereco.toEstado.nome}"
-							readonly="true" placeholder="Selecione o estado..."
-							style="cursor: pointer;" />
-					</div>
+						<div class="ui-g-12 ui-md-6 ui-lg-3">
+							<p:outputLabel for="estado" value="Estado" class="label" />
+							<p:inputText id="estado" onclick="PF('EstadosDialog').show();"
+								value="#{funcionarioBean.to.toEndereco.toEstado.nome}"
+								readonly="true" placeholder="Selecione o estado..."
+								style="cursor: pointer;" />
+						</div>
 
-					<div class="ui-g-3">
-						<p:outputLabel for="cidade" value="Cidade" />
-						<p:inputText id="cidade" onclick="PF('CidadesDialog').show();"
-							value="#{funcionarioBean.to.toEndereco.toCidade.nome}"
-							readonly="true" placeholder="Selecione a cidade..."
-							style="cursor: pointer;" />
-					</div>
+						<div class="ui-g-12 ui-md-6 ui-lg-3">
+							<p:outputLabel for="cidade" value="Cidade" class="label" />
+							<p:inputText id="cidade" onclick="PF('CidadesDialog').show();"
+								value="#{funcionarioBean.to.toEndereco.toCidade.nome}"
+								readonly="true" placeholder="Selecione a cidade..."
+								style="cursor: pointer;" />
+						</div>
 
-					<div class="ui-g-3">
-						<p:outputLabel value="Cep" for="cep" />
-						<p:inputMask id="cep"
-							value="#{funcionarioBean.to.toEndereco.toLogradouro.cep}"
-							placeholder="Digite o cep..." mask="99999-999" />
-					</div>
+						<div class="ui-g-12 ui-md-6 ui-lg-3">
+							<p:outputLabel value="Cep" for="cep" class="label" />
+							<p:inputMask id="cep"
+								value="#{funcionarioBean.to.toEndereco.toLogradouro.cep}"
+								placeholder="Digite o cep..." mask="99999-999" />
+						</div>
 
-					<div class="ui-g-3">
-						<p:outputLabel value="Bairro" for="bairro" />
-						<p:inputText id="bairro"
-							value="#{funcionarioBean.to.toEndereco.toLogradouro.bairro}"
-							placeholder="Digite o bairro..." />
-					</div>
+						<div class="ui-g-12 ui-md-6 ui-lg-3">
+							<p:outputLabel value="Bairro" for="bairro" class="label" />
+							<p:inputText id="bairro"
+								value="#{funcionarioBean.to.toEndereco.toLogradouro.bairro}"
+								placeholder="Digite o bairro..." />
+						</div>
 
 
-					<div class="ui-g-3">
-						<p:outputLabel value="Rua" for="rua" />
-						<p:inputText id="rua"
-							value="#{funcionarioBean.to.toEndereco.toLogradouro.rua}"
-							placeholder="Digite a rua..." />
-					</div>
+						<div class="ui-g-12 ui-md-6 ui-lg-3">
+							<p:outputLabel value="Rua" for="rua" class="label" />
+							<p:inputText id="rua"
+								value="#{funcionarioBean.to.toEndereco.toLogradouro.rua}"
+								placeholder="Digite a rua..." />
+						</div>
 
-					<div class="ui-g-3">
-						<p:outputLabel value="Complemento" for="complemento" />
-						<p:inputText id="complemento"
-							value="#{funcionarioBean.to.toEndereco.toLogradouro.complemento}"
-							placeholder="Digite o complemento..." />
-					</div>
-				</p:fieldset>
+						<div class="ui-g-12 ui-md-6 ui-lg-3">
+							<p:outputLabel value="Complemento" for="complemento"
+								class="label" />
+							<p:inputText id="complemento"
+								value="#{funcionarioBean.to.toEndereco.toLogradouro.complemento}"
+								placeholder="Digite o complemento..." />
+						</div>
+					</p:fieldset>
+				</div>
 
-				<p:commandButton value="Salvar" process="@form"
-					class="button margin-top-10" update="formMessages:messages, @form"
-					action="#{funcionarioBean.cadastrar}" />
+				<div class="ui-g-12">
+					<p:commandButton value="Salvar" process="@form"
+						class="button" update="formMessages:messages, @form"
+						action="#{funcionarioBean.cadastrar}" />
+				</div>
 			</div>
 
 			<p:dialog header="Países" widgetVar="PaisesDialog" resizable="false"

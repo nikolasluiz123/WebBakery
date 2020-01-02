@@ -65,7 +65,6 @@
 							<p:password id="senha" value="#{clienteBean.senha}"
 								placeholder="Digite a senha..." />
 						</div>
-
 					</p:fieldset>
 				</div>
 
@@ -127,8 +126,8 @@
 				</div>
 
 				<div class="ui-g-12">
-					<p:commandButton value="Salvar" process="@form"
-						class="button" update="@form, formMessages:messages"
+					<p:commandButton value="Salvar" process="@form" class="button"
+						update="@form, formMessages:messages"
 						action="#{clienteBean.cadastrar}" />
 				</div>
 			</div>
