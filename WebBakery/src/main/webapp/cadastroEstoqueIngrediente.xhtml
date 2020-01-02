@@ -8,40 +8,39 @@
 <ui:composition template="_template.xhtml">
 
 	<ui:define name="conteudo">
+		<link rel="stylesheet" type="text/css" href="css/form.css" />
 
 		<h:form id="formCadastroEstado">
 
-			<p:fieldset legend="Dados do Ingrediente para Estoque">
+			<div class="ui-g-3">
+				<p:outputLabel for="ingrediente" value="Ingrediente" class="label" />
+				<p:inputText id="ingrediente"
+					onclick="PF('IngredientesDialog').show();"
+					value="#{estoqueIngredienteBean.to.toIngrediente.nome}"
+					readonly="true" placeholder="Selecione o ingrediente..."
+					style="cursor: pointer;" />
+			</div>
 
-				<div class="ui-g-6">
-					<p:outputLabel for="ingrediente" value="Ingrediente:" />
-					<p:inputText id="ingrediente"
-						onclick="PF('IngredientesDialog').show();"
-						value="#{estoqueIngredienteBean.to.toIngrediente.nome}"
-						readonly="true" placeholder="Selecione o ingrediente..."
-						style="cursor: pointer;" />
-				</div>
+			<div class="ui-g-3">
+				<p:outputLabel for="unidadeMedidaIngrendiete"
+					value="Unidade de Medida" class="label" />
+				<p:inputText id="unidadeMedidaIngrendiete"
+					value="#{estoqueIngredienteBean.to.toIngrediente.unidadeMedida.descricao}"
+					readonly="true" />
+			</div>
 
-				<div class="ui-g-6">
-					<p:outputLabel for="unidadeMedidaIngrendiete"
-						value="Unidade de Medida" />
-					<p:inputText id="unidadeMedidaIngrendiete"
-						value="#{estoqueIngredienteBean.to.toIngrediente.unidadeMedida.descricao}"
-						readonly="true" />
+			<div class="ui-g-3">
+				<p:outputLabel for="quantidade" value="Quantidade" class="label" />
+				<p:inputNumber id="quantidade"
+					value="#{estoqueIngredienteBean.to.quantidade}" decimalPlaces="2"
+					minValue="0" placeholder="Digite a quantidade..." maxValue="10000" />
+			</div>
 
-				</div>
-
-				<div class="ui-g-6">
-					<p:inputNumber id="quantidade"
-						value="#{estoqueIngredienteBean.to.quantidade}" decimalPlaces="2"
-						minValue="0" placeholder="Digite a quantidade..." maxValue="10000" />
-
-					<p:commandButton value="Cadastrar" process="@form"
-						update="formMessages:messages, @form"
-						action="#{estoqueIngredienteBean.cadastrar}" />
-				</div>
-
-			</p:fieldset>
+			<div class="ui-g-12">
+				<p:commandButton value="Salvar" process="@form" class="button"
+					update="formMessages:messages, @form"
+					action="#{estoqueIngredienteBean.cadastrar}" />
+			</div>
 
 			<p:dialog header="Ingredientes" widgetVar="IngredientesDialog"
 				resizable="false" width="700">
@@ -64,6 +63,7 @@
 
 				</p:dataTable>
 				<p:commandButton value="Selecionar" process="@form" update="@form"
+					class="button margin-top"
 					action="#{estoqueIngredienteBean.setarIngrediente}"
 					oncomplete="PF('IngredientesDialog').hide();" />
 			</p:dialog>

@@ -8,6 +8,10 @@
 <ui:composition template="_template.xhtml">
 
 	<ui:define name="conteudo">
+		<link rel="stylesheet" type="text/css" href="css/form.css" />
+		<link rel="stylesheet" type="text/css" href="css/dialog-lov.css" />
+		<link rel="stylesheet" type="text/css" href="css/table.css" />
+		<link rel="stylesheet" type="text/css" href="css/table-lov.css" />
 
 		<h:form id="formCadastroVenda">
 			<p:dataTable id="tabelaEstoqueProdutos" var="toEstoqueProduto"
@@ -21,8 +25,7 @@
 				widgetVar="TabelaEstoqueProdutos"
 				filteredValue="#{vendaBean.toEstoqueProdutosFiltrados}">
 
-				<p:ajax event="rowSelect"
-					update="formCadastroVenda:funcionalidades" />
+				<p:ajax event="rowSelect" update="formCadastroVenda:funcionalidades" />
 				<p:ajax event="rowSelectCheckbox"
 					update="formCadastroVenda:funcionalidades" />
 				<p:ajax event="rowUnselectCheckbox"
@@ -53,27 +56,37 @@
 				</p:column>
 			</p:dataTable>
 
-			<div jsf:id="funcionalidades">
-				<p:outputLabel for="cliente" value="Cliente:" />
-				<p:inputText id="cliente" onclick="PF('ClientesDialog').show();"
-					value="#{vendaBean.to.toCliente.toUsuario.nome} #{vendaBean.to.toCliente.toUsuario.sobrenome}"
-					readonly="true" placeholder="Selecione o cliente..."
-					style="cursor: pointer;"
-					disabled="#{empty vendaBean.toEstoqueProdutosSelecionados}" />
+			<div jsf:id="funcionalidades" class="margin-top">
 
-				<p:outputLabel value="Forma de Pagamento:" for="formaPagamento" />
-				<p:selectOneMenu value="#{vendaBean.formaPagamento}"
-					id="formaPagamento"
-					disabled="#{empty vendaBean.toEstoqueProdutosSelecionados}">
-					<f:selectItems value="#{vendaBean.formasPagamentos}" var="forma"
-						itemLabel="#{forma.nome}" itemValue="#{forma}" />
-				</p:selectOneMenu>
+				<div class="ui-g">
+					<div class="ui-g-3">
+						<p:outputLabel for="cliente" value="Cliente" class="label" />
+						<p:inputText id="cliente" onclick="PF('ClientesDialog').show();"
+							value="#{vendaBean.to.toCliente.toUsuario.nome} #{vendaBean.to.toCliente.toUsuario.sobrenome}"
+							readonly="true" placeholder="Selecione o cliente..."
+							style="cursor: pointer;"
+							disabled="#{empty vendaBean.toEstoqueProdutosSelecionados}" />
+					</div>
 
-				<p:commandButton value="Adicionar ao Carrinho" id="addCarrinho"
-					oncomplete="PF('ProdutosVendaDialog').show();"
-					action="#{vendaBean.adicionarCarrinho}"
-					disabled="#{empty vendaBean.toEstoqueProdutosSelecionados}"
-					update="tabelaProdutosVenda" />
+					<div class="ui-g-3">
+						<p:outputLabel value="Forma de Pagamento" for="formaPagamento"
+							class="label" />
+						<p:selectOneMenu value="#{vendaBean.formaPagamento}"
+							id="formaPagamento"
+							disabled="#{empty vendaBean.toEstoqueProdutosSelecionados}">
+							<f:selectItems value="#{vendaBean.formasPagamentos}" var="forma"
+								itemLabel="#{forma.nome}" itemValue="#{forma}" />
+						</p:selectOneMenu>
+					</div>
+
+					<div class="ui-g-12">
+						<p:commandButton value="Adicionar ao Carrinho" id="addCarrinho"
+							class="button" oncomplete="PF('ProdutosVendaDialog').show();"
+							action="#{vendaBean.adicionarCarrinho}"
+							disabled="#{empty vendaBean.toEstoqueProdutosSelecionados}"
+							update="tabelaProdutosVenda" />
+					</div>
+				</div>
 			</div>
 
 			<p:dialog header="Clientes" widgetVar="ClientesDialog"
@@ -106,7 +119,7 @@
 					</p:column>
 				</p:dataTable>
 				<p:commandButton value="Selecionar" process="@form"
-					update="formCadastroVenda:cliente"
+					class="button margin-top" update="formCadastroVenda:cliente"
 					action="#{vendaBean.setarCliente}"
 					oncomplete="PF('ClientesDialog').hide();" />
 			</p:dialog>
@@ -156,6 +169,7 @@
 
 				</p:dataTable>
 				<p:commandButton value="Confirmar" action="#{vendaBean.cadastrar}"
+					class="button margin-top"
 					update="formMessages:messages, formCadastroVenda:tabelaEstoqueProdutos"
 					oncomplete="PF('ProdutosVendaDialog').hide();" />
 			</p:dialog>
