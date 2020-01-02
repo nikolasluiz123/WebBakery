@@ -24,14 +24,12 @@
 }
 /* labels de inputs */
 
-/* classes que podem ser utilizadas em fieldsets */
-.group {
-	background: rgba(0, 0, 0, 0.2);
-	color: white;
-}
-/* classes que podem ser utilizadas em fieldsets */
-.margin-top {
+.margin-top-10 {
 	margin-top: 10px;
+}
+
+.margin-top-20 {
+	margin-top: 20px;
 }
 
 .ui-selectonemenu.ui-widget.ui-state-default.ui-corner-all {

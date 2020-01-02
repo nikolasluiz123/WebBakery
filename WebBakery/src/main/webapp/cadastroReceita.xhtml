@@ -72,12 +72,12 @@
 
 				</p:dataTable>
 
-				<p:commandButton value="Definir Quantidades" class="button margin-top"
+				<p:commandButton value="Definir Quantidades" class="button margin-top-10"
 					update="formDialogReceitaIngredientes:tabelaReceitaIngredientes"
 					oncomplete="PF('ReceitaIngredienteDialog').show();"
 					action="#{receitaBean.criarReceitaIngrediente}" />
 
-				<p:commandButton value="Cancelar" class="button margin-top secondary-button"
+				<p:commandButton value="Cancelar" class="button margin-top-10 secondary-button"
 					update="formCadastroReceita, formDialogIngredientes, formDialogReceitaIngredientes"
 					oncomplete="PF('IngredienteDialog').hide();"
 					action="#{receitaBean.removerReceita()}" />
@@ -129,12 +129,12 @@
 
 				</p:dataTable>
 
-				<p:commandButton value="Salvar" class="button margin-top"
+				<p:commandButton value="Salvar" class="button margin-top-10"
 					update="formMessages:messages, formCadastroReceita, formDialogIngredientes, formDialogReceitaIngredientes"
 					action="#{receitaBean.finalizarReceita}"
 					oncomplete="PF('ReceitaIngredienteDialog').hide(); PF('IngredienteDialog').hide();" />
 
-				<p:commandButton value="Cancelar" class="button margin-top secondary-button"
+				<p:commandButton value="Cancelar" class="button margin-top-10 secondary-button"
 					oncomplete="PF('ReceitaIngredienteDialog').hide();"
 					update="formDialogIngredientes:tabelaIngredientes"
 					action="#{receitaBean.removerReceitaIngrediente()}" />

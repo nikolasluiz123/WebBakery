@@ -58,7 +58,7 @@
 					</div>
 				</p:fieldset>
 
-				<p:fieldset class="group margin-top">
+				<p:fieldset class="group margin-top-10">
 					<div class="ui-g-3">
 						<p:outputLabel for="pais" value="País" />
 						<p:inputText id="pais" onclick="PF('PaisesDialog').show();"
@@ -114,7 +114,7 @@
 				</p:fieldset>
 
 				<p:commandButton value="Salvar" process="@form"
-					class="button margin-top" update="formMessages:messages, @form"
+					class="button margin-top-10" update="formMessages:messages, @form"
 					action="#{funcionarioBean.cadastrar}" />
 			</div>
 

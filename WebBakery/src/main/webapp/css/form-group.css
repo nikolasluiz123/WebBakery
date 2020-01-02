@@ -1,0 +1,12 @@
+/* classe usada no fieldset */
+.group {
+	background: rgba(0, 0, 0, 0.2);
+	color: white;
+}
+/* classe usada no fieldset */
+
+.ui-fieldset-legend.ui-corner-all.ui-state-default{
+	background: #333333;
+	color: white;
+	text-align: center;
+}

@@ -9,6 +9,7 @@
 
 	<ui:define name="conteudo">
 		<link rel="stylesheet" type="text/css" href="css/form.css" />
+		<link rel="stylesheet" type="text/css" href="css/form-group.css" />
 		<link rel="stylesheet" type="text/css" href="css/dialog-lov.css" />
 		<link rel="stylesheet" type="text/css" href="css/table.css" />
 		<link rel="stylesheet" type="text/css" href="css/table-lov.css" />
@@ -17,27 +18,27 @@
 
 			<div class="ui-g">
 
-				<p:fieldset class="group">
-					<div class="ui-g-3">
+				<p:fieldset class="group" legend="Informações Pessoais">
+					<div class="ui-g-12 ui-md-6 ui-lg-3">
 						<p:outputLabel value="Nome" for="nome" class="label" />
 						<p:inputText id="nome" value="#{clienteBean.to.toUsuario.nome}"
 							placeholder="Digite o nome..." />
 					</div>
 
-					<div class="ui-g-3">
+					<div class="ui-g-12 ui-md-6 ui-lg-3">
 						<p:outputLabel value="Sobrenome" for="sobrenome" class="label" />
 						<p:inputText id="sobrenome"
 							value="#{clienteBean.to.toUsuario.sobrenome}"
 							placeholder="Digite o sobrenome..." />
 					</div>
 
-					<div class="ui-g-3">
+					<div class="ui-g-12 ui-md-6 ui-lg-3">
 						<p:outputLabel value="CPF" for="cpf" class="label" />
 						<p:inputMask id="cpf" value="#{clienteBean.to.cpf}"
 							placeholder="Digite o cpf..." mask="999.999.999-99" />
 					</div>
 
-					<div class="ui-g-3">
+					<div class="ui-g-12 ui-md-6 ui-lg-3">
 						<p:outputLabel value="Data de Nascimento" for="dataNascimento"
 							class="label" />
 						<p:calendar id="dataNascimento"
@@ -46,19 +47,19 @@
 							converter="SimpleDateConverter" />
 					</div>
 
-					<div class="ui-g-3">
+					<div class="ui-g-12 ui-md-6 ui-lg-3">
 						<p:outputLabel value="Telefone" for="telefone" class="label" />
 						<p:inputMask id="telefone" value="#{clienteBean.to.telefone}"
 							placeholder="Digite o telefone..." mask="(99) 99999-9999" />
 					</div>
 
-					<div class="ui-g-3">
+					<div class="ui-g-12 ui-md-6 ui-lg-3">
 						<p:outputLabel for="email" value="E-mail" class="label" />
 						<p:inputText id="email" value="#{clienteBean.to.toUsuario.email}"
 							placeholder="Digite o e-mail..." />
 					</div>
 
-					<div class="ui-g-3">
+					<div class="ui-g-12 ui-md-12 ui-lg-3">
 						<p:outputLabel for="senha" value="Senha" class="label" />
 						<p:password id="senha" value="#{clienteBean.senha}"
 							placeholder="Digite a senha..." />
@@ -66,16 +67,16 @@
 
 				</p:fieldset>
 
-				<p:fieldset class="group margin-top">
+				<p:fieldset class="group margin-top-20" legend="Localização">
 
-					<div class="ui-g-3">
+					<div class="ui-g-12 ui-md-6 ui-lg-3">
 						<p:outputLabel for="pais" value="País" class="label" />
 						<p:inputText id="pais" onclick="PF('PaisesDialog').show();"
 							value="#{clienteBean.to.toEndereco.toPais.nome}" readonly="true"
 							placeholder="Selecione o país..." style="cursor: pointer;" />
 					</div>
 
-					<div class="ui-g-3">
+					<div class="ui-g-12 ui-md-6 ui-lg-3">
 						<p:outputLabel for="estado" value="Estado" class="label" />
 						<p:inputText id="estado" onclick="PF('EstadosDialog').show();"
 							value="#{clienteBean.to.toEndereco.toEstado.nome}"
@@ -83,7 +84,7 @@
 							style="cursor: pointer;" />
 					</div>
 
-					<div class="ui-g-3">
+					<div class="ui-g-12 ui-md-6 ui-lg-3">
 						<p:outputLabel for="cidade" value="Cidade" class="label" />
 						<p:inputText id="cidade" onclick="PF('CidadesDialog').show();"
 							value="#{clienteBean.to.toEndereco.toCidade.nome}"
@@ -91,28 +92,28 @@
 							style="cursor: pointer;" />
 					</div>
 
-					<div class="ui-g-3">
+					<div class="ui-g-12 ui-md-6 ui-lg-3">
 						<p:outputLabel value="Bairro" for="bairro" class="label" />
 						<p:inputText id="bairro"
 							value="#{clienteBean.to.toEndereco.toLogradouro.bairro}"
 							placeholder="Digite o bairro..." />
 					</div>
 
-					<div class="ui-g-3">
+					<div class="ui-g-12 ui-md-6 ui-lg-3">
 						<p:outputLabel value="Cep" for="cep" class="label" />
 						<p:inputMask id="cep"
 							value="#{clienteBean.to.toEndereco.toLogradouro.cep}"
 							placeholder="Digite o cep..." mask="99999-999" />
 					</div>
 
-					<div class="ui-g-3">
+					<div class="ui-g-12 ui-md-6 ui-lg-3">
 						<p:outputLabel value="Rua" for="rua" class="label" />
 						<p:inputText id="rua"
 							value="#{clienteBean.to.toEndereco.toLogradouro.rua}"
 							placeholder="Digite a rua..." />
 					</div>
 
-					<div class="ui-g-3">
+					<div class="ui-g-12 ui-md-12 ui-lg-3">
 						<p:outputLabel value="Complemento" for="complemento" class="label" />
 						<p:inputText id="complemento"
 							value="#{clienteBean.to.toEndereco.toLogradouro.complemento}"
@@ -120,10 +121,11 @@
 					</div>
 				</p:fieldset>
 
-				<p:commandButton value="Salvar" process="@form"
-					class="button margin-top" update="@form, formMessages:messages"
-					action="#{clienteBean.cadastrar}" />
-
+				<div class="ui-g-12">
+					<p:commandButton value="Salvar" process="@form"
+						class="button margin-top-10" update="@form, formMessages:messages"
+						action="#{clienteBean.cadastrar}" />
+				</div>
 			</div>
 
 			<p:dialog header="Países" widgetVar="PaisesDialog" resizable="false"
