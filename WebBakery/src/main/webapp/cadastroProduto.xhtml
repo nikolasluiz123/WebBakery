@@ -16,27 +16,27 @@
 		<h:form id="formCadastroReceita">
 
 			<div class="ui-g">
-				<div class="ui-g-3">
+				<div class="ui-g-12 ui-md-6 ui-lg-3">
 					<p:outputLabel value="Descrição" for="descricao" class="label" />
 					<p:inputText id="descricao" value="#{produtoBean.to.descricao}"
 						placeholder="Digite a descrição..." />
 				</div>
 
-				<div class="ui-g-3">
+				<div class="ui-g-12 ui-md-6 ui-lg-3">
 					<p:outputLabel for="diasValido" value="Dias Válido" class="label" />
 					<p:inputNumber id="diasValido"
 						value="#{produtoBean.to.tempoValido}" decimalPlaces="0"
 						maxValue="180" minValue="0" placeholder="Digite os dias..." />
 				</div>
 
-				<div class="ui-g-3">
+				<div class="ui-g-12 ui-md-6 ui-lg-3">
 					<p:outputLabel value="Preço" for="preco" class="label" />
 					<p:inputNumber id="preco" value="#{produtoBean.to.preco}"
 						symbol="R$" decimalSeparator="," thousandSeparator="."
 						placeholder="Digite o preço..." minValue="0" />
 				</div>
 
-				<div class="ui-g-3">
+				<div class="ui-g-12 ui-md-6 ui-lg-3">
 					<p:outputLabel for="receita" value="Receita" class="label" />
 					<p:inputText id="receita" onclick="PF('ReceitasDialog').show();"
 						value="#{produtoBean.to.toReceita.nome}" readonly="true"

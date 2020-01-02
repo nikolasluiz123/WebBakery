@@ -13,20 +13,20 @@
 		<h:form id="formCadastroUsuario">
 
 			<div class="ui-g">
-				<div class="ui-g-3">
+				<div class="ui-g-12 ui-md-6 ui-lg-3">
 					<p:outputLabel value="Nome" for="nome" class="label" />
 					<p:inputText id="nome" value="#{usuarioBean.to.nome}"
 						placeholder="Digite o nome..." />
 				</div>
 
-				<div class="ui-g-3">
+				<div class="ui-g-12 ui-md-6 ui-lg-3">
 					<p:outputLabel value="Sobrenome" for="sobrenome" class="label" />
 					<p:inputText id="sobrenome" value="#{usuarioBean.to.sobrenome}"
 						placeholder="Digite o sobrenome..." />
 				</div>
 
 
-				<div class="ui-g-4">
+				<div class="ui-g-12 ui-md-6 ui-lg-3">
 					<p:outputLabel value="Tipo de Usuário" for="tipoUsuario"
 						class="label" />
 					<p:selectOneMenu value="#{usuarioBean.tipoUsuario}"
@@ -36,7 +36,7 @@
 					</p:selectOneMenu>
 				</div>
 
-				<div class="ui-g-3">
+				<div class="ui-g-12 ui-md-6 ui-lg-3">
 					<p:outputLabel value="E-mail" for="email" class="label" />
 					<p:inputText id="email" value="#{usuarioBean.to.email}"
 						placeholder="Digite seu e-mail...">
@@ -44,7 +44,7 @@
 					</p:inputText>
 				</div>
 				
-				<div class="ui-g-3">
+				<div class="ui-g-12 ui-md-6 ui-lg-3">
 					<p:outputLabel value="Senha" for="senha" class="label" />
 					<p:password id="senha" value="#{usuarioBean.senha}" feedback="true"
 						placeholder="Digite sua senha..." />

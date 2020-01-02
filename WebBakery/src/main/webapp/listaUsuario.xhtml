@@ -8,56 +8,53 @@
 <ui:composition template="_template.xhtml">
 
 	<ui:define name="conteudo">
-		<link rel="stylesheet" type="text/css" href="css/table.css"/>
+		<link rel="stylesheet" type="text/css" href="css/table.css" />
 		<h:form id="formDataTableUsuarios">
-			<div style="padding-top: 15px;">
-				<p:dataTable var="toUsuario" value="#{listaUsuarioBean.toUsuarios}"
-					id="tabelaUsuarios" rows="5" paginator="true"
-					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PageLinks} {PreviousPageLink} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-					rowsPerPageTemplate="5,10,15"
-					emptyMessage="Nenhum usuário encontrado."
-					widgetVar="TabelaUsuarios"
-					filteredValue="#{listaUsuarioBean.toUsuariosFiltrados}">
+			<p:dataTable var="toUsuario" value="#{listaUsuarioBean.toUsuarios}"
+				id="tabelaUsuarios" rows="5" paginator="true"
+				paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PageLinks} {PreviousPageLink} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rowsPerPageTemplate="5,10,15"
+				emptyMessage="Nenhum usuário encontrado." widgetVar="TabelaUsuarios"
+				filteredValue="#{listaUsuarioBean.toUsuariosFiltrados}">
 
-					<f:facet name="header" style="min-height: 35px; max-height: 35px">
-						<div>Usuarios</div>
+				<f:facet name="header" style="min-height: 35px; max-height: 35px">
+					<div>Usuarios</div>
 
-					</f:facet>
+				</f:facet>
 
-					<p:column headerText="Nome" sortBy="#{toUsuario.nome}"
-						filterBy="#{toUsuario.nome}">
-						<h:outputText value="#{toUsuario.nome}" />
-					</p:column>
+				<p:column headerText="Nome" sortBy="#{toUsuario.nome}"
+					filterBy="#{toUsuario.nome}">
+					<h:outputText value="#{toUsuario.nome}" />
+				</p:column>
 
-					<p:column headerText="Sobrenome" sortBy="#{toUsuario.sobrenome}"
-						filterBy="#{toUsuario.sobrenome}">
-						<h:outputText value="#{toUsuario.sobrenome}" />
-					</p:column>
+				<p:column headerText="Sobrenome" sortBy="#{toUsuario.sobrenome}"
+					filterBy="#{toUsuario.sobrenome}">
+					<h:outputText value="#{toUsuario.sobrenome}" />
+				</p:column>
 
-					<p:column headerText="Email" sortBy="#{toUsuario.email}"
-						filterBy="#{toUsuario.email}">
-						<h:outputText value="#{toUsuario.email}" />
-					</p:column>
+				<p:column headerText="Email" sortBy="#{toUsuario.email}"
+					filterBy="#{toUsuario.email}">
+					<h:outputText value="#{toUsuario.email}" />
+				</p:column>
 
-					<p:column headerText="Tipo de Usuário"
-						sortBy="#{toUsuario.tipo.nome}" filterBy="#{toUsuario.tipo.nome}">
-						<h:outputText value="#{toUsuario.tipo.nome}" />
-					</p:column>
+				<p:column headerText="Tipo de Usuário"
+					sortBy="#{toUsuario.tipo.nome}" filterBy="#{toUsuario.tipo.nome}">
+					<h:outputText value="#{toUsuario.tipo.nome}" />
+				</p:column>
 
-					<p:column headerText="Alterar">
-						<p:commandLink value="Alterar"
-							action="#{listaUsuarioBean.carregar(toUsuario.id, 'UsuarioID', 'cadastroUsuario.xhtml')}"
-							process="@this" />
-					</p:column>
+				<p:column headerText="Alterar">
+					<p:commandLink value="Alterar"
+						action="#{listaUsuarioBean.carregar(toUsuario.id, 'UsuarioID', 'cadastroUsuario.xhtml')}"
+						process="@this" />
+				</p:column>
 
-					<p:column headerText="Inativar">
-						<p:commandLink value="Inativar"
-							action="#{listaUsuarioBean.inativar(toUsuario)}"
-							update="tabelaUsuarios, formMessages:messages" process="@this"
-							oncomplete="PF('TabelaUsuarios').filter();" />
-					</p:column>
-				</p:dataTable>
-			</div>
+				<p:column headerText="Inativar">
+					<p:commandLink value="Inativar"
+						action="#{listaUsuarioBean.inativar(toUsuario)}"
+						update="tabelaUsuarios, formMessages:messages" process="@this"
+						oncomplete="PF('TabelaUsuarios').filter();" />
+				</p:column>
+			</p:dataTable>
 		</h:form>
 	</ui:define>
 </ui:composition>
