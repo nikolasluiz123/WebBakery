@@ -55,3 +55,10 @@ a.ui-commandlink.ui-widget {
 	box-shadow: none;
 }
 /* Remover a sombra azul dos componentes ao passar o mouse sobre os mesmos */
+
+/* Mensagem de nenhum dado encontrado */
+.ui-widget-content.ui-datatable-empty-message{
+	background: #666666;
+	color: white;
+}
+/* Mensagem de nenhum dado encontrado */
