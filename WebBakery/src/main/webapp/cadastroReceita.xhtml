@@ -8,49 +8,49 @@
 <ui:composition template="_template.xhtml">
 
 	<ui:define name="conteudo">
+		<link rel="stylesheet" type="text/css" href="css/form.css" />
+		<link rel="stylesheet" type="text/css" href="css/dialog-lov.css" />
+		<link rel="stylesheet" type="text/css" href="css/table.css" />
+		<link rel="stylesheet" type="text/css" href="css/table-lov.css" />
 
 		<h:form id="formCadastroReceita">
 
-			<p:fieldset legend="Dados da Receita">
+			<div class="ui-g">
 
-				<div class="ui-g">
-
-					<div class="ui-g-12">
-						<p:outputLabel value="Receita:" for="receita" />
-						<p:inputText id="receita" value="#{receitaBean.to.nome}"
-							placeholder="Digite o nome da receita..." />
-					</div>
-
-					<div class="ui-g-12">
-						<p:outputLabel value="Quantidade:" for="quantidade" />
-						<p:inputNumber id="quantidade"
-							value="#{receitaBean.to.quantidade}"
-							placeholder="Digite a quantidade..." thousandSeparator="."
-							decimalPlaces="0" maxValue="100000" minValue="1" />
-					</div>
-
-					<div class="ui-g-12">
-						<p:outputLabel for="tempoPreparo" value="Tempo:" />
-						<p:calendar id="tempoPreparo"
-							value="#{receitaBean.to.tempoPreparo}" pattern="HH:mm"
-							timeOnly="true" readonlyInput="true"
-							placeholder="Digite o tempo de preparo..." />
-					</div>
-
-					<div class="ui-g-12">
-						<p:commandButton value="Definir Ingredientes" process="@form"
-							update="formMessages:messages, @form"
-							action="#{receitaBean.definirIngredientes}" />
-					</div>
+				<div class="ui-g-3">
+					<p:outputLabel value="Receita" for="receita" class="label" />
+					<p:inputText id="receita" value="#{receitaBean.to.nome}"
+						placeholder="Digite o nome da receita..." />
 				</div>
 
-			</p:fieldset>
+				<div class="ui-g-3">
+					<p:outputLabel value="Quantidade" for="quantidade" class="label" />
+					<p:inputNumber id="quantidade" value="#{receitaBean.to.quantidade}"
+						placeholder="Digite a quantidade..." thousandSeparator="."
+						decimalPlaces="0" maxValue="100000" minValue="1" />
+				</div>
+
+				<div class="ui-g-3">
+					<p:outputLabel for="tempoPreparo" value="Tempo" class="label" />
+					<p:calendar id="tempoPreparo"
+						value="#{receitaBean.to.tempoPreparo}" pattern="HH:mm"
+						timeOnly="true" readonlyInput="true"
+						placeholder="Digite o tempo de preparo..." />
+				</div>
+
+				<div class="ui-g-12">
+					<p:commandButton value="Definir Ingredientes" process="@form"
+						class="button" update="formMessages:messages, @form"
+						action="#{receitaBean.definirIngredientes}" />
+				</div>
+			</div>
 
 		</h:form>
 
 		<h:form id="formDialogIngredientes">
-			<p:dialog id="ingredienteDialog" header="Ingredientes" widgetVar="IngredienteDialog"
-				resizable="false" width="700" closable="false">
+			<p:dialog id="ingredienteDialog" header="Ingredientes"
+				widgetVar="IngredienteDialog" resizable="false" width="700"
+				closable="false">
 
 				<p:dataTable id="tabelaIngredientes" var="toIngrediente"
 					value="#{receitaBean.toIngredientes}"
@@ -63,10 +63,6 @@
 					widgetVar="TabelaIngredientes"
 					filteredValue="#{receitaBean.toIngredientesFiltrados}">
 
-					<f:facet name="header" style="min-height: 35px; max-height: 35px">
-						<div>Ingredientes</div>
-					</f:facet>
-
 					<p:column selectionMode="multiple"
 						style="width:16px;text-align:center" />
 
@@ -76,12 +72,12 @@
 
 				</p:dataTable>
 
-				<p:commandButton value="Definir Quantidades"
+				<p:commandButton value="Definir Quantidades" class="button margin-top"
 					update="formDialogReceitaIngredientes:tabelaReceitaIngredientes"
 					oncomplete="PF('ReceitaIngredienteDialog').show();"
 					action="#{receitaBean.criarReceitaIngrediente}" />
 
-				<p:commandButton value="Cancelar"
+				<p:commandButton value="Cancelar" class="button margin-top secondary-button"
 					update="formCadastroReceita, formDialogIngredientes, formDialogReceitaIngredientes"
 					oncomplete="PF('IngredienteDialog').hide();"
 					action="#{receitaBean.removerReceita()}" />
@@ -133,12 +129,12 @@
 
 				</p:dataTable>
 
-				<p:commandButton value="Salvar"
+				<p:commandButton value="Salvar" class="button margin-top"
 					update="formMessages:messages, formCadastroReceita, formDialogIngredientes, formDialogReceitaIngredientes"
 					action="#{receitaBean.finalizarReceita}"
 					oncomplete="PF('ReceitaIngredienteDialog').hide(); PF('IngredienteDialog').hide();" />
 
-				<p:commandButton value="Cancelar"
+				<p:commandButton value="Cancelar" class="button margin-top secondary-button"
 					oncomplete="PF('ReceitaIngredienteDialog').hide();"
 					update="formDialogIngredientes:tabelaIngredientes"
 					action="#{receitaBean.removerReceitaIngrediente()}" />

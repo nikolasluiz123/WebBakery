@@ -8,46 +8,57 @@
 <ui:composition template="_template.xhtml">
 
 	<ui:define name="conteudo">
+		<link rel="stylesheet" type="text/css" href="css/form.css" />
+		<link rel="stylesheet" type="text/css" href="css/dialog-lov.css" />
+		<link rel="stylesheet" type="text/css" href="css/table.css" />
+		<link rel="stylesheet" type="text/css" href="css/table-lov.css" />
 
 		<h:form id="formCadastroReceita">
 
-			<p:fieldset legend="Dados do Produto">
-				<p:panelGrid columns="2">
-
-					<p:outputLabel value="Descrição" for="descricao" />
+			<div class="ui-g">
+				<div class="ui-g-3">
+					<p:outputLabel value="Descrição" for="descricao" class="label" />
 					<p:inputText id="descricao" value="#{produtoBean.to.descricao}"
 						placeholder="Digite a descrição..." />
+				</div>
 
-					<p:outputLabel for="diasValido" value="Dias Válido" />
-					<h:panelGrid columns="1" style="margin-bottom: 10px">
-						<p:inputNumber id="diasValido"
-							value="#{produtoBean.to.tempoValido}" decimalPlaces="0"
-							maxValue="180" minValue="0" placeholder="Digite os dias..." />
-					</h:panelGrid>
+				<div class="ui-g-3">
+					<p:outputLabel for="diasValido" value="Dias Válido" class="label" />
+					<p:inputNumber id="diasValido"
+						value="#{produtoBean.to.tempoValido}" decimalPlaces="0"
+						maxValue="180" minValue="0" placeholder="Digite os dias..." />
+				</div>
 
-					<p:outputLabel value="Preço:" for="preco" />
+				<div class="ui-g-3">
+					<p:outputLabel value="Preço" for="preco" class="label" />
 					<p:inputNumber id="preco" value="#{produtoBean.to.preco}"
 						symbol="R$" decimalSeparator="," thousandSeparator="."
 						placeholder="Digite o preço..." minValue="0" />
+				</div>
 
-					<p:outputLabel for="receita" value="Receita:" />
-					<p:inputTextarea id="receita"
-						onclick="PF('ReceitasDialog').show();"
+				<div class="ui-g-3">
+					<p:outputLabel for="receita" value="Receita" class="label" />
+					<p:inputText id="receita" onclick="PF('ReceitasDialog').show();"
 						value="#{produtoBean.to.toReceita.nome}" readonly="true"
-						placeholder="Selecione a receita..." style="cursor: pointer;" />
+						placeholder="Selecione a receita..." class="input-lov" />
+				</div>
 
-					<p:fileUpload fileUploadListener="#{produtoBean.handleFileUpload}"
+				<div class="ui-g-12">
+					<p:outputLabel for="fotos" value="Fotos" class="label" />
+					<p:fileUpload id="fotos"
+						fileUploadListener="#{produtoBean.handleFileUpload}"
 						allowTypes="/(\.|\/)(jpe?g|png)$/"
 						invalidFileMessage="Tipo de arquivo é inválido!" multiple="true"
 						update="btnCadastrar" />
+				</div>
 
+				<div class="ui-g-12">
 					<p:commandButton value="Cadastrar" process="@form"
 						update="formMessages:messages, @form" id="btnCadastrar"
-						action="#{produtoBean.cadastrar}"
+						class="button" action="#{produtoBean.cadastrar}"
 						disabled="#{produtoBean.getBotaoDesabilitado()}" />
-
-				</p:panelGrid>
-			</p:fieldset>
+				</div>
+			</div>
 
 			<p:dialog header="Receitas" widgetVar="ReceitasDialog"
 				resizable="false" width="800">
@@ -67,7 +78,8 @@
 						<h:outputText value="#{toReceita.nome}" />
 					</p:column>
 
-					<p:column headerText="Quantidade Feita" filterBy="#{toReceita.quantidade}"
+					<p:column headerText="Quantidade Feita"
+						filterBy="#{toReceita.quantidade}"
 						sortBy="#{toReceita.quantidade}">
 						<h:outputText value="#{toReceita.quantidade}" />
 					</p:column>

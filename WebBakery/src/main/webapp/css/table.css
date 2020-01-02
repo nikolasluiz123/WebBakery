@@ -11,30 +11,30 @@
 	.ui-paginator-rpp-options.ui-widget.ui-state-default.ui-corner-left,
 	.ui-state-default.ui-sortable-column.ui-filter-column, th.ui-state-default,
 	.ui-paginator.ui-paginator-bottom.ui-widget-header.ui-corner-bottom {
-	background: #333333;
-	color: white;
+	background: #333333 !important;
+	color: white !important;
 }
 
 tr.ui-widget-content.ui-datatable-even, tr.ui-widget-content.ui-datatable-odd
 	{
-	background: #666666;
-	color: white;
+	background: #666666 !important;
+	color: white !important;
 }
 
 a.ui-commandlink.ui-widget {
-	color: white;
+	color: white !important;
 	text-decoration: none;
 }
 
 .ui-datatable-header.ui-widget-header.ui-corner-top, .ui-paginator-last.ui-state-default.ui-corner-all,
 	.ui-paginator-first.ui-state-default.ui-corner-all, .ui-paginator-prev.ui-state-default.ui-corner-all
 	{
-	background: #333333;
+	background: #333333 !important;
 }
 
 .ui-paginator-prev.ui-state-default.ui-corner-all.ui-state-disabled,
 	.ui-paginator-first.ui-state-default.ui-corner-all.ui-state-disabled {
-	background: rgba(0, 0, 0, 0.4);
+	background: rgba(0, 0, 0, 0.4) !important;
 }
 /* Deixando o backgraund da tabela preto */
 

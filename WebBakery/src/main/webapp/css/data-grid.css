@@ -1,0 +1,26 @@
+/* Título da grid */
+.ui-datagrid-header.ui-widget-header.ui-corner-top,
+/* Título de cada quadradinho da grid */
+.ui-panel-titlebar.ui-widget-header.ui-helper-clearfix.ui-corner-all{
+	background: #333333;
+	color: white;
+	font-weight: normal;
+}
+
+/* Fundo da grid */
+.ui-datagrid-content.ui-widget-content.ui-grid.ui-grid-responsive{
+	background: #999999;
+}
+/* Fundo da grid */
+
+/* Fundo de cada quadradinho da grid */
+.ui-panel.ui-widget.ui-widget-content.ui-corner-all{
+	background: #666666;
+}
+/* Fundo de cada quadradinho da grid */
+
+/* Texto que aparece abaixo da foto */
+.ui-panel-content.ui-widget-content{
+	color: white;
+}
+/* Texto que aparece abaixo da foto */

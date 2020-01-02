@@ -21,7 +21,7 @@
 .ui-dialog-titlebar.ui-widget-header.ui-helper-clearfix.ui-corner-top.ui-draggable-handle
 	{
 	color: white;
-	font-weight: unset;
+	font-weight: normal;
 }
 /* Texto do header da dialog */
 

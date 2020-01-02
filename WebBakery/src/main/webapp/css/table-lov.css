@@ -1,0 +1,6 @@
+/* Linha da tabela selecionada */
+.ui-widget-content.ui-datatable-even.ui-datatable-selectable.ui-state-highlight,
+.ui-widget-content.ui-datatable-odd.ui-datatable-selectable.ui-state-highlight{
+	background: black !important;
+}
+/* Linha da tabela selecionada */
