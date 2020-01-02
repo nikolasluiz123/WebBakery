@@ -16,20 +16,19 @@
 		<h:form id="formCadastroEstado">
 
 			<div class="ui-g">
-
-				<div class="ui-g-3">
+				<div class="ui-g-12 ui-md-6 ui-lg-4">
 					<p:outputLabel value="Nome" for="nome" class="label" />
 					<p:inputText id="nome" value="#{estadoBean.to.nome}"
 						placeholder="Digite o nome..." />
 				</div>
 
-				<div class="ui-g-3">
+				<div class="ui-g-12 ui-md-6 ui-lg-4">
 					<p:outputLabel value="Sigla" for="sigla" class="label" />
 					<p:inputText id="sigla" value="#{estadoBean.to.sigla}"
 						placeholder="Digite a sigla..." />
 				</div>
 
-				<div class="ui-g-3">
+				<div class="ui-g-12 ui-md-12 ui-lg-4">
 					<p:outputLabel for="pais" value="País" class="label" />
 					<p:inputText id="pais" onclick="PF('PaisesDialog').show();"
 						value="#{estadoBean.to.toPais.nome}" readonly="true"
