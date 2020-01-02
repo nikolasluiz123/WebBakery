@@ -8,37 +8,34 @@
 <ui:composition template="_template.xhtml">
 
 	<ui:define name="conteudo">
+		<link rel="stylesheet" type="text/css" href="css/form.css" />
 
 		<h:form id="formCadastroPais">
+			<div class="ui-g">
 
-			<p:fieldset legend="Dados do País">
-				<div class="ui-g">
-
-					<div class="ui-g-4">
-						<p:outputLabel value="Nome:" for="nome" />
-						<p:inputText id="nome" value="#{ingredienteBean.to.nome}"
-							placeholder="Digite o nome..." />
-					</div>
-
-					<div class="ui-g-4">
-
-						<p:outputLabel value="Unidade de Medida:" for="unidadeMedida" />
-						<p:selectOneMenu value="#{ingredienteBean.unidadeMedida}"
-							id="unidadeMedida">
-							<f:selectItems value="#{ingredienteBean.unidadeMedidas}"
-								var="unidade" itemLabel="#{unidade.descricao}"
-								itemValue="#{unidade}" />
-						</p:selectOneMenu>
-
-					</div>
-
-					<div class="ui-g-4">
-						<p:commandButton value="Cadastrar" process="@form"
-							update="formMessages:messages, @form"
-							action="#{ingredienteBean.cadastrar}" />
-					</div>
+				<div class="ui-g-3">
+					<p:outputLabel value="Nome" for="nome" class="label" />
+					<p:inputText id="nome" value="#{ingredienteBean.to.nome}"
+						placeholder="Digite o nome..." />
 				</div>
-			</p:fieldset>
+
+				<div class="ui-g-3">
+					<p:outputLabel value="Unidade de Medida" for="unidadeMedida"
+						class="label" />
+					<p:selectOneMenu value="#{ingredienteBean.unidadeMedida}"
+						id="unidadeMedida">
+						<f:selectItems value="#{ingredienteBean.unidadeMedidas}"
+							var="unidade" itemLabel="#{unidade.descricao}"
+							itemValue="#{unidade}" />
+					</p:selectOneMenu>
+				</div>
+
+				<div class="ui-g-12">
+					<p:commandButton value="Salvar" process="@form" class="button"
+						update="formMessages:messages, @form"
+						action="#{ingredienteBean.cadastrar}" />
+				</div>
+			</div>
 		</h:form>
 	</ui:define>
 </ui:composition>
