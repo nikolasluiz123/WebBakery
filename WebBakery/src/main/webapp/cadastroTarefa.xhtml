@@ -8,45 +8,60 @@
 <ui:composition template="_template.xhtml">
 
 	<ui:define name="conteudo">
+		<link rel="stylesheet" type="text/css" href="css/form.css" />
+		<link rel="stylesheet" type="text/css" href="css/dialog-lov.css" />
+		<link rel="stylesheet" type="text/css" href="css/table.css" />
+		<link rel="stylesheet" type="text/css" href="css/table-lov.css" />
+		<link rel="stylesheet" type="text/css" href="css/calendar.css" />
 
 		<h:form id="formCadastroTarefa">
-			<p:fieldset legend="Dados da Tarefa">
-				<p:panelGrid columns="2">
+			<div class="ui-g">
 
-					<p:outputLabel for="produto" value="Produto:" />
+				<div class="ui-g-3">
+					<p:outputLabel for="produto" value="Produto" class="label" />
 					<p:inputText id="produto" onclick="PF('ProdutosDialog').show();"
 						value="#{tarefaBean.to.toProduto.descricao}" readonly="true"
 						placeholder="Selecione o produto..." style="cursor: pointer;" />
+				</div>
 
-					<p:outputLabel value="Quantidade:" for="quantidade" />
+				<div class="ui-g-3">
+					<p:outputLabel value="Quantidade:" for="quantidade" class="label" />
 					<p:inputNumber id="quantidade" value="#{tarefaBean.to.quantidade}"
 						placeholder="Digite a quantidade..." maxValue="100000"
 						decimalPlaces="0" />
+				</div>
 
-					<p:outputLabel for="dataInicio" value="Data de Início:" />
+				<div class="ui-g-6">
+					<p:outputLabel for="padeiro" value="Padeiro" class="label" />
+					<p:inputText id="padeiro" onclick="PF('PadeirosDialog').show();"
+						value="#{tarefaBean.to.toPadeiro.toUsuario.nome} #{tarefaBean.to.toPadeiro.toUsuario.sobrenome}"
+						readonly="true" placeholder="Teste"
+						style="cursor: pointer;" />
+				</div>
+
+				<div class="ui-g-3">
+					<p:outputLabel for="dataInicio" value="Data de Início"
+						class="label" />
 					<p:calendar id="dataInicio" value="#{tarefaBean.to.dataInicio}"
 						pattern="dd/MM/yyyy HH:mm"
 						placeholder="Selecione a data do início..."
 						disabled="#{tarefaBean.toProdutoSelecionado == null}">
 						<p:ajax event="change" listener="#{tarefaBean.calcularFim()}" />
 					</p:calendar>
+				</div>
 
-					<p:outputLabel for="dataFim" value="Data de Fim:" />
+				<div class="ui-g-3">
+					<p:outputLabel for="dataFim" value="Data de Fim" class="label" />
 					<p:calendar id="dataFim" value="#{tarefaBean.to.dataFim}"
 						pattern="dd/MM/yyyy HH:mm" disabled="true" />
+				</div>
 
-					<p:outputLabel for="padeiro" value="Padeiro:" />
-					<p:inputText id="padeiro" onclick="PF('PadeirosDialog').show();"
-						value="#{tarefaBean.to.toPadeiro.toUsuario.nome} #{tarefaBean.to.toPadeiro.toUsuario.sobrenome}"
-						readonly="true" placeholder="Selecione o padeiro..."
-						style="cursor: pointer;" />
-
-					<p:commandButton value="Cadastrar" process="@form"
+				<div class="ui-g-12">
+					<p:commandButton value="Salvar" process="@form" class="button"
 						update="@form, formMessages:messages"
 						action="#{tarefaBean.cadastrar}" />
-
-				</p:panelGrid>
-			</p:fieldset>
+				</div>
+			</div>
 
 			<p:dialog header="Produtos" widgetVar="ProdutosDialog"
 				resizable="false" width="800">
@@ -71,8 +86,9 @@
 					</p:column>
 
 				</p:dataTable>
+
 				<p:commandButton value="Selecionar" process="@form"
-					update="formCadastroTarefa:produto"
+					class="button margin-top" update="formCadastroTarefa:produto"
 					action="#{tarefaBean.setarProduto}"
 					oncomplete="PF('ProdutosDialog').hide();" />
 			</p:dialog>
@@ -97,8 +113,9 @@
 					</p:column>
 
 				</p:dataTable>
+
 				<p:commandButton value="Selecionar" process="@form"
-					update="formCadastroTarefa:padeiro"
+					class="button margin-top" update="formCadastroTarefa:padeiro"
 					action="#{tarefaBean.setarPadeiro}"
 					oncomplete="PF('PadeirosDialog').hide();" />
 			</p:dialog>

@@ -1,0 +1,59 @@
+/* Cabeçalho do calendar */
+.ui-datepicker-header.ui-widget-header.ui-helper-clearfix.ui-corner-all{
+	background: #333333;
+	font-weight: normal;
+	color: white;
+}
+/* Cabeçalho do calendar */
+
+/* Corpo do calendar */
+.ui-datepicker.ui-widget.ui-widget-content.ui-helper-clearfix.ui-corner-all.ui-input-overlay{
+	color: white;
+	background: #666666;
+}
+/* Corpo do calendar */
+
+/* Dia que pode ser selecionado */
+td a.ui-state-default,
+/* Dia que foi selecionado */
+td a.ui-state-default.ui-state-highlight{
+	color: white !important;
+}
+
+/* Dia que pode ser selecionado */
+td a.ui-state-default{
+	font-weight: normal !important;
+}
+/* Dia que pode ser selecionado */
+
+/* Dia que foi selecionado */
+td a.ui-state-default.ui-state-highlight{
+	font-weight: bold !important;
+}
+/* Dia que foi selecionado */
+
+/* Quando um dia que pode ser selecionado for selecionado */
+td a.ui-state-default.ui-state-active{
+	background: #666666 !important;
+}
+/* Quando um dia que pode ser selecionado for selecionado */
+
+/* Linha abaixo das horas */
+.ui_tpicker_time_input{
+	border-bottom: solid 1px #333333 !important;
+}
+/* Linha abaixo das horas */
+
+/* Slice de horas e minutos */
+.ui-slider-handle.ui-corner-all.ui-state-default{
+	background: #333333;
+	border: none;
+}
+
+.ui-slider-handle.ui-corner-all.ui-state-default:focus,
+.ui-slider-handle.ui-corner-all.ui-state-default:active,
+.ui-slider-handle.ui-corner-all.ui-state-default:hover
+{
+	box-shadow: none !important;
+}
+/* Slice de horas e minutos */
