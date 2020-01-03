@@ -1,0 +1,36 @@
+/* Header do uploader */
+.ui-fileupload-buttonbar.ui-widget-header.ui-corner-top{
+	background: #333333;
+}
+/* Header do uploader */
+
+/* Corpo do uploader */
+.ui-fileupload-content.ui-widget-content.ui-corner-bottom{
+	background: #666666;
+	color: white;
+}
+/* Corpo do uploader */
+
+/* botão de selecionar o(s) arquivo(s) */
+.ui-button.ui-widget.ui-state-default.ui-corner-all.ui-button-text-icon-left.ui-fileupload-choose,
+/* botão de fazer upload dos arquivos selecionados desabilitado*/
+.ui-button.ui-widget.ui-state-default.ui-corner-all.ui-button-text-icon-left.ui-state-disabled.ui-fileupload-upload,
+/* botão de cancelar desabilitado*/
+.ui-button.ui-widget.ui-state-default.ui-corner-all.ui-button-text-icon-left.ui-state-disabled.ui-fileupload-cancel,
+/* botão de fazer upload dos arquivos selecionados habilitado*/
+.ui-button.ui-widget.ui-state-default.ui-corner-all.ui-button-text-icon-left.ui-fileupload-upload,
+/* botão de cancelar habilitado*/
+.ui-button.ui-widget.ui-state-default.ui-corner-all.ui-button-text-icon-left.ui-fileupload-cancel{
+	background: #666666 !important;
+	color: white !important;
+	font-weight: normal;
+}
+
+/* botão de selecionar o(s) arquivo(s) */
+.ui-button.ui-widget.ui-state-default.ui-corner-all.ui-button-text-icon-left.ui-fileupload-choose:hover,
+/* botão de fazer upload dos arquivos selecionados habilitado*/
+.ui-button.ui-widget.ui-state-default.ui-corner-all.ui-button-text-icon-left.ui-fileupload-upload:hover,
+/* botão de cancelar habilitado*/
+.ui-button.ui-widget.ui-state-default.ui-corner-all.ui-button-text-icon-left.ui-fileupload-cancel:hover{
+	box-shadow: none;
+}

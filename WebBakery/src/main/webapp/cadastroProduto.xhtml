@@ -12,6 +12,7 @@
 		<link rel="stylesheet" type="text/css" href="css/dialog-lov.css" />
 		<link rel="stylesheet" type="text/css" href="css/table.css" />
 		<link rel="stylesheet" type="text/css" href="css/table-lov.css" />
+		<link rel="stylesheet" type="text/css" href="css/uploader.css" />
 
 		<h:form id="formCadastroReceita">
 
@@ -45,7 +46,8 @@
 
 				<div class="ui-g-12">
 					<p:outputLabel for="fotos" value="Fotos" class="label" />
-					<p:fileUpload id="fotos"
+					<p:fileUpload id="fotos" uploadLabel="Confirmar"
+						cancelLabel="Cancelar"
 						fileUploadListener="#{produtoBean.handleFileUpload}"
 						allowTypes="/(\.|\/)(jpe?g|png)$/"
 						invalidFileMessage="Tipo de arquivo é inválido!" multiple="true"
