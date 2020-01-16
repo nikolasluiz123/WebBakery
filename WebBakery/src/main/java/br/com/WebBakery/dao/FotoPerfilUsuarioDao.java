@@ -38,7 +38,7 @@ public class FotoPerfilUsuarioDao extends AbstractBaseDao<TOFotoPerfil> {
         return to;
     }
     
-    public TOFotoPerfil getFotoUsuario(Integer idUsuario) throws Exception {
+    public TOFotoPerfil getToFotoPerfil(Integer idUsuario) throws Exception {
         List<FotoPerfil> fotos = new ArrayList<>();
         List<TOFotoPerfil> toFotos = new ArrayList<>();
         

@@ -52,7 +52,8 @@ public abstract class AbstractBaseRegisterMBean<T extends AbstractBaseTO>
 
     public T getObjetoSessao(String keyAtribute, AbstractBaseDao<T> dao) throws Exception {
         Integer id = (Integer) Faces_Util.getHTTPSession().getAttribute(keyAtribute);
-        if (id != null) {
+        
+        if (id != null && dao != null) {
             Faces_Util.getHTTPSession().removeAttribute(keyAtribute);
             return dao.buscarPorId(id);
         }
@@ -82,6 +83,14 @@ public abstract class AbstractBaseRegisterMBean<T extends AbstractBaseTO>
     protected void addValidator(AbstractValidator validator) {
         if (!validatorChain.contains(validator)) {
             this.validatorChain.add(validator);
+        }
+    }
+    
+    protected void addValidators(AbstractValidator... validators) {
+        for (AbstractValidator validator : validators) {
+            if (!validatorChain.contains(validator)) {
+                this.validatorChain.add(validator);
+            }
         }
     }
 

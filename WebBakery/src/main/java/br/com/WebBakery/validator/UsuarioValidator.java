@@ -9,6 +9,7 @@ import br.com.WebBakery.util.String_Util;
 
 public class UsuarioValidator extends AbstractValidator {
 
+    private static final String DEFAULT_PASSWORD = "12345678";
     private static final String FIELD_SENHA_REQUIRED = "Senha é obrigatória!";
     private static final String FIELD_EMAIL_NOT_VALID = "E-mail inválido!";
     private static final String FIELD_EMAIL_LIMIT_EXCEDDED = "E-mail com excedência de caractéres!";
@@ -29,6 +30,12 @@ public class UsuarioValidator extends AbstractValidator {
         this.toUsuario = toUsuario;
         this.usuarioDao = usuarioDao;
         this.senha = senha;
+    }
+    
+    public UsuarioValidator(TOUsuario toUsuario, UsuarioDao usuarioDao) {
+        this.toUsuario = toUsuario;
+        this.usuarioDao = usuarioDao;
+        this.senha = DEFAULT_PASSWORD;
     }
 
     @Override

@@ -8,12 +8,122 @@
 <ui:composition template="_template.xhtml">
 
 	<ui:define name="conteudo">
+		<link rel="stylesheet" type="text/css" href="css/form.css" />
+		<link rel="stylesheet" type="text/css" href="css/form-group.css" />
+		<link rel="stylesheet" type="text/css" href="css/dialog-lov.css" />
+		<link rel="stylesheet" type="text/css" href="css/table.css" />
+		<link rel="stylesheet" type="text/css" href="css/table-lov.css" />
+		<link rel="stylesheet" type="text/css" href="css/uploader.css" />
 
-		<h:form enctype="multipart/form-data">
-			<p:fileUpload
-				fileUploadListener="#{fotoPerfilUploadBean.handleFileUpload}"
-				allowTypes="/(\.|\/)(jpe?g|png)$/"
-				invalidFileMessage="Tipo de arquivo é inválido!" update="toolBar" />
+		<h:form id="formPerfil">
+
+			<div class="ui-g">
+				<div class="ui-g-12 ui-md-12 ui-lg-12">
+					<p:fieldset class="group" legend="Informações Pessoais">
+						<div class="ui-g-12 ui-md-6 ui-lg-3">
+							<p:outputLabel value="Nome" for="nome" class="label" />
+							<p:inputText id="nome"
+								value="#{perfilBean.toFuncionario.toUsuario.nome}"
+								placeholder="Digite o nome..." />
+						</div>
+
+						<div class="ui-g-12 ui-md-6 ui-lg-3">
+							<p:outputLabel value="Sobrenome" for="sobrenome" class="label" />
+							<p:inputText id="sobrenome"
+								value="#{perfilBean.toFuncionario.toUsuario.sobrenome}"
+								placeholder="Digite o sobrenome..." />
+						</div>
+
+						<div class="ui-g-12 ui-md-6 ui-lg-3">
+							<p:outputLabel value="Telefone" for="telefone" class="label" />
+							<p:inputMask id="telefone"
+								value="#{perfilBean.toFuncionario.telefone}"
+								placeholder="Digite o telefone..." mask="(99) 99999-9999" />
+						</div>
+
+						<div class="ui-g-12 ui-md-6 ui-lg-3">
+							<p:outputLabel for="email" value="E-mail" class="label" />
+							<p:inputText id="email"
+								value="#{perfilBean.toFuncionario.toUsuario.email}"
+								placeholder="Digite o e-mail..." />
+						</div>
+
+						<div class="ui-g-12">
+							<p:outputLabel for="foto" value="Foto" class="label" />
+							<p:fileUpload id="foto" uploadLabel="Confirmar"
+								cancelLabel="Cancelar"
+								fileUploadListener="#{perfilBean.handleFileUpload}"
+								allowTypes="/(\.|\/)(jpe?g|png)$/"
+								invalidFileMessage="Tipo de arquivo é inválido!"
+								update="toolBar" />
+						</div>
+					</p:fieldset>
+				</div>
+
+				<div class="ui-g-12 ui-md-12 ui-lg-12">
+					<p:fieldset class="group margin-top-10" legend="Localização">
+
+						<div class="ui-g-12 ui-md-6 ui-lg-3">
+							<p:outputLabel for="pais" value="País" class="label" />
+							<p:inputText id="pais" onclick="PF('PaisesDialog').show();"
+								value="#{perfilBean.toFuncionario.toEndereco.toPais.nome}"
+								readonly="true" placeholder="Selecione o país..."
+								style="cursor: pointer;" />
+						</div>
+
+						<div class="ui-g-12 ui-md-6 ui-lg-3">
+							<p:outputLabel for="estado" value="Estado" class="label" />
+							<p:inputText id="estado" onclick="PF('EstadosDialog').show();"
+								value="#{perfilBean.toFuncionario.toEndereco.toEstado.nome}"
+								readonly="true" placeholder="Selecione o estado..."
+								style="cursor: pointer;" />
+						</div>
+
+						<div class="ui-g-12 ui-md-6 ui-lg-3">
+							<p:outputLabel for="cidade" value="Cidade" class="label" />
+							<p:inputText id="cidade" onclick="PF('CidadesDialog').show();"
+								value="#{perfilBean.toFuncionario.toEndereco.toCidade.nome}"
+								readonly="true" placeholder="Selecione a cidade..."
+								style="cursor: pointer;" />
+						</div>
+
+						<div class="ui-g-12 ui-md-6 ui-lg-3">
+							<p:outputLabel value="Bairro" for="bairro" class="label" />
+							<p:inputText id="bairro"
+								value="#{perfilBean.toFuncionario.toEndereco.toLogradouro.bairro}"
+								placeholder="Digite o bairro..." />
+						</div>
+
+						<div class="ui-g-12 ui-md-6 ui-lg-3">
+							<p:outputLabel value="Cep" for="cep" class="label" />
+							<p:inputMask id="cep"
+								value="#{perfilBean.toFuncionario.toEndereco.toLogradouro.cep}"
+								placeholder="Digite o cep..." mask="99999-999" />
+						</div>
+
+						<div class="ui-g-12 ui-md-6 ui-lg-3">
+							<p:outputLabel value="Rua" for="rua" class="label" />
+							<p:inputText id="rua"
+								value="#{perfilBean.toFuncionario.toEndereco.toLogradouro.rua}"
+								placeholder="Digite a rua..." />
+						</div>
+
+						<div class="ui-g-12 ui-md-12 ui-lg-3">
+							<p:outputLabel value="Complemento" for="complemento"
+								class="label" />
+							<p:inputText id="complemento"
+								value="#{perfilBean.toFuncionario.toEndereco.toLogradouro.complemento}"
+								placeholder="Digite o complemento..." />
+						</div>
+					</p:fieldset>
+				</div>
+
+				<div class="ui-g-12">
+					<p:commandButton value="Salvar" process="@form" class="button"
+						update="@form, formMessages:messages"
+						action="#{perfilBean.salvar}" />
+				</div>
+			</div>
 		</h:form>
 
 	</ui:define>
