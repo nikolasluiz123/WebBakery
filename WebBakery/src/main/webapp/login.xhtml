@@ -15,32 +15,35 @@
 <ui:composition template="_templateLogin.xhtml">
 
 	<ui:define name="conteudo">
-		<h:form id="formCadastroUsuario" styleClass="formCenterAlign">
+		<link rel="stylesheet" type="text/css" href="css/form.css" />
+		<link rel="stylesheet" type="text/css" href="css/form-group.css" />
 
-			<p:fieldset legend="Dados do Usuário">
+		<h:form id="formCadastroUsuario">
 
-				<div class="ui-g-5">
+			<p:fieldset class="group" legend="Dados do Usuário">
 
-					<p:outputLabel value="E-mail" for="email" />
-					<p:inputText id="email" value="#{loginBean.to.email}"
-						placeholder="Digite seu e-mail..." autocomplete="off">
+				<div class="ui-g">
+					<div class="ui-g-12 ui-md-12 ui-lg-12">
+						<p:outputLabel value="E-mail" for="email" class="label" />
+						<p:inputText id="email" value="#{loginBean.to.email}"
+							placeholder="Digite seu e-mail..." autocomplete="off">
 
-						<f:passThroughAttribute name="type" value="email" />
+							<f:passThroughAttribute name="type" value="email" />
 
-					</p:inputText>
+						</p:inputText>
+					</div>
 
-					<p:outputLabel value="Senha" for="senha" />
-					<p:password id="senha" value="#{loginBean.senha}"
-						placeholder="Digite sua senha..." autocomplete="off" />
+					<div class="ui-g-12 ui-md-12 ui-lg-12">
+						<p:outputLabel value="Senha" for="senha" class="label" />
+						<p:password id="senha" value="#{loginBean.senha}"
+							placeholder="Digite sua senha..." autocomplete="off" />
+					</div>
 
-					<p:commandButton value="Login" action="#{loginBean.login}"
-						process="@form" update="formMessages:messages"
-						style="margin-top: 10px;" />
-
-					<!-- 					<p:commandButton value="Popula Banco" -->
-					<!-- 						action="#{loginBean.popularBanco()}" /> -->
+					<div class="ui-g-12 ui-md-12 ui-lg-12">
+						<p:commandButton value="Login" action="#{loginBean.login}"
+							class="button" process="@form" update="formMessages:messages" />
+					</div>
 				</div>
-
 			</p:fieldset>
 		</h:form>
 	</ui:define>
