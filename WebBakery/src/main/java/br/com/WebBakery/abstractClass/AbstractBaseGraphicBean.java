@@ -3,7 +3,7 @@ package br.com.WebBakery.abstractClass;
 import java.io.Serializable;
 import java.util.List;
 
-import br.com.WebBakery.util.String_Util;
+import br.com.WebBakery.util.StringUtil;
 
 @SuppressWarnings("serial")
 public abstract class AbstractBaseGraphicBean implements Serializable {
@@ -24,7 +24,7 @@ public abstract class AbstractBaseGraphicBean implements Serializable {
     }
 
     protected void addLabel(String label) {
-        if (!String_Util.isNullOrEmpty(label)) {
+        if (!StringUtil.isNullOrEmpty(label)) {
             this.labels.add(label);
         }
     }

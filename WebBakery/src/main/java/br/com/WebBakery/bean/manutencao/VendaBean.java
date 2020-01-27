@@ -29,8 +29,8 @@ import br.com.WebBakery.to.TOFuncionario;
 import br.com.WebBakery.to.TOProdutoVenda;
 import br.com.WebBakery.to.TOUsuario;
 import br.com.WebBakery.to.TOVenda;
-import br.com.WebBakery.util.Faces_Util;
-import br.com.WebBakery.util.Primefaces_Util;
+import br.com.WebBakery.util.FacesUtil;
+import br.com.WebBakery.util.PrimefacesUtil;
 import br.com.WebBakery.validator.ProdutoVendaValidator;
 
 @Named(VendaBean.BEAN_NAME)
@@ -128,7 +128,7 @@ public class VendaBean extends AbstractBaseRegisterMBean<TOVenda> {
         this.toProdutosVenda.clear();
         this.toEstoqueProdutosSelecionados.clear();
         toClienteSelecionado = new TOCliente();
-        Primefaces_Util.update("formCadastroVenda:funcionalidades");
+        PrimefacesUtil.update("formCadastroVenda:funcionalidades");
         initListProdutos();
     }
 
@@ -230,7 +230,7 @@ public class VendaBean extends AbstractBaseRegisterMBean<TOVenda> {
     }
 
     private void setarFuncionarioVenda() throws Exception {
-        TOUsuario u = (TOUsuario) Faces_Util.getHTTPSession().getAttribute("usuarioLogado");
+        TOUsuario u = (TOUsuario) FacesUtil.getHTTPSession().getAttribute("usuarioLogado");
         TOFuncionario f = null;
         f = funcionarioDao.buscarPorIdUsuario(u.getId());
         this.getTo().setToFuncionario(f);

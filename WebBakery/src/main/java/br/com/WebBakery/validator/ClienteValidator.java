@@ -5,8 +5,8 @@ import java.util.Date;
 import br.com.WebBakery.abstractClass.AbstractValidator;
 import br.com.WebBakery.dao.ClienteDao;
 import br.com.WebBakery.to.TOCliente;
-import br.com.WebBakery.util.Cpf_Util;
-import br.com.WebBakery.util.String_Util;
+import br.com.WebBakery.util.CpfUtil;
+import br.com.WebBakery.util.StringUtil;
 
 public class ClienteValidator extends AbstractValidator {
 
@@ -35,7 +35,7 @@ public class ClienteValidator extends AbstractValidator {
     private void validaTelefone() {
         String telefone = this.cliente.getTelefone().trim();
 
-        if (String_Util.isNullOrEmpty(telefone)) {
+        if (StringUtil.isNullOrEmpty(telefone)) {
             messages.add(FIELD_TELEFONE_REQUIRED);
         }
     }
@@ -44,9 +44,9 @@ public class ClienteValidator extends AbstractValidator {
         String cpf = this.cliente.getCpf().trim();
         boolean existe = this.clienteDao.cpfExiste(this.cliente, true);
 
-        if (String_Util.isNullOrEmpty(cpf)) {
+        if (StringUtil.isNullOrEmpty(cpf)) {
             messages.add(FIELD_CPF_REQUIRED);
-        } else if (!Cpf_Util.isValid(cpf)) {
+        } else if (!CpfUtil.isValid(cpf)) {
             messages.add(FIELD_CPF_NOT_VALID);
         } else if (existe) {
             messages.add(FIELD_CPF_EXIST);

@@ -9,7 +9,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-public class Date_Util {
+public class DateUtil {
 
     public static String formatToString(String pattern, Date date) {
         SimpleDateFormat dateFormat = new SimpleDateFormat(pattern, Locale.getDefault());

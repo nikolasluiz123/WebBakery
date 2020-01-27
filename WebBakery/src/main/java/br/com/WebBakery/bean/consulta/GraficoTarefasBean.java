@@ -13,7 +13,7 @@ import org.primefaces.model.chart.MeterGaugeChartModel;
 
 import br.com.WebBakery.dao.TarefaDao;
 import br.com.WebBakery.to.TOUsuario;
-import br.com.WebBakery.util.Faces_Util;
+import br.com.WebBakery.util.FacesUtil;
 
 @Named
 @RequestScoped
@@ -41,7 +41,7 @@ public class GraficoTarefasBean implements Serializable {
         intervals.add(15);
         intervals.add(30);
        
-        return new MeterGaugeChartModel(dao.getTarefasPendentes((TOUsuario) Faces_Util.getAttributeFromSession("usuarioLogado")), intervals);
+        return new MeterGaugeChartModel(dao.getTarefasPendentes((TOUsuario) FacesUtil.getAttributeFromSession("usuarioLogado")), intervals);
     }
 
     private void createMeterGaugeModels() {

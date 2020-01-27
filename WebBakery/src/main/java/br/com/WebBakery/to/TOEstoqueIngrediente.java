@@ -2,7 +2,7 @@ package br.com.WebBakery.to;
 
 import br.com.WebBakery.abstractClass.AbstractBaseTO;
 import br.com.WebBakery.core.annotations.TOEntity;
-import br.com.WebBakery.util.String_Util;
+import br.com.WebBakery.util.StringUtil;
 
 public class TOEstoqueIngrediente extends AbstractBaseTO {
 
@@ -28,7 +28,7 @@ public class TOEstoqueIngrediente extends AbstractBaseTO {
     }
 
     public String getQuantidadeFormatada() {
-        return String_Util.formatTwoDecimalPlaces(this.quantidade);
+        return StringUtil.formatTwoDecimalPlaces(this.quantidade);
     }
 
 }

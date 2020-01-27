@@ -5,8 +5,8 @@ import java.util.Date;
 
 import br.com.WebBakery.abstractClass.AbstractValidator;
 import br.com.WebBakery.to.TOReceita;
-import br.com.WebBakery.util.Date_Util;
-import br.com.WebBakery.util.String_Util;
+import br.com.WebBakery.util.DateUtil;
+import br.com.WebBakery.util.StringUtil;
 
 public class ReceitaValidator extends AbstractValidator {
 
@@ -30,7 +30,7 @@ public class ReceitaValidator extends AbstractValidator {
     private void validarNome() {
         String nome = this.toReceita.getNome();
 
-        if (String_Util.isNullOrEmpty(nome)) {
+        if (StringUtil.isNullOrEmpty(nome)) {
             this.messages.add(FIELD_NOME_REQUIRED);
         } else if (nome.length() > 32) {
             this.messages.add(FIELD_NOME_LIMIT_EXCEEDED);
@@ -41,7 +41,7 @@ public class ReceitaValidator extends AbstractValidator {
         Date tempoPreparo = this.toReceita.getTempoPreparo();
         Date tempoFormatado = null;
         try {
-            tempoFormatado = Date_Util.formatDateToTime("HH:mm", tempoPreparo);
+            tempoFormatado = DateUtil.formatDateToTime("HH:mm", tempoPreparo);
         } catch (ParseException e) {
             e.printStackTrace();
         }

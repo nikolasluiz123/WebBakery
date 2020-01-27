@@ -5,7 +5,7 @@ import javax.servlet.http.HttpSession;
 
 import br.com.WebBakery.interfaces.IBaseMBean;
 import br.com.WebBakery.to.TOUsuario;
-import br.com.WebBakery.util.Faces_Util;
+import br.com.WebBakery.util.FacesUtil;
 
 @SuppressWarnings("serial")
 public abstract class AbstractBaseMBean implements IBaseMBean {
@@ -16,12 +16,12 @@ public abstract class AbstractBaseMBean implements IBaseMBean {
 
     @Override
     public FacesContext getContext() {
-        return Faces_Util.getFacesContext();
+        return FacesUtil.getFacesContext();
     }
 
     @Override
     public TOUsuario getUserSession() {
-        HttpSession session = Faces_Util.getHTTPSession();
+        HttpSession session = FacesUtil.getHTTPSession();
         return (TOUsuario) session.getAttribute(USER_IDENTIFIER_SESSION_KEY);
     }
     

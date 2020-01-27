@@ -4,7 +4,7 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Locale;
 
-public class String_Util {
+public class StringUtil {
 
     public static String formatToMonetaryValue(Number value) {
         NumberFormat formater = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));

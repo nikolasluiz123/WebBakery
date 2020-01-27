@@ -4,7 +4,7 @@ import java.util.List;
 
 import br.com.WebBakery.abstractClass.AbstractBaseTO;
 import br.com.WebBakery.core.annotations.TOEntity;
-import br.com.WebBakery.util.String_Util;
+import br.com.WebBakery.util.StringUtil;
 
 public class TOProduto extends AbstractBaseTO {
 
@@ -66,7 +66,7 @@ public class TOProduto extends AbstractBaseTO {
     }
 
     public String getPrecoFormatado() {
-        return String_Util.formatToMonetaryValue(preco);
+        return StringUtil.formatToMonetaryValue(preco);
     }
 
 }

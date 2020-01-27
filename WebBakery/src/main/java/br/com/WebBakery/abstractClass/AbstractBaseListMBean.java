@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import javax.servlet.http.HttpSession;
 
-import br.com.WebBakery.util.Faces_Util;
+import br.com.WebBakery.util.FacesUtil;
 
 @SuppressWarnings("serial")
 public abstract class AbstractBaseListMBean extends AbstractBaseMBean {
@@ -17,7 +17,7 @@ public abstract class AbstractBaseListMBean extends AbstractBaseMBean {
     
     public void setObjetoSessao(Integer id, String keyAtribute, String pageRedirect) {
         try {
-            HttpSession session = Faces_Util.getHTTPSession();
+            HttpSession session = FacesUtil.getHTTPSession();
             session.setAttribute(keyAtribute, id);
             getContext().getExternalContext().redirect(pageRedirect);
         } catch (IOException e) {
@@ -26,6 +26,6 @@ public abstract class AbstractBaseListMBean extends AbstractBaseMBean {
     }
     
     public String getRequestParameter(String key) {
-        return Faces_Util.getExternalContext().getRequestParameterMap().get(key);
+        return FacesUtil.getExternalContext().getRequestParameterMap().get(key);
     }
 }

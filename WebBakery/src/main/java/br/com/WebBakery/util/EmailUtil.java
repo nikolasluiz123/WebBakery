@@ -3,7 +3,7 @@ package br.com.WebBakery.util;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Email_Util {
+public class EmailUtil {
 
     public static boolean isValid(String email) {
 

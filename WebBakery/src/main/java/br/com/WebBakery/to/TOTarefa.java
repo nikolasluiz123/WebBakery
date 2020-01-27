@@ -4,7 +4,7 @@ import java.util.Date;
 
 import br.com.WebBakery.abstractClass.AbstractBaseTO;
 import br.com.WebBakery.core.annotations.TOEntity;
-import br.com.WebBakery.util.Date_Util;
+import br.com.WebBakery.util.DateUtil;
 
 public class TOTarefa extends AbstractBaseTO {
 
@@ -52,7 +52,7 @@ public class TOTarefa extends AbstractBaseTO {
     }
 
     public String dataFormatada(Date data) {
-        return Date_Util.formatToString("dd/MM/yyyy", data);
+        return DateUtil.formatToString("dd/MM/yyyy", data);
     }
 
     public TOFuncionario getToPadeiro() {

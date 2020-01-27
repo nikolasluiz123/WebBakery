@@ -8,8 +8,8 @@ import br.com.WebBakery.enums.TipoUsuario;
 import br.com.WebBakery.to.TOCliente;
 import br.com.WebBakery.to.TOFuncionario;
 import br.com.WebBakery.to.TOUsuario;
-import br.com.WebBakery.util.Hash_Util;
-import br.com.WebBakery.util.String_Util;
+import br.com.WebBakery.util.HashUtil;
+import br.com.WebBakery.util.StringUtil;
 
 public class LoginValidator extends AbstractValidator {
 
@@ -49,10 +49,10 @@ public class LoginValidator extends AbstractValidator {
     }
 
     private void validaSenha() {
-        String generateHash = Hash_Util.generateHashMaxSecurity(this.senha);
+        String generateHash = HashUtil.generateHashMaxSecurity(this.senha);
         String senhaUsuarioBanco = this.toUsuario.getSenha();
 
-        if (String_Util.isNullOrEmpty(this.senha)) {
+        if (StringUtil.isNullOrEmpty(this.senha)) {
             messages.add(FIELD_SENHA_REQUIRED);
         } else if (!senhaUsuarioBanco.equals(generateHash)) {
             messages.add(FIELD_SENHA_OR_EMAIL_NOT_VALID);

@@ -19,8 +19,8 @@ import br.com.WebBakery.enums.TipoUsuario;
 import br.com.WebBakery.to.TOFuncionario;
 import br.com.WebBakery.to.TOProduto;
 import br.com.WebBakery.to.TOTarefa;
-import br.com.WebBakery.util.Date_Util;
-import br.com.WebBakery.util.Primefaces_Util;
+import br.com.WebBakery.util.DateUtil;
+import br.com.WebBakery.util.PrimefacesUtil;
 import br.com.WebBakery.validator.TarefaValidator;
 
 @Named(TarefaBean.BEAN_NAME)
@@ -90,9 +90,9 @@ public class TarefaBean extends AbstractBaseRegisterMBean<TOTarefa> {
         try {
             Date tempoPreparo = new Date(getTo().getToProduto().getToReceita().getTempoPreparo()
                     .getTime());
-            Date dataFim = Date_Util.sum(getTo().getDataInicio(), tempoPreparo);
+            Date dataFim = DateUtil.sum(getTo().getDataInicio(), tempoPreparo);
             getTo().setDataFim(dataFim);
-            Primefaces_Util.update("formCadastroTarefa:dataFim");
+            PrimefacesUtil.update("formCadastroTarefa:dataFim");
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -120,7 +120,7 @@ public class TarefaBean extends AbstractBaseRegisterMBean<TOTarefa> {
 
     public void setarProduto() {
         this.getTo().setToProduto(this.toProdutoSelecionado);
-        Primefaces_Util.update("formCadastroTarefa:dataInicio");
+        PrimefacesUtil.update("formCadastroTarefa:dataInicio");
     }
 
     public void setarPadeiro() {

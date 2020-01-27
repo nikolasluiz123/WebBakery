@@ -20,7 +20,7 @@ import br.com.WebBakery.to.TOFotoPerfil;
 import br.com.WebBakery.to.TOFuncionario;
 import br.com.WebBakery.to.TOPerfil;
 import br.com.WebBakery.to.TOUsuario;
-import br.com.WebBakery.util.File_Util;
+import br.com.WebBakery.util.FileUtil;
 import br.com.WebBakery.validator.EnderecoValidator;
 import br.com.WebBakery.validator.FotoValidator;
 import br.com.WebBakery.validator.UsuarioValidator;
@@ -107,7 +107,7 @@ public class PerfilBean extends AbstractBaseRegisterMBean<TOPerfil> {
 
     // private void updatePhoto(UploadedFile file) {
     // getTo().getToFotoPerfil().setBytes(file.getContents());
-    // getTo().getToFotoPerfil().setExtensao(File_Util.getExtensao(file.getFileName()));
+    // getTo().getToFotoPerfil().setExtensao(FileUtil.getExtensao(file.getFileName()));
     // getTo().getToFotoPerfil().setNome(file.getFileName());
     // getTo().getToFotoPerfil().setTamanho(file.getSize());
     // }
@@ -117,7 +117,7 @@ public class PerfilBean extends AbstractBaseRegisterMBean<TOPerfil> {
         toFoto.setAtivo(true);
         toFoto.setBytes(file.getContents());
         toFoto.setToUsuario(this.toFuncionario.getToUsuario());
-        toFoto.setExtensao(File_Util.getExtensao(file.getFileName()));
+        toFoto.setExtensao(FileUtil.getExtensao(file.getFileName()));
         toFoto.setNome(file.getFileName());
         toFoto.setTamanho(file.getSize());
         
@@ -137,9 +137,9 @@ public class PerfilBean extends AbstractBaseRegisterMBean<TOPerfil> {
     public void getPathFotoPastaTemporaria() {
         try {
             if (getTo().getToFotoPerfil() != null) {
-                String pathCompleto = File_Util.criarFotoPastaTemporaria(getTo().getToFotoPerfil());
-                String nomeArquivo = File_Util.getNomeArquivo(pathCompleto);
-                String path = File_Util.getPath(nomeArquivo);
+                String pathCompleto = FileUtil.criarFotoPastaTemporaria(getTo().getToFotoPerfil());
+                String nomeArquivo = FileUtil.getNomeArquivo(pathCompleto);
+                String path = FileUtil.getPath(nomeArquivo);
                 setPathFoto(path);
             } else {
                 setPathFoto(PATH_IMG_DEFAULT);

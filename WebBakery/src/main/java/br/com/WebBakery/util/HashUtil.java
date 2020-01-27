@@ -3,7 +3,7 @@ package br.com.WebBakery.util;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-public class Hash_Util {
+public class HashUtil {
 
     public static Integer generateJavaHashCode(Object obj) {
         return obj.hashCode();

@@ -3,7 +3,7 @@ package br.com.WebBakery.validator;
 import br.com.WebBakery.abstractClass.AbstractValidator;
 import br.com.WebBakery.to.TOCidade;
 import br.com.WebBakery.to.TOEstado;
-import br.com.WebBakery.util.String_Util;
+import br.com.WebBakery.util.StringUtil;
 
 public class CidadeValidator extends AbstractValidator {
 
@@ -26,7 +26,7 @@ public class CidadeValidator extends AbstractValidator {
     private void validaNome() {
         String nome = this.cidade.getNome().trim();
 
-        if (String_Util.isNullOrEmpty(nome)) {
+        if (StringUtil.isNullOrEmpty(nome)) {
             messages.add(FIELD_NOME_REQUIRED);
         }
         if (nome.length() > 32) {

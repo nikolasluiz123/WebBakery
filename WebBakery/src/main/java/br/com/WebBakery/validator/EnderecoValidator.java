@@ -2,8 +2,8 @@ package br.com.WebBakery.validator;
 
 import br.com.WebBakery.abstractClass.AbstractValidator;
 import br.com.WebBakery.to.TOEndereco;
-import br.com.WebBakery.util.Cep_Util;
-import br.com.WebBakery.util.String_Util;
+import br.com.WebBakery.util.CepUtil;
+import br.com.WebBakery.util.StringUtil;
 
 public class EnderecoValidator extends AbstractValidator {
 
@@ -61,9 +61,9 @@ public class EnderecoValidator extends AbstractValidator {
     private void validaCep() {
         String cep = this.endereco.getToLogradouro().getCep();
 
-        if (String_Util.isNullOrEmpty(cep)) {
+        if (StringUtil.isNullOrEmpty(cep)) {
             this.messages.add(FIELD_CEP_REQUIRED);
-        } else if (!Cep_Util.EhValido(cep)) {
+        } else if (!CepUtil.EhValido(cep)) {
             this.messages.add(FIELD_CEP_NOT_VALID);
         }
     }
@@ -71,7 +71,7 @@ public class EnderecoValidator extends AbstractValidator {
     private void validaComplemento() {
         String complemento = this.endereco.getToLogradouro().getComplemento();
         
-        if (String_Util.isNullOrEmpty(complemento)) {
+        if (StringUtil.isNullOrEmpty(complemento)) {
             this.messages.add(FIELD_COMPLEMENTO_REQUIRED);
         } else if (complemento.length() > 32) {
             this.messages.add(FIELD_COMPLEMENTO_LIMIT_EXCEEDED);
@@ -81,7 +81,7 @@ public class EnderecoValidator extends AbstractValidator {
     private void validaRua() {
         String rua = this.endereco.getToLogradouro().getRua();
         
-        if (String_Util.isNullOrEmpty(rua)) {
+        if (StringUtil.isNullOrEmpty(rua)) {
             this.messages.add(FIELD_RUA_REQUIRED);
         } else if (rua.length() > 32) {
             this.messages.add(FIELD_RUA_NOT_VALID);
@@ -91,7 +91,7 @@ public class EnderecoValidator extends AbstractValidator {
     private void validaBairro() {
         String bairro = this.endereco.getToLogradouro().getBairro();
         
-        if (String_Util.isNullOrEmpty(bairro)) {
+        if (StringUtil.isNullOrEmpty(bairro)) {
             this.messages.add(FIELD_BAIRRO_REQUIRED);
         } else if (bairro.length() > 32) {
             this.messages.add(FIELD_BAIRRO_NOT_VALID);

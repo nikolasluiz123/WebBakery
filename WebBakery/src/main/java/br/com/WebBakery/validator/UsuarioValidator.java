@@ -3,9 +3,9 @@ package br.com.WebBakery.validator;
 import br.com.WebBakery.abstractClass.AbstractValidator;
 import br.com.WebBakery.dao.UsuarioDao;
 import br.com.WebBakery.to.TOUsuario;
-import br.com.WebBakery.util.Email_Util;
-import br.com.WebBakery.util.Hash_Util;
-import br.com.WebBakery.util.String_Util;
+import br.com.WebBakery.util.EmailUtil;
+import br.com.WebBakery.util.HashUtil;
+import br.com.WebBakery.util.StringUtil;
 
 public class UsuarioValidator extends AbstractValidator {
 
@@ -49,7 +49,7 @@ public class UsuarioValidator extends AbstractValidator {
     private void validaNome() {
         String nome = this.toUsuario.getNome().trim();
 
-        if (String_Util.isNullOrEmpty(nome)) {
+        if (StringUtil.isNullOrEmpty(nome)) {
             this.messages.add(FIELD_NOME_REQUIRED);
         }
         if (nome.length() > 40) {
@@ -60,7 +60,7 @@ public class UsuarioValidator extends AbstractValidator {
     private void validaSobrenome() {
         String sobrenome = this.toUsuario.getSobrenome().trim();
 
-        if (String_Util.isNullOrEmpty(sobrenome)) {
+        if (StringUtil.isNullOrEmpty(sobrenome)) {
             this.messages.add(FIELD_SOBRENOME_REQUIRED);
         }
         if (sobrenome.length() > 40) {
@@ -71,13 +71,13 @@ public class UsuarioValidator extends AbstractValidator {
     private void validaEmail() {
         String email = this.toUsuario.getEmail().trim();
 
-        if (String_Util.isNullOrEmpty(email)) {
+        if (StringUtil.isNullOrEmpty(email)) {
             messages.add(FIELD_EMAIL_REQUIRED);
         }
         if (email.length() > 50) {
             messages.add(FIELD_EMAIL_LIMIT_EXCEDDED);
         }
-        if (!Email_Util.isValid(email)) {
+        if (!EmailUtil.isValid(email)) {
             messages.add(FIELD_EMAIL_NOT_VALID);
         }
 
@@ -90,7 +90,7 @@ public class UsuarioValidator extends AbstractValidator {
     }
 
     private void validaSenha() {
-        if (String_Util.isNullOrEmpty(this.senha)) {
+        if (StringUtil.isNullOrEmpty(this.senha)) {
             messages.add(FIELD_SENHA_REQUIRED);
         } else if (this.senha.length() > 80) {
             messages.add(FIELD_SENHA_LIMIT_EXCEDDED);
@@ -98,7 +98,7 @@ public class UsuarioValidator extends AbstractValidator {
             messages.add(FIELD_SENHA_VERY_WEAK);
         }
 
-        String senhaHash = Hash_Util.generateHashMaxSecurity(this.senha);
+        String senhaHash = HashUtil.generateHashMaxSecurity(this.senha);
         this.toUsuario.setSenha(senhaHash);
     }
 }

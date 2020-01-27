@@ -18,7 +18,7 @@ import br.com.WebBakery.model.entitys.Logradouro;
 import br.com.WebBakery.model.entitys.Pais;
 import br.com.WebBakery.model.entitys.Usuario;
 import br.com.WebBakery.util.HashTypeEnum;
-import br.com.WebBakery.util.Hash_Util;
+import br.com.WebBakery.util.HashUtil;
 
 @Stateless
 public class PopulaBancoDao implements Serializable {
@@ -1367,7 +1367,7 @@ public class PopulaBancoDao implements Serializable {
         usuario.setNome(nome);
         usuario.setSobrenome(sobrenome);
         usuario.setEmail(email);
-        usuario.setSenha(Hash_Util.generateHash(senha, HashTypeEnum.SAH1));
+        usuario.setSenha(HashUtil.generateHash(senha, HashTypeEnum.SAH1));
         usuario.setTipo(tipo);
         usuario.setAtivo(true);
         return usuario;

@@ -25,7 +25,7 @@ public class SimpleDateConverter implements Converter {
 
     @Override
     public String getAsString(FacesContext context, UIComponent component, Object value) {
-        return Date_Util.formatToString("dd/MM/yyyy", (Date) value);
+        return DateUtil.formatToString("dd/MM/yyyy", (Date) value);
     }
 
 }

@@ -20,7 +20,7 @@ import br.com.WebBakery.dao.ReceitaDao;
 import br.com.WebBakery.to.TOFotoProduto;
 import br.com.WebBakery.to.TOProduto;
 import br.com.WebBakery.to.TOReceita;
-import br.com.WebBakery.util.File_Util;
+import br.com.WebBakery.util.FileUtil;
 import br.com.WebBakery.validator.ProdutoValidator;
 
 @Named(ProdutoBean.BEAN_NAME)
@@ -95,7 +95,7 @@ public class ProdutoBean extends AbstractBaseRegisterMBean<TOProduto> {
         TOFotoProduto toFoto = new TOFotoProduto();
         toFoto.setAtivo(true);
         toFoto.setBytes(file.getContents());
-        toFoto.setExtensao(File_Util.getExtensao(file.getFileName()));
+        toFoto.setExtensao(FileUtil.getExtensao(file.getFileName()));
         toFoto.setNome(file.getFileName());
         toFoto.setToProduto(getTo());
         toFoto.setTamanho(file.getSize());

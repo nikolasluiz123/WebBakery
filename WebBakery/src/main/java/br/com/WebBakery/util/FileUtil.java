@@ -13,7 +13,7 @@ import javax.servlet.ServletContext;
 import br.com.WebBakery.abstractClass.AbstractArquivo;
 import br.com.WebBakery.abstractClass.AbstractArquivoTO;
 
-public class File_Util {
+public class FileUtil {
 
     public final static String PATH_SEPARATOR = "/";
     public final static String DOUBLE_PATH_SEPARATOR = "//";
@@ -24,7 +24,7 @@ public class File_Util {
             return null;
         }
 
-        int si = fileName.lastIndexOf(File_Util.SCORE);
+        int si = fileName.lastIndexOf(FileUtil.SCORE);
         if (si < 0) {
             return null;
         }
@@ -33,8 +33,8 @@ public class File_Util {
     }
 
     public static String getPath(String nomeArquivo) {
-        return File_Util.SCORE + File_Util.DOUBLE_PATH_SEPARATOR + "session_"
-                + Faces_Util.getHTTPSession().getId() + File_Util.DOUBLE_PATH_SEPARATOR
+        return FileUtil.SCORE + FileUtil.DOUBLE_PATH_SEPARATOR + "session_"
+                + FacesUtil.getHTTPSession().getId() + FileUtil.DOUBLE_PATH_SEPARATOR
                 + nomeArquivo;
     }
 
@@ -102,12 +102,12 @@ public class File_Util {
     }
 
     public static String criarFotoPastaTemporaria(AbstractArquivoTO f) throws Exception {
-        ServletContext context = (ServletContext) Faces_Util.getExternalContext().getContext();
-        File arquivoFoto = File_Util
+        ServletContext context = (ServletContext) FacesUtil.getExternalContext().getContext();
+        File arquivoFoto = FileUtil
                 .criarArquivo(f.getBytes(),
-                              File_Util.getPastaTemporaria(context.getRealPath("/"),
-                                                           Faces_Util.getHTTPSession().getId()),
-                              File_Util.SCORE + f.getExtensao());
+                              FileUtil.getPastaTemporaria(context.getRealPath("/"),
+                                                           FacesUtil.getHTTPSession().getId()),
+                              FileUtil.SCORE + f.getExtensao());
         return arquivoFoto.getAbsolutePath();
     }
 

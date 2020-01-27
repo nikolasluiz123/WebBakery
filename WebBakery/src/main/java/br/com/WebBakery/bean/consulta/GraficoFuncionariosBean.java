@@ -1,7 +1,6 @@
 package br.com.WebBakery.bean.consulta;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
@@ -11,15 +10,10 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import org.primefaces.model.charts.ChartData;
-import org.primefaces.model.charts.axes.cartesian.CartesianScales;
-import org.primefaces.model.charts.axes.cartesian.linear.CartesianLinearAxes;
-import org.primefaces.model.charts.axes.cartesian.linear.CartesianLinearTicks;
-import org.primefaces.model.charts.bar.BarChartDataSet;
-import org.primefaces.model.charts.bar.BarChartModel;
-import org.primefaces.model.charts.bar.BarChartOptions;
-import org.primefaces.model.charts.optionconfig.legend.Legend;
-import org.primefaces.model.charts.optionconfig.legend.LegendLabel;
+import org.primefaces.model.chart.Axis;
+import org.primefaces.model.chart.AxisType;
+import org.primefaces.model.chart.ChartSeries;
+import org.primefaces.model.chart.HorizontalBarChartModel;
 
 import br.com.WebBakery.dao.FuncionarioDao;
 import br.com.WebBakery.model.graphics.FuncionarioGraphicValues;
@@ -30,86 +24,50 @@ public class GraficoFuncionariosBean implements Serializable {
 
     private static final long serialVersionUID = -969025153573931483L;
 
-    private BarChartModel graficoFuncionarios;
+    private static final String TICK_FORMAT = "%i";
+    private static final int MAX_VALUE_AXYS_X = 200;
+    private static final int MIN_VALUE_AXYS_X = 0;
+    private static final String TITLE = "Caixar qua mais Realizaram Vendas";
+
+    private HorizontalBarChartModel horizontalBarModel;
 
     @Inject
     private FuncionarioDao dao;
 
-    private List<FuncionarioGraphicValues> maisVendidos;
+    private List<FuncionarioGraphicValues> funcionariosRealizaramMaisVendas;
 
     @PostConstruct
-    private void init() {
+    public void init() {
+        this.horizontalBarModel = new HorizontalBarChartModel();
+        createHorizontalBarModel();
+    }
+
+    private void createHorizontalBarModel() {
+        ChartSeries grafico = new ChartSeries();
+
         Calendar dataInicial = Calendar.getInstance(new Locale("pt", "BR"));
         dataInicial.set(2019, 9, 26);
 
         Calendar dataFinal = Calendar.getInstance(new Locale("pt", "BR"));
 
-        maisVendidos = dao.getCincoFuncionariosQueMaisVendem(dataInicial, dataFinal);
-        graficoFuncionarios = new BarChartModel();
-        ChartData data = new ChartData();
+        this.funcionariosRealizaramMaisVendas = dao.getCincoFuncionariosQueMaisVendem(dataInicial, dataFinal);
 
-        BarChartDataSet barDataSet = new BarChartDataSet();
-        barDataSet.setLabel("Caixas que mais Realizam Vendas");
-
-        List<Number> values = new ArrayList<>();
-        List<String> labels = new ArrayList<>();
-
-        maisVendidos.forEach(i -> {
-            values.add(i.getQuantidadeVendasRealizadas());
-            labels.add(i.getNomeFuncionario());
+        this.funcionariosRealizaramMaisVendas.forEach(p -> {
+            grafico.set(p.getNomeFuncionario(), p.getQuantidadeVendasRealizadas());
         });
 
-        barDataSet.setData(values);
-        data.setLabels(labels);
+        this.horizontalBarModel.addSeries(grafico);
+        this.horizontalBarModel.setTitle(TITLE);
+        this.horizontalBarModel.setStacked(true);
 
-        List<String> bgColor = new ArrayList<>();
-        bgColor.add("rgb(247, 137, 12, 0.4)");
-        bgColor.add("rgb(232, 12, 12, 0.4)");
-        bgColor.add("rgb(100, 4, 84, 0.4)");
-        bgColor.add("rgb(251, 4, 134, 0.4)");
-        bgColor.add("rgb(100, 166, 0, 0.4)");
-        barDataSet.setBackgroundColor(bgColor);
-
-        List<String> borderColor = new ArrayList<>();
-        borderColor.add("rgb(247, 137, 12)");
-        borderColor.add("rgb(232, 12, 12)");
-        borderColor.add("rgb(100, 4, 84)");
-        borderColor.add("rgb(251, 4, 134)");
-        borderColor.add("rgb(100, 166, 0)");
-        barDataSet.setBorderColor(borderColor);
-        barDataSet.setBorderWidth(1);
-
-        data.addChartDataSet(barDataSet);
-
-        // Data
-        graficoFuncionarios.setData(data);
-
-        // Options
-        BarChartOptions options = new BarChartOptions();
-        CartesianScales cScales = new CartesianScales();
-        CartesianLinearAxes linearAxes = new CartesianLinearAxes();
-        CartesianLinearTicks ticks = new CartesianLinearTicks();
-        ticks.setBeginAtZero(true);
-        linearAxes.setTicks(ticks);
-        cScales.addYAxesData(linearAxes);
-        options.setScales(cScales);
-
-        Legend legend = new Legend();
-        legend.setDisplay(true);
-        legend.setPosition("top");
-
-        LegendLabel legendLabels = new LegendLabel();
-        legendLabels.setFontStyle("bold");
-        legendLabels.setFontColor("#2980B9");
-        legendLabels.setFontSize(24);
-        legend.setLabels(legendLabels);
-        options.setLegend(legend);
-
-        graficoFuncionarios.setOptions(options);
+        Axis xAxis = horizontalBarModel.getAxis(AxisType.X);
+        xAxis.setTickFormat(TICK_FORMAT);
+        xAxis.setMin(MIN_VALUE_AXYS_X);
+        xAxis.setMax(MAX_VALUE_AXYS_X);
     }
 
-    public BarChartModel getGraficoFuncionarios() {
-        return graficoFuncionarios;
+    public HorizontalBarChartModel getHorizontalBarModel() {
+        return horizontalBarModel;
     }
 
 }

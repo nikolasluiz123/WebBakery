@@ -2,7 +2,7 @@ package br.com.WebBakery.util;
 
 import java.text.DecimalFormat;
 
-public class Double_Util {
+public class DoubleUtil {
 
     public static Double format(Double value) {
         DecimalFormat df = new DecimalFormat("#.##");

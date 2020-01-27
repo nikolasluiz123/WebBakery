@@ -3,7 +3,7 @@ package br.com.WebBakery.util;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Cep_Util {
+public class CepUtil {
 
     public static boolean EhValido(String cep) {
         String expression = "\\d{5}\\d{3}";

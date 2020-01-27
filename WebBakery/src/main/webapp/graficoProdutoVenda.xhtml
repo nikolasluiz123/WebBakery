@@ -6,11 +6,11 @@
 	xmlns:p="http://primefaces.org/ui">
 
 <div>
-	<p:barChart model="#{graficoProdutoVendaBean.graficoProdutosVenda}">
+	<p:chart type="bar"
+		model="#{graficoProdutoVendaBean.horizontalBarModel}">
 		<p:ajax event="itemSelect"
 			listener="#{graficoProdutoVendaBean.itemSelect}"
 			update="formMessages:messages" />
-	</p:barChart>
+	</p:chart>
 </div>
-
 </html>

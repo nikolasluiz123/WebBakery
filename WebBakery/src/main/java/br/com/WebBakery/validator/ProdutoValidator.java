@@ -3,7 +3,7 @@ package br.com.WebBakery.validator;
 import br.com.WebBakery.abstractClass.AbstractValidator;
 import br.com.WebBakery.to.TOProduto;
 import br.com.WebBakery.to.TOReceita;
-import br.com.WebBakery.util.String_Util;
+import br.com.WebBakery.util.StringUtil;
 
 public class ProdutoValidator extends AbstractValidator {
 
@@ -32,7 +32,7 @@ public class ProdutoValidator extends AbstractValidator {
     private void validaDescricao() {
         String descricao = this.toProduto.getDescricao().trim();
 
-        if (String_Util.isNullOrEmpty(descricao)) {
+        if (StringUtil.isNullOrEmpty(descricao)) {
             messages.add(FIELD_DESCRICAO_REQUIRED);
         } else if (descricao.length() > 50) {
             messages.add(FIELD_DESCRICAO_LIMIT_EXCEEDED);

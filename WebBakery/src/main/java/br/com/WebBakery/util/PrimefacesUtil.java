@@ -2,7 +2,7 @@ package br.com.WebBakery.util;
 
 import org.primefaces.PrimeFaces;
 
-public class Primefaces_Util {
+public class PrimefacesUtil {
 
     public static void executeScript(String Script) {
         PrimeFaces.current().executeScript(Script);

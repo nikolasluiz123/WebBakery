@@ -1,125 +1,78 @@
 package br.com.WebBakery.bean.consulta;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.primefaces.event.ItemSelectEvent;
-import org.primefaces.model.charts.ChartData;
-import org.primefaces.model.charts.axes.cartesian.CartesianScales;
-import org.primefaces.model.charts.axes.cartesian.linear.CartesianLinearAxes;
-import org.primefaces.model.charts.axes.cartesian.linear.CartesianLinearTicks;
-import org.primefaces.model.charts.bar.BarChartDataSet;
-import org.primefaces.model.charts.bar.BarChartModel;
-import org.primefaces.model.charts.bar.BarChartOptions;
-import org.primefaces.model.charts.optionconfig.legend.Legend;
-import org.primefaces.model.charts.optionconfig.legend.LegendLabel;
+import org.primefaces.model.chart.Axis;
+import org.primefaces.model.chart.AxisType;
+import org.primefaces.model.chart.ChartSeries;
+import org.primefaces.model.chart.HorizontalBarChartModel;
 
 import br.com.WebBakery.dao.ProdutoVendaDao;
 import br.com.WebBakery.model.graphics.ProdutoVendaGraphicValues;
-import br.com.WebBakery.util.String_Util;
+import br.com.WebBakery.util.MessagesUtil;
+import br.com.WebBakery.util.StringUtil;
 
 @Named
 @ViewScoped
 public class GraficoProdutoVendaBean implements Serializable {
 
-    private static final long serialVersionUID = -4632166949324098113L;
+    private static final long serialVersionUID = 3897043169800518984L;
 
-    private BarChartModel graficoProdutosVenda;
+    private static final String TICK_FORMAT = "%i";
+    private static final int MAX_VALUE_AXYS_X = 200;
+    private static final int MIN_VALUE_AXYS_X = 0;
+    private static final String TITLE = "Produtos mais Vendidos";
+
+    private HorizontalBarChartModel horizontalBarModel;
 
     @Inject
     private ProdutoVendaDao dao;
-
-    private List<ProdutoVendaGraphicValues> maisVendidos;
+    private List<ProdutoVendaGraphicValues> maisProdutivos;
 
     @PostConstruct
-    private void init() {
-        maisVendidos = dao.getCincoProdutosMaisVendidos();
-        graficoProdutosVenda = new BarChartModel();
-        ChartData data = new ChartData();
-
-        BarChartDataSet barDataSet = new BarChartDataSet();
-        barDataSet.setLabel("Produtos mais Vendidos");
-
-        List<Number> values = new ArrayList<>();
-        List<String> labels = new ArrayList<>();
-
-        maisVendidos.forEach(i -> {
-            values.add(i.getQuantidadeTotalVendidaProduto());
-            labels.add(i.getNomeProduto());
-        });
-
-        barDataSet.setData(values);
-        data.setLabels(labels);
-
-        List<String> bgColor = new ArrayList<>();
-        bgColor.add("rgb(2, 205, 178, 0.2)");
-        bgColor.add("rgb(0, 139, 84, 0.2)");
-        bgColor.add("rgb(100, 4, 84, 0.2)");
-        bgColor.add("rgb(251, 4, 134, 0.2)");
-        bgColor.add("rgb(100, 166, 0, 0.2)");
-        barDataSet.setBackgroundColor(bgColor);
-
-        List<String> borderColor = new ArrayList<>();
-        borderColor.add("rgb(2, 205, 178)");
-        borderColor.add("rgb(0, 139, 84)");
-        borderColor.add("rgb(100, 4, 84)");
-        borderColor.add("rgb(251, 4, 134)");
-        borderColor.add("rgb(100, 166, 0)");
-        barDataSet.setBorderColor(borderColor);
-        barDataSet.setBorderWidth(1);
-
-        data.addChartDataSet(barDataSet);
-
-        // Data
-        graficoProdutosVenda.setData(data);
-
-        // Options
-        BarChartOptions options = new BarChartOptions();
-        CartesianScales cScales = new CartesianScales();
-        CartesianLinearAxes linearAxes = new CartesianLinearAxes();
-        CartesianLinearTicks ticks = new CartesianLinearTicks();
-        ticks.setBeginAtZero(true);
-        linearAxes.setTicks(ticks);
-        cScales.addYAxesData(linearAxes);
-        options.setScales(cScales);
-
-        Legend legend = new Legend();
-        legend.setDisplay(true);
-        legend.setPosition("top");
-
-        LegendLabel legendLabels = new LegendLabel();
-        legendLabels.setFontStyle("bold");
-        legendLabels.setFontColor("#2980B9");
-        legendLabels.setFontSize(24);
-        legend.setLabels(legendLabels);
-        options.setLegend(legend);
-        
-        graficoProdutosVenda.setOptions(options);
+    public void init() {
+        this.horizontalBarModel = new HorizontalBarChartModel();
+        createHorizontalBarModel();
     }
 
-    public BarChartModel getGraficoProdutosVenda() {
-        return graficoProdutosVenda;
+    private void createHorizontalBarModel() {
+        ChartSeries grafico = new ChartSeries();
+        this.maisProdutivos = dao.getCincoProdutosMaisVendidos();
+
+        this.maisProdutivos.forEach(p -> {
+            grafico.set(p.getNomeProduto(), p.getQuantidadeTotalVendidaProduto());
+        });
+
+        this.horizontalBarModel.addSeries(grafico);
+        this.horizontalBarModel.setTitle(TITLE);
+        this.horizontalBarModel.setStacked(true);
+
+        Axis xAxis = horizontalBarModel.getAxis(AxisType.X);
+        xAxis.setTickFormat(TICK_FORMAT);
+        xAxis.setMin(MIN_VALUE_AXYS_X);
+        xAxis.setMax(MAX_VALUE_AXYS_X);
     }
 
     public void itemSelect(ItemSelectEvent event) {
-        BigDecimal preco = maisVendidos.get(event.getItemIndex()).getPrecoTotalVendidoProduto();
-        String precoFormatado = String_Util.formatToMonetaryValue(preco);
-        
-        
-        FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
-                                            "Lucro Bruto: " + precoFormatado,
-                                            "Lucro Bruto: " + precoFormatado);
+        String message = getMessagePrice(event);
+        MessagesUtil.showMessage(FacesMessage.SEVERITY_INFO, message);
+    }
 
-        FacesContext.getCurrentInstance().addMessage(null, msg);
+    private String getMessagePrice(ItemSelectEvent event) {
+        return "Preço total: " + StringUtil.formatToMonetaryValue(maisProdutivos
+                .get(event.getItemIndex()).getPrecoTotalVendidoProduto());
+    }
+
+    public HorizontalBarChartModel getHorizontalBarModel() {
+        return horizontalBarModel;
     }
 
 }

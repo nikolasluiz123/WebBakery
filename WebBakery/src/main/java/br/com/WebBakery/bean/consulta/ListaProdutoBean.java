@@ -18,8 +18,8 @@ import br.com.WebBakery.to.TOFotoProduto;
 import br.com.WebBakery.to.TOProduto;
 import br.com.WebBakery.to.TOProdutoComFoto;
 import br.com.WebBakery.to.TOReceita;
-import br.com.WebBakery.util.File_Util;
-import br.com.WebBakery.util.String_Util;
+import br.com.WebBakery.util.FileUtil;
+import br.com.WebBakery.util.StringUtil;
 
 @Named(ListaProdutoBean.BEAN_NAME)
 @ViewScoped
@@ -52,10 +52,10 @@ public class ListaProdutoBean extends AbstractBaseListMBean implements IBaseList
             List<TOFotoProduto> toFotosProduto = new ArrayList<>();
             toFotosProduto = this.produtoDao.buscarProdutoComFotosPorIdProduto(idProduto);
 
-            String pathCompleto = File_Util
+            String pathCompleto = FileUtil
                     .criarFotoPastaTemporaria(toFotosProduto.get(0));
-            String nomeArquivo = File_Util.getNomeArquivo(pathCompleto);
-            path = File_Util.getPath(nomeArquivo);
+            String nomeArquivo = FileUtil.getNomeArquivo(pathCompleto);
+            path = FileUtil.getPath(nomeArquivo);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -67,9 +67,9 @@ public class ListaProdutoBean extends AbstractBaseListMBean implements IBaseList
     public String getPath(TOFotoProduto fp) {
         String path = null;
         try {
-            String pathCompleto = File_Util.criarFotoPastaTemporaria(fp);
-            String nomeArquivo = File_Util.getNomeArquivo(pathCompleto);
-            path = File_Util.getPath(nomeArquivo);
+            String pathCompleto = FileUtil.criarFotoPastaTemporaria(fp);
+            String nomeArquivo = FileUtil.getNomeArquivo(pathCompleto);
+            path = FileUtil.getPath(nomeArquivo);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -102,7 +102,7 @@ public class ListaProdutoBean extends AbstractBaseListMBean implements IBaseList
     }
 
     public String getPrecoFormatado(Double d) {
-        return String_Util.formatToMonetaryValue(d);
+        return StringUtil.formatToMonetaryValue(d);
     }
 
     private void initProdutos() {

@@ -3,7 +3,7 @@ package br.com.WebBakery.util;
 import java.util.Calendar;
 import java.util.Locale;
 
-public class Calendar_Util {
+public class CalendarUtil {
 
     private static Locale locale = Locale.getDefault();
     

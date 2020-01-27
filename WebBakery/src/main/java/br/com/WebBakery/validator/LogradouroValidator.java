@@ -2,8 +2,8 @@ package br.com.WebBakery.validator;
 
 import br.com.WebBakery.abstractClass.AbstractValidator;
 import br.com.WebBakery.model.entitys.Logradouro;
-import br.com.WebBakery.util.Cep_Util;
-import br.com.WebBakery.util.String_Util;
+import br.com.WebBakery.util.CepUtil;
+import br.com.WebBakery.util.StringUtil;
 
 public class LogradouroValidator extends AbstractValidator {
 
@@ -32,7 +32,7 @@ public class LogradouroValidator extends AbstractValidator {
     private void validaBairro() {
         String bairro = this.logradouro.getBairro().trim();
 
-        if (String_Util.isNullOrEmpty(bairro)) {
+        if (StringUtil.isNullOrEmpty(bairro)) {
             messages.add(FIELD_BAIRRO_REQUIRED);
         }
         if (bairro.length() > 40) {
@@ -43,10 +43,10 @@ public class LogradouroValidator extends AbstractValidator {
     private void validaCep() {
         String cep = this.logradouro.getCep().trim();
 
-        if (String_Util.isNullOrEmpty(cep)) {
+        if (StringUtil.isNullOrEmpty(cep)) {
             messages.add(FIELD_CEP_REQUIRED);
         }
-        if (!Cep_Util.EhValido(cep)) {
+        if (!CepUtil.EhValido(cep)) {
             messages.add(FIELD_CEP_NOT_VALID);
         }
     }
@@ -54,7 +54,7 @@ public class LogradouroValidator extends AbstractValidator {
     private void validaRua() {
         String rua = this.logradouro.getRua().trim();
 
-        if (String_Util.isNullOrEmpty(rua)) {
+        if (StringUtil.isNullOrEmpty(rua)) {
             messages.add(FIELD_RUA_REQUIRED);
         }
         if (rua.length() > 30) {
@@ -65,7 +65,7 @@ public class LogradouroValidator extends AbstractValidator {
     private void validaComplemento() {
         String complemento = this.logradouro.getComplemento().trim();
 
-        if (String_Util.isNullOrEmpty(complemento)) {
+        if (StringUtil.isNullOrEmpty(complemento)) {
             messages.add(FIELD_COMPLEMENTO_REQUIRED);
         }
         if (complemento.length() > 20) {

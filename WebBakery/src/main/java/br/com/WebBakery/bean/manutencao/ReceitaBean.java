@@ -18,7 +18,7 @@ import br.com.WebBakery.enums.UnidadeMedida;
 import br.com.WebBakery.to.TOIngrediente;
 import br.com.WebBakery.to.TOReceita;
 import br.com.WebBakery.to.TOReceitaIngrediente;
-import br.com.WebBakery.util.Primefaces_Util;
+import br.com.WebBakery.util.PrimefacesUtil;
 import br.com.WebBakery.validator.ReceitaIngredienteValidator;
 import br.com.WebBakery.validator.ReceitaValidator;
 
@@ -65,7 +65,7 @@ public class ReceitaBean extends AbstractBaseRegisterMBean<TOReceita> {
             if (isValid()) {
                 getTo().setAtivo(true);
                 this.isCadastro = getTo().getId() == null;
-                Primefaces_Util.executeScriptShowDialog("IngredienteDialog");
+                PrimefacesUtil.executeScriptShowDialog("IngredienteDialog");
             } else {
                 showMessagesValidatorChain();
             }

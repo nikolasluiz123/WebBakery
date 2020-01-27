@@ -5,8 +5,8 @@ import java.math.BigDecimal;
 import br.com.WebBakery.abstractClass.AbstractValidator;
 import br.com.WebBakery.dao.FuncionarioDao;
 import br.com.WebBakery.to.TOFuncionario;
-import br.com.WebBakery.util.Cpf_Util;
-import br.com.WebBakery.util.String_Util;
+import br.com.WebBakery.util.CpfUtil;
+import br.com.WebBakery.util.StringUtil;
 
 public class FuncionarioValidator extends AbstractValidator {
 
@@ -42,9 +42,9 @@ public class FuncionarioValidator extends AbstractValidator {
     private void validaCpf() {
         String cpf = this.toFuncionario.getCpf().trim();
 
-        if (String_Util.isNullOrEmpty(cpf)) {
+        if (StringUtil.isNullOrEmpty(cpf)) {
             this.messages.add(FIELD_CPF_REQUIRED);
-        } else if (!Cpf_Util.isValid(cpf)) {
+        } else if (!CpfUtil.isValid(cpf)) {
             this.messages.add(FIELD_CPF_NOT_VALID);
         }
     }
@@ -52,7 +52,7 @@ public class FuncionarioValidator extends AbstractValidator {
     private void validaRg() {
         String rg = this.toFuncionario.getRg().trim().replace(".", "");
 
-        if (String_Util.isNullOrEmpty(rg)) {
+        if (StringUtil.isNullOrEmpty(rg)) {
             this.messages.add(FIELD_RG_REQUIRED);
         } else if (rg.length() != 7) {
             this.messages.add(FIELD_RG_NOT_VALID);
@@ -63,7 +63,7 @@ public class FuncionarioValidator extends AbstractValidator {
         String telefone = this.toFuncionario.getTelefone().replace("(", "").replace(")", "")
                 .replace("-", "").replace(" ", "").trim();
 
-        if (String_Util.isNullOrEmpty(telefone)) {
+        if (StringUtil.isNullOrEmpty(telefone)) {
             this.messages.add(FIELD_TELEFONE_REQUIRED);
         } else if (telefone.length() > 13) {
             this.messages.add(FIELD_TELEFONE_NOT_VALID);

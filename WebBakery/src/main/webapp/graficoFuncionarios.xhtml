@@ -6,11 +6,9 @@
 	xmlns:p="http://primefaces.org/ui">
 
 <div>
-	<p:barChart model="#{graficoFuncionariosBean.graficoFuncionarios}">
-		<p:ajax event="itemSelect"
-			listener="#{graficoFuncionarioBean.itemSelect}"
-			update="formMessages:messages" />
-	</p:barChart>
+	<p:chart type="bar"
+		model="#{graficoFuncionariosBean.getHorizontalBarModel()}">
+	</p:chart>
 </div>
 
 </html>

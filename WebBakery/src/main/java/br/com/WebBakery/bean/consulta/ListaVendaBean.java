@@ -15,7 +15,7 @@ import br.com.WebBakery.dao.VendaDao;
 import br.com.WebBakery.interfaces.IBaseListMBean;
 import br.com.WebBakery.to.TOProdutoVenda;
 import br.com.WebBakery.to.TOVenda;
-import br.com.WebBakery.util.String_Util;
+import br.com.WebBakery.util.StringUtil;
 
 @Named(ListaVendaBean.BEAN_NAME)
 @ViewScoped
@@ -52,7 +52,7 @@ public class ListaVendaBean extends AbstractBaseListMBean implements IBaseListMB
             Integer quantidade = to.getQuantidade();
             double valorTotalPago = preco * quantidade;
             to.setValorTotalPago(valorTotalPago);
-            to.setValorTotalPagoFormatado(String_Util.formatToMonetaryValue(valorTotalPago));
+            to.setValorTotalPagoFormatado(StringUtil.formatToMonetaryValue(valorTotalPago));
         }
     }
 

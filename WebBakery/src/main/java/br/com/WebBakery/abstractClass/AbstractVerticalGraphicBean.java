@@ -12,8 +12,8 @@ import org.primefaces.model.charts.bar.BarChartOptions;
 import org.primefaces.model.charts.optionconfig.legend.Legend;
 import org.primefaces.model.charts.optionconfig.legend.LegendLabel;
 
-import br.com.WebBakery.util.Double_Util;
-import br.com.WebBakery.util.String_Util;
+import br.com.WebBakery.util.DoubleUtil;
+import br.com.WebBakery.util.StringUtil;
 
 @SuppressWarnings("serial")
 public abstract class AbstractVerticalGraphicBean extends AbstractBaseGraphicBean {
@@ -77,19 +77,19 @@ public abstract class AbstractVerticalGraphicBean extends AbstractBaseGraphicBea
     }
 
     protected void setLegendPosition(String position) {
-        if (!String_Util.isNullOrEmpty(position)) {
+        if (!StringUtil.isNullOrEmpty(position)) {
             this.legend.setPosition(position);
         }
     }
 
     protected void setFontStyleLegendLabels(String style) {
-        if (!String_Util.isNullOrEmpty(style)) {
+        if (!StringUtil.isNullOrEmpty(style)) {
             this.legendLabels.setFontStyle(style);
         }
     }
 
     protected void setFontColor(String hex) {
-        if (!String_Util.isNullOrEmpty(hex)) {
+        if (!StringUtil.isNullOrEmpty(hex)) {
             this.legendLabels.setFontColor(hex);
         }
     }
@@ -105,7 +105,7 @@ public abstract class AbstractVerticalGraphicBean extends AbstractBaseGraphicBea
     }
 
     protected void setTitle(String title) {
-        if (!String_Util.isNullOrEmpty(title)) {
+        if (!StringUtil.isNullOrEmpty(title)) {
             this.barDataSet.setLabel(title);
         }
     }
@@ -119,7 +119,7 @@ public abstract class AbstractVerticalGraphicBean extends AbstractBaseGraphicBea
     }
 
     protected void addColor(String rgba) {
-        if (!String_Util.isNullOrEmpty(rgba)) {
+        if (!StringUtil.isNullOrEmpty(rgba)) {
             this.bgColor.add(rgba);
         }
     }
@@ -129,7 +129,7 @@ public abstract class AbstractVerticalGraphicBean extends AbstractBaseGraphicBea
     }
 
     protected void addBorderColor(String rgb) {
-        if (!String_Util.isNullOrEmpty(rgb)) {
+        if (!StringUtil.isNullOrEmpty(rgb)) {
             this.borderColor.add(rgb);
         }
     }
@@ -151,7 +151,7 @@ public abstract class AbstractVerticalGraphicBean extends AbstractBaseGraphicBea
     }
 
     protected void buildGraphic() {
-        if (String_Util.isNullOrEmpty(getTitle())) {
+        if (StringUtil.isNullOrEmpty(getTitle())) {
             setTitle(DEFAULT_TITTLE_GRAPHICS);
         }
 
@@ -219,7 +219,7 @@ public abstract class AbstractVerticalGraphicBean extends AbstractBaseGraphicBea
 
     private void addDefaultValues() {
         for (int i = 0; i < 5; i++) {
-            Double value = Double_Util.format(((Math.random() * ((200 - 1) + 1)) + 1));
+            Double value = DoubleUtil.format(((Math.random() * ((200 - 1) + 1)) + 1));
             addValue(value);
         }
     }

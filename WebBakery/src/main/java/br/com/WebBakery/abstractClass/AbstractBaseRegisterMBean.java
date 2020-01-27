@@ -5,7 +5,7 @@ import java.util.List;
 
 import javax.faces.application.FacesMessage;
 
-import br.com.WebBakery.util.Faces_Util;
+import br.com.WebBakery.util.FacesUtil;
 
 @SuppressWarnings("serial")
 public abstract class AbstractBaseRegisterMBean<T extends AbstractBaseTO>
@@ -51,10 +51,10 @@ public abstract class AbstractBaseRegisterMBean<T extends AbstractBaseTO>
     }
 
     public T getObjetoSessao(String keyAtribute, AbstractBaseDao<T> dao) throws Exception {
-        Integer id = (Integer) Faces_Util.getHTTPSession().getAttribute(keyAtribute);
+        Integer id = (Integer) FacesUtil.getHTTPSession().getAttribute(keyAtribute);
         
         if (id != null && dao != null) {
-            Faces_Util.getHTTPSession().removeAttribute(keyAtribute);
+            FacesUtil.getHTTPSession().removeAttribute(keyAtribute);
             return dao.buscarPorId(id);
         }
         return null;

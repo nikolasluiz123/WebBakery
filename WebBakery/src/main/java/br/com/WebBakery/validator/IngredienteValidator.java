@@ -2,7 +2,7 @@ package br.com.WebBakery.validator;
 
 import br.com.WebBakery.abstractClass.AbstractValidator;
 import br.com.WebBakery.to.TOIngrediente;
-import br.com.WebBakery.util.String_Util;
+import br.com.WebBakery.util.StringUtil;
 
 public class IngredienteValidator extends AbstractValidator {
 
@@ -23,7 +23,7 @@ public class IngredienteValidator extends AbstractValidator {
     private void validarNome() {
         String nome = this.ingrediente.getNome();
 
-        if (String_Util.isNullOrEmpty(nome)) {
+        if (StringUtil.isNullOrEmpty(nome)) {
             messages.add(FIELD_NOME_REQUIRED);
         } else if (nome.length() > 32) {
             messages.add(FIELD_NOME_LIMIT_EXCEEDED);

@@ -14,7 +14,7 @@ import br.com.WebBakery.model.entitys.Tarefa;
 import br.com.WebBakery.model.graphics.ProducaoGraphicValues;
 import br.com.WebBakery.to.TOTarefa;
 import br.com.WebBakery.to.TOUsuario;
-import br.com.WebBakery.util.Faces_Util;
+import br.com.WebBakery.util.FacesUtil;
 
 @Stateless
 public class TarefaDao extends AbstractBaseDao<TOTarefa> {
@@ -48,7 +48,7 @@ public class TarefaDao extends AbstractBaseDao<TOTarefa> {
 
     @Override
     public List<TOTarefa> listarTodos(Boolean ativo) throws Exception {
-        TOUsuario user = (TOUsuario) Faces_Util.getAttributeFromSession("usuarioLogado");
+        TOUsuario user = (TOUsuario) FacesUtil.getAttributeFromSession("usuarioLogado");
         
         List<Tarefa> tarefas = new ArrayList<>();
         List<TOTarefa> toTarefas = new ArrayList<>();
