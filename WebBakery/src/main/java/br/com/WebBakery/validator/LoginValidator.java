@@ -1,11 +1,8 @@
 package br.com.WebBakery.validator;
 
 import br.com.WebBakery.abstractClass.AbstractValidator;
-import br.com.WebBakery.dao.ClienteDao;
 import br.com.WebBakery.dao.FuncionarioDao;
 import br.com.WebBakery.dao.UsuarioDao;
-import br.com.WebBakery.enums.TipoUsuario;
-import br.com.WebBakery.to.TOCliente;
 import br.com.WebBakery.to.TOFuncionario;
 import br.com.WebBakery.to.TOUsuario;
 import br.com.WebBakery.util.HashUtil;
@@ -23,20 +20,15 @@ public class LoginValidator extends AbstractValidator {
 
     private TOUsuario toUsuario;
     private String senha;
-    private UsuarioDao usuarioDao;
     private FuncionarioDao funcionarioDao;
-    private ClienteDao clienteDao;
 
     public LoginValidator(TOUsuario toUsuario,
                           String senha,
                           UsuarioDao usuarioDao,
-                          FuncionarioDao funcionarioDao,
-                          ClienteDao clienteDao) {
+                          FuncionarioDao funcionarioDao) {
         this.toUsuario = toUsuario;
         this.senha = senha;
-        this.usuarioDao = usuarioDao;
         this.funcionarioDao = funcionarioDao;
-        this.clienteDao = clienteDao;
     }
 
     @Override
@@ -75,21 +67,16 @@ public class LoginValidator extends AbstractValidator {
     }
 
     private Boolean existeVinculoComUsuario() {
-        TOCliente c = new TOCliente();
         TOFuncionario f = new TOFuncionario();
 
         try {
-            if (this.toUsuario.getTipo() == TipoUsuario.CLIENTE) {
-                c = clienteDao.buscarPorIdUsuario(toUsuario.getId());
-            } else {
-                f = funcionarioDao.buscarPorIdUsuario(toUsuario.getId());
-            }
+            f = funcionarioDao.buscarPorIdUsuario(toUsuario.getId());
         } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException(e);
         }
 
-        if (c.getId() != null || f.getId() != null) {
+        if (f.getId() != null) {
             return true;
         }
         return false;

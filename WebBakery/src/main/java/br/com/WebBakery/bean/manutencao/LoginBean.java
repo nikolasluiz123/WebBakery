@@ -9,7 +9,6 @@ import javax.inject.Named;
 
 import br.com.WebBakery.abstractClass.AbstractBaseDao;
 import br.com.WebBakery.abstractClass.AbstractBaseRegisterMBean;
-import br.com.WebBakery.dao.ClienteDao;
 import br.com.WebBakery.dao.FuncionarioDao;
 import br.com.WebBakery.dao.UsuarioDao;
 import br.com.WebBakery.to.TOUsuario;
@@ -35,8 +34,6 @@ public class LoginBean extends AbstractBaseRegisterMBean<TOUsuario> {
 //     private PopulaBancoDao populaBancoDao;
     @Inject
     private FuncionarioDao funcionarioDao;
-    @Inject
-    private ClienteDao clienteDao;
     private String senha;
 
     @PostConstruct
@@ -72,8 +69,7 @@ public class LoginBean extends AbstractBaseRegisterMBean<TOUsuario> {
         LoginValidator loginValidator = new LoginValidator(getTo(),
                                                            this.senha,
                                                            this.usuarioDao,
-                                                           this.funcionarioDao,
-                                                           this.clienteDao);
+                                                           this.funcionarioDao);
         addValidator(loginValidator);
     }
 
