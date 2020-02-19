@@ -14,7 +14,7 @@ import br.com.WebBakery.abstractClass.AbstractBaseRegisterMBean;
 import br.com.WebBakery.dao.IngredienteDao;
 import br.com.WebBakery.dao.ReceitaDao;
 import br.com.WebBakery.dao.ReceitaIngredienteDao;
-import br.com.WebBakery.enums.UnidadeMedida;
+import br.com.WebBakery.enums.EnumUnidadeMedida;
 import br.com.WebBakery.to.TOIngrediente;
 import br.com.WebBakery.to.TOReceita;
 import br.com.WebBakery.to.TOReceitaIngrediente;
@@ -167,8 +167,8 @@ public class ReceitaBean extends AbstractBaseRegisterMBean<TOReceita> {
         }
     }
 
-    public UnidadeMedida[] getUnidadeMedidas() {
-        return UnidadeMedida.values();
+    public EnumUnidadeMedida[] getUnidadeMedidas() {
+        return EnumUnidadeMedida.values();
     }
 
     public List<TOIngrediente> getToIngredientes() {

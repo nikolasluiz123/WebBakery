@@ -9,7 +9,7 @@ import javax.transaction.Transactional;
 import br.com.WebBakery.abstractClass.AbstractBaseDao;
 import br.com.WebBakery.abstractClass.AbstractBaseRegisterMBean;
 import br.com.WebBakery.dao.IngredienteDao;
-import br.com.WebBakery.enums.UnidadeMedida;
+import br.com.WebBakery.enums.EnumUnidadeMedida;
 import br.com.WebBakery.to.TOIngrediente;
 import br.com.WebBakery.validator.IngredienteValidator;
 
@@ -23,7 +23,7 @@ public class IngredienteBean extends AbstractBaseRegisterMBean<TOIngrediente> {
 
     @Inject
     private IngredienteDao ingredienteDao;
-    private UnidadeMedida unidadeMedida;
+    private EnumUnidadeMedida unidadeMedida;
 
     @PostConstruct
     private void init() {
@@ -56,16 +56,16 @@ public class IngredienteBean extends AbstractBaseRegisterMBean<TOIngrediente> {
         addValidator(ingredienteValidator);
     }
 
-    public UnidadeMedida getUnidadeMedida() {
+    public EnumUnidadeMedida getUnidadeMedida() {
         return unidadeMedida;
     }
 
-    public void setUnidadeMedida(UnidadeMedida unidadeMedida) {
+    public void setUnidadeMedida(EnumUnidadeMedida unidadeMedida) {
         this.unidadeMedida = unidadeMedida;
     }
 
-    public UnidadeMedida[] getUnidadeMedidas() {
-        return UnidadeMedida.values();
+    public EnumUnidadeMedida[] getUnidadeMedidas() {
+        return EnumUnidadeMedida.values();
     }
 
     @Override

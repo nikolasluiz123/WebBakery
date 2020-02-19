@@ -12,7 +12,7 @@ import javax.inject.Named;
 import br.com.WebBakery.abstractClass.AbstractBaseListMBean;
 import br.com.WebBakery.dao.EstoqueProdutoDao;
 import br.com.WebBakery.dao.TarefaDao;
-import br.com.WebBakery.enums.TipoUsuario;
+import br.com.WebBakery.enums.EnumTipoUsuario;
 import br.com.WebBakery.interfaces.IBaseListMBean;
 import br.com.WebBakery.to.TOEstoqueProduto;
 import br.com.WebBakery.to.TOTarefa;
@@ -68,9 +68,9 @@ public class ListaTarefaBean extends AbstractBaseListMBean implements IBaseListM
     }
 
     private boolean isAutorized(TOUsuario user) {
-        TipoUsuario tipo = user.getTipo();
+        EnumTipoUsuario tipo = user.getTipo();
         
-        return tipo == TipoUsuario.PADEIRO || tipo == TipoUsuario.GERENTE;
+        return tipo == EnumTipoUsuario.PADEIRO || tipo == EnumTipoUsuario.GERENTE;
     }
 
     private void cadastrarProdutoEstoque(TOTarefa tarefa) {

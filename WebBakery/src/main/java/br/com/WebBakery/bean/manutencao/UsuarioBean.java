@@ -9,7 +9,7 @@ import javax.transaction.Transactional;
 import br.com.WebBakery.abstractClass.AbstractBaseDao;
 import br.com.WebBakery.abstractClass.AbstractBaseRegisterMBean;
 import br.com.WebBakery.dao.UsuarioDao;
-import br.com.WebBakery.enums.TipoUsuario;
+import br.com.WebBakery.enums.EnumTipoUsuario;
 import br.com.WebBakery.to.TOUsuario;
 import br.com.WebBakery.validator.UsuarioValidator;
 
@@ -23,7 +23,7 @@ public class UsuarioBean extends AbstractBaseRegisterMBean<TOUsuario> {
 
     @Inject
     private UsuarioDao usuarioDao;
-    private TipoUsuario tipoUsuario;
+    private EnumTipoUsuario tipoUsuario;
 
     private String senha;
 
@@ -71,16 +71,16 @@ public class UsuarioBean extends AbstractBaseRegisterMBean<TOUsuario> {
         return new TOUsuario();
     }
 
-    public TipoUsuario getTipoUsuario() {
+    public EnumTipoUsuario getTipoUsuario() {
         return tipoUsuario;
     }
 
-    public void setTipoUsuario(TipoUsuario tipoUsuario) {
+    public void setTipoUsuario(EnumTipoUsuario tipoUsuario) {
         this.tipoUsuario = tipoUsuario;
     }
 
-    public TipoUsuario[] getTiposUsuarios() {
-        return TipoUsuario.values();
+    public EnumTipoUsuario[] getTiposUsuarios() {
+        return EnumTipoUsuario.values();
     }
 
     public String getSenha() {

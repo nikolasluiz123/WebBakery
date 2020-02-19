@@ -4,7 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 
 import br.com.WebBakery.abstractClass.AbstractBaseModel;
-import br.com.WebBakery.enums.TipoUsuario;
+import br.com.WebBakery.enums.EnumTipoUsuario;
 
 @Entity(name = Usuario.TABLE_NAME)
 public class Usuario extends AbstractBaseModel {
@@ -31,7 +31,7 @@ public class Usuario extends AbstractBaseModel {
     private String senha;
 
     @Column(name = TIPO_USUARIO_USUARIO)
-    private TipoUsuario tipo;
+    private EnumTipoUsuario tipo;
 
     public String getEmail() {
         return email;
@@ -49,11 +49,11 @@ public class Usuario extends AbstractBaseModel {
         this.senha = senha;
     }
 
-    public TipoUsuario getTipo() {
+    public EnumTipoUsuario getTipo() {
         return tipo;
     }
 
-    public void setTipo(TipoUsuario tipo) {
+    public void setTipo(EnumTipoUsuario tipo) {
         this.tipo = tipo;
     }
 

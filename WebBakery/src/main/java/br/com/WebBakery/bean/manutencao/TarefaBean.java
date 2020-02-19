@@ -15,7 +15,7 @@ import br.com.WebBakery.abstractClass.AbstractBaseRegisterMBean;
 import br.com.WebBakery.dao.FuncionarioDao;
 import br.com.WebBakery.dao.ProdutoDao;
 import br.com.WebBakery.dao.TarefaDao;
-import br.com.WebBakery.enums.TipoUsuario;
+import br.com.WebBakery.enums.EnumTipoUsuario;
 import br.com.WebBakery.to.TOFuncionario;
 import br.com.WebBakery.to.TOProduto;
 import br.com.WebBakery.to.TOTarefa;
@@ -108,7 +108,7 @@ public class TarefaBean extends AbstractBaseRegisterMBean<TOTarefa> {
 
     private void initFucnionarios() {
         try {
-            this.toPadeiros = this.funcionarioDao.listarTodos(TipoUsuario.PADEIRO);
+            this.toPadeiros = this.funcionarioDao.listarTodos(EnumTipoUsuario.PADEIRO);
         } catch (Exception e) {
             e.printStackTrace();
         }

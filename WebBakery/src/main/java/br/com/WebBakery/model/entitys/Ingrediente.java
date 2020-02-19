@@ -4,7 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 
 import br.com.WebBakery.abstractClass.AbstractBaseModel;
-import br.com.WebBakery.enums.UnidadeMedida;
+import br.com.WebBakery.enums.EnumUnidadeMedida;
 
 @Entity(name = Ingrediente.TABLE_NAME)
 public class Ingrediente extends AbstractBaseModel {
@@ -19,7 +19,7 @@ public class Ingrediente extends AbstractBaseModel {
     private String nome;
 
     @Column(name = UNIDADE_MEDIDA_INGREDIENTE)
-    private UnidadeMedida unidadeMedida;
+    private EnumUnidadeMedida unidadeMedida;
 
     public String getNome() {
         return nome;
@@ -29,11 +29,11 @@ public class Ingrediente extends AbstractBaseModel {
         this.nome = nome;
     }
 
-    public UnidadeMedida getUnidadeMedida() {
+    public EnumUnidadeMedida getUnidadeMedida() {
         return unidadeMedida;
     }
 
-    public void setUnidadeMedida(UnidadeMedida unidadeMedida) {
+    public void setUnidadeMedida(EnumUnidadeMedida unidadeMedida) {
         this.unidadeMedida = unidadeMedida;
     }
 

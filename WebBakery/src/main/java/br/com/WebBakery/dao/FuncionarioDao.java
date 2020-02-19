@@ -10,7 +10,7 @@ import javax.ejb.Stateless;
 import javax.persistence.NoResultException;
 
 import br.com.WebBakery.abstractClass.AbstractBaseDao;
-import br.com.WebBakery.enums.TipoUsuario;
+import br.com.WebBakery.enums.EnumTipoUsuario;
 import br.com.WebBakery.model.entitys.Funcionario;
 import br.com.WebBakery.model.graphics.FuncionarioGraphicValues;
 import br.com.WebBakery.to.TOFuncionario;
@@ -154,7 +154,7 @@ public class FuncionarioDao extends AbstractBaseDao<TOFuncionario> {
         return listGraphicValues;
     }
 
-    public List<TOFuncionario> listarTodos(TipoUsuario padeiro) throws Exception {
+    public List<TOFuncionario> listarTodos(EnumTipoUsuario padeiro) throws Exception {
         List<Funcionario> funcionarios = new ArrayList<>();
         List<TOFuncionario> toFuncionarios = new ArrayList<>();
         

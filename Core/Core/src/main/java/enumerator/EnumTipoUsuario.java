@@ -1,6 +1,6 @@
-package br.com.WebBakery.enums;
+package enumerator;
 
-public enum TipoUsuario {
+public enum EnumTipoUsuario {
 
                          PADEIRO("Padeiro"),
                          ADMINISTRADOR_ESTOQUE("Administrador de Estoque"),
@@ -10,7 +10,7 @@ public enum TipoUsuario {
 
     private String nome;
 
-    private TipoUsuario(String nome) {
+    private EnumTipoUsuario(String nome) {
         this.nome = nome;
     }
 

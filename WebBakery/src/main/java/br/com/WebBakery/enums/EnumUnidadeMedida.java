@@ -1,6 +1,6 @@
 package br.com.WebBakery.enums;
 
-public enum UnidadeMedida {
+public enum EnumUnidadeMedida {
 
                            KG("Quilograma"),
                            G("Grama"),
@@ -11,7 +11,7 @@ public enum UnidadeMedida {
 
     private String descricao;
 
-    UnidadeMedida(String descricao) {
+    EnumUnidadeMedida(String descricao) {
         this.descricao = descricao;
     }
 

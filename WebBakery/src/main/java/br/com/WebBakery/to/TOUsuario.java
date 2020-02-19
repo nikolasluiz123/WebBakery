@@ -2,7 +2,7 @@ package br.com.WebBakery.to;
 
 import br.com.WebBakery.abstractClass.AbstractBaseTO;
 import br.com.WebBakery.core.annotations.TOEntity;
-import br.com.WebBakery.enums.TipoUsuario;
+import br.com.WebBakery.enums.EnumTipoUsuario;
 
 public class TOUsuario extends AbstractBaseTO {
 
@@ -15,7 +15,7 @@ public class TOUsuario extends AbstractBaseTO {
     @TOEntity(fieldName = "senha")
     private String senha;
     @TOEntity(fieldName = "tipo")
-    private TipoUsuario tipo;
+    private EnumTipoUsuario tipo;
 
     public String getNome() {
         return nome;
@@ -49,11 +49,11 @@ public class TOUsuario extends AbstractBaseTO {
         this.senha = senha;
     }
 
-    public TipoUsuario getTipo() {
+    public EnumTipoUsuario getTipo() {
         return tipo;
     }
 
-    public void setTipo(TipoUsuario tipo) {
+    public void setTipo(EnumTipoUsuario tipo) {
         this.tipo = tipo;
     }
 

@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.primefaces.model.menu.DefaultMenuItem;
 
-import br.com.WebBakery.enums.TipoUsuario;
+import br.com.WebBakery.enums.EnumTipoUsuario;
 
 public class ManipuladorPermissao {
 
@@ -80,16 +80,16 @@ public class ManipuladorPermissao {
         permissoesPadeiro.add("Tarefas");
     }
 
-    public void esconderItensMenuPara(TipoUsuario tipo) {
-        if (tipo.equals(TipoUsuario.ADMINISTRADOR_ESTOQUE)) {
+    public void esconderItensMenuPara(EnumTipoUsuario tipo) {
+        if (tipo.equals(EnumTipoUsuario.ADMINISTRADOR_ESTOQUE)) {
             lerPermissoes(this.permissoesAdministradorEstoque);
-        } else if (tipo.equals(TipoUsuario.CAIXA)) {
+        } else if (tipo.equals(EnumTipoUsuario.CAIXA)) {
             lerPermissoes(this.permissoesCaixa);
-        } else if (tipo.equals(TipoUsuario.CLIENTE)) {
+        } else if (tipo.equals(EnumTipoUsuario.CLIENTE)) {
             lerPermissoes(this.permissoesCliente);
-        } else if (tipo.equals(TipoUsuario.GERENTE)) {
+        } else if (tipo.equals(EnumTipoUsuario.GERENTE)) {
             lerPermissoes(this.permissoesGerente);
-        } else if (tipo.equals(TipoUsuario.PADEIRO)) {
+        } else if (tipo.equals(EnumTipoUsuario.PADEIRO)) {
             lerPermissoes(this.permissoesPadeiro);
         }
     }

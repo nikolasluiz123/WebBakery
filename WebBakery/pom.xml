@@ -33,7 +33,7 @@
 			<artifactId>junit</artifactId>
 			<version>4.12</version>
 		</dependency>
-
+		
 		<dependency>
 			<groupId>org.primefaces.themes</groupId>
 			<artifactId>all-themes</artifactId>
@@ -53,7 +53,7 @@
 		</dependency>
 
 	</dependencies>
-
+	
 	<repositories>
 		<repository>
 			<id>prime-repo</id>
